@@ -1,11 +1,7 @@
-# ByteLearn (MVP)
+# ByteLearn Frontend
 
-This repository is part of the ByteLearn minor project.
+This is the **frontend** of ByteLearn.  
+It is built with **HTML, CSS, JavaScript, and AngularJS**.  
 
-Repos:
-- bytelearn-frontend: Static frontend (HTML + Bootstrap + PouchDB)
-
-> Running locally:
-- Frontend: `python3 -m http.server 8080` (open http://localhost:8080/index.html)
-
-Parvathy is the project leader. Team: Parvathy, Vyshnav, Vishnu, Rukmini.
+## How to run
+1. Clone the repo  

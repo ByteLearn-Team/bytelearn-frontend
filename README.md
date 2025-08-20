@@ -1,7 +1,13 @@
 # ByteLearn Frontend
 
 This is the **frontend** of ByteLearn.  
-It is built with **HTML, CSS, JavaScript, and AngularJS**.  
+It shows the user interface of the app (summaries, flashcards, quizzes, and dashboard).  
 
-## How to run
-1. Clone the repo  
+## Current Status
+- Basic setup with `index.html` is ready.
+- More features will be added step by step.
+
+## How to Run
+1. Clone this repo  
+git clone <frontend-repo-link>
+2. Open `index.html` in a web browser.

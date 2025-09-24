@@ -206,7 +206,7 @@
       <!-- Subject Panel (hidden until class is chosen) -->
       <div class="card panel right hidden" id="panel-subject">
         <h2>Choose Your Subject</h2>
-        <div id="subjects-list"></div>
+        <div class="item"><a href="#" onclick="event.preventDefault(); showStep('chapter');">Biology</a></div>
       </div>
 
       <!-- Chapter Panel (hidden until subject chosen) -->
@@ -277,80 +277,49 @@
     // Start with class panel only
     setFlow('class');
 
+    // Chapters data for Class 11 & 12
+    const chapters = {
+      class11: [
+        "The Living World","Biological Classification","Plant Kingdom","Animal Kingdom",
+        "Morphology of Flowering Plants","Anatomy of Flowering Plants","Structural Organisation in Animals",
+        "Cell: The Unit of Life","Biomolecules","Cell Cycle and Cell Division",
+        "Photosynthesis in Higher Plants","Respiration in Plants","Plant Growth and Development",
+        "Breathing and Exchange of Gases","Body Fluids and Circulation","Excretory Products and Their Elimination",
+        "Locomotion and Movement","Neural Control and Coordination","Chemical Coordination and Integration",
+      ],
+      class12: [
+        "Sexual Reproduction in Flowering Plants","Human Reproduction","Reproductive Health",
+        "Principles of Inheritance and Variation","Molecular Basis of Inheritance","Evolution",
+        "Human Health and Disease","Microbes in Human Welfare",
+        "Biotechnology – Principles and Processes","Biotechnology and its Applications",
+        "Ecology and Environment","Organisms and Populations","Ecosystem","Biodiversity and Conservation",
+      ],
+    };
+
     let selectedClass = null; // track user selection
-    let selectedSubjectId = null;
 
-    // API Base URL for FastAPI backend
-    const API_BASE = 'http://localhost:8000';
-
-    // Render subjects dynamically from backend
-    function renderSubjects(classKey) {
-      const subjectsDiv = document.getElementById('subjects-list');
-      subjectsDiv.innerHTML = "Loading...";
-      // Fetch subjects for the selected class
-      fetch(`${API_BASE}/subjects`)
-        .then(resp => resp.json())
-        .then(data => {
-          subjectsDiv.innerHTML = "";
-          // Only show subjects for selected class (filter by class_id if needed)
-          let filtered = data;
-          if (classKey === "class11") filtered = data.filter(s => s.class_id == 11);
-          else if (classKey === "class12") filtered = data.filter(s => s.class_id == 12);
-
-          filtered.forEach(subj => {
-            const div = document.createElement('div');
-            div.className = "item";
-            div.innerHTML = `<a href="#" data-subject-id="${subj.subject_id}">${subj.subject_name}</a>`;
-            subjectsDiv.appendChild(div);
-          });
-
-          // Add click listeners to subject links
-          subjectsDiv.querySelectorAll('a[data-subject-id]').forEach(el => {
-            el.addEventListener('click', function(e) {
-              e.preventDefault();
-              selectedSubjectId = this.getAttribute('data-subject-id');
-              showStep('chapter');
-              renderChapters(selectedSubjectId);
-            });
-          });
-        })
-        .catch(() => {
-          subjectsDiv.innerHTML = "<div style='color:#ff8a8a;'>Failed to load subjects.</div>";
-        });
+    // Render chapter list dynamically
+    function renderChapters(classKey) {
+      const list = document.getElementById("chapters-list");
+      if (!list) return;
+      list.innerHTML = "";
+      const chs = chapters[classKey];
+      if (!chs) return;
+      chs.forEach((name) => {
+        const div = document.createElement("div");
+        div.className = "item";
+        div.innerHTML = `<a href="./learn.html">${name}</a>`;
+        list.appendChild(div);
+      });
     }
 
-    // Render chapter list dynamically from backend
-    function renderChapters(subjectId) {
-      const chaptersDiv = document.getElementById("chapters-list");
-      chaptersDiv.innerHTML = "Loading...";
-      // Fetch chapters for the selected subject
-      fetch(`${API_BASE}/chapters`)
-        .then(resp => resp.json())
-        .then(data => {
-          chaptersDiv.innerHTML = "";
-          // Only show chapters for selected subject (filter by subject_id)
-          let filtered = data.filter(ch => ch.subject_id == subjectId);
-
-          filtered.forEach(chap => {
-            const div = document.createElement("div");
-            div.className = "item";
-            div.innerHTML = `<a href="./learn.html">${chap.chapter_name}</a>`;
-            chaptersDiv.appendChild(div);
-          });
-        })
-        .catch(() => {
-          chaptersDiv.innerHTML = "<div style='color:#ff8a8a;'>Failed to load chapters.</div>";
-        });
-    }
-
-    // Step handler with API integration
+    // Step handler with chapter injection
     function showStep(step) {
       if (step === "subject") {
         setFlow("subject");
-        if (selectedClass) renderSubjects(selectedClass);
       } else if (step === "chapter") {
         setFlow("chapter");
-        if (selectedSubjectId) renderChapters(selectedSubjectId);
+        if (selectedClass) renderChapters(selectedClass);
       }
     }
 
@@ -360,6 +329,14 @@
         e.preventDefault();
         selectedClass = idx === 0 ? "class11" : "class12";
         showStep("subject");
+      });
+    });
+
+    // Transition subject -> chapter
+    document.querySelectorAll("#panel-subject .item a").forEach((el) => {
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+        showStep("chapter");
       });
     });
   </script>

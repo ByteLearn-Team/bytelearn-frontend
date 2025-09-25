@@ -38,6 +38,7 @@
       overflow-x: hidden; /* Prevent horizontal scrollbar */
       font-size: 18px; /* Base font size */
       text-align: center; /* Center all text in body */
+      background-attachment: fixed;
     }
 
     /* Decorative animated background blobs */
@@ -62,7 +63,7 @@
     }
 
     /* Layout container settings */
-    .container { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 28px; }
+    .container { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 32px; text-align: center; /* Center text in container */ }
     main.container { min-height: calc(100vh - 140px); } /* fill viewport minus header/footer */
     
     /* Row-flex utility */
@@ -136,11 +137,6 @@
       margin-top: 40px; color: rgba(255,255,255,0.7);
     }
     a.inline { color: #fff; text-decoration: underline; }
-
-    .container {
-      /* ...existing code... */
-      text-align: center; /* Center text in container */
-    }
 
     .row {
       /* ...existing code... */

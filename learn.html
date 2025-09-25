@@ -1,112 +1,98 @@
-<!doctype html> <!-- Declares HTML5 document -->
-<html lang="en"> <!-- Language: English -->
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" /> <!-- Set character encoding to UTF-8 -->
-  <title>BytLearn — Learn</title> <!-- Title for browser tab -->
-  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Responsive meta -->
-
+  <meta charset="utf-8" />
+  <title>BytLearn — Learn</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    /* CSS root variables for theme */
-    :root { 
-      --border: rgba(255,255,255,0.2);      /* Border color for buttons, inputs, cards */
-      --glass: rgba(255,255,255,0.1);       /* Glassy background effect */
-      --text: #fff;                         /* Main text color */
-      --muted: rgba(255,255,255,0.85);      /* Muted/dimmed text color */
+    :root {
+      --border: rgba(255,255,255,0.2);
+      --glass: rgba(255,255,255,0.1);
+      --text: #fff;
+      --muted: rgba(255,255,255,0.85);
     }
-    
-    * { box-sizing: border-box; } /* Padding/border included in size */
-
-    html, body { 
-      height: 100%; 
-      margin: 0; 
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    * { box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial;
       color: var(--text);
-      text-align: center; /* Center all text */
+      text-align: center;
     }
-
     body {
-      background: linear-gradient(135deg, #c084fc, #f472b6, #60a5fa); /* Soft gradient background */
-      position:relative; 
-      overflow-x:hidden;
+      /* Match dashboard.html background gradient */
+      background: linear-gradient(135deg, #7e22ce 0%, #f472b6 45%, #6366f1 100%);
+      background-attachment: fixed;
+      position: relative;
+      overflow-x: hidden;
       font-size: 18px;
-      text-align: center; /* Center all text in body */
+      text-align: center;
     }
-
-    /* Overlay layer for subtle glass darkness */
-    .overlay { position:fixed; inset:0; background: rgba(0,0,0,0.4); }
-
-    /* Main content wrapper */
-    .container { position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:28px; text-align: center; /* Center text in container */ }
-    main.container { min-height: calc(100vh - 120px); }
-
-    /* Flex row utility */
-    .row { display:flex; align-items:center; justify-content:space-between; gap:12px; text-align: center; /* Center text in row */ }
-
-    /* Logo block styling */
-    .logo { display:flex; align-items:center; gap:12px; }
-    .logo img { width:40px;height:40px; }
-
-    /* General button styles */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35); /* uniform overlay match dashboard */
+      pointer-events: none;
+      z-index: 0;
+    }
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); }
+    .container {
+      position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 32px;
+      text-align: center;
+    }
+    main.container { min-height: calc(100vh - 110px); }
+    .row {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      text-align: center;
+    }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo img { width: 40px; height: 40px; }
     .btn {
       display:inline-flex; align-items:center; justify-content:center;
       padding:12px 16px; border-radius:12px;
-      border:1px solid var(--border); background: rgba(255,255,255,0.18);
-      color: var(--text); text-decoration:none; transition:150ms; backdrop-filter: blur(6px);
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.18);
+      color: var(--text); text-decoration: none;
+      transition:150ms;
+      backdrop-filter: blur(6px);
     }
     .btn:hover { background: rgba(255,255,255,0.24); }
-
-    /* Card effect for sections */
-    .card { 
-      background: var(--glass); 
-      border:1px solid var(--border); 
-      border-radius:18px; 
-      padding: 24px; 
-      backdrop-filter: blur(8px); 
-      text-align: center; /* Center text in card */
+    .card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 18px; padding: 24px; backdrop-filter: blur(8px);
+      text-align: center;
     }
-    
-    /* Pills tab bar grid styling */
-    .pills { 
-      display:grid; 
-      grid-template-columns: repeat(4, minmax(0,1fr)); 
-      gap:12px; 
+    .pills {
+      display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px;
     }
-    .pill { 
-      padding:10px 16px; border-radius:14px; 
-      border:1px solid var(--border); 
-      background: rgba(255,255,255,0.08); 
-      color: var(--text); 
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06); 
+    .pill {
+      padding: 10px 16px; border-radius: 14px; border: 1px solid var(--border);
+      background: rgba(255,255,255,0.08); color: var(--text);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
     }
-    .pill.active { 
+    .pill.active {
       background: rgba(255,255,255,0.2);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12); 
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
     }
-
-    /* Hide elements utility */
-    .hidden { display:none; }
-    
-    h2 { margin:0 0 12px; }
+    .hidden { display: none; }
+    h2 { margin: 0 0 12px; }
     p { color: var(--muted); }
-    
-    /* Responsive grid for cards/sections */
-    .grid { display:grid; grid-template-columns:1fr; gap:12px; }
-    @media(min-width:768px){ .grid{ grid-template-columns:1fr 1fr; } }
-
+    .grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media(min-width:768px) { .grid { grid-template-columns: 1fr 1fr; } }
     h2, h3, h1, p, .badge, .subtitle, .title, .lead, .actions, .stats, .pill, .item a, .list, .li {
-      text-align: center !important; /* Center all headings, paragraphs, badges, pills, links, lists */
+      text-align: center !important;
     }
   </style>
 </head>
-
 <body>
-  <!-- Overlay for glassy look -->
   <div class="overlay"></div>
-
-  <!-- Header navigation bar -->
   <header class="container">
     <div class="row">
-      <!-- Logo + workspace name, clickable to go Home -->
       <div class="logo" style="cursor:pointer;" onclick="location.href='./welcome.html'">
         <img src="./logo.png" alt="BytLearn" />
         <div>
@@ -114,40 +100,35 @@
           <div style="font-size:12px;opacity:.8">Learning Workspace — <span id="lName">Student</span></div>
         </div>
       </div>
-      <!-- Navigation links (Dashboard, Profile, Sign Out) -->
       <div class="row" style="gap:10px;">
-        <a class="btn" href="./dashboard.html">← Dashboard</a>
+        <a class="btn" href="./dashboard.html">Dashboard</a>
         <a class="btn" href="./profile.html" title="Profile">Profile</a>
-        <a class="btn" href="./welcome.html" 
+        <a class="btn" href="./welcome.html"
            onclick="event.preventDefault(); localStorage.removeItem('authed'); location.href='./welcome.html';">
-           Sign Out
+          Sign Out
         </a>
       </div>
     </div>
   </header>
-
   <main class="container">
-    <!-- Pills tab bar for switching tool sections -->
     <div class="card" style="margin-bottom:12px;">
       <div class="pills">
-        <button class="pill active" data-tab="summary">📖 Summaries</button>
-        <button class="pill" data-tab="flashcards">🔲 Flashcards</button>
-        <button class="pill" data-tab="doubts">💬 Doubt Asking</button>
-        <button class="pill" data-tab="quizzes">✨ Quizzes</button>
+        <button class="pill active" data-tab="summary">Summaries</button>
+        <button class="pill" data-tab="flashcards">Flashcards</button>
+        <button class="pill" data-tab="doubts">Doubt Asking</button>
+        <button class="pill" data-tab="quizzes">Quizzes</button>
       </div>
     </div>
-
-    <!-- Section 1: Chapter summary -->
     <section id="summary" class="card tab">
       <div class="row" style="justify-content:space-between;">
         <h2>Chapter Summary</h2>
         <span class="pill" style="cursor:default;">Summary</span>
       </div>
       <p>Concise, structured notes covering definitions, diagrams, and high-yield points. Perfect for quick revision.</p>
-      <div class="grid" style="margin-top:10px;">
+      <div class="grid" style="margin-top:10px">
         <div class="card">
           <h3>Key Concepts</h3>
-          <ul style="opacity:.85;line-height:1.8;">
+          <ul style="opacity:.85;line-height:1.8">
             <li>Core definitions and terminologies</li>
             <li>Important diagrams and processes</li>
             <li>Relationships and functions</li>
@@ -155,7 +136,7 @@
         </div>
         <div class="card">
           <h3>Exam Tips</h3>
-          <ul style="opacity:.85;line-height:1.8;">
+          <ul style="opacity:.85;line-height:1.8">
             <li>Focus on commonly asked topics</li>
             <li>Remember exceptions and edge cases</li>
             <li>Use mnemonics for sequences</li>
@@ -163,88 +144,75 @@
         </div>
       </div>
     </section>
-
-    <!-- Section 2: Flashcards (hidden by default) -->
     <section id="flashcards" class="card tab hidden">
       <div class="row" style="justify-content:space-between;">
         <h2>Flashcards</h2>
         <span class="pill" style="cursor:default;">Recall</span>
       </div>
       <p>Strengthen memory with active recall. Flip cards to test knowledge.</p>
-      <div class="grid" style="margin-top:10px;">
-        <div class="card">Flashcard 1 — Tap to reveal</div>
-        <div class="card">Flashcard 2 — Tap to reveal</div>
-        <div class="card">Flashcard 3 — Tap to reveal</div>
-        <div class="card">Flashcard 4 — Tap to reveal</div>
-        <div class="card">Flashcard 5 — Tap to reveal</div>
-        <div class="card">Flashcard 6 — Tap to reveal</div>
+      <div class="grid" style="margin-top:10px">
+        <div class="card">Flashcard 1 Tap to reveal</div>
+        <div class="card">Flashcard 2 Tap to reveal</div>
+        <div class="card">Flashcard 3 Tap to reveal</div>
+        <div class="card">Flashcard 4 Tap to reveal</div>
+        <div class="card">Flashcard 5 Tap to reveal</div>
+        <div class="card">Flashcard 6 Tap to reveal</div>
       </div>
     </section>
-
-    <!-- Section 3: Doubt asking (hidden by default) -->
     <section id="doubts" class="card tab hidden">
       <div class="row" style="justify-content:space-between;">
         <h2>Ask a Doubt</h2>
         <span class="pill" style="cursor:default;">Help</span>
       </div>
       <p>Post your question and get guided clarifications.</p>
-      <div class="card">Doubt posting UI coming next — for now, pick another tool above.</div>
+      <div class="card">Doubt posting UI coming next; for now, pick another tool above.</div>
     </section>
-
-    <!-- Section 4: Quizzes (hidden by default) -->
     <section id="quizzes" class="card tab hidden">
       <div class="row" style="justify-content:space-between;">
         <h2>Quick Quiz</h2>
         <span class="pill" style="cursor:default;">Practice</span>
       </div>
       <p>Test yourself with quick objective questions and instant feedback.</p>
-      <div class="grid" style="margin-top:10px;">
+      <div class="grid" style="margin-top:10px">
         <div class="card">
           <div style="font-weight:600;margin-bottom:8px;">Question 1</div>
-          <ul style="opacity:.85;line-height:1.8;">
-            <li>• Option A</li>
-            <li>• Option B</li>
-            <li>• Option C</li>
-            <li>• Option D</li>
+          <ul style="opacity:.85;line-height:1.8">
+            <li>Option A</li>
+            <li>Option B</li>
+            <li>Option C</li>
+            <li>Option D</li>
           </ul>
         </div>
         <div class="card">
           <div style="font-weight:600;margin-bottom:8px;">Question 2</div>
-          <ul style="opacity:.85;line-height:1.8;">
-            <li>• Option A</li>
-            <li>• Option B</li>
-            <li>• Option C</li>
-            <li>• Option D</li>
+          <ul style="opacity:.85;line-height:1.8">
+            <li>Option A</li>
+            <li>Option B</li>
+            <li>Option C</li>
+            <li>Option D</li>
           </ul>
         </div>
       </div>
     </section>
   </main>
-
   <script>
-    // Auth guard: ensure user is logged in
     if (localStorage.getItem('authed') !== '1') {
       location.replace('./login.html');
     }
-
-    // Pills tabbar handler, switches tabs and animates scroll to top
-    const pills = document.querySelectorAll('.pill[data-tab]');
-    const tabs = document.querySelectorAll('.tab');
-    pills.forEach(p => {
-      p.addEventListener('click', () => {
-        pills.forEach(pp => pp.classList.remove('active'));     // Remove active from all pills
-        p.classList.add('active');                              // Activate clicked pill
-        const id = p.getAttribute('data-tab');                  // Get pill's tab ID
-        tabs.forEach(t => t.classList.add('hidden'));           // Hide all tab sections
-        document.getElementById(id)?.classList.remove('hidden');// Show selected tab
-        window.scrollTo({ top: 0, behavior: 'smooth' });        // Scroll to top
-      });
-    });
-
+    const pills = document.querySelectorAll(".pill[data-tab]");
+    const tabs = document.querySelectorAll(".tab");
+    pills.forEach(p => p.addEventListener("click", () => {
+      pills.forEach(pp => pp.classList.remove("active"));
+      p.classList.add("active");
+      const id = p.getAttribute("data-tab");
+      tabs.forEach(t => t.classList.add("hidden"));
+      document.getElementById(id)?.classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }));
     // Fill workspace name in header with current user
     (function(){
       const n = localStorage.getItem('currentUserName') || 'Student';
-      const el = document.getElementById('lName'); 
+      const el = document.getElementById('lName');
       if (el) el.textContent = n;
     })();
   </script>

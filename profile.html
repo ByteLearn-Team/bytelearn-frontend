@@ -1,212 +1,348 @@
-<!doctype html> <!-- Declares HTML5 document -->
-<html lang="en"> <!-- Language set to English -->
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" /> <!-- UTF-8 character encoding -->
-  <title>BytLearn — Profile</title> <!-- Page/browser tab title -->
-  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Mobile responsiveness -->
-
+  <meta charset="utf-8" />
+  <title>BytLearn Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    /* Color and UI theme variables */
     :root {
-      --bg1:#0b1e3d;        /* Primary background color */
-      --bg2:#08203a;        /* Secondary background color */
-      --bg3:#101a4b;        /* Tertiary background */
-      --text:#fff;          /* Main text color */
-      --muted:rgba(255,255,255,0.85); /* Muted text for secondary info */
-      --glass: rgba(255,255,255,0.1);   /* Glassy background for panels */
-      --border: rgba(255,255,255,0.2);  /* Border color */
-      --bar:#7dd3fc;        /* Bar color for charts */
-      --line:#93c5fd;       /* Line chart color */
+      --bg1: #0b1e3d;
+      --bg2: #08203a;
+      --bg3: #101a4b;
+      --text: #ffffff; /* white font color */
+      --muted: #ffffff; /* white muted color */
+      --glass: rgba(255, 255, 255, 0.12);
+      --glass-2: rgba(255, 255, 255, 0.26);
+      --border: rgba(255, 255, 255, 0.20);
+      --accent1: #67e8f9;
+      --accent2: #60a5fa;
+      --bar: #7dd3fc;
+      --line: #93c5fd;
     }
-    * { box-sizing:border-box; } /* Standardize padding/border inclusion in element size */
+    *::after {
+  box-sizing: border-box;
+}
 
-    html, body {
+html, body {
       height: 100%;
       margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       color: var(--text);
-      text-align: center; /* Center all text */
-    }
-
-    body {
-      background: linear-gradient(135deg, var(--bg1), var(--bg2), var(--bg3)); /* Layered dark background */
-      position:relative; 
-      overflow-x:hidden; 
-      font-size:18px;
-      text-align: center; /* Center all text in body */
-    }
-
-    /* Layout container with padding and centering */
-    .container { 
-      position:relative;
-      z-index:1; 
-      max-width:1200px; 
-      margin:0 auto; 
-      padding:28px; 
-      text-align: center; /* Center text in container */
-    }
-    main.container { min-height: calc(100vh - 110px); } /* Minimum height, accounting for header/footer */
-
-    /* Buttons: look glassy and interactive */
-    .btn {
-      display:inline-flex; align-items:center; justify-content:center;
-      padding:12px 16px; border-radius:12px;
-      border:1px solid var(--border); background: rgba(255,255,255,0.14);
-      color:#fff; text-decoration:none; transition:150ms; backdrop-filter: blur(6px);
-    }
-    .btn:hover { background: rgba(255,255,255,0.22); } /* Slightly lighter on hover */
-
-    /* Flex row utility: for header and info panels */
-    .row { 
-      display:flex;
-      align-items:center; 
-      justify-content:space-between; 
-      gap:12px;
-      text-align: center; /* Center text in row */
-    }
-
-    /* Logo block (brand) styling */
-    .logo { display:flex; align-items:center; gap:12px; }
-    .logo img { width: 40px; height: 40px; object-fit: contain; }
-
-    /* Card / panel glassy UI */
-    .card { 
-      background: var(--glass);
-      border:1px solid var(--border);
-      border-radius:18px;
-      padding:22px;
-      backdrop-filter: blur(8px);
-      text-align: center; /* Center text in card */
-    }
-
-    /* Status badge style */
-    .badge {
-      display:inline-flex; align-items:center; 
-      padding:6px 10px; background: rgba(255,255,255,0.14); 
-      border:1px solid var(--border); border-radius:999px; font-size:12px;
-    }
-
-    /* Responsive grid for stats/summary cards */
-    .grid4 { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-    @media(min-width:1024px){ .grid4{ grid-template-columns: repeat(4,minmax(0,1fr)); } }
-
-    /* Pills/tab UI */
-    .pills { display:grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap:12px; }
-    .pill { 
-      padding:10px 16px; border-radius:14px; border:1px solid var(--border);
-      background: rgba(255,255,255,0.08); color: var(--text);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
-    }
-    .pill.active { background: rgba(255,255,255,0.2); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12); }
-    .hidden { display:none; }
-
-    h2, h3, h1, p, .badge, .subtitle, .title, .lead, .actions, .stats, .pill, .item a, .list, .li {
-      text-align: center !important; /* Center all headings, paragraphs, badges, pills, links, lists */
-    }
-
-    /* Specific adjustments for larger headings and important text */
-    h1 {
-      font-size: 26px;
-      font-weight: 800;
-      margin: 0 0 16px;
       text-align: center;
+    }
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #0b1e3d 0%, #08203a 40%, #101a4b 100%);
+      font-size: 18px;
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    .scene {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(80px);
+      opacity: .2;
+      will-change: transform;
+      animation: float 22s ease-in-out infinite;
+    }
+    .blob.a {
+      width: 380px;
+      height: 380px;
+      left: -120px;
+      top: 80px;
+      background: linear-gradient(90deg, #38bdf8, #2563eb);
+    }
+    .blob.b {
+      width: 320px;
+      height: 320px;
+      right: -100px;
+      bottom: 120px;
+      background: linear-gradient(90deg, #6366f1, #22d3ee);
+      animation-duration: 16s;
+    }
+    .blob.c {
+      width: 260px;
+      height: 260px;
+      left: 50%;
+      top: 52%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(90deg, #60a5fa, #7dd3fc);
+      opacity: .13;
+      animation-duration: 25s;
+    }
+    @keyframes float {
+      0%   { transform: translate(0, 0) scale(1); }
+      50%  { transform: translate(40px, -30px) scale(1.1); }
+      100% { transform: translate(0, 0) scale(1); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px;
+      text-align: center;
+    }
+    main.container {
+      min-height: calc(100vh - 110px);
+    }
+
+    .card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      backdrop-filter: blur(8px);
+      text-align: center;
+      box-shadow: 0 6px 36px rgba(40, 57, 101, 0.22);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--glass);
+      color: #fff;
+      text-decoration: none;
+      transition: 150ms;
+      backdrop-filter: blur(6px);
+      cursor: pointer;
+    }
+    .btn.primary {
+      background: var(--glass-2);
+    }
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.20);
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      text-align: center;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 12px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 14px;
+      backdrop-filter: blur(6px);
+      color: var(--text);
+    }
+
+    .pills {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .pill {
+      padding: 10px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+      cursor: pointer;
+      transition: 120ms;
+    }
+    .pill.active {
+      background: rgba(255, 255, 255, 0.18);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+    }
+    .hidden {
+      display: none;
+    }
+
+    h1, h2, h3, p, .badge, .subtitle, .title, .lead, .actions, .stats, .pill, .item a, .list, .li {
+      text-align: center !important;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 800;
+      margin: 0 0 20px 0;
     }
     h2 {
-      margin:0 0 12px;
-      text-align: center;
+      margin: 0 0 12px 0;
+      font-size: 22px;
+      font-weight: 700;
     }
     h3 {
-      margin: 0 0 10px;
       font-size: 18px;
       font-weight: 600;
-      text-align: center;
+      margin: 0 0 10px 0;
     }
-    p { color: var(--muted); }
-
-    /* List/grid of info blocks */
-    .list { display:grid; gap:10px; }
-    .li { 
-      padding:12px; border-radius:12px; 
-      background: rgba(255,255,255,0.06); border: 1px solid var(--border); 
+    p {
+      color: var(--muted);
     }
 
-    /* Simple charting containers */
-    .chart { height: 260px; position: relative; }
-    .bars { position:absolute; inset:12px 12px 32px 40px; display:flex; gap:16px; align-items:flex-end; }
-    .bar { width: 40px; background: var(--bar); border-radius:8px 8px 0 0; }
-    .xlabels { position:absolute; bottom: 6px; left:40px; right:12px; display:flex; gap:16px; justify-content:space-between; font-size:12px; opacity:.9; }
-    .linechart { position:absolute; inset:12px 12px 32px 40px; }
-    .legend { display:flex; gap:10px; justify-content:center; font-size:12px; opacity:.9; margin-top: 8px; }
-    .dot { width:10px;height:10px;border-radius:9999px; background: var(--line); display:inline-block; }
-    .charts-grid { display:grid; gap:12px; grid-template-columns: 1fr; min-height: 40vh; }
-    @media(min-width:1024px){ .charts-grid{ grid-template-columns: 1fr 1fr; } }
+    .grid4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .chart {
+      height: 260px;
+      position: relative;
+    }
+    .bars {
+      position: absolute;
+      inset: 12px 12px 32px 40px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-end;
+    }
+    .bar {
+      width: 40px;
+      background: var(--bar);
+      border-radius: 8px 8px 0 0;
+    }
+    .xlabels {
+      position: absolute;
+      bottom: 6px;
+      left: 40px;
+      right: 12px;
+      display: flex;
+      gap: 16px;
+      justify-content: space-between;
+      font-size: 12px;
+      opacity: 1;
+    }
+    .linechart {
+      position: absolute;
+      inset: 12px 12px 32px 40px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 9999px;
+      background: var(--line);
+      display: inline-block;
+    }
+    .legend {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      font-size: 12px;
+      opacity: 1;
+      margin-top: 8px;
+    }
+    .charts-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 1fr;
+      min-height: 55vh;
+    }
+    @media (min-width: 1024px) {
+      .charts-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .grid4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    .list {
+      display: grid;
+      gap: 10px;
+    }
+    .li {
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
   </style>
 </head>
-
 <body>
-  <!-- Decorative blobs for extra visual interest, CSS for blobs handled globally -->
-  <div class="blob a"></div>
-  <div class="blob b"></div>
+  <div class="scene">
+    <div class="blob a"></div>
+    <div class="blob b"></div>
+    <div class="blob c"></div>
+  </div>
 
-  <!-- Top Header: Brand, navigation -->
   <header class="container">
     <div class="row">
-      <!-- Brand logo/name (clickable, returns home) -->
-      <div class="logo" style="cursor:pointer;" onclick="location.href='./welcome.html'">
-        <img src="./logo.png" alt="BytLearn" />
+      <div class="logo" style="cursor:pointer" onclick="location.href='welcome.html'">
+        <img src="logo.png" alt="BytLearn" />
         <div>
-          <div style="font-weight:800;font-size:22px;">BytLearn</div>
-          <div style="font-size:12px;opacity:.8">Student Profile</div>
+          <div style="font-weight: 800; font-size: 22px;">BytLearn</div>
+          <div class="subtitle" style="font-size: 12px; opacity: 1;">Student Profile</div>
         </div>
       </div>
-      <!-- Navigation controls (dashboard and sign out) -->
-      <div class="row" style="gap:10px;">
-        <a class="btn" href="./dashboard.html">← Dashboard</a>
-        <a class="btn" href="./welcome.html"
-           onclick="event.preventDefault(); localStorage.removeItem('authed'); location.href='./welcome.html';">Sign Out</a>
+      <div class="row" style="gap: 10px;">
+        <a class="btn" href="dashboard.html">Dashboard</a>
+        <a class="btn" href="welcome.html" onclick="event.preventDefault(); localStorage.removeItem('authed'); location.href='welcome.html';">Sign Out</a>
       </div>
     </div>
   </header>
 
-  <!-- Main profile content (panels, charts, tabs) -->
   <main class="container">
-
-    <!-- User identity and context info card -->
-    <div class="card" style="margin-bottom:12px;">
-      <div class="row" style="gap:12px; align-items:center;">
-        <div class="row" style="gap:12px;">
-          <div style="width:48px;height:48px;border-radius:9999px;background:rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;">👤</div>
+    <div class="card" style="margin-bottom: 12px;">
+      <div class="row" style="gap: 12px; align-items: center;">
+        <div class="row" style="gap: 12px;">
+          <div style="width: 48px; height: 48px; border-radius: 9999px; background: rgba(255, 255, 255, 0.18); display: flex; align-items: center; justify-content: center;">
+            👤
+          </div>
           <div>
-            <div style="font-weight:700;" id="pName">Student</div>
-            <div style="opacity:.85;font-size:13px;" id="pEmail">student@bytlearn.app</div>
+            <div style="font-weight: 700;" id="pName">Student</div>
+            <div style="opacity: 1; font-size: 13px;" id="pEmail">student@bytlearn.app</div>
           </div>
         </div>
         <span class="badge">Biology AI — Student Dashboard</span>
       </div>
     </div>
 
-    <!-- Quick stats grid -->
-    <div class="grid4" style="margin-bottom:12px;">
+    <div class="grid4" style="margin-bottom: 12px;">
       <div class="card">
-        <div style="opacity:.8;font-size:13px;">Study Streak</div>
-        <div style="font-weight:700;font-size:22px;">15 days</div>
+        <div style="opacity: 1; font-size: 13px;">Study Streak</div>
+        <div style="font-weight: 700; font-size: 22px;">15 days</div>
       </div>
       <div class="card">
-        <div style="opacity:.8;font-size:13px;">Average Score</div>
-        <div style="font-weight:700;font-size:22px;">82.3%</div>
+        <div style="opacity: 1; font-size: 13px;">Average Score</div>
+        <div style="font-weight: 700; font-size: 22px;">82.3%</div>
       </div>
       <div class="card">
-        <div style="opacity:.8;font-size:13px;">Avg Quiz Time</div>
-        <div style="font-weight:700;font-size:22px;">165s</div>
+        <div style="opacity: 1; font-size: 13px;">Avg Quiz Time</div>
+        <div style="font-weight: 700; font-size: 22px;">165s</div>
       </div>
       <div class="card">
-        <div style="opacity:.8;font-size:13px;">Doubt Resolution</div>
-        <div style="font-weight:700;font-size:22px;">89%</div>
+        <div style="opacity: 1; font-size: 13px;">Doubt Resolution</div>
+        <div style="font-weight: 700; font-size: 22px;">89%</div>
       </div>
     </div>
 
-    <!-- Pills tab bar for sub-panels/sections -->
-    <div class="card" style="margin-bottom:12px;">
+    <div class="card" style="margin-bottom: 12px;">
       <div class="pills">
         <button class="pill active" data-tab="charts">Charts</button>
         <button class="pill" data-tab="analysis">Analysis</button>
@@ -216,12 +352,10 @@
       </div>
     </div>
 
-    <!-- Tab: Charts (active by default) -->
     <section id="charts" class="tab">
       <div class="charts-grid">
-        <!-- Bar chart performance -->
         <div class="card">
-          <div class="row" style="justify-content:space-between;">
+          <div class="row" style="justify-content: space-between;">
             <h2>Performance by Topic</h2>
             <span class="badge">Weekly</span>
           </div>
@@ -240,31 +374,29 @@
               <span>Physiol.</span>
               <span>Ecology</span>
             </div>
+            <div class="legend"><span class="dot"></span> Score</div>
           </div>
-          <div class="legend"><span class="dot"></span> Score</div>
         </div>
 
-        <!-- Line chart trend -->
         <div class="card">
-          <div class="row" style="justify-content:space-between;">
+          <div class="row" style="justify-content: space-between;">
             <h2>Recent Performance Trend</h2>
             <span class="badge">Last 7 Days</span>
           </div>
           <div class="chart">
             <svg class="linechart" viewBox="0 0 400 220" preserveAspectRatio="none">
-              <polyline fill="none" stroke="var(--line)" stroke-width="3"
-                points="10,170 70,160 130,145 190,135 250,125 310,115 370,110" />
-              <g fill="var(--line)">
-                <circle cx="10" cy="170" r="3"/>
-                <circle cx="70" cy="160" r="3"/>
-                <circle cx="130" cy="145" r="3"/>
-                <circle cx="190" cy="135" r="3"/>
-                <circle cx="250" cy="125" r="3"/>
-                <circle cx="310" cy="115" r="3"/>
-                <circle cx="370" cy="110" r="3"/>
+              <polyline fill="none" stroke="#93c5fd" stroke-width="3" points="10,170 70,160 130,145 190,135 250,125 310,115 370,110" />
+              <g fill="#93c5fd">
+                <circle cx="10" cy="170" r="3"></circle>
+                <circle cx="70" cy="160" r="3"></circle>
+                <circle cx="130" cy="145" r="3"></circle>
+                <circle cx="190" cy="135" r="3"></circle>
+                <circle cx="250" cy="125" r="3"></circle>
+                <circle cx="310" cy="115" r="3"></circle>
+                <circle cx="370" cy="110" r="3"></circle>
               </g>
             </svg>
-            <div class="xlabels" style="left:36px;right:12px;">
+            <div class="xlabels" style="left: 36px; right: 12px;">
               <span>Mon</span>
               <span>Tue</span>
               <span>Wed</span>
@@ -273,25 +405,24 @@
               <span>Sat</span>
               <span>Sun</span>
             </div>
+            <div class="legend"><span class="dot"></span> Score</div>
           </div>
-          <div class="legend"><span class="dot"></span> Score</div>
         </div>
       </div>
     </section>
 
-    <!-- Tab: Analysis -->
     <section id="analysis" class="tab hidden">
-      <div style="display:grid; gap:12px; grid-template-columns:1fr 1fr;">
+      <div style="display: grid; gap: 12px; grid-template-columns: 1fr 1fr;">
         <div class="card">
           <h2>Strong Areas</h2>
           <div class="list">
             <div class="li">
-              <div style="font-weight:600;">Ecology</div>
-              <div style="opacity:.85;font-size:13px;">High quiz accuracy (92%)</div>
+              <div style="font-weight: 600;">Ecology</div>
+              <div style="color: var(--muted); font-size: 13px;">High quiz accuracy (92%)</div>
             </div>
             <div class="li">
-              <div style="font-weight:600;">Physiology</div>
-              <div style="opacity:.85;font-size:13px;">Consistent improvement over 4 weeks</div>
+              <div style="font-weight: 600;">Physiology</div>
+              <div style="color: var(--muted); font-size: 13px;">Consistent improvement over 4 weeks</div>
             </div>
           </div>
         </div>
@@ -299,111 +430,114 @@
           <h2>Weak Areas</h2>
           <div class="list">
             <div class="li">
-              <div style="font-weight:600;">Genetics</div>
-              <div style="opacity:.85;font-size:13px;">Lower recall on terminology</div>
+              <div style="font-weight: 600;">Genetics</div>
+              <div style="color: var(--muted); font-size: 13px;">Lower recall on terminology</div>
             </div>
             <div class="li">
-              <div style="font-weight:600;">Biomolecules</div>
-              <div style="opacity:.85;font-size:13px;">Time-outs in 2 quizzes</div>
+              <div style="font-weight: 600;">Biomolecules</div>
+              <div style="color: var(--muted); font-size: 13px;">Time-outs in 2 quizzes</div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Tab: Performance -->
     <section id="performance" class="tab hidden">
       <div class="card">
         <h2>Overall Performance</h2>
-        <div style="display:grid; gap:12px; grid-template-columns:1fr 1fr 1fr;">
+        <div style="display: grid; gap: 12px; grid-template-columns: 1fr 1fr 1fr;">
           <div class="li">
-            <div style="opacity:.8;font-size:13px;">Quizzes Completed</div>
-            <div style="font-weight:700;font-size:22px;">18</div>
+            <div style="opacity: 1; font-size: 13px;">Quizzes Completed</div>
+            <div style="font-weight: 700; font-size: 22px;">18</div>
           </div>
           <div class="li">
-            <div style="opacity:.8;font-size:13px;">Average Score</div>
-            <div style="font-weight:700;font-size:22px;">82.3%</div>
+            <div style="opacity: 1; font-size: 13px;">Average Score</div>
+            <div style="font-weight: 700; font-size: 22px;">82.3%</div>
           </div>
           <div class="li">
-            <div style="opacity:.8;font-size:13px;">Best Score</div>
-            <div style="font-weight:700;font-size:22px;">96%</div>
+            <div style="opacity: 1; font-size: 13px;">Best Score</div>
+            <div style="font-weight: 700; font-size: 22px;">96%</div>
           </div>
           <div class="li">
-            <div style="opacity:.8;font-size:13px;">Average Time/Quiz</div>
-            <div style="font-weight:700;font-size:22px;">165s</div>
+            <div style="opacity: 1; font-size: 13px;">Average Time/Quiz</div>
+            <div style="font-weight: 700; font-size: 22px;">165s</div>
           </div>
           <div class="li">
-            <div style="opacity:.8;font-size:13px;">Fastest Completion</div>
-            <div style="font-weight:700;font-size:22px;">122s</div>
+            <div style="opacity: 1; font-size: 13px;">Fastest Completion</div>
+            <div style="font-weight: 700; font-size: 22px;">122s</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Tab: Suggestions -->
     <section id="suggestions" class="tab hidden">
       <div class="card">
         <h2>Personalized Suggestions</h2>
         <div class="list">
           <div class="li">
-            <div style="font-weight:600;">Revise Mendelian genetics</div>
-            <div style="opacity:.85;font-size:13px;">Practice 10 MCQs on dihybrid crosses; focus on terminology.</div>
+            <div style="font-weight: 600;">Revise Mendelian genetics</div>
+            <div style="color: var(--muted); font-size: 13px;">
+              Practice 10 MCQs on dihybrid crosses, focus on terminology.
+            </div>
           </div>
           <div class="li">
-            <div style="font-weight:600;">Biomolecules quick sheet</div>
-            <div style="opacity:.85;font-size:13px;">Memorize enzymes and functions; do flashcards 15 min/day.</div>
+            <div style="font-weight: 600;">Biomolecules quick sheet</div>
+            <div style="color: var(--muted); font-size: 13px;">
+              Memorize enzymes and functions; do flashcards 15 min/day.
+            </div>
           </div>
           <div class="li">
-            <div style="font-weight:600;">Timed drills</div>
-            <div style="opacity:.85;font-size:13px;">2 timed quizzes (10 Q) to improve pacing to &lt;150s.</div>
+            <div style="font-weight: 600;">Timed drills</div>
+            <div style="color: var(--muted); font-size: 13px;">
+              2 timed quizzes (10 Q) to improve pacing to &lt;150s.
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Tab: Activity -->
     <section id="activity" class="tab hidden">
       <div class="card">
         <h2>Recent Activity</h2>
         <div class="list">
-          <div class="li row" style="justify-content:space-between;">
+          <div class="li row" style="justify-content: space-between;">
             <div>
-              <div style="font-weight:600;">Quiz: Plant Physiology</div>
-              <div style="opacity:.75;font-size:12px;">Today</div>
+              <div style="font-weight: 600;">Quiz Plant Physiology</div>
+              <div style="opacity: 1; font-size: 12px;">Today</div>
             </div>
-            <div style="text-align:right;">
-              <div>Score: 88%</div>
-              <div style="opacity:.75;font-size:12px;">Time: 158s</div>
+            <div style="text-align: right;">
+              <div>Score: 88</div>
+              <div style="opacity: 1; font-size: 12px;">Time: 158s</div>
             </div>
           </div>
-          <div class="li row" style="justify-content:space-between;">
+          <div class="li row" style="justify-content: space-between;">
             <div>
-              <div style="font-weight:600;">Quiz: Genetics Basics</div>
-              <div style="opacity:.75;font-size:12px;">Yesterday</div>
+              <div style="font-weight: 600;">Quiz Genetics Basics</div>
+              <div style="opacity: 1; font-size: 12px;">Yesterday</div>
             </div>
-            <div style="text-align:right;">
-              <div>Score: 74%</div>
-              <div style="opacity:.75;font-size:12px;">Time: 171s</div>
+            <div style="text-align: right;">
+              <div>Score: 74</div>
+              <div style="opacity: 1; font-size: 12px;">Time: 171s</div>
             </div>
           </div>
-          <div class="li row" style="justify-content:space-between;">
+          <div class="li row" style="justify-content: space-between;">
             <div>
-              <div style="font-weight:600;">Flashcards: Biomolecules</div>
-              <div style="opacity:.75;font-size:12px;">2 days ago</div>
+              <div style="font-weight: 600;">Flashcards Biomolecules</div>
+              <div style="opacity: 1; font-size: 12px;">2 days ago</div>
             </div>
-            <div style="text-align:right;">
-              <div>Score: —</div>
-              <div style="opacity:.75;font-size:12px;">Time: 12m</div>
+            <div style="text-align: right;">
+              <div>Score:</div>
+              <div style="opacity: 1; font-size: 12px;">Time: 12m</div>
             </div>
           </div>
-          <div class="li row" style="justify-content:space-between;">
+          <div class="li row" style="justify-content: space-between;">
             <div>
-              <div style="font-weight:600;">Quiz: Ecology Mix</div>
-              <div style="opacity:.75;font-size:12px;">3 days ago</div>
+              <div style="font-weight: 600;">Quiz Ecology Mix</div>
+              <div style="opacity: 1; font-size: 12px;">3 days ago</div>
             </div>
-            <div style="text-align:right;">
-              <div>Score: 91%</div>
-              <div style="opacity:.75;font-size:12px;">Time: 149s</div>
+            <div style="text-align: right;">
+              <div>Score: 91</div>
+              <div style="opacity: 1; font-size: 12px;">Time: 149s</div>
             </div>
           </div>
         </div>
@@ -412,31 +546,28 @@
   </main>
 
   <script>
-    // Redirect not-logged-in users to login page
-    if (localStorage.getItem('authed') !== '1') {
-      location.replace('./login.html');
-    }
-    // Pills tab navigation logic
     const pills = document.querySelectorAll('.pill[data-tab]');
     const tabs = document.querySelectorAll('.tab');
     pills.forEach(p => {
       p.addEventListener('click', () => {
-        pills.forEach(pp => pp.classList.remove('active')); // Deactivate all pills
-        p.classList.add('active');                         // Activate clicked pill
-        const id = p.getAttribute('data-tab');             // Get ID of section to show
-        tabs.forEach(t => t.classList.add('hidden'));      // Hide all tab content
-        document.getElementById(id)?.classList.remove('hidden'); // Show selected content
-        window.scrollTo({ top: 0, behavior: 'smooth' });   // Scroll to top for user
+        pills.forEach(pp => pp.classList.remove('active'));
+        p.classList.add('active');
+        const id = p.getAttribute('data-tab');
+        tabs.forEach(t => t.classList.add('hidden'));
+        document.getElementById(id)?.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     });
 
-    // Fill in profile identity info from local storage
-    (function(){
+    function fillUserProfile() {
       const n = localStorage.getItem('currentUserName') || 'Student';
       const e = localStorage.getItem('currentUserEmail') || 'student@bytlearn.app';
-      const nEl = document.getElementById('pName'); if (nEl) nEl.textContent = n;
-      const eEl = document.getElementById('pEmail'); if (eEl) eEl.textContent = e;
-    })();
+      const nEl = document.getElementById('pName');
+      const eEl = document.getElementById('pEmail');
+      if (nEl) nEl.textContent = n;
+      if (eEl) eEl.textContent = e;
+    }
+    fillUserProfile();
   </script>
 </body>
 </html>

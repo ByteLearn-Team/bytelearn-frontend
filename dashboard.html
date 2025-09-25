@@ -23,12 +23,21 @@
       color: var(--text);
     }
 
-    body {
-      background: linear-gradient(135deg, #7c3aed, #f472b6, #3b82f6); /* Gradient bg */
-      position: relative; 
-      overflow-x:hidden; 
-      font-size: 18px;
-      text-align: center; /* Center all text */
+   body {
+  background: linear-gradient(135deg, #7e22ce 0%, #f472b6 45%, #6366f1 100%);
+  background-attachment: fixed; /* Makes the gradient cover entire page with smooth flow */
+  position: relative;
+  overflow-x: hidden;
+  font-size: 18px;
+  text-align: center;
+}
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35); /* uniform overlay */
+      pointer-events: none;
+      z-index: 0;
     }
 
     /* Dark overlay sitting above background */
@@ -36,7 +45,7 @@
 
     /* Content container */
     .container { 
-      position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:28px; 
+      position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:32px; 
       text-align: center; /* Center text in container */
     }
     main.container { min-height: calc(100vh - 120px); } /* Main fills viewport minus header */
@@ -65,12 +74,19 @@
 
     /* Card styling */
     .card { 
-      background: var(--glass); border:1px solid var(--border); 
+      background: rgba(255,255,255,0.105); /* slightly clearer glass */
+      border:1px solid rgba(255,255,255,0.22); /* a touch brighter outline */
       border-radius:18px; padding:24px; backdrop-filter: blur(8px); 
       text-align: center; /* Center text in card */
     }
 
-    h2 { margin:0 0 18px; font-size:24px; text-align: center; }
+    h2 { 
+      /* Increase section headings for stronger presence like preview */
+      font-size: 28px; 
+      font-weight: 800;
+      margin: 0 0 16px;
+      text-align: center;
+    }
 
     /* Grid layout for panels */
     .grid { display:grid; grid-template-columns: 1fr; gap:16px; }
@@ -91,6 +107,7 @@
       border-radius:12px; padding:18px; 
       transition:150ms; 
       text-align: center; /* Center text in chapter links */
+      font-size: 18px;
     }
     .item a:hover { background: rgba(255,255,255,0.14); }
 
@@ -99,9 +116,9 @@
 
     .badge { 
       display:inline-flex; align-items:center; 
-      padding:6px 10px; background: rgba(255,255,255,0.14); 
+      padding:8px 14px; background: rgba(255,255,255,0.14); 
       border:1px solid var(--border); border-radius:999px; 
-      font-size:12px; 
+      font-size: 14px;
     }
 
     /* Panel highlight animation */
@@ -116,19 +133,25 @@
     /* Sliding step logic with transform */
     .panel { transition: transform 500ms ease, opacity 500ms ease; }
     .panel.center { transform: translateX(0) scale(1); opacity: 1; }
-    .panel.left { transform: translateX(-40px) scale(.98); opacity: .95; }
-    .panel.far-left { transform: translateX(-80px) scale(.96); opacity: .9; }
-    .panel.right { transform: translateX(40px) scale(.98); opacity: .95; }
+    .panel.left { transform: translateX(0) scale(.99); opacity: .96; }
+    .panel.far-left { transform: translateX(0) scale(.985); opacity: .94; }
+    .panel.right { transform: translateX(16px) scale(.99); opacity: .96; }
 
     /* Stage layout on large screens */
     @media(min-width:1024px){
-      .stage { display:flex; align-items:stretch; justify-content:center; gap:16px; min-height: 520px; }
-      .stage .card { width: 100%; max-width: 360px; }
+      .stage { display:flex; align-items:stretch; justify-content:center; gap:16px; min-height: 600px; }
+      .stage .card { width: 100%; max-width: 384px; } /* 384*3 + 16*2 = 1184 <= 1200 */
+      .stage { 
+        margin-top: 0 !important; /* Ensure no extra gap appears when all three panels show */
+      }
     }
 
     /* Stage default min heights */
     .stage { min-height: 60vh; }
     @media(min-width:1024px){ .stage { min-height: 640px; } }
+    .stage {
+      margin-top: 0 !important; /* Consistent, tight alignment under the progress pill */
+    }
 
     /* Chapter panel adjustments */
     #panel-chapter { display: flex; flex-direction: column; }
@@ -137,7 +160,7 @@
     /* Scrollable list inside chapter */
     #chapters-list {
       overflow: auto;
-      max-height: min(60vh, 540px);
+      max-height: min(70vh, 640px); /* taller internal scroll to fill more */
       padding-right: 8px;
       margin-top: 4px;
       scroll-behavior: smooth;
@@ -147,6 +170,70 @@
     #chapters-list::-webkit-scrollbar { width: 10px; }
     #chapters-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.35); border-radius: 8px; }
     #chapters-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.08); border-radius: 8px; }
+    
+    @media(min-width:1024px){
+      /* Make the top progress pill wider than the container and shift it left
+         to cover the transform offsets of the panels (-80px max) */
+      #progress-pill {
+        position: static; /* undo previous offset */
+        left: auto;
+        width: 100%;
+        max-width: 1200px; /* align with medium container */
+        margin: 0 auto 8px; /* centered under header */
+      }
+    }
+
+    /* Add a softer, light-pinkish glass background and sizing for the progress pill */
+    #progress-pill {
+      /* Light pinkish glass like the preview */
+      background: linear-gradient(135deg, rgba(255, 192, 203, 0.20), rgba(255, 255, 255, 0.10));
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 16px;
+      padding: 18px 22px;
+      width: 100%;
+      max-width: 1200px; /* match medium container */
+      margin: 0 auto 8px;
+    }
+
+    /* Make step badges match preview size/weight */
+    .badge {
+      /* ... keep existing code (display, padding, bg, border, radius) ... */
+      font-size: 14px; /* a touch larger like the preview */
+      padding: 8px 14px;
+    }
+
+    /* Desktop alignment: make the progress pill the same length as the boxes (no stretching) */
+    @media(min-width:1024px){
+      .stage {
+        max-width: 1200px;   /* medium width */
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    /* Keep the progress pill and the three-card stage share EXACT width and center */
+    #progress-pill {
+      width: 100%;
+      max-width: 1200px;   /* match stage width exactly */
+      margin: 0 auto 8px;  /* center */
+    }
+    @media(min-width:1024px){
+      #progress-pill,
+      .stage {
+        max-width: 1200px;      /* shared medium width */
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /* Ensure no offsets */
+      #progress-pill {
+        position: static;
+        left: auto;
+        transform: none;
+        width: 100%;
+        margin-bottom: 8px;
+      }
+    }
   </style>
 </head>
 
@@ -184,7 +271,7 @@
   <!-- Main content -->
   <main class="container">
     <!-- Top progress milestone bar -->
-    <div class="card" style="margin-bottom:16px;">
+    <div class="card" id="progress-pill" style="margin-bottom:8px;">
       <div class="progress">
         <span class="badge">Select Class</span>
         <span style="opacity:.7;">›</span>

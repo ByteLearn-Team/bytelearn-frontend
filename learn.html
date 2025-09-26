@@ -124,32 +124,15 @@
         <h2>Chapter Summary</h2>
         <span class="pill" style="cursor:default;">Summary</span>
       </div>
-      <p>Concise, structured notes covering definitions, diagrams, and high-yield points. Perfect for quick revision.</p>
-      <div class="grid" style="margin-top:10px">
-        <div class="card">
-          <h3>Key Concepts</h3>
-          <ul style="opacity:.85;line-height:1.8">
-            <li>Core definitions and terminologies</li>
-            <li>Important diagrams and processes</li>
-            <li>Relationships and functions</li>
-          </ul>
+        <p></p>
+        <div class="grid" style="margin-top:10px">
         </div>
-        <div class="card">
-          <h3>Exam Tips</h3>
-          <ul style="opacity:.85;line-height:1.8">
-            <li>Focus on commonly asked topics</li>
-            <li>Remember exceptions and edge cases</li>
-            <li>Use mnemonics for sequences</li>
-          </ul>
-        </div>
-      </div>
     </section>
     <section id="flashcards" class="card tab hidden">
       <div class="row" style="justify-content:space-between;">
         <h2>Flashcards</h2>
         <span class="pill" style="cursor:default;">Recall</span>
       </div>
-      <p>Strengthen memory with active recall. Flip cards to test knowledge.</p>
       <div class="grid" style="margin-top:10px">
         <div class="card">Flashcard 1 Tap to reveal</div>
         <div class="card">Flashcard 2 Tap to reveal</div>
@@ -162,10 +145,15 @@
     <section id="doubts" class="card tab hidden">
       <div class="row" style="justify-content:space-between;">
         <h2>Ask a Doubt</h2>
-        <span class="pill" style="cursor:default;">Help</span>
+        <span class="pill" style="cursor:default;">?</span>
       </div>
-      <p>Post your question and get guided clarifications.</p>
-      <div class="card">Doubt posting UI coming next; for now, pick another tool above.</div>
+        <div id="chat-history" style="height:260px;overflow-y:auto;background:rgba(255,255,255,0.08);border-radius:12px;padding:12px 8px 12px 8px;margin-bottom:12px;text-align:left;font-size:16px;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.06);">
+          <div style="color:var(--muted);text-align:center;">Choose a topic from your notes and ask question's about it.</div>
+        </div>
+        <form id="chat-form" style="display:flex;gap:8px;align-items:center;" autocomplete="off" onsubmit="return false;">
+          <input id="chat-input" type="text" placeholder="Type your doubt..." style="flex:1;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,0.13);color:var(--text);font-size:16px;outline:none;" />
+          <button type="submit" class="btn" style="padding:10px 18px;font-size:16px;">Send</button>
+        </form>
     </section>
     <section id="quizzes" class="card tab hidden">
       <div class="row" style="justify-content:space-between;">
@@ -173,29 +161,143 @@
         <span class="pill" style="cursor:default;">Practice</span>
       </div>
       <p>Test yourself with quick objective questions and instant feedback.</p>
-      <div class="grid" style="margin-top:10px">
-        <div class="card">
-          <div style="font-weight:600;margin-bottom:8px;">Question 1</div>
-          <ul style="opacity:.85;line-height:1.8">
-            <li>Option A</li>
-            <li>Option B</li>
-            <li>Option C</li>
-            <li>Option D</li>
-          </ul>
+        <div id="quiz-controls" style="margin:18px 0;">
+          <button id="generate-quiz-btn" class="btn" style="font-size:16px;padding:10px 22px;">Generate Quiz</button>
         </div>
-        <div class="card">
-          <div style="font-weight:600;margin-bottom:8px;">Question 2</div>
-          <ul style="opacity:.85;line-height:1.8">
-            <li>Option A</li>
-            <li>Option B</li>
-            <li>Option C</li>
-            <li>Option D</li>
-          </ul>
-        </div>
-      </div>
+        <div id="quiz-area"></div>
     </section>
   </main>
   <script>
+    // --- Quiz Section ---
+    const quizArea = document.getElementById('quiz-area');
+    const quizControls = document.getElementById('quiz-controls');
+    const generateQuizBtn = document.getElementById('generate-quiz-btn');
+    let quizData = null;
+
+    if (generateQuizBtn) {
+      generateQuizBtn.addEventListener('click', async function() {
+        quizArea.innerHTML = '<div style="color:var(--muted);margin:18px 0;">Generating quiz...</div>';
+        generateQuizBtn.disabled = true;
+        try {
+          // Fetch quiz from AI backend (adjust endpoint as needed)
+          const res = await fetch('/generate_quiz', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ topic: 'current' }) // You can pass topic/notes info here
+          });
+          const data = await res.json();
+          if (data && Array.isArray(data.questions) && data.questions.length > 0) {
+            quizData = data.questions;
+            renderQuiz(quizData);
+          } else {
+            quizArea.innerHTML = '<div style="color:#f87171">No quiz questions generated.</div>';
+            generateQuizBtn.disabled = false;
+          }
+        } catch (e) {
+          quizArea.innerHTML = '<div style="color:#f87171">Error generating quiz: ' + (e.message || e) + '</div>';
+          generateQuizBtn.disabled = false;
+        }
+      });
+    }
+
+    function renderQuiz(questions) {
+      if (!questions || !questions.length) {
+        quizArea.innerHTML = '<div style="color:#f87171">No quiz questions available.</div>';
+        return;
+      }
+      let html = '<form id="quiz-form-area">';
+      questions.forEach((q, idx) => {
+        html += `<div class="card" style="margin-bottom:18px;text-align:left;">
+          <div style="font-weight:600;margin-bottom:8px;">Q${idx+1}. ${q.question || ''}</div>
+          <ul style="opacity:.85;line-height:1.8;list-style-type:upper-alpha;">
+            ${q.options.map((opt, oidx) => `
+              <li style="margin-bottom:6px;">
+                <label style="cursor:pointer;">
+                  <input type="radio" name="q${idx}" value="${oidx}" style="margin-right:8px;" />
+                  ${opt}
+                </label>
+              </li>
+            `).join('')}
+          </ul>
+        </div>`;
+      });
+      html += '<button type="submit" class="btn" style="font-size:16px;padding:10px 22px;">Submit Quiz</button>';
+      html += '</form>';
+      quizArea.innerHTML = html;
+
+      // Optionally, handle quiz submission and feedback
+      const quizForm = document.getElementById('quiz-form-area');
+      if (quizForm) {
+        quizForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          // Simple feedback: show correct/incorrect (if answers are provided)
+          if (!quizData || !quizData.length) return;
+          let correct = 0;
+          let total = quizData.length;
+          quizData.forEach((q, idx) => {
+            const selected = quizForm.querySelector(`input[name='q${idx}']:checked`);
+            if (selected && q.answer !== undefined && Number(selected.value) === q.answer) correct++;
+          });
+          quizArea.innerHTML += `<div style='margin:18px 0;font-size:18px;font-weight:600;'>You got ${correct} out of ${total} correct.</div>`;
+        });
+      }
+      generateQuizBtn.disabled = false;
+    }
+    // --- Chatbot Doubt Section ---
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+    const chatHistory = document.getElementById('chat-history');
+    if (chatForm && chatInput && chatHistory) {
+      chatForm.addEventListener('submit', async function() {
+        const userMsg = chatInput.value.trim();
+        if (!userMsg) return;
+        // Add user message
+        addMsg('You', userMsg, 'right');
+        chatInput.value = '';
+        chatInput.disabled = true;
+        // Add loading
+        const loadingId = addMsg('Bot', '<span style="opacity:.7;">Thinking...</span>', 'left', true);
+        try {
+          const res = await fetch('/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt: userMsg })
+          });
+          const data = await res.json();
+          removeMsg(loadingId);
+          if (data.answer) {
+            addMsg('Bot', data.answer, 'left');
+          } else if (data.error) {
+            addMsg('Bot', `<span style='color:#fbbf24'>${data.error}</span>`, 'left');
+          } else {
+            addMsg('Bot', '<span style="color:#f87171">No answer received.</span>', 'left');
+          }
+        } catch (e) {
+          removeMsg(loadingId);
+          addMsg('Bot', `<span style='color:#f87171'>Error: ${e.message}</span>`, 'left');
+        }
+        chatInput.disabled = false;
+        chatInput.focus();
+      });
+      function addMsg(sender, text, align, isLoading) {
+        const msg = document.createElement('div');
+        msg.className = 'chat-msg';
+        msg.style = `margin:8px 0;display:flex;justify-content:${align==='right'?'flex-end':'flex-start'};`;
+        msg.innerHTML = `<div style="max-width:80%;background:${align==='right'?'#a21caf':'rgba(255,255,255,0.13)'};color:${align==='right'?'#fff':'var(--text)'};padding:10px 14px;border-radius:12px;font-size:16px;box-shadow:0 1px 4px 0 rgba(0,0,0,0.07);">${text}</div>`;
+        chatHistory.appendChild(msg);
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+        if (isLoading) {
+          const id = 'loading-' + Math.random().toString(36).slice(2);
+          msg.id = id;
+          return id;
+        }
+        return null;
+      }
+      function removeMsg(id) {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+      }
+    }
     if (localStorage.getItem('authed') !== '1') {
       location.replace('./login.html');
     }

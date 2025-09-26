@@ -1,0 +1,294 @@
+<!doctype html> <!-- Declares HTML5 document type -->
+<html lang="en"> <!-- Sets page language to English -->
+<head>
+  <meta charset="utf-8" /> <!-- Character encoding UTF-8 -->
+  <title>BytLearn — Login</title> <!-- Page title shown in browser tab -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Mobile responsiveness -->
+
+  <style>
+    /* Root variables for colors and reusable values */
+    :root { 
+      --border: rgba(255,255,255,0.2);           /* Border color for inputs/buttons */
+      --glass: rgba(255,255,255,0.1);            /* Glass card effect */
+      --text: #fff;                              /* Base text color */
+      --muted: rgba(255,255,255,0.85);           /* Slightly muted white text */
+    }
+
+    /* Ensure full height and reset default styles */
+    html, body {
+      height: 100%; 
+      margin: 0; 
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; /* Font stack */
+      color: var(--text); /* White text */
+    }
+
+    /* Body background and layout centering */
+    body {
+      background: linear-gradient(135deg, #0b1e3d, #08203a 40%, #101a4b); /* Dark gradient background */
+      display: grid; place-items: center; /* Grid to center card */
+      background-attachment: fixed;
+      overflow: hidden; /* Prevent scrolling */
+      font-size: 18px; /* Base font size */
+    }
+
+    /* Scene for animated blobs in background */
+    .scene { position: fixed; inset: 0; z-index: 0; }
+
+    /* Blob base style */
+    .blob { 
+      position: absolute; 
+      border-radius: 9999px; /* Fully round circle */
+      filter: blur(80px); 
+      opacity: .18; 
+      animation: float 20s ease-in-out infinite; /* Floating animation */
+    }
+
+    /* Top left blob */
+    .blob.a { 
+      width: 360px; height: 360px; 
+      left: -80px; top: -40px; 
+      background: linear-gradient(90deg,#38bdf8,#2563eb); 
+    }
+
+    /* Bottom right blob */
+    .blob.b { 
+      width: 280px; height: 280px; 
+      right: -80px; bottom: -40px; 
+      background: linear-gradient(90deg,#6366f1,#22d3ee); 
+      animation-duration: 16s; 
+    }
+
+    /* Floating animation keyframes */
+    @keyframes float { 
+      0% { transform:translate(0,0) } 
+      50%{ transform:translate(30px,-20px) } 
+      100%{ transform:translate(0,0) } 
+    }
+
+    /* Card container (login/register box) */
+    .card {
+      position: relative; z-index: 1;
+      width: min(720px, 96vw); /* wider like preview */
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 32px; /* a bit more padding */
+      backdrop-filter: blur(10px);
+      overflow: hidden;
+    }
+
+    /* Logo row */
+    .logo { 
+      display: flex; 
+      align-items: center; 
+      gap: 12px; 
+      margin-bottom: 14px; 
+    }
+
+    .logo img { width: 40px; height: 40px; } /* Logo icon size */
+    .logo.center { justify-content: center; text-align: center; } /* Center align */
+
+    /* Gradient brand text */
+    .brand {
+      background: linear-gradient(90deg,#67e8f9,#60a5fa);
+      -webkit-background-clip:text; background-clip:text; color: transparent;
+    }
+
+    /* Headings */
+    h1 { margin: 0 0 6px; font-size: 26px; }
+    p { margin: 0 0 18px; color: var(--muted); }
+
+    /* Form labels */
+    label { display:block; font-size:16px; margin: 12px 0 8px; color: var(--muted); }
+
+    /* Input fields */
+    input {
+      width: 100%; padding: 16px 18px;
+      border-radius: 12px; border: 1px solid var(--border);
+      background: rgba(255,255,255,0.08);
+      color: var(--text); outline: none; 
+      box-sizing: border-box;
+    }
+
+    /* General row layout */
+    .row { display: flex; gap: 12px; margin-top: 18px; }
+
+    /* Buttons styling */
+    .btn {
+      flex:1; display:inline-flex; align-items:center; justify-content:center;
+      padding: 14px 16px;
+      border-radius: 12px; border: 1px solid var(--border); 
+      background: rgba(255,255,255,0.18); 
+      color: var(--text); text-decoration: none; 
+      transition: 150ms ease;
+    }
+    .btn:hover { background: rgba(255,255,255,0.24); }
+
+    /* Links like "Back to Welcome" */
+    .link { 
+      display:block; margin-top: 12px; text-align: center; 
+      color: #fff; opacity: .9; text-decoration: underline; 
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Floating blobs background -->
+  <div class="scene">
+    <div class="blob a"></div>
+    <div class="blob b"></div>
+  </div>
+
+  <!-- Main login/register form card -->
+  <div class="card">
+
+    <!-- Logo inside the card (clickable -> Welcome page) -->
+    <div class="logo center" style="cursor:pointer;" onclick="location.href='./welcome.html'">
+      <img src="logo.png" alt="BytLearn" /> <!-- Brand logo -->
+      <div>
+        <h1 style="margin:0 0 4px; font-size:28px;"><span class="brand">BytLearn</span></h1> <!-- Brand name with gradient -->
+        <div style="font-size:12px;opacity:.85">Sign in or create an account</div> <!-- Subtitle -->
+      </div>
+    </div>
+
+    <!-- Tabs (Login/Register switcher) -->
+    <div class="row" style="margin-top:4px; gap:8px;">
+      <button id="tab-login" class="btn" style="flex:1;background:rgba(255,255,255,0.22);">Login</button>
+      <button id="tab-register" class="btn" style="flex:1;">Register</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <form id="loginForm" style="margin-top:12px;">
+      <label for="loginEmail">Email</label>
+      <input id="loginEmail" type="email" placeholder="you@gmail.com" required />
+
+      <label for="loginPassword">Password</label>
+      <input id="loginPassword" type="password" placeholder="••••••••" required />
+
+      <div class="row">
+        <button type="submit" class="btn" style="flex:1;">Login</button>
+      </div>
+      <a class="link" href="./welcome.html">← Back to Welcome</a>
+    </form>
+
+    <!-- REGISTER FORM (hidden by default) -->
+    <form id="registerForm" style="margin-top:12px; display:none;">
+      <label for="regName">Student Name</label>
+      <input id="regName" type="text" placeholder="Your name" required />
+
+      <label for="regEmail">Email</label>
+      <input id="regEmail" type="email" placeholder="you@gmail.com" required />
+
+      <label for="regPassword">Password</label>
+      <input id="regPassword" type="password" placeholder="Create a password" required />
+
+      <div class="row">
+        <button type="submit" class="btn" style="flex:1;">Create Account</button>
+      </div>
+      <a class="link" href="./welcome.html">← Back to Welcome</a>
+    </form>
+  </div>
+
+  <script>
+    // If already logged in (authed), redirect directly to dashboard
+    if (localStorage.getItem('authed') === '1') {
+      location.replace('./dashboard.html');
+    }
+
+    // Tab buttons and form references
+    const tabLogin = document.getElementById('tab-login');
+    const tabRegister = document.getElementById('tab-register');
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+
+    // Function to toggle between login/register forms
+    function activate(tab) {
+      if (tab === 'login') {
+        tabLogin.style.background = 'rgba(255,255,255,0.24)';  // highlight login tab
+        tabRegister.style.background = 'rgba(255,255,255,0.18)'; // dim register tab
+        loginForm.style.display = '';   // show login
+        registerForm.style.display = 'none'; // hide register
+      } else {
+        tabLogin.style.background = 'rgba(255,255,255,0.18)';  // dim login tab
+        tabRegister.style.background = 'rgba(255,255,255,0.24)'; // highlight register tab
+        loginForm.style.display = 'none'; // hide login
+        registerForm.style.display = '';  // show register
+      }
+    }
+    // Events for buttons to switch forms
+    tabLogin.addEventListener('click', () => activate('login'));
+    tabRegister.addEventListener('click', () => activate('register'));
+
+    // Set authenticated user session info
+    function setSession(user) {
+      localStorage.setItem('authed', '1');
+      localStorage.setItem('currentUserEmail', user.email);
+      localStorage.setItem('currentUserName', user.name || 'Student');
+    }
+
+    // Handle REGISTER form submission
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('regName').value.trim();
+      const email = document.getElementById('regEmail').value.trim().toLowerCase();
+      const password = document.getElementById('regPassword').value;
+
+      if (!name || !email || !password) { 
+        alert('Please fill all fields.'); 
+        return; 
+      }
+
+      try {
+        const res = await fetch("http://127.0.0.1:8000/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            password_hash: password,
+            class_id: null
+          })
+        });
+        if (!res.ok) {
+          const data = await res.json();
+          alert(data.detail || "Registration failed.");
+          return;
+        }
+        alert('Registration successful! Please login.');
+        activate('login');
+        document.getElementById('loginEmail').value = email;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch (err) {
+        alert('Registration failed: ' + err.message);
+      }
+    });
+
+    // Handle LOGIN form submission
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+      const password = document.getElementById('loginPassword').value;
+
+      try {
+        const res = await fetch("http://127.0.0.1:8000/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: email, password: password
+          })
+        });
+        if (!res.ok) {
+          const data = await res.json();
+          alert(data.detail || "Login failed.");
+          return;
+        }
+        const user = await res.json();
+        setSession(user);
+        location.href = './dashboard.html';
+      } catch (err) {
+        alert('Login failed: ' + err.message);
+      }
+    });
+  </script>
+</body>
+</html>

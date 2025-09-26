@@ -1,0 +1,440 @@
+<!doctype html> <!-- Defines document type as HTML5 -->
+<html lang="en"> <!-- Declares language English -->
+<head>
+  <meta charset="utf-8" /> <!-- Character encoding UTF-8 -->
+  <title>BytLearn — Dashboard</title> <!-- Browser tab title -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Responsive meta -->
+
+  <style>
+    /* Root theme variables for consistent colors */
+    :root { 
+      --border: rgba(255,255,255,0.2);   /* Border color */
+      --glass: rgba(255,255,255,0.1);    /* Glassy background */
+      --text: #fff;                      /* White text base color */
+      --muted: rgba(255,255,255,0.8);    /* Muted text (dim white) */
+    }
+
+    * { box-sizing: border-box; } /* Include padding/border into element size */
+
+    html, body { 
+      height: 100%; 
+      margin: 0; 
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; 
+      color: var(--text);
+    }
+
+   body {
+  background: linear-gradient(135deg, #7e22ce 0%, #f472b6 45%, #6366f1 100%);
+  background-attachment: fixed; /* Makes the gradient cover entire page with smooth flow */
+  position: relative;
+  overflow-x: hidden;
+  font-size: 18px;
+  text-align: center;
+}
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35); /* uniform overlay */
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Dark overlay sitting above background */
+    .overlay { position:fixed; inset:0; background: rgba(0,0,0,0.35); }
+
+    /* Content container */
+    .container { 
+      position:relative; z-index:1; max-width:1200px; margin:0 auto; padding:32px; 
+      text-align: center; /* Center text in container */
+    }
+    main.container { min-height: calc(100vh - 120px); } /* Main fills viewport minus header */
+
+    /* Flex row utility */
+    .row { 
+      display:flex; align-items:center; justify-content:space-between; gap:14px; 
+      text-align: center; /* Center text in row */
+    }
+
+    /* Logo block */
+    .logo { display:flex; align-items:center; gap:12px; }
+    .logo img { width:44px;height:44px; }
+
+    /* Button styles */
+    .btn { 
+      display:inline-flex; align-items:center; justify-content:center; 
+      padding:12px 16px; border-radius:12px; 
+      border:1px solid var(--border); 
+      background: rgba(255,255,255,0.12); 
+      color:#fff; text-decoration:none; 
+      transition:150ms; 
+      backdrop-filter: blur(6px);
+    }
+    .btn:hover { background: rgba(255,255,255,0.2); }
+
+    /* Card styling */
+    .card { 
+      background: rgba(255,255,255,0.105); /* slightly clearer glass */
+      border:1px solid rgba(255,255,255,0.22); /* a touch brighter outline */
+      border-radius:18px; padding:24px; backdrop-filter: blur(8px); 
+      text-align: center; /* Center text in card */
+    }
+
+    h2 { 
+      /* Increase section headings for stronger presence like preview */
+      font-size: 28px; 
+      font-weight: 800;
+      margin: 0 0 16px;
+      text-align: center;
+    }
+
+    /* Grid layout for panels */
+    .grid { display:grid; grid-template-columns: 1fr; gap:16px; }
+    @media(min-width:1024px){ 
+      .grid{ 
+        grid-template-columns: repeat(3,minmax(0,1fr)); 
+        min-height: 520px; 
+      } 
+    }
+
+    /* List item links inside panels */
+    .item { margin-bottom:10px; }
+    .item a { 
+      display:block; width:100%; 
+      text-decoration:none; color:#fff; 
+      border:1px solid var(--border); 
+      background: rgba(255,255,255,0.06); 
+      border-radius:12px; padding:18px; 
+      transition:150ms; 
+      text-align: center; /* Center text in chapter links */
+      font-size: 18px;
+    }
+    .item a:hover { background: rgba(255,255,255,0.14); }
+
+    /* Progress bar (breadcrumb flow) */
+    .progress { margin: 0 0 18px; display:flex; align-items:center; gap:10px; }
+
+    .badge { 
+      display:inline-flex; align-items:center; 
+      padding:8px 14px; background: rgba(255,255,255,0.14); 
+      border:1px solid var(--border); border-radius:999px; 
+      font-size: 14px;
+    }
+
+    /* Panel highlight animation */
+    .highlight { animation: dashHighlight 900ms ease-out; }
+    @keyframes dashHighlight {
+      0% { box-shadow: 0 0 0 0 rgba(255,255,255,0.5); }
+      100% { box-shadow: 0 0 0 16px rgba(255,255,255,0); }
+    }
+
+    .hidden { display: none !important; } /* Utility class to hide */
+
+    /* Sliding step logic with transform */
+    .panel { transition: transform 500ms ease, opacity 500ms ease; }
+    .panel.center { transform: translateX(0) scale(1); opacity: 1; }
+    .panel.left { transform: translateX(0) scale(.99); opacity: .96; }
+    .panel.far-left { transform: translateX(0) scale(.985); opacity: .94; }
+    .panel.right { transform: translateX(16px) scale(.99); opacity: .96; }
+
+    /* Stage layout on large screens */
+    @media(min-width:1024px){
+      .stage { display:flex; align-items:stretch; justify-content:center; gap:16px; min-height: 600px; }
+      .stage .card { width: 100%; max-width: 384px; } /* 384*3 + 16*2 = 1184 <= 1200 */
+      .stage { 
+        margin-top: 0 !important; /* Ensure no extra gap appears when all three panels show */
+      }
+    }
+
+    /* Stage default min heights */
+    .stage { min-height: 60vh; }
+    @media(min-width:1024px){ .stage { min-height: 640px; } }
+    .stage {
+      margin-top: 0 !important; /* Consistent, tight alignment under the progress pill */
+    }
+
+    /* Chapter panel adjustments */
+    #panel-chapter { display: flex; flex-direction: column; }
+    #panel-chapter h2 { margin-bottom: 12px; }
+
+    /* Scrollable list inside chapter */
+    #chapters-list {
+      overflow: auto;
+      max-height: min(70vh, 640px); /* taller internal scroll to fill more */
+      padding-right: 8px;
+      margin-top: 4px;
+      scroll-behavior: smooth;
+    }
+
+    /* Custom scrollbar for chapter list */
+    #chapters-list::-webkit-scrollbar { width: 10px; }
+    #chapters-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.35); border-radius: 8px; }
+    #chapters-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.08); border-radius: 8px; }
+    
+    @media(min-width:1024px){
+      /* Make the top progress pill wider than the container and shift it left
+         to cover the transform offsets of the panels (-80px max) */
+      #progress-pill {
+        position: static; /* undo previous offset */
+        left: auto;
+        width: 100%;
+        max-width: 1200px; /* align with medium container */
+        margin: 0 auto 8px; /* centered under header */
+      }
+    }
+
+    /* Add a softer, light-pinkish glass background and sizing for the progress pill */
+    #progress-pill {
+      /* Light pinkish glass like the preview */
+      background: linear-gradient(135deg, rgba(255, 192, 203, 0.20), rgba(255, 255, 255, 0.10));
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 16px;
+      padding: 18px 22px;
+      width: 100%;
+      max-width: 1200px; /* match medium container */
+      margin: 0 auto 8px;
+    }
+
+    /* Make step badges match preview size/weight */
+    .badge {
+      /* ... keep existing code (display, padding, bg, border, radius) ... */
+      font-size: 14px; /* a touch larger like the preview */
+      padding: 8px 14px;
+    }
+
+    /* Desktop alignment: make the progress pill the same length as the boxes (no stretching) */
+    @media(min-width:1024px){
+      .stage {
+        max-width: 1200px;   /* medium width */
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    /* Keep the progress pill and the three-card stage share EXACT width and center */
+    #progress-pill {
+      width: 100%;
+      max-width: 1200px;   /* match stage width exactly */
+      margin: 0 auto 8px;  /* center */
+    }
+    @media(min-width:1024px){
+      #progress-pill,
+      .stage {
+        max-width: 1200px;      /* shared medium width */
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /* Ensure no offsets */
+      #progress-pill {
+        position: static;
+        left: auto;
+        transform: none;
+        width: 100%;
+        margin-bottom: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Overlay behind everything -->
+  <div class="overlay"></div>
+
+  <!-- Header with logo and user info -->
+  <header class="container">
+    <div class="row">
+      <!-- Logo clickable -> back to welcome -->
+      <div class="logo" style="cursor:pointer;" onclick="location.href='./welcome.html'">
+        <img src="logo.png" alt="BytLearn" />
+        <div>
+          <div style="font-weight:800;font-size:22px;">BytLearn</div>
+          <div style="font-size:12px;opacity:.8">AI-Powered Learning Platform</div>
+        </div>
+      </div>
+
+      <!-- Right side: user info and actions -->
+      <div class="row" style="gap:10px;">
+        <div style="text-align:right;">
+          <div style="font-weight:600;">Welcome, <span id="uName">Student</span></div>
+          <div style="opacity:.8;font-size:12px;" id="uEmail">student@bytlearn.app</div>
+        </div>
+        <a class="btn" href="./profile.html">Profile</a>
+        <a class="btn" href="./welcome.html" 
+           onclick="event.preventDefault(); localStorage.removeItem('authed'); location.href='./welcome.html';">
+           Sign Out
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main class="container">
+    <!-- Top progress milestone bar -->
+    <div class="card" id="progress-pill" style="margin-bottom:8px;">
+      <div class="progress">
+        <span class="badge">Select Class</span>
+        <span style="opacity:.7;">›</span>
+        <span class="badge">Select Subject</span>
+        <span style="opacity:.7;">›</span>
+        <span class="badge">Select Chapter</span>
+      </div>
+    </div>
+
+    <!-- Stage with panels -->
+    <div class="grid stage">
+      <!-- Class Panel (first step) -->
+      <div class="card panel center" id="panel-class">
+        <h2>Choose Your Class</h2>
+        <div class="item"><a href="#" onclick="event.preventDefault(); showStep('subject');">Class 11</a></div>
+        <div class="item"><a href="#" onclick="event.preventDefault(); showStep('subject');">Class 12</a></div>
+      </div>
+
+      <!-- Subject Panel (hidden until class is chosen) -->
+      <div class="card panel right hidden" id="panel-subject">
+        <h2>Choose Your Subject</h2>
+        <div class="item"><a href="#" onclick="event.preventDefault(); showStep('chapter');">Biology</a></div>
+      </div>
+
+      <!-- Chapter Panel (hidden until subject chosen) -->
+      <div class="card panel right hidden" id="panel-chapter">
+        <h2>Choose Your Chapter</h2>
+        <div id="chapters-list"></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Redirect to login if not authenticated
+    if (localStorage.getItem('authed') !== '1') {
+      location.replace('./login.html');
+    }
+
+    // Ensure subject/chapter start hidden
+    (function primePanels() {
+      document.getElementById('panel-subject')?.classList.add('hidden','right');
+      document.getElementById('panel-chapter')?.classList.add('hidden','right');
+    })();
+
+    // Load user info into header
+    (function(){
+      const n = localStorage.getItem('currentUserName') || 'Student';
+      const e = localStorage.getItem('currentUserEmail') || 'student@bytelearn.app';
+      const nameEl = document.getElementById('uName'); if (nameEl) nameEl.textContent = n;
+      const emailEl = document.getElementById('uEmail'); if (emailEl) emailEl.textContent = e;
+    })();
+
+    // Switch visual flow between panels
+    function setFlow(step) {
+      const cls = document.getElementById('panel-class');
+      const subj = document.getElementById('panel-subject');
+      const chap = document.getElementById('panel-chapter');
+
+      // Reset all panels' transition classes
+      [cls, subj, chap].forEach(p => {
+        p.classList.remove('center','left','far-left','right','highlight');
+      });
+
+      // Flow handling logic
+      if (step === 'class') {
+        cls.classList.add('center','highlight');
+        subj.classList.add('right','hidden');
+        chap.classList.add('right','hidden');
+      } else if (step === 'subject') {
+        cls.classList.add('left');
+        subj.classList.remove('hidden');
+        subj.classList.add('center','highlight');
+        chap.classList.add('right','hidden');
+      } else if (step === 'chapter') {
+        cls.classList.add('far-left');
+        subj.classList.add('left');
+        chap.classList.remove('hidden');
+        chap.classList.add('center','highlight');
+      }
+
+      // Remove highlight blink animation after 900ms
+      setTimeout(() => {
+        [cls, subj, chap].forEach(p => p.classList.remove('highlight'));
+      }, 900);
+
+      // Ensure stage area is visible in viewport
+      document.querySelector('.stage')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Start with class panel only
+    setFlow('class');
+
+    // Chapters data for Class 11 & 12
+    const chapters = {
+      class11: [
+        "The Living World","Biological Classification","Plant Kingdom","Animal Kingdom",
+        "Morphology of Flowering Plants","Anatomy of Flowering Plants","Structural Organisation in Animals",
+        "Cell: The Unit of Life","Biomolecules","Cell Cycle and Cell Division",
+        "Photosynthesis in Higher Plants","Respiration in Plants","Plant Growth and Development",
+        "Breathing and Exchange of Gases","Body Fluids and Circulation","Excretory Products and Their Elimination",
+        "Locomotion and Movement","Neural Control and Coordination","Chemical Coordination and Integration",
+      ],
+      class12: [
+        "Sexual Reproduction in Flowering Plants","Human Reproduction","Reproductive Health",
+        "Principles of Inheritance and Variation","Molecular Basis of Inheritance","Evolution",
+        "Human Health and Disease","Microbes in Human Welfare",
+        "Biotechnology – Principles and Processes","Biotechnology and its Applications",
+        "Ecology and Environment","Organisms and Populations","Ecosystem","Biodiversity and Conservation",
+      ],
+    };
+
+    let selectedClass = null; // track user selection
+
+    // Render chapter list dynamically
+    function renderChapters(classKey) {
+      const list = document.getElementById("chapters-list");
+      if (!list) return;
+      list.innerHTML = "";
+      const chs = chapters[classKey];
+      if (!chs) return;
+      chs.forEach((name, idx) => {
+        const div = document.createElement("div");
+        div.className = "item";
+        div.innerHTML = `<a href="#">${name}</a>`;
+        div.querySelector("a").addEventListener("click", (e) => {
+          e.preventDefault();
+          // Save selected class, subject, chapter to localStorage
+          localStorage.setItem("selectedClass", selectedClass);
+          localStorage.setItem("selectedSubject", "Biology"); // You can make this dynamic if needed
+          localStorage.setItem("selectedChapter", name);
+          // Optionally, store chapter index or id if you have it in DB
+          location.href = "./learn.html";
+        });
+        list.appendChild(div);
+      });
+    }
+
+    // Step handler with chapter injection
+    function showStep(step) {
+      if (step === "subject") {
+        setFlow("subject");
+      } else if (step === "chapter") {
+        setFlow("chapter");
+        if (selectedClass) renderChapters(selectedClass);
+      }
+    }
+
+    // Capture selected class (11 vs 12)
+    document.querySelectorAll("#panel-class .item a").forEach((el, idx) => {
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+        selectedClass = idx === 0 ? "class11" : "class12";
+        showStep("subject");
+      });
+    });
+
+    // Transition subject -> chapter
+    document.querySelectorAll("#panel-subject .item a").forEach((el) => {
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+        showStep("chapter");
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>BytLearn — Learn</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --border: rgba(255,255,255,0.2);
+      --glass: rgba(255,255,255,0.1);
+      --text: #fff;
+      --muted: rgba(255,255,255,0.85);
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial;
+      color: var(--text);
+      text-align: center;
+    }
+    body {
+      /* Match dashboard.html background gradient */
+      background: linear-gradient(135deg, #7e22ce 0%, #f472b6 45%, #6366f1 100%);
+      background-attachment: fixed;
+      position: relative;
+      overflow-x: hidden;
+      font-size: 18px;
+      text-align: center;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35); /* uniform overlay match dashboard */
+      pointer-events: none;
+      z-index: 0;
+    }
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); }
+    .container {
+      position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 32px;
+      text-align: center;
+    }
+    main.container { min-height: calc(100vh - 110px); }
+    .row {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      text-align: center;
+    }
+    .logo { display: flex; align-items: center; gap: 12px; }
+    .logo img { width: 40px; height: 40px; }
+    .btn {
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:12px 16px; border-radius:12px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.18);
+      color: var(--text); text-decoration: none;
+      transition:150ms;
+      backdrop-filter: blur(6px);
+    }
+    .btn:hover { background: rgba(255,255,255,0.24); }
+    .card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 18px; padding: 24px; backdrop-filter: blur(8px);
+      text-align: center;
+    }
+    .pills {
+      display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px;
+    }
+    .pill {
+      padding: 10px 16px; border-radius: 14px; border: 1px solid var(--border);
+      background: rgba(255,255,255,0.08); color: var(--text);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+    }
+    .pill.active {
+      background: rgba(255,255,255,0.2);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+    }
+    .hidden { display: none; }
+    h2 { margin: 0 0 12px; }
+    p { color: var(--muted); }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media(min-width:768px) { .grid { grid-template-columns: 1fr 1fr; } }
+    h2, h3, h1, p, .badge, .subtitle, .title, .lead, .actions, .stats, .pill, .item a, .list, .li {
+      text-align: center !important;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <header class="container">
+    <div class="row">
+      <div class="logo" style="cursor:pointer;" onclick="location.href='./welcome.html'">
+        <img src="./logo.png" alt="BytLearn" />
+        <div>
+          <div style="font-weight:800;font-size:22px;">BytLearn</div>
+          <div style="font-size:12px;opacity:.8">Learning Workspace — <span id="lName">Student</span></div>
+        </div>
+      </div>
+      <div class="row" style="gap:10px;">
+        <a class="btn" href="./dashboard.html">Dashboard</a>
+        <a class="btn" href="./profile.html" title="Profile">Profile</a>
+        <a class="btn" href="./welcome.html"
+           onclick="event.preventDefault(); localStorage.removeItem('authed'); location.href='./welcome.html';">
+          Sign Out
+        </a>
+      </div>
+    </div>
+  </header>
+  <main class="container">
+    <div class="card" style="margin-bottom:12px;">
+      <div class="pills">
+        <button class="pill active" data-tab="summary">Summaries</button>
+        <button class="pill" data-tab="flashcards">Flashcards</button>
+        <button class="pill" data-tab="doubts">Doubt Asking</button>
+        <button class="pill" data-tab="quizzes">Quizzes</button>
+      </div>
+    </div>
+    <section id="summary" class="card tab">
+      <div class="row" style="justify-content:space-between;">
+        <h2>Chapter Summary</h2>
+        <span class="pill" style="cursor:default;">Summary</span>
+      </div>
+        <p></p>
+        <div class="grid" style="margin-top:10px">
+        </div>
+    </section>
+    <section id="flashcards" class="card tab hidden">
+      <div class="row" style="justify-content:space-between;">
+        <h2>Flashcards</h2>
+        <span class="pill" style="cursor:default;">Recall</span>
+      </div>
+      <div class="grid" style="margin-top:10px">
+        <div class="card">Flashcard 1 Tap to reveal</div>
+        <div class="card">Flashcard 2 Tap to reveal</div>
+        <div class="card">Flashcard 3 Tap to reveal</div>
+        <div class="card">Flashcard 4 Tap to reveal</div>
+        <div class="card">Flashcard 5 Tap to reveal</div>
+        <div class="card">Flashcard 6 Tap to reveal</div>
+      </div>
+    </section>
+    <section id="doubts" class="card tab hidden">
+      <div class="row" style="justify-content:space-between;">
+        <h2>Ask a Doubt</h2>
+        <span class="pill" style="cursor:default;">?</span>
+      </div>
+        <div id="chat-history" style="height:260px;overflow-y:auto;background:rgba(255,255,255,0.08);border-radius:12px;padding:12px 8px 12px 8px;margin-bottom:12px;text-align:left;font-size:16px;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.06);">
+          <div style="color:var(--muted);text-align:center;">Choose a topic from your notes and ask question's about it.</div>
+        </div>
+        <form id="chat-form" style="display:flex;gap:8px;align-items:center;" autocomplete="off" onsubmit="return false;">
+          <input id="chat-input" type="text" placeholder="Type your doubt..." style="flex:1;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,0.13);color:var(--text);font-size:16px;outline:none;" />
+          <button type="submit" class="btn" style="padding:10px 18px;font-size:16px;">Send</button>
+        </form>
+    </section>
+    <section id="quizzes" class="card tab hidden">
+      <div class="row" style="justify-content:space-between;">
+        <h2>Quick Quiz</h2>
+        <span class="pill" style="cursor:default;">Practice</span>
+      </div>
+      <p>Test yourself with quick objective questions and instant feedback.</p>
+        <div id="quiz-controls" style="margin:18px 0;">
+          <button id="generate-quiz-btn" class="btn" style="font-size:16px;padding:10px 22px;">Generate Quiz</button>
+        </div>
+        <div id="quiz-area"></div>
+    </section>
+  </main>
+  <script>
+    // --- Quiz Section ---
+    const quizArea = document.getElementById('quiz-area');
+    const quizControls = document.getElementById('quiz-controls');
+    const generateQuizBtn = document.getElementById('generate-quiz-btn');
+    let quizData = null;
+
+    if (generateQuizBtn) {
+      generateQuizBtn.addEventListener('click', async function() {
+        quizArea.innerHTML = '<div style="color:var(--muted);margin:18px 0;">Generating quiz...</div>';
+        generateQuizBtn.disabled = true;
+        try {
+          // Fetch quiz from AI backend (adjust endpoint as needed)
+          const res = await fetch('/generate_quiz', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ topic: 'current' }) // You can pass topic/notes info here
+          });
+          const data = await res.json();
+          if (data && Array.isArray(data.questions) && data.questions.length > 0) {
+            quizData = data.questions;
+            renderQuiz(quizData);
+          } else {
+            quizArea.innerHTML = '<div style="color:#f87171">No quiz questions generated.</div>';
+            generateQuizBtn.disabled = false;
+          }
+        } catch (e) {
+          quizArea.innerHTML = '<div style="color:#f87171">Error generating quiz: ' + (e.message || e) + '</div>';
+          generateQuizBtn.disabled = false;
+        }
+      });
+    }
+
+    function renderQuiz(questions) {
+      if (!questions || !questions.length) {
+        quizArea.innerHTML = '<div style="color:#f87171">No quiz questions available.</div>';
+        return;
+      }
+      let html = '<form id="quiz-form-area">';
+      questions.forEach((q, idx) => {
+        html += `<div class="card" style="margin-bottom:18px;text-align:left;">
+          <div style="font-weight:600;margin-bottom:8px;">Q${idx+1}. ${q.question || ''}</div>
+          <ul style="opacity:.85;line-height:1.8;list-style-type:upper-alpha;">
+            ${q.options.map((opt, oidx) => `
+              <li style="margin-bottom:6px;">
+                <label style="cursor:pointer;">
+                  <input type="radio" name="q${idx}" value="${oidx}" style="margin-right:8px;" />
+                  ${opt}
+                </label>
+              </li>
+            `).join('')}
+          </ul>
+        </div>`;
+      });
+      html += '<button type="submit" class="btn" style="font-size:16px;padding:10px 22px;">Submit Quiz</button>';
+      html += '</form>';
+      quizArea.innerHTML = html;
+
+      // Optionally, handle quiz submission and feedback
+      const quizForm = document.getElementById('quiz-form-area');
+      if (quizForm) {
+        quizForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          // Simple feedback: show correct/incorrect (if answers are provided)
+          if (!quizData || !quizData.length) return;
+          let correct = 0;
+          let total = quizData.length;
+          quizData.forEach((q, idx) => {
+            const selected = quizForm.querySelector(`input[name='q${idx}']:checked`);
+            if (selected && q.answer !== undefined && Number(selected.value) === q.answer) correct++;
+          });
+          quizArea.innerHTML += `<div style='margin:18px 0;font-size:18px;font-weight:600;'>You got ${correct} out of ${total} correct.</div>`;
+        });
+      }
+      generateQuizBtn.disabled = false;
+    }
+    // --- Chatbot Doubt Section ---
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+    const chatHistory = document.getElementById('chat-history');
+    if (chatForm && chatInput && chatHistory) {
+      chatForm.addEventListener('submit', async function() {
+        const userMsg = chatInput.value.trim();
+        if (!userMsg) return;
+        // Add user message
+        addMsg('You', userMsg, 'right');
+        chatInput.value = '';
+        chatInput.disabled = true;
+        // Add loading
+        const loadingId = addMsg('Bot', '<span style="opacity:.7;">Thinking...</span>', 'left', true);
+        try {
+          const res = await fetch('http://127.0.0.1:8000/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt: userMsg })
+          });
+          const data = await res.json();
+          removeMsg(loadingId);
+          if (data.answer) {
+            addMsg('Bot', data.answer, 'left');
+          } else if (data.error) {
+            addMsg('Bot', `<span style='color:#fbbf24'>${data.error}</span>`, 'left');
+          } else {
+            addMsg('Bot', '<span style="color:#f87171">No answer received.</span>', 'left');
+          }
+        } catch (e) {
+          removeMsg(loadingId);
+          addMsg('Bot', `<span style='color:#f87171'>Error: ${e.message}</span>`, 'left');
+        }
+        chatInput.disabled = false;
+        chatInput.focus();
+      });
+      function addMsg(sender, text, align, isLoading) {
+        const msg = document.createElement('div');
+        msg.className = 'chat-msg';
+        msg.style = `margin:8px 0;display:flex;justify-content:${align==='right'?'flex-end':'flex-start'};`;
+        msg.innerHTML = `<div style="max-width:80%;background:${align==='right'?'#a21caf':'rgba(255,255,255,0.13)'};color:${align==='right'?'#fff':'var(--text)'};padding:10px 14px;border-radius:12px;font-size:16px;box-shadow:0 1px 4px 0 rgba(0,0,0,0.07);">${text}</div>`;
+        chatHistory.appendChild(msg);
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+        if (isLoading) {
+          const id = 'loading-' + Math.random().toString(36).slice(2);
+          msg.id = id;
+          return id;
+        }
+        return null;
+      }
+      function removeMsg(id) {
+        const el = document.getElementById(id);
+        if (el) el.remove();
+      }
+    }
+    if (localStorage.getItem('authed') !== '1') {
+      location.replace('./login.html');
+    }
+    const pills = document.querySelectorAll(".pill[data-tab]");
+    const tabs = document.querySelectorAll(".tab");
+    pills.forEach(p => p.addEventListener("click", () => {
+      pills.forEach(pp => pp.classList.remove("active"));
+      p.classList.add("active");
+      const id = p.getAttribute("data-tab");
+      tabs.forEach(t => t.classList.add("hidden"));
+      document.getElementById(id)?.classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }));
+    // Fill workspace name in header with current user
+    (function(){
+      const n = localStorage.getItem('currentUserName') || 'Student';
+      const el = document.getElementById('lName');
+      if (el) el.textContent = n;
+    })();
+
+    // Fetch and display summaries in the Summaries section
+    async function loadSummaries() {
+      const grid = document.querySelector('#summary .grid');
+      if (!grid) return;
+      grid.innerHTML = '<div style="color:var(--muted);margin:18px 0;">Loading summaries...</div>';
+      try {
+        const res = await fetch('http://127.0.0.1:8000/summaries');
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) {
+          grid.innerHTML = '';
+          data.forEach(summary => {
+            const div = document.createElement('div');
+            div.className = 'card';
+            div.innerHTML = `<div style="font-weight:600;margin-bottom:8px;">Summary #${summary.summary_id}</div>
+                             <div>${summary.summary_data}</div>`;
+            grid.appendChild(div);
+          });
+        } else {
+          grid.innerHTML = '<div style="color:#f87171">No summaries found.</div>';
+        }
+      } catch (e) {
+        grid.innerHTML = `<div style="color:#f87171">Error loading summaries: ${e.message}</div>`;
+      }
+    }
+
+    // Call on page load
+    loadSummaries();
+  </script>
+</body>
+</html>

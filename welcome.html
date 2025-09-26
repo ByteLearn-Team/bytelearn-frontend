@@ -1,0 +1,223 @@
+<!doctype html> <!-- Defines the document type as HTML5 -->
+<html lang="en"> <!-- Declares the language as English -->
+<head>
+  <meta charset="utf-8" /> <!-- Character encoding set to UTF-8 -->
+  <title>BytLearn — Welcome</title> <!-- Page title as shown on browser tab -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Makes site responsive on all devices -->
+
+  <style>
+    /* CSS variables for consistent theme styling */
+    :root {
+      --bg1: #0a1a3a;    /* Background color 1 */
+      --bg2: #0b2a4a;    /* Background color 2 */
+      --bg3: #11194a;    /* Background color 3 */
+      --text: #ffffff;   /* Main text color */
+      --muted: rgba(255,255,255,0.8); /* Muted text for descriptions */
+      --glass: rgba(255,255,255,0.1);  /* Glass-like effect */
+      --glass-2: rgba(255,255,255,0.2);/* Slightly stronger glass effect */
+      --border: rgba(255,255,255,0.2); /* Border color */
+      --accent1: #67e8f9; /* Accent blue 1 */
+      --accent2: #60a5fa; /* Accent blue 2 */
+    }
+
+    * { box-sizing: border-box; } /* Includes padding + border in element size */
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--text);
+      text-align: center; /* Center all text */
+    }
+
+    body {
+      margin: 0; /* Remove default margins */
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; /* Font stack */
+      color: var(--text); /* White text */
+      background: linear-gradient(135deg, #0b1e3d, #08203a 40%, #101a4b); /* Gradient background */
+      overflow-x: hidden; /* Prevent horizontal scrollbar */
+      font-size: 18px; /* Base font size */
+      text-align: center; /* Center all text in body */
+      background-attachment: fixed;
+    }
+
+    /* Decorative animated background blobs */
+    .scene { position: fixed; inset: 0; z-index: 0; }
+    .blob {
+      position: absolute; border-radius: 9999px; filter: blur(80px); /* circular blurred shape */
+      opacity: 0.2; will-change: transform; animation: float 20s ease-in-out infinite;
+    }
+    .blob.a { width: 380px; height: 380px; left: -120px; top: 80px; 
+      background: linear-gradient(90deg,#38bdf8,#2563eb);}
+    .blob.b { width: 320px; height: 320px; right: -100px; bottom: 120px; 
+      background: linear-gradient(90deg,#6366f1,#22d3ee); animation-duration: 16s; }
+    .blob.c { width: 260px; height: 260px; left: 50%; top: 50%; 
+      transform: translate(-50%,-50%); background: linear-gradient(90deg,#60a5fa,#7dd3fc);
+      opacity: 0.12; animation-duration: 25s; }
+
+    /* Keyframes for floating animation */
+    @keyframes float {
+      0% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(40px,-30px) scale(1.1); }
+      100% { transform: translate(0,0) scale(1); }
+    }
+
+    /* Layout container settings */
+    .container { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 32px; text-align: center; /* Center text in container */ }
+    main.container { min-height: calc(100vh - 140px); } /* fill viewport minus header/footer */
+    
+    /* Row-flex utility */
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+
+    /* Logo styling */
+    .logo { display: flex; align-items: center; gap: 12px; cursor: default; }
+    .logo img { width: 40px; height: 40px; }
+    .title { font-weight: 800; font-size: 22px; line-height: 1; }
+    .subtitle { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border);
+      background: var(--glass); color: var(--text); text-decoration: none; transition: 150ms ease;
+      backdrop-filter: blur(6px);
+    }
+    .btn:hover { background: var(--glass-2); }
+    .btn.primary { background: rgba(255,255,255,0.2); }
+
+    /* Hero section */
+    .hero { text-align: center; padding: 80px 16px 40px; }
+
+    /* Badge design */
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 12px; border-radius: 9999px; background: var(--glass);
+      border: 1px solid var(--border); backdrop-filter: blur(6px);
+      color: var(--text); font-size: 14px;
+    }
+
+    /* Heading style */
+    .heading {
+      margin: 16px auto; font-size: clamp(40px, 6.5vw, 78px);
+      font-weight: 800; line-height: 1.05;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #67e8f9, #93c5fd);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+
+    /* Lead paragraph style */
+    .lead {
+      margin: 12px auto 24px; max-width: 800px;
+      color: var(--muted); font-size: 20px; line-height: 1.7;
+    }
+
+    /* Action buttons placement */
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+    /* Stats section layout */
+    .stats {
+      display: grid; grid-template-columns: repeat(2,minmax(0,1fr));
+      gap: 16px; margin: 40px auto 0; max-width: 1000px;
+    }
+    @media(min-width: 768px){ .stats{ grid-template-columns: repeat(4,minmax(0,1fr)); } }
+
+    /* Individual stat card */
+    .card {
+      background: var(--glass); border: 1px solid var(--border);
+      border-radius: 18px; text-align: center; padding: 26px; backdrop-filter: blur(8px);
+    }
+    .card h3 { margin: 0 0 8px; font-size: 28px; font-weight: 800; }
+    .card p { margin: 0; color: var(--muted); }
+
+    /* Footer */
+    footer {
+      text-align: center; padding: 24px; border-top: 1px solid var(--border);
+      margin-top: 40px; color: rgba(255,255,255,0.7);
+    }
+    a.inline { color: #fff; text-decoration: underline; }
+
+    .row {
+      /* ...existing code... */
+      text-align: center; /* Center text in row */
+    }
+
+    .card {
+      /* ...existing code... */
+      text-align: center; /* Center text in card */
+    }
+
+    h2, h3, h1, p, .badge, .subtitle, .title, .lead, .actions, .stats, .pill, .item a, .list, .li {
+      text-align: center !important; /* Center all headings, paragraphs, badges, pills, links, lists */
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Background floating blobs for visual effect -->
+  <div class="scene">
+    <div class="blob a"></div>
+    <div class="blob b"></div>
+    <div class="blob c"></div>
+  </div>
+
+  <!-- Header Section -->
+  <header class="container">
+    <div class="row">
+      <!-- Logo with click -> returns to Welcome page -->
+      <div class="logo" style="cursor:pointer;" onclick="location.href='./welcome.html'">
+        <img src="logo.png" alt="BytLearn" /> <!-- Site logo -->
+        <div>
+          <div class="title">BytLearn</div> <!-- Brand title -->
+          <div class="subtitle">AI-Powered Learning</div> <!-- Tagline -->
+        </div>
+      </div>
+
+      <!-- Navigation buttons -->
+      <div class="row" style="gap:12px;">
+        <a class="btn" href="./profile.html" title="Profile"
+           onclick="if(localStorage.getItem('authed')!=='1'){event.preventDefault(); location.href='./login.html';}">
+           Profile
+        </a>
+        <a class="btn primary" href="./dashboard.html"
+           onclick="if(localStorage.getItem('authed')!=='1'){event.preventDefault(); location.href='./login.html';}">
+           Dashboard
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="container">
+    <section class="hero">
+      <span class="badge">✨ AI-Powered Education Platform</span> <!-- Badge highlight -->
+      <h1 class="heading">Learn Byte by Byte with <span class="gradient-text">BytLearn</span></h1> <!-- Hero heading -->
+      <p class="lead">Biology + AI = BytLearn.</p> <!-- Lead tagline -->
+
+      <!-- Main actions -->
+      <div class="actions">
+        <a class="btn" style="background:#fff;color:#5b21b6;" href="./dashboard.html"
+           onclick="if(localStorage.getItem('authed')!=='1'){event.preventDefault(); location.href='./login.html';}">
+           ▶ Continue Learning
+        </a>
+        <a class="btn" href="./login.html">📘 Start Journey</a>
+      </div>
+
+      <!-- Statistics panel -->
+      <div class="stats">
+        <div class="card"><h3>95%</h3><p>Progress Insights</p></div>
+        <div class="card"><h3>30+</h3><p>NCERT Lessons</p></div>
+        <div class="card"><h3>100%</h3><p>Syllabus-Aligned</p></div>
+        <div class="card"><h3>24/7</h3><p>AI Learning</p></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    © 2024 ByteLearn. Powered by 
+    <a class="inline" href="#" target="_blank" rel="noopener">VeloxCT</a>
+  </footer>
+</body>
+</html>

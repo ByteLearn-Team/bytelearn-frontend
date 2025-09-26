@@ -1,11 +1,13 @@
-# ByteLearn (MVP)
+# ByteLearn Frontend
 
-This repository is part of the ByteLearn minor project.
+This is the **frontend** of ByteLearn.  
+It shows the user interface of the app (summaries, flashcards, quizzes, and dashboard).  
 
-Repos:
-- bytelearn-frontend: Static frontend (HTML + Bootstrap + PouchDB)
+## Current Status
+- Basic setup with `index.html` is ready.
+- More features will be added step by step.
 
-> Running locally:
-- Frontend: `python3 -m http.server 8080` (open http://localhost:8080/index.html)
-
-Parvathy is the project leader. Team: Parvathy, Vyshnav, Vishnu, Rukmini.
+## How to Run
+1. Clone this repo  
+git clone <frontend-repo-link>
+2. Open `index.html` in a web browser.

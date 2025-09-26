@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>BytLearn Profile</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg1: #0b1e3d;
+      --bg2: #08203a;
+      --bg3: #101a4b;
+      --text: #ffffff; /* white font color */
+      --muted: #ffffff; /* white muted color */
+      --glass: rgba(255, 255, 255, 0.12);
+      --glass-2: rgba(255, 255, 255, 0.26);
+      --border: rgba(255, 255, 255, 0.20);
+      --accent1: #67e8f9;
+      --accent2: #60a5fa;
+      --bar: #7dd3fc;
+      --line: #93c5fd;
+    }
+    *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      text-align: center;
+    }
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #0b1e3d 0%, #08203a 40%, #101a4b 100%);
+      font-size: 18px;
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    .scene {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+    .blob {
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(80px);
+      opacity: .2;
+      will-change: transform;
+      animation: float 22s ease-in-out infinite;
+    }
+    .blob.a {
+      width: 380px;
+      height: 380px;
+      left: -120px;
+      top: 80px;
+      background: linear-gradient(90deg, #38bdf8, #2563eb);
+    }
+    .blob.b {
+      width: 320px;
+      height: 320px;
+      right: -100px;
+      bottom: 120px;
+      background: linear-gradient(90deg, #6366f1, #22d3ee);
+      animation-duration: 16s;
+    }
+    .blob.c {
+      width: 260px;
+      height: 260px;
+      left: 50%;
+      top: 52%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(90deg, #60a5fa, #7dd3fc);
+      opacity: .13;
+      animation-duration: 25s;
+    }
+    @keyframes float {
+      0%   { transform: translate(0, 0) scale(1); }
+      50%  { transform: translate(40px, -30px) scale(1.1); }
+      100% { transform: translate(0, 0) scale(1); }
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px;
+      text-align: center;
+    }
+    main.container {
+      min-height: calc(100vh - 110px);
+    }
+
+    .card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      backdrop-filter: blur(8px);
+      text-align: center;
+      box-shadow: 0 6px 36px rgba(40, 57, 101, 0.22);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--glass);
+      color: #fff;
+      text-decoration: none;
+      transition: 150ms;
+      backdrop-filter: blur(6px);
+      cursor: pointer;
+    }
+    .btn.primary {
+      background: var(--glass-2);
+    }
+    .btn:hover {
+      background: rgba(255, 255, 255, 0.20);
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      text-align: center;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 12px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 14px;
+      backdrop-filter: blur(6px);
+      color: var(--text);
+    }
+
+    .pills {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .pill {
+      padding: 10px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+      cursor: pointer;
+      transition: 120ms;
+    }
+    .pill.active {
+      background: rgba(255, 255, 255, 0.18);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+    }
+    .hidden {
+      display: none;
+    }
+
+    h1, h2, h3, p, .badge, .subtitle, .title, .lead, .actions, .stats, .pill, .item a, .list, .li {
+      text-align: center !important;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 800;
+      margin: 0 0 20px 0;
+    }
+    h2 {
+      margin: 0 0 12px 0;
+      font-size: 22px;
+      font-weight: 700;
+    }
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 10px 0;
+    }
+    p {
+      color: var(--muted);
+    }
+
+    .grid4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .chart {
+      height: 260px;
+      position: relative;
+    }
+    .bars {
+      position: absolute;
+      inset: 12px 12px 32px 40px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-end;
+    }
+    .bar {
+      width: 40px;
+      background: var(--bar);
+      border-radius: 8px 8px 0 0;
+    }
+    .xlabels {
+      position: absolute;
+      bottom: 6px;
+      left: 40px;
+      right: 12px;
+      display: flex;
+      gap: 16px;
+      justify-content: space-between;
+      font-size: 12px;
+      opacity: 1;
+    }
+    .linechart {
+      position: absolute;
+      inset: 12px 12px 32px 40px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 9999px;
+      background: var(--line);
+      display: inline-block;
+    }
+    .legend {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      font-size: 12px;
+      opacity: 1;
+      margin-top: 8px;
+    }
+    .charts-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 1fr;
+      min-height: 55vh;
+    }
+    @media (min-width: 1024px) {
+      .charts-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .grid4 {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+    }
+
+    .list {
+      display: grid;
+      gap: 10px;
+    }
+    .li {
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+  <div class="scene">
+    <div class="blob a"></div>
+    <div class="blob b"></div>
+    <div class="blob c"></div>
+  </div>
+
+  <header class="container">
+    <div class="row">
+      <div class="logo" style="cursor:pointer" onclick="location.href='welcome.html'">
+        <img src="logo.png" alt="BytLearn" />
+        <div>
+          <div style="font-weight: 800; font-size: 22px;">BytLearn</div>
+          <div class="subtitle" style="font-size: 12px; opacity: 1;">Student Profile</div>
+        </div>
+      </div>
+      <div class="row" style="gap: 10px;">
+        <a class="btn" href="dashboard.html">Dashboard</a>
+        <a class="btn" href="welcome.html" onclick="event.preventDefault(); localStorage.removeItem('authed'); location.href='welcome.html';">Sign Out</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card" style="margin-bottom: 12px;">
+      <div class="row" style="gap: 12px; align-items: center;">
+        <div class="row" style="gap: 12px;">
+          <div style="width: 48px; height: 48px; border-radius: 9999px; background: rgba(255, 255, 255, 0.18); display: flex; align-items: center; justify-content: center;">
+            👤
+          </div>
+          <div>
+            <div style="font-weight: 700;" id="pName">Student</div>
+            <div style="opacity: 1; font-size: 13px;" id="pEmail">student@bytlearn.app</div>
+          </div>
+        </div>
+        <span class="badge">Biology AI — Student Dashboard</span>
+      </div>
+    </div>
+
+    <div class="grid4" style="margin-bottom: 12px;">
+      <div class="card">
+        <div style="opacity: 1; font-size: 13px;">Study Streak</div>
+        <div style="font-weight: 700; font-size: 22px;">15 days</div>
+      </div>
+      <div class="card">
+        <div style="opacity: 1; font-size: 13px;">Average Score</div>
+        <div style="font-weight: 700; font-size: 22px;">82.3%</div>
+      </div>
+      <div class="card">
+        <div style="opacity: 1; font-size: 13px;">Avg Quiz Time</div>
+        <div style="font-weight: 700; font-size: 22px;">165s</div>
+      </div>
+      <div class="card">
+        <div style="opacity: 1; font-size: 13px;">Doubt Resolution</div>
+        <div style="font-weight: 700; font-size: 22px;">89%</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 12px;">
+      <div class="pills">
+        <button class="pill active" data-tab="charts">Charts</button>
+        <button class="pill" data-tab="analysis">Analysis</button>
+        <button class="pill" data-tab="performance">Performance</button>
+        <button class="pill" data-tab="suggestions">Suggestions</button>
+        <button class="pill" data-tab="activity">Activity</button>
+      </div>
+    </div>
+
+    <section id="charts" class="tab">
+      <div class="charts-grid">
+        <div class="card">
+          <div class="row" style="justify-content: space-between;">
+            <h2>Performance by Topic</h2>
+            <span class="badge">Weekly</span>
+          </div>
+          <div class="chart">
+            <div class="bars">
+              <div class="bar" style="height: 78%;"></div>
+              <div class="bar" style="height: 82%;"></div>
+              <div class="bar" style="height: 76%;"></div>
+              <div class="bar" style="height: 88%;"></div>
+              <div class="bar" style="height: 91%;"></div>
+            </div>
+            <div class="xlabels">
+              <span>Cell</span>
+              <span>Biomol.</span>
+              <span>Genetics</span>
+              <span>Physiol.</span>
+              <span>Ecology</span>
+            </div>
+            <div class="legend"><span class="dot"></span> Score</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="row" style="justify-content: space-between;">
+            <h2>Recent Performance Trend</h2>
+            <span class="badge">Last 7 Days</span>
+          </div>
+          <div class="chart">
+            <svg class="linechart" viewBox="0 0 400 220" preserveAspectRatio="none">
+              <polyline fill="none" stroke="#93c5fd" stroke-width="3" points="10,170 70,160 130,145 190,135 250,125 310,115 370,110" />
+              <g fill="#93c5fd">
+                <circle cx="10" cy="170" r="3"></circle>
+                <circle cx="70" cy="160" r="3"></circle>
+                <circle cx="130" cy="145" r="3"></circle>
+                <circle cx="190" cy="135" r="3"></circle>
+                <circle cx="250" cy="125" r="3"></circle>
+                <circle cx="310" cy="115" r="3"></circle>
+                <circle cx="370" cy="110" r="3"></circle>
+              </g>
+            </svg>
+            <div class="xlabels" style="left: 36px; right: 12px;">
+              <span>Mon</span>
+              <span>Tue</span>
+              <span>Wed</span>
+              <span>Thu</span>
+              <span>Fri</span>
+              <span>Sat</span>
+              <span>Sun</span>
+            </div>
+            <div class="legend"><span class="dot"></span> Score</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="analysis" class="tab hidden">
+      <div style="display: grid; gap: 12px; grid-template-columns: 1fr 1fr;">
+        <div class="card">
+          <h2>Strong Areas</h2>
+          <div class="list">
+            <div class="li">
+              <div style="font-weight: 600;">Ecology</div>
+              <div style="color: var(--muted); font-size: 13px;">High quiz accuracy (92%)</div>
+            </div>
+            <div class="li">
+              <div style="font-weight: 600;">Physiology</div>
+              <div style="color: var(--muted); font-size: 13px;">Consistent improvement over 4 weeks</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h2>Weak Areas</h2>
+          <div class="list">
+            <div class="li">
+              <div style="font-weight: 600;">Genetics</div>
+              <div style="color: var(--muted); font-size: 13px;">Lower recall on terminology</div>
+            </div>
+            <div class="li">
+              <div style="font-weight: 600;">Biomolecules</div>
+              <div style="color: var(--muted); font-size: 13px;">Time-outs in 2 quizzes</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="performance" class="tab hidden">
+      <div class="card">
+        <h2>Overall Performance</h2>
+        <div style="display: grid; gap: 12px; grid-template-columns: 1fr 1fr 1fr;">
+          <div class="li">
+            <div style="opacity: 1; font-size: 13px;">Quizzes Completed</div>
+            <div style="font-weight: 700; font-size: 22px;">18</div>
+          </div>
+          <div class="li">
+            <div style="opacity: 1; font-size: 13px;">Average Score</div>
+            <div style="font-weight: 700; font-size: 22px;">82.3%</div>
+          </div>
+          <div class="li">
+            <div style="opacity: 1; font-size: 13px;">Best Score</div>
+            <div style="font-weight: 700; font-size: 22px;">96%</div>
+          </div>
+          <div class="li">
+            <div style="opacity: 1; font-size: 13px;">Average Time/Quiz</div>
+            <div style="font-weight: 700; font-size: 22px;">165s</div>
+          </div>
+          <div class="li">
+            <div style="opacity: 1; font-size: 13px;">Fastest Completion</div>
+            <div style="font-weight: 700; font-size: 22px;">122s</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="suggestions" class="tab hidden">
+      <div class="card">
+        <h2>Personalized Suggestions</h2>
+        <div class="list">
+          <div class="li">
+            <div style="font-weight: 600;">Revise Mendelian genetics</div>
+            <div style="color: var(--muted); font-size: 13px;">
+              Practice 10 MCQs on dihybrid crosses, focus on terminology.
+            </div>
+          </div>
+          <div class="li">
+            <div style="font-weight: 600;">Biomolecules quick sheet</div>
+            <div style="color: var(--muted); font-size: 13px;">
+              Memorize enzymes and functions; do flashcards 15 min/day.
+            </div>
+          </div>
+          <div class="li">
+            <div style="font-weight: 600;">Timed drills</div>
+            <div style="color: var(--muted); font-size: 13px;">
+              2 timed quizzes (10 Q) to improve pacing to &lt;150s.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="activity" class="tab hidden">
+      <div class="card">
+        <h2>Recent Activity</h2>
+        <div class="list">
+          <div class="li row" style="justify-content: space-between;">
+            <div>
+              <div style="font-weight: 600;">Quiz Plant Physiology</div>
+              <div style="opacity: 1; font-size: 12px;">Today</div>
+            </div>
+            <div style="text-align: right;">
+              <div>Score: 88</div>
+              <div style="opacity: 1; font-size: 12px;">Time: 158s</div>
+            </div>
+          </div>
+          <div class="li row" style="justify-content: space-between;">
+            <div>
+              <div style="font-weight: 600;">Quiz Genetics Basics</div>
+              <div style="opacity: 1; font-size: 12px;">Yesterday</div>
+            </div>
+            <div style="text-align: right;">
+              <div>Score: 74</div>
+              <div style="opacity: 1; font-size: 12px;">Time: 171s</div>
+            </div>
+          </div>
+          <div class="li row" style="justify-content: space-between;">
+            <div>
+              <div style="font-weight: 600;">Flashcards Biomolecules</div>
+              <div style="opacity: 1; font-size: 12px;">2 days ago</div>
+            </div>
+            <div style="text-align: right;">
+              <div>Score:</div>
+              <div style="opacity: 1; font-size: 12px;">Time: 12m</div>
+            </div>
+          </div>
+          <div class="li row" style="justify-content: space-between;">
+            <div>
+              <div style="font-weight: 600;">Quiz Ecology Mix</div>
+              <div style="opacity: 1; font-size: 12px;">3 days ago</div>
+            </div>
+            <div style="text-align: right;">
+              <div>Score: 91</div>
+              <div style="opacity: 1; font-size: 12px;">Time: 149s</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const pills = document.querySelectorAll('.pill[data-tab]');
+    const tabs = document.querySelectorAll('.tab');
+    pills.forEach(p => {
+      p.addEventListener('click', () => {
+        pills.forEach(pp => pp.classList.remove('active'));
+        p.classList.add('active');
+        const id = p.getAttribute('data-tab');
+        tabs.forEach(t => t.classList.add('hidden'));
+        document.getElementById(id)?.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+
+    function fillUserProfile() {
+      const n = localStorage.getItem('currentUserName') || 'Student';
+      const e = localStorage.getItem('currentUserEmail') || 'student@bytlearn.app';
+      const nEl = document.getElementById('pName');
+      const eEl = document.getElementById('pEmail');
+      if (nEl) nEl.textContent = n;
+      if (eEl) eEl.textContent = e;
+    }
+    fillUserProfile();
+  </script>
+</body>
+</html>

@@ -435,6 +435,74 @@
         showStep("chapter");
       });
     });
+
+    // Fetch classes from backend
+    async function loadClasses() {
+      const res = await fetch('http://127.0.0.1:8000/classes');
+      const classes = await res.json();
+      const panel = document.getElementById('panel-class');
+      panel.innerHTML = '<h2>Choose Your Class</h2>';
+      classes.forEach(cls => {
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = `<a href="#">${cls.class_name}</a>`;
+        div.querySelector('a').addEventListener('click', (e) => {
+          e.preventDefault();
+          localStorage.setItem('selectedClassId', cls.class_id);
+          localStorage.setItem('selectedClassName', cls.class_name);
+          showStep('subject');
+          loadSubjects(cls.class_id);
+        });
+        panel.appendChild(div);
+      });
+    }
+
+    // Fetch subjects for a class
+    async function loadSubjects(classId) {
+      const res = await fetch('http://127.0.0.1:8000/subjects');
+      const subjects = await res.json();
+      const filtered = subjects.filter(sub => sub.class_id === classId);
+      const panel = document.getElementById('panel-subject');
+      panel.innerHTML = '<h2>Choose Your Subject</h2>';
+      filtered.forEach(sub => {
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = `<a href="#">${sub.subject_name}</a>`;
+        div.querySelector('a').addEventListener('click', (e) => {
+          e.preventDefault();
+          localStorage.setItem('selectedSubjectId', sub.subject_id);
+          localStorage.setItem('selectedSubjectName', sub.subject_name);
+          showStep('chapter');
+          loadChapters(sub.subject_id);
+        });
+        panel.appendChild(div);
+      });
+    }
+
+    // Fetch chapters for a subject
+    async function loadChapters(subjectId) {
+      const res = await fetch('http://127.0.0.1:8000/chapters');
+      const chapters = await res.json();
+      const filtered = chapters.filter(ch => ch.subject_id === subjectId);
+      const list = document.getElementById('chapters-list');
+      list.innerHTML = '';
+      filtered.forEach(ch => {
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = `<a href="#">${ch.chapter_name}</a>`;
+        div.querySelector('a').addEventListener('click', (e) => {
+          e.preventDefault();
+          localStorage.setItem('selectedChapterId', ch.chapter_id);
+          localStorage.setItem('selectedChapterName', ch.chapter_name);
+          location.href = './learn.html';
+        });
+        list.appendChild(div);
+      });
+    }
+
+    window.onload = function() {
+  loadClasses();
+};
   </script>
 </body>
 </html>

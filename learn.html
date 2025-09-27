@@ -64,9 +64,37 @@
     .card {
       background: var(--glass);
       border: 1px solid var(--border);
-      border-radius: 18px; padding: 24px; backdrop-filter: blur(8px);
+      border-radius: 18px; 
+      padding: 24px; 
+      backdrop-filter: blur(8px);
       text-align: center;
     }
+    /* Stretch the summary section card and its grid */
+#summary.card {
+  max-width: 100%;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+/* Make the grid inside summary use full width and only one column */
+#summary .grid {
+  max-width: 100%;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  grid-template-columns: 1fr;
+}
+
+/* Make the summary card inside grid stretch */
+#summary .card {
+  width: 100%;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
     .pills {
       display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px;
     }
@@ -86,6 +114,12 @@
     @media(min-width:768px) { .grid { grid-template-columns: 1fr 1fr; } }
     h2, h3, h1, p, .badge, .subtitle, .title, .lead, .actions, .stats, .pill, .item a, .list, .li {
       text-align: center !important;
+    }
+    .flashcard {
+      transition: box-shadow 0.2s;
+    }
+    .flashcard:active, .flashcard:focus {
+      box-shadow: 0 0 0 4px #a21caf;
     }
   </style>
 </head>
@@ -124,23 +158,16 @@
         <h2>Chapter Summary</h2>
         <span class="pill" style="cursor:default;">Summary</span>
       </div>
-        <p></p>
-        <div class="grid" style="margin-top:10px">
-        </div>
+      <p></p>
+      <div class="grid" style="margin-top:10px">
+      </div>
     </section>
     <section id="flashcards" class="card tab hidden">
       <div class="row" style="justify-content:space-between;">
         <h2>Flashcards</h2>
         <span class="pill" style="cursor:default;">Recall</span>
       </div>
-      <div class="grid" style="margin-top:10px">
-        <div class="card">Flashcard 1 Tap to reveal</div>
-        <div class="card">Flashcard 2 Tap to reveal</div>
-        <div class="card">Flashcard 3 Tap to reveal</div>
-        <div class="card">Flashcard 4 Tap to reveal</div>
-        <div class="card">Flashcard 5 Tap to reveal</div>
-        <div class="card">Flashcard 6 Tap to reveal</div>
-      </div>
+      <div class="grid" style="margin-top:10px"></div>
     </section>
     <section id="doubts" class="card tab hidden">
       <div class="row" style="justify-content:space-between;">
@@ -323,12 +350,22 @@
       const grid = document.querySelector('#summary .grid');
       if (!grid) return;
       grid.innerHTML = '<div style="color:var(--muted);margin:18px 0;">Loading summaries...</div>';
+
+      // Get selected chapter id from localStorage
+      const chapterId = Number(localStorage.getItem("selectedChapterId"));
+      if (!chapterId) {
+        grid.innerHTML = '<div style="color:#f87171">No chapter selected. Go to Dashboard and pick a chapter.</div>';
+        return;
+      }
+
       try {
         const res = await fetch('http://127.0.0.1:8000/summaries');
-        const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
+        const summaries = await res.json();
+        const filtered = summaries.filter(s => s.chapter_id === chapterId);
+
+        if (filtered.length > 0) {
           grid.innerHTML = '';
-          data.forEach(summary => {
+          filtered.forEach(summary => {
             const div = document.createElement('div');
             div.className = 'card';
             div.innerHTML = `<div style="font-weight:600;margin-bottom:8px;">Summary #${summary.summary_id}</div>
@@ -336,15 +373,66 @@
             grid.appendChild(div);
           });
         } else {
-          grid.innerHTML = '<div style="color:#f87171">No summaries found.</div>';
+          grid.innerHTML = '<div style="color:#f87171">No summaries found for this chapter.</div>';
         }
       } catch (e) {
         grid.innerHTML = `<div style="color:#f87171">Error loading summaries: ${e.message}</div>`;
       }
     }
 
+    // Fetch and display flashcards in the Flashcards section
+    async function loadFlashcards() {
+      const grid = document.querySelector('#flashcards .grid');
+      if (!grid) return;
+      grid.innerHTML = '<div style="color:var(--muted);margin:18px 0;">Loading flashcards...</div>';
+
+      // Get selected chapter id from localStorage
+      const chapterId = Number(localStorage.getItem("selectedChapterId"));
+      if (!chapterId) {
+        grid.innerHTML = '<div style="color:#f87171">No chapter selected. Go to Dashboard and pick a chapter.</div>';
+        return;
+      }
+
+      try {
+        const res = await fetch('http://127.0.0.1:8000/flashcards');
+        const flashcards = await res.json();
+        const filtered = flashcards.filter(f => f.chapter_id === chapterId);
+
+        if (filtered.length > 0) {
+          grid.innerHTML = '';
+          filtered.forEach((flashcard, idx) => {
+            const div = document.createElement('div');
+            div.className = 'card flashcard';
+            div.style.cursor = 'pointer';
+            div.innerHTML = `
+              <div style="font-weight:600;margin-bottom:8px;">Flashcard #${idx+1}</div>
+              <div class="fc-front" style="opacity:.7;">Tap to reveal</div>
+              <div class="fc-back" style="display:none;">${flashcard.flashcard_data}</div>
+            `;
+            div.addEventListener('click', function() {
+              const front = div.querySelector('.fc-front');
+              const back = div.querySelector('.fc-back');
+              if (front.style.display !== 'none') {
+                front.style.display = 'none';
+                back.style.display = '';
+              } else {
+                front.style.display = '';
+                back.style.display = 'none';
+              }
+            });
+            grid.appendChild(div);
+          });
+        } else {
+          grid.innerHTML = '<div style="color:#f87171">No flashcards found for this chapter.</div>';
+        }
+      } catch (e) {
+        grid.innerHTML = `<div style="color:#f87171">Error loading flashcards: ${e.message}</div>`;
+      }
+    }
+
     // Call on page load
     loadSummaries();
+    loadFlashcards();
   </script>
 </body>
 </html>

@@ -247,8 +247,8 @@
     }
 
     // Handle REGISTER form submission
-    registerForm.addEventListener('submit', (e) => {
-      e.preventDefault(); // prevent page reload
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
       const name = document.getElementById('regName').value.trim();
       const email = document.getElementById('regEmail').value.trim().toLowerCase();
       const password = document.getElementById('regPassword').value;
@@ -258,43 +258,62 @@
         return; 
       }
 
-      const usersList = getUsers();
-      // Check if email already registered
-      if (usersList.find((u) => (u?.email || '').toLowerCase() === email)) {
-        alert('An account with this email already exists. Please login.');
-        activate('login'); // switch to login form
-        document.getElementById('loginEmail').value = email;
-        return;
+      try {
+        // Register user in backend
+        const res = await fetch('http://127.0.0.1:8000/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            password_hash: password,
+            class_id: null
+          })
+        });
+        if (!res.ok) {
+          const data = await res.json();
+          alert(data.detail || "Registration failed.");
+          return;
+        }
+        // Send OTP
+        await fetch('http://localhost:8000/send_otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email })
+        });
+        localStorage.setItem('pendingOtpEmail', email);
+        location.href = 'otp.html';
+      } catch (err) {
+        alert('Registration failed: ' + err.message);
       }
-
-      // Add new user and save
-      usersList.push({ name, email, password });
-      saveUsers(usersList);
-
-      alert('Registration successful! Please login.');
-      activate('login'); // switch to login
-      document.getElementById('loginEmail').value = email; // prefill email
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
     // Handle LOGIN form submission
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault(); // prevent reload
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
       const email = document.getElementById('loginEmail').value.trim().toLowerCase();
       const password = document.getElementById('loginPassword').value;
 
-      const list = getUsers(); // retrieve users list
-      // Find matching user
-      const user = list.find((u) => (u?.email || '').toLowerCase() === email && u?.password === password);
-
-      if (!user) { 
-        alert('Invalid credentials.'); 
-        return; 
+      try {
+        const res = await fetch('http://127.0.0.1:8000/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        if (!res.ok) {
+          const data = await res.json();
+          alert(data.detail || "Login failed.");
+          return;
+        }
+        // On successful login, set session and redirect to dashboard
+        const user = await res.json();
+        localStorage.setItem('authed', '1');
+        localStorage.setItem('currentUserEmail', user.email);
+        localStorage.setItem('currentUserName', user.name || 'Student');
+        location.href = 'dashboard.html';
+      } catch (err) {
+        alert('Login failed: ' + err.message);
       }
-
-      // Success login -> set session and redirect
-      setSession(user);
-      location.href = './dashboard.html';
     });
   </script>
 </body>

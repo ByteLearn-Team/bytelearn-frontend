@@ -23,7 +23,6 @@
       text-align: center;
     }
     body {
-      /* Match dashboard.html background gradient */
       background: linear-gradient(135deg, #7e22ce 0%, #f472b6 45%, #6366f1 100%);
       background-attachment: fixed;
       position: relative;
@@ -35,7 +34,7 @@
       content: "";
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.35); /* uniform overlay match dashboard */
+      background: rgba(0,0,0,0.35);
       pointer-events: none;
       z-index: 0;
     }
@@ -50,7 +49,7 @@
       text-align: center;
     }
     .logo { display: flex; align-items: center; gap: 12px; }
-    .logo img { width: 40px; height: 40px; }
+    .logo img { width: 70px; height: 70px; }
     .btn {
       display:inline-flex; align-items:center; justify-content:center;
       padding:12px 16px; border-radius:12px;
@@ -65,36 +64,31 @@
       background: var(--glass);
       border: 1px solid var(--border);
       border-radius: 18px; 
-      padding: 24px; 
+      padding: 14px;
       backdrop-filter: blur(8px);
       text-align: center;
     }
-    /* Stretch the summary section card and its grid */
-#summary.card {
-  max-width: 100%;
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  box-sizing: border-box;
-}
-
-/* Make the grid inside summary use full width and only one column */
-#summary .grid {
-  max-width: 100%;
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  grid-template-columns: 1fr;
-}
-
-/* Make the summary card inside grid stretch */
-#summary .card {
-  width: 100%;
-  max-width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  box-sizing: border-box;
-}
+    #summary.card {
+      max-width: 100%;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      box-sizing: border-box;
+    }
+    #summary .grid {
+      max-width: 100%;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      grid-template-columns: 1fr;
+    }
+    #summary .card {
+      width: 100%;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      box-sizing: border-box;
+    }
     .pills {
       display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 12px;
     }
@@ -112,6 +106,63 @@
     p { color: var(--muted); }
     .grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
     @media(min-width:768px) { .grid { grid-template-columns: 1fr 1fr; } }
+    #flashcards .grid { 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 300px;
+      position: relative;
+      overflow: visible;
+    }
+    
+    .flashcard-container {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 150ms;
+      z-index: 20;
+      font-size: 20px;
+      color: var(--text);
+      user-select: none;
+    }
+
+    .nav-arrow:hover {
+      background: rgba(255,255,255,0.24);
+    }
+
+    .nav-arrow.left {
+      left: 10px;
+    }
+
+    .nav-arrow.right {
+      right: 10px;
+    }
+
+    .nav-arrow.disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    
     h2, h3, h1, p, .badge, .subtitle, .title, .lead, .actions, .stats, .pill, .item a, .list, .li {
       text-align: center !important;
     }
@@ -120,6 +171,163 @@
     }
     .flashcard:active, .flashcard:focus {
       box-shadow: 0 0 0 4px #a21caf;
+    }
+    .summary-text {
+      white-space: pre-wrap;
+      text-align: justify;
+      font-size: 17px;
+      margin: 16px 30px;
+      padding: 0 0 0 2px;
+      line-height: 1.9;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      letter-spacing: 0.015em;
+    }
+
+    .summary-text .heading {
+      display: inline-block !important;
+      font-weight: 700 !important;
+      color: #fbbf24 !important;
+      font-size: 20px !important;
+      margin: 24px 0 12px 0 !important;
+      padding-bottom: 8px !important;
+      border-bottom: 2px solid #fbbf24 !important;
+      text-align: left !important;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+      letter-spacing: 0.02em !important;
+      width: 100%;
+    }
+
+    .summary-text .heading:first-child {
+      margin-top: 0 !important;
+    }
+    
+    .flashcard-text {
+      white-space: pre-wrap;
+      font-family: "Times New Roman", Times, serif;
+      text-align: justify;
+      font-size: 19px;
+      margin: 16px 30px;
+      padding: 0 0 0 2px;
+    }
+
+    .card-item {
+      position: absolute;
+      width: 380px;
+      height: 250px;
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(8px);
+      transition: transform 0.4s ease, opacity 0.4s ease, left 0.4s ease;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      user-select: none;
+    }
+    
+    .card-item.visited {
+      left: -120px;
+      transform: scale(0.75);
+      opacity: 0.5;
+      z-index: 5;
+    }
+    
+    .card-item.visited:nth-child(1) {
+      left: -120px;
+      z-index: 5;
+    }
+    
+    .card-item.visited:nth-child(2) {
+      left: -100px;
+      z-index: 6;
+    }
+    
+    .card-item.visited:nth-child(3) {
+      left: -80px;
+      z-index: 7;
+    }
+    
+    .card-item.current {
+      left: 50%;
+      transform: translateX(-50%) scale(1);
+      opacity: 1;
+      z-index: 10;
+    }
+    
+    .card-item.unvisited {
+      left: auto;
+      right: -120px;
+      transform: scale(0.75);
+      opacity: 0.5;
+      z-index: 5;
+    }
+    
+    .card-item.unvisited:nth-last-child(1) {
+      right: -120px;
+      z-index: 5;
+    }
+    
+    .card-item.unvisited:nth-last-child(2) {
+      right: -100px;
+      z-index: 6;
+    }
+    
+    .card-item.unvisited:nth-last-child(3) {
+      right: -80px;
+      z-index: 7;
+    }
+
+    .card-front {
+      background: linear-gradient(135deg, rgba(162, 28, 175, 0.4) 0%, rgba(109, 40, 217, 0.4) 100%);
+    }
+
+    .card-back {
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.25) 0%, rgba(245, 158, 11, 0.25) 100%);
+    }
+
+    .flashcard-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 16px;
+      text-align: center;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      letter-spacing: 0.3px;
+    }
+
+    .flashcard-content {
+      font-size: 17px;
+      line-height: 1.8;
+      text-align: justify;
+      text-align-last: center;
+      color: #ffffff;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      overflow-y: auto;
+      max-height: 100%;
+      font-weight: 600;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+      letter-spacing: 0.3px;
+      word-spacing: 0.5px;
+      padding: 0 8px;
+      hyphens: auto;
+    }
+
+    .flashcard-prompt {
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      letter-spacing: 0.5px;
+    }
+
+    .flashcard > div[style*="font-weight:600"] {
+      display: none;
     }
   </style>
 </head>
@@ -195,7 +403,6 @@
     </section>
   </main>
   <script>
-    // --- Quiz Section ---
     const quizArea = document.getElementById('quiz-area');
     const quizControls = document.getElementById('quiz-controls');
     const generateQuizBtn = document.getElementById('generate-quiz-btn');
@@ -206,11 +413,10 @@
         quizArea.innerHTML = '<div style="color:var(--muted);margin:18px 0;">Generating quiz...</div>';
         generateQuizBtn.disabled = true;
         try {
-          // Fetch quiz from AI backend (adjust endpoint as needed)
           const res = await fetch('/generate_quiz', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ topic: 'current' }) // You can pass topic/notes info here
+            body: JSON.stringify({ topic: 'current' })
           });
           const data = await res.json();
           if (data && Array.isArray(data.questions) && data.questions.length > 0) {
@@ -252,12 +458,10 @@
       html += '</form>';
       quizArea.innerHTML = html;
 
-      // Optionally, handle quiz submission and feedback
       const quizForm = document.getElementById('quiz-form-area');
       if (quizForm) {
         quizForm.addEventListener('submit', function(e) {
           e.preventDefault();
-          // Simple feedback: show correct/incorrect (if answers are provided)
           if (!quizData || !quizData.length) return;
           let correct = 0;
           let total = quizData.length;
@@ -270,19 +474,18 @@
       }
       generateQuizBtn.disabled = false;
     }
-    // --- Chatbot Doubt Section ---
+
     const chatForm = document.getElementById('chat-form');
     const chatInput = document.getElementById('chat-input');
     const chatHistory = document.getElementById('chat-history');
+
     if (chatForm && chatInput && chatHistory) {
       chatForm.addEventListener('submit', async function() {
         const userMsg = chatInput.value.trim();
         if (!userMsg) return;
-        // Add user message
         addMsg('You', userMsg, 'right');
         chatInput.value = '';
         chatInput.disabled = true;
-        // Add loading
         const loadingId = addMsg('Bot', '<span style="opacity:.7;">Thinking...</span>', 'left', true);
         try {
           const res = await fetch('http://127.0.0.1:8000/generate', {
@@ -325,9 +528,11 @@
         if (el) el.remove();
       }
     }
+
     if (localStorage.getItem('authed') !== '1') {
       location.replace('./login.html');
     }
+
     const pills = document.querySelectorAll(".pill[data-tab]");
     const tabs = document.querySelectorAll(".tab");
     pills.forEach(p => p.addEventListener("click", () => {
@@ -338,20 +543,18 @@
       document.getElementById(id)?.classList.remove("hidden");
       window.scrollTo({ top: 0, behavior: "smooth" });
     }));
-    // Fill workspace name in header with current user
+
     (function(){
-      const n = localStorage.getItem('currentUserName') || 'Student';
-      const el = document.getElementById('lName');
+      const n = localStorage.getItem("currentUserName") || "Student";
+      const el = document.getElementById("lName");
       if (el) el.textContent = n;
     })();
 
-    // Fetch and display summaries in the Summaries section
     async function loadSummaries() {
-      const grid = document.querySelector('#summary .grid');
+      const grid = document.querySelector("#summary .grid");
       if (!grid) return;
       grid.innerHTML = '<div style="color:var(--muted);margin:18px 0;">Loading summaries...</div>';
 
-      // Get selected chapter id from localStorage
       const chapterId = Number(localStorage.getItem("selectedChapterId"));
       if (!chapterId) {
         grid.innerHTML = '<div style="color:#f87171">No chapter selected. Go to Dashboard and pick a chapter.</div>';
@@ -359,17 +562,35 @@
       }
 
       try {
-        const res = await fetch('http://127.0.0.1:8000/summaries');
+        const res = await fetch("http://127.0.0.1:8000/summaries");
         const summaries = await res.json();
-        const filtered = summaries.filter(s => s.chapter_id === chapterId);
+        const filtered = summaries.filter((s) => s.chapter_id === chapterId);
 
         if (filtered.length > 0) {
-          grid.innerHTML = '';
-          filtered.forEach(summary => {
-            const div = document.createElement('div');
-            div.className = 'card';
-            div.innerHTML = `<div style="font-weight:600;margin-bottom:8px;">Summary #${summary.summary_id}</div>
-                             <div>${summary.summary_data}</div>`;
+          grid.innerHTML = "";
+          filtered.forEach((summary) => {
+            const div = document.createElement("div");
+            div.className = "card";
+            
+            let text = summary.summary_data;
+            
+            const lines = text.split('\n');
+            for (let i = 0; i < lines.length; i++) {
+              const line = lines[i].trim();
+              
+              if (line.startsWith('Section:') || line.startsWith('Section ')) {
+                lines[i] = '<span class="heading">' + lines[i] + '</span>';
+              }
+              else if (/^\d+\.\d+\s/.test(line)) {
+                lines[i] = '<span class="heading">' + lines[i] + '</span>';
+              }
+              else if (line === 'Key Terms' || line === 'Chapter Summary' || line === 'High-Yield Exam Facts') {
+                lines[i] = '<span class="heading">' + lines[i] + '</span>';
+              }
+            }
+            text = lines.join('\n');
+            
+            div.innerHTML = `<div class="summary-text">${text}</div>`;
             grid.appendChild(div);
           });
         } else {
@@ -380,13 +601,11 @@
       }
     }
 
-    // Fetch and display flashcards in the Flashcards section
     async function loadFlashcards() {
-      const grid = document.querySelector('#flashcards .grid');
+      const grid = document.querySelector("#flashcards .grid");
       if (!grid) return;
       grid.innerHTML = '<div style="color:var(--muted);margin:18px 0;">Loading flashcards...</div>';
 
-      // Get selected chapter id from localStorage
       const chapterId = Number(localStorage.getItem("selectedChapterId"));
       if (!chapterId) {
         grid.innerHTML = '<div style="color:#f87171">No chapter selected. Go to Dashboard and pick a chapter.</div>';
@@ -394,34 +613,150 @@
       }
 
       try {
-        const res = await fetch('http://127.0.0.1:8000/flashcards');
+        const res = await fetch("http://127.0.0.1:8000/flashcards");
         const flashcards = await res.json();
-        const filtered = flashcards.filter(f => f.chapter_id === chapterId);
+        const filtered = flashcards.filter((f) => f.chapter_id === chapterId);
 
         if (filtered.length > 0) {
-          grid.innerHTML = '';
-          filtered.forEach((flashcard, idx) => {
-            const div = document.createElement('div');
-            div.className = 'card flashcard';
-            div.style.cursor = 'pointer';
-            div.innerHTML = `
-              <div style="font-weight:600;margin-bottom:8px;">Flashcard #${idx+1}</div>
-              <div class="fc-front" style="opacity:.7;">Tap to reveal</div>
-              <div class="fc-back" style="display:none;">${flashcard.flashcard_data}</div>
-            `;
-            div.addEventListener('click', function() {
-              const front = div.querySelector('.fc-front');
-              const back = div.querySelector('.fc-back');
-              if (front.style.display !== 'none') {
-                front.style.display = 'none';
-                back.style.display = '';
+          grid.innerHTML = `
+            <div class="nav-arrow left" id="prev-card">←</div>
+            <div class="flashcard-container" id="card-container"></div>
+            <div class="nav-arrow right" id="next-card">→</div>
+          `;
+          
+          const container = document.getElementById('card-container');
+          const prevBtn = document.getElementById('prev-card');
+          const nextBtn = document.getElementById('next-card');
+          let currentCardIndex = 0;
+          let isFlipped = false;
+          
+          const allCards = filtered.map((flashcard, idx) => {
+            const raw = (flashcard.flashcard_data || '').replace(/\r/g, '');
+            let topic = '', keypoint = '';
+            
+            if (/Key Point:/i.test(raw)) {
+              const parts = raw.split(/Key Point:/i);
+              topic = parts[0].trim();
+              keypoint = parts.slice(1).join('Key Point:').trim();
+            } else if (raw.includes('|')) {
+              const parts = raw.split('|');
+              topic = parts[0].trim().replace(/\|+$/, "");
+              keypoint = parts.slice(1).join(' ').trim();
+            } else {
+              const lines = raw.split('\n').map(s=>s.trim()).filter(Boolean);
+              topic = lines.shift() || '';
+              keypoint = lines.join(' ') || '';
+            }
+
+            topic = topic.replace(/\|/g, '').replace(/\[\d+\]/g, '').trim();
+            keypoint = keypoint.replace(/\|/g, '').replace(/\[\d+\]/g, '').trim();
+            
+            return { topic, keypoint };
+          });
+          
+          function createCard(index, cardData) {
+            const cardEl = document.createElement('div');
+            cardEl.className = 'card-item card-front';
+            cardEl.dataset.index = index;
+            cardEl.innerHTML = `<div class="flashcard-prompt">Tap to reveal (${index + 1}/${allCards.length})</div>`;
+            
+            cardEl.addEventListener('click', function() {
+              if (parseInt(cardEl.dataset.index) !== currentCardIndex) return;
+              
+              if (!isFlipped) {
+                cardEl.classList.remove('card-front');
+                cardEl.classList.add('card-back');
+                cardEl.innerHTML = `
+                  <div class="flashcard-title">${cardData.topic}</div>
+                  <div class="flashcard-content">${cardData.keypoint}</div>
+                `;
+                isFlipped = true;
               } else {
-                front.style.display = '';
-                back.style.display = 'none';
+                cardEl.classList.remove('card-back');
+                cardEl.classList.add('card-front');
+                cardEl.innerHTML = `<div class="flashcard-prompt">Tap to reveal (${index + 1}/${allCards.length})</div>`;
+                isFlipped = false;
               }
             });
-            grid.appendChild(div);
+            
+            return cardEl;
+          }
+          
+          function updateCardPositions() {
+            const cards = Array.from(container.children);
+            
+            cards.forEach((card, idx) => {
+              card.classList.remove('visited', 'current', 'unvisited');
+              
+              if (idx < currentCardIndex) {
+                card.classList.add('visited');
+              } else if (idx === currentCardIndex) {
+                card.classList.add('current');
+              } else {
+                card.classList.add('unvisited');
+              }
+            });
+            
+            prevBtn.classList.toggle('disabled', currentCardIndex === 0);
+            nextBtn.classList.toggle('disabled', currentCardIndex === allCards.length - 1);
+          }
+          
+          function goToNext() {
+            if (currentCardIndex > 0) {
+              currentCardIndex--;
+              isFlipped = false;
+              updateCardPositions();
+            }
+          }
+          
+          function goToPrev() {
+            if (currentCardIndex < allCards.length - 1) {
+              currentCardIndex++;
+              isFlipped = false;
+              updateCardPositions();
+            }
+          }
+          
+          prevBtn.addEventListener('click', goToPrev);
+          nextBtn.addEventListener('click', goToNext);
+          
+          allCards.forEach((cardData, idx) => {
+            const card = createCard(idx, cardData);
+            container.appendChild(card);
           });
+          
+          updateCardPositions();
+          
+          // Enable horizontal mouse wheel scrolling for flashcards
+          container.addEventListener('wheel', function(e) {
+            if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+              // Horizontal scroll (trackpad or shift+wheel)
+              if (e.deltaX > 0 && currentCardIndex < allCards.length - 1) {
+                currentCardIndex++;
+                isFlipped = false;
+                updateCardPositions();
+                e.preventDefault();
+              } else if (e.deltaX < 0 && currentCardIndex > 0) {
+                currentCardIndex--;
+                isFlipped = false;
+                updateCardPositions();
+                e.preventDefault();
+              }
+            } else if (Math.abs(e.deltaY) > 10) {
+              // Vertical scroll (mouse wheel)
+              if (e.deltaY > 0 && currentCardIndex < allCards.length - 1) {
+                currentCardIndex++;
+                isFlipped = false;
+                updateCardPositions();
+                e.preventDefault();
+              } else if (e.deltaY < 0 && currentCardIndex > 0) {
+                currentCardIndex--;
+                isFlipped = false;
+                updateCardPositions();
+                e.preventDefault();
+              }
+            }
+          }, { passive: false });
         } else {
           grid.innerHTML = '<div style="color:#f87171">No flashcards found for this chapter.</div>';
         }
@@ -430,7 +765,6 @@
       }
     }
 
-    // Call on page load
     loadSummaries();
     loadFlashcards();
   </script>

@@ -85,7 +85,7 @@
       margin-bottom: 14px; 
     }
 
-    .logo img { width: 40px; height: 40px; } /* Logo icon size */
+    .logo img { width: 70px; height: 70px; } /* Logo icon size */
     .logo.center { justify-content: center; text-align: center; } /* Center align */
 
     /* Gradient brand text */
@@ -144,7 +144,7 @@
 
     <!-- Logo inside the card (clickable -> Welcome page) -->
     <div class="logo center" style="cursor:pointer;" onclick="location.href='./welcome.html'">
-      <img src="logo.png" alt="BytLearn" /> <!-- Brand logo -->
+      <img src="./logo.png" alt="BytLearn" /> <!-- Brand logo -->
       <div>
         <h1 style="margin:0 0 4px; font-size:28px;"><span class="brand">BytLearn</span></h1> <!-- Brand name with gradient -->
         <div style="font-size:12px;opacity:.85">Sign in or create an account</div> <!-- Subtitle -->
@@ -219,6 +219,26 @@
     tabLogin.addEventListener('click', () => activate('login'));
     tabRegister.addEventListener('click', () => activate('register'));
 
+    // Get saved users from localStorage safely
+    function getUsers() {
+      const raw = localStorage.getItem('users');
+      if (!raw) return []; // no user data
+      try {
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : []; // return array only
+      } catch {
+        // If corrupted data, clear it and reset
+        localStorage.removeItem('users');
+        return [];
+      }
+    }
+
+    // Save updated users list
+    function saveUsers(list) {
+      if (!Array.isArray(list)) return; // only save arrays
+      localStorage.setItem('users', JSON.stringify(list));
+    }
+
     // Set authenticated user session info
     function setSession(user) {
       localStorage.setItem('authed', '1');
@@ -227,8 +247,8 @@
     }
 
     // Handle REGISTER form submission
-    registerForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    registerForm.addEventListener('submit', (e) => {
+      e.preventDefault(); // prevent page reload
       const name = document.getElementById('regName').value.trim();
       const email = document.getElementById('regEmail').value.trim().toLowerCase();
       const password = document.getElementById('regPassword').value;
@@ -238,56 +258,43 @@
         return; 
       }
 
-      try {
-        const res = await fetch("http://127.0.0.1:8000/register", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: name,
-            email: email,
-            password_hash: password,
-            class_id: null
-          })
-        });
-        if (!res.ok) {
-          const data = await res.json();
-          alert(data.detail || "Registration failed.");
-          return;
-        }
-        alert('Registration successful! Please login.');
-        activate('login');
+      const usersList = getUsers();
+      // Check if email already registered
+      if (usersList.find((u) => (u?.email || '').toLowerCase() === email)) {
+        alert('An account with this email already exists. Please login.');
+        activate('login'); // switch to login form
         document.getElementById('loginEmail').value = email;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      } catch (err) {
-        alert('Registration failed: ' + err.message);
+        return;
       }
+
+      // Add new user and save
+      usersList.push({ name, email, password });
+      saveUsers(usersList);
+
+      alert('Registration successful! Please login.');
+      activate('login'); // switch to login
+      document.getElementById('loginEmail').value = email; // prefill email
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
     // Handle LOGIN form submission
-    loginForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault(); // prevent reload
       const email = document.getElementById('loginEmail').value.trim().toLowerCase();
       const password = document.getElementById('loginPassword').value;
 
-      try {
-        const res = await fetch("http://127.0.0.1:8000/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: email, password: password
-          })
-        });
-        if (!res.ok) {
-          const data = await res.json();
-          alert(data.detail || "Login failed.");
-          return;
-        }
-        const user = await res.json();
-        setSession(user);
-        location.href = './dashboard.html';
-      } catch (err) {
-        alert('Login failed: ' + err.message);
+      const list = getUsers(); // retrieve users list
+      // Find matching user
+      const user = list.find((u) => (u?.email || '').toLowerCase() === email && u?.password === password);
+
+      if (!user) { 
+        alert('Invalid credentials.'); 
+        return; 
       }
+
+      // Success login -> set session and redirect
+      setSession(user);
+      location.href = './dashboard.html';
     });
   </script>
 </body>

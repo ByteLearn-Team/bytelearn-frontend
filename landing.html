@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Veloxct — Landing</title>
+    
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: ['class'],
+        theme: {
+          extend: {
+            borderRadius: {
+              '3xl': '1.5rem',
+            },
+          },
+        },
+      }
+    </script>
+    <!-- Add: reveal animation styles -->
+    <style>
+      .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s cubic-bezier(.22,1,.36,1); }
+      .reveal-active { opacity: 1; transform: translateY(0); }
+      @media (prefers-reduced-motion: reduce) {
+        .reveal { opacity: 1; transform: none; transition: none; }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white overflow-x-hidden">
+    <!-- Animated background elements -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+      <div class="absolute top-20 left-20 w-32 h-32 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full opacity-20 animate-pulse"></div>
+      <div class="absolute top-40 right-32 w-24 h-24 bg-gradient-to-r from-pink-400 to-yellow-400 rounded-full opacity-30 animate-bounce"></div>
+      <div class="absolute bottom-32 left-1/4 w-40 h-40 bg-gradient-to-r from-blue-400 to-green-400 rounded-full opacity-15 animate-pulse"></div>
+    </div>
+
+    <!-- Header -->
+   <header class="relative z-10 p-6 backdrop-blur-sm bg-black/20 border-b border-white/10 flex items-center justify-end pr-6">
+  <a href="landing.html" class="absolute left-6 top-1/2 -translate-y-1/2 flex items-center" aria-label="Go to home" style="gap: 0;">
+    <img src="com1.png" alt="VeloxCT Logo" style="width: 85px; height: 85px; display: block;" />
+    <span class="text-lg md:text-xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-tight leading-none" style="margin-left: 0;">
+      VeloxCT
+    </span>
+  </a>
+
+
+
+
+
+
+    <!-- Nav menu moved fully right -->
+    <nav class="hidden md:flex space-x-8">
+      <a href="#home" class="text-gray-300 hover:text-white transition-colors duration-300 relative group">
+        Home
+        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:w-full transition-all duration-300"></span>
+      </a>
+      <a href="#about" class="text-gray-300 hover:text-white transition-colors duration-300 relative group">
+        About Us
+        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:w-full transition-all duration-300"></span>
+      </a>
+      <a href="#team" class="text-gray-300 hover:text-white transition-colors duration-300 relative group">
+        Team
+        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:w-full transition-all duration-300"></span>
+      </a>
+      <a href="#current-project" class="text-gray-300 hover:text-white transition-colors duration-300 relative group">
+        Projects
+        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:w-full transition-all duration-300"></span>
+      </a>
+      <a href="#contact" class="text-gray-300 hover:text-white transition-colors duration-300 relative group">
+        Contacts
+        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:w-full transition-all duration-300"></span>
+      </a>
+    </nav>
+  </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative z-10 py-20 px-6 reveal">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="reveal text-6xl md:text-8xl font-bold mb-4 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+          VeloxCT
+        </h2>
+        <a
+          href="landing.html"
+          class="inline-flex items-center justify-center bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white px-8 py-4 text-lg rounded-full shadow-2xl transition-all duration-300"
+        >
+          Explore Us
+        </a>
+      </div>
+    </section>
+
+    <!-- ABOUT US Section -->
+    <section id="about" class="relative z-10 py-20 px-6">
+      <div class="max-w-7xl mx-auto">
+        <h3 class="reveal text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+          About Us
+        </h3>
+        <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl min-h-[270px] flex flex-col justify-center items-center text-center reveal">
+          <div class="p-6 md:p-12 w-full flex flex-col justify-center items-center text-center h-full">
+            <p class="text-lg md:text-xl text-gray-200 leading-relaxed text-center" style="font-size: 18px; line-height: 1.5; text-align: center; color: #e5e7eb;">
+              VeloxCT is a collaborative student-led company built on innovation, teamwork, and technology.
+              We are a group of four dedicated members who come together with diverse skills in frontend design,
+              backend systems, artificial intelligence, and integration. Our company name reflects our values:
+              velocity, excellence, and technology. At VeloxCT, we believe in combining creativity with technical
+              expertise to develop impactful solutions. With every project, we focus on learning, experimenting,
+              and building tools that make a difference.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="relative z-10 py-20 px-6">
+      <div class="max-w-7xl mx-auto">
+        <h3 class="reveal text-3xl md:text-4xl font-bold text-center mb-16 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+          Our Team
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <!-- Team Member Cards here, unchanged -->
+          <!-- Member 1 -->
+          <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl h-full reveal">
+            <div class="p-6 text-center h-full flex flex-col">
+              <div class="w-16 h-16 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white">
+                <!-- Target icon -->
+                <img src="int.png" alt="Personalized Recommendations Icon" style="width: 40px; height: 40px;" />
+              </div>
+              <h4 class="text-xl font-bold text-white mb-2">Parvathy Unnikrishnan</h4>
+              <p class="text-cyan-400 font-semibold mb-3 text-sm">Integration & Progress Analytics Developer</p>
+              <p class="text-gray-300 text-sm flex-grow">Builds and maintains analytics and integrates systems.</p>
+            </div>
+          </div>
+          <!-- Member 2 -->
+          <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl h-full reveal">
+            <div class="p-6 text-center h-full flex flex-col">
+              <div class="w-16 h-16 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white">
+                <!-- Code icon -->
+                <img src="fro.png" alt="Personalized Recommendations Icon" style="width: 40px; height: 40px;" />
+              </div>
+              <h4 class="text-xl font-bold text-white mb-2">Rugmini T P</h4>
+              <p class="text-cyan-400 font-semibold mb-3 text-sm">Frontend Developer & UI/UX Designer</p>
+              <p class="text-gray-300 text-sm flex-grow">Designs user-friendly interfaces for learning platforms.</p>
+            </div>
+          </div>
+          <!-- Member 3 -->
+          <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl h-full reveal">
+            <div class="p-6 text-center h-full flex flex-col">
+              <div class="w-16 h-16 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white">
+                <!-- Users icon -->
+                <img src="back.png" alt="Personalized Recommendations Icon" style="width: 40px; height: 40px;" />
+              </div>
+              <h4 class="text-xl font-bold text-white mb-2">Vyshnav M D</h4>
+              <p class="text-cyan-400 font-semibold mb-3 text-sm">Backend Developer & Database</p>
+              <p class="text-gray-300 text-sm flex-grow">Handles backend logic and data management.</p>
+            </div>
+          </div>
+          <!-- Member 4 -->
+          <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl h-full reveal">
+            <div class="p-6 text-center h-full flex flex-col">
+              <div class="w-16 h-16 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white">
+                <!-- Target icon -->
+                <img src="ai.png" alt="Personalized Recommendations Icon" style="width: 40px; height: 40px;" />
+              </div>
+              <h4 class="text-xl font-bold text-white mb-2">Vishnuprasad A</h4>
+              <p class="text-cyan-400 font-semibold mb-3 text-sm">AI Developer</p>
+              <p class="text-gray-300 text-sm flex-grow">Develops RAG-based AI for quizzes and student support.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Current Project Section -->
+    <section id="current-project" class="relative z-10 py-20 px-6">
+      <div class="max-w-7xl mx-auto">
+        <h3 class="reveal text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+          Current Project: BytLearn
+        </h3>
+        <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl min-h-[270px] flex flex-col justify-center items-center text-center reveal">
+          <div class="p-6 md:p-12 w-full flex flex-col justify-center items-center text-center h-full">
+            <p class="text-lg md:text-xl text-gray-200 leading-relaxed text-center" style="font-size: 18px; line-height: 1.5; text-align: center; color: #e5e7eb;">
+              BytLearn is an AI-powered web application designed for NEET and CBSE students. It delivers
+              syllabus-aligned summaries, flashcards, quizzes, and doubt-solving tools, all
+              based on preloaded NCERT content and AI. Our platform focuses on smart revision, adaptive
+              feedback, and performance tracking to help students achieve success efficiently
+              focusing only on Biology.
+            </p>
+            <div class="mt-6">
+              <div class="flex items-center justify-center">
+                <a
+  href="welcome.html"
+  rel="noopener noreferrer"
+  class="text-2xl font-semibold text-cyan-300 hover:text-cyan-200 no-underline"
+>
+  Visit BytLearn!!
+</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="relative z-10 py-6 px-6">
+      <div class="max-w-7xl mx-auto text-center">
+        <h3 class="reveal text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+          Get In Touch
+        </h3>
+        <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl w-full flex flex-col items-center justify-center px-12 py-6 reveal">
+          <div class="flex items-center justify-center space-x-4 mb-4">
+            <div class="w-10 h-10 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full flex items-center justify-center">
+              <!-- Mail icon -->
+              <img src="mail.png" alt="Personalized Recommendations Icon" style="width: 35px; height: 35px;" />
+            </div>
+            <div class="text-left">
+              <p class="text-gray-300 text-sm mb-1">Ready to revolutionize your learning?</p>
+              <a href="mailto:labnotfound404@gmail.com" class="text-lg font-semibold text-cyan-400 hover:text-cyan-300 transition-colors duration-300 block">
+                labnotfound404@gmail.com
+              </a>
+            </div>
+          </div>
+          <a
+            href="mailto:labnotfound404@gmail.com"
+            class="inline-flex items-center justify-center bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white px-7 py-2 rounded-full shadow-2xl transition-all duration-300 mt-2"
+          >
+            Contact Us
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative z-10 py-8 px-6 bg-gradient-to-r from-purple-900/40 via-purple-900/30 to-slate-900/40 border-t border-white/10 reveal">
+      <div class="max-w-7xl mx-auto text-center">
+        <p class="text-gray-200">Copyright © 2025 VeloxCT. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Add: IntersectionObserver to activate reveal on scroll -->
+    <script>
+      (function () {
+        var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduced) return;
+        var els = document.querySelectorAll('.reveal');
+        if (!('IntersectionObserver' in window)) {
+          els.forEach(function (el) { el.classList.add('reveal-active'); });
+          return;
+        }
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('reveal-active');
+              io.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.12, rootMargin: '0px 0px -10% 0px' });
+        els.forEach(function (el) { io.observe(el); });
+      })();
+    </script>
+  </body>
+</html>

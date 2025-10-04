@@ -71,7 +71,7 @@
 
     /* Logo styling */
     .logo { display: flex; align-items: center; gap: 12px; cursor: default; }
-    .logo img { width: 40px; height: 40px; }
+    .logo img { width: 85px; height: 85px; }
     .title { font-weight: 800; font-size: 22px; line-height: 1; }
     .subtitle { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
@@ -131,11 +131,16 @@
     .card h3 { margin: 0 0 8px; font-size: 28px; font-weight: 800; }
     .card p { margin: 0; color: var(--muted); }
 
-    /* Footer */
+     /* Footer */
     footer {
       text-align: center; padding: 24px; border-top: 1px solid var(--border);
       margin-top: 40px; color: rgba(255,255,255,0.7);
     }
+    footer { position: relative; z-index: 1000; }
+a.inline { position: relative; z-index: 1001; cursor: pointer; }
+a.inline {
+  color: rgba(255,255,255,0.7);
+}
     a.inline { color: #fff; text-decoration: underline; }
 
     .row {
@@ -151,6 +156,80 @@
     h2, h3, h1, p, .badge, .subtitle, .title, .lead, .actions, .stats, .pill, .item a, .list, .li {
       text-align: center !important; /* Center all headings, paragraphs, badges, pills, links, lists */
     }
+     /* NEW: Why Choose section layout, spacing, and reveal-on-scroll */
+    #why-choose {
+      max-width: 1000px;             /* match stats width */
+      margin: 100px auto 0;          /* exact larger gap from screenshot */
+      padding: 0;                    /* remove outer padding (no external box) */
+      background: transparent;       /* remove external box background */
+      border: none;                  /* remove external border */
+      border-radius: 0;              /* remove rounded outer box */
+      backdrop-filter: none;         /* no blur on outer wrapper */
+    }
+    #why-choose h2 {
+      margin: 0;
+      font-size: clamp(36px, 5.5vw, 52px);
+      font-weight: 800;
+    }
+    #why-choose .sub {
+      margin: 20px auto 64px;
+      max-width: 900px;
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 20px;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+    @media (min-width: 960px) {
+      .features { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    }
+    .feature {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      text-align: center;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      backdrop-filter: blur(8px);
+    }
+    .icon-circle {
+      width: 72px; height: 72px;
+      border-radius: 9999px;
+      display: grid; place-items: center;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid var(--border);
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,0.06),
+        0 8px 24px rgba(0,0,0,0.16);
+      backdrop-filter: blur(8px);
+    }
+    .icon-circle svg {
+      width: 32px; height: 32px;
+      stroke: rgba(255,255,255,0.85);
+      fill: none;
+      stroke-width: 2;
+      opacity: 0.9;
+    }
+    .feature h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .feature p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    /* Reveal-on-scroll animation */
+    .reveal { opacity: 0; transform: translateY(24px); transition: 500ms ease; }
+    .reveal.show { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 
@@ -211,13 +290,72 @@
         <div class="card"><h3>100%</h3><p>Syllabus-Aligned</p></div>
         <div class="card"><h3>24/7</h3><p>AI Learning</p></div>
       </div>
+    <!-- NEW: Why Choose ByteLearn section (spacing and transitions to match preview) -->
+      <section id="why-choose" class="reveal">
+        <h2>Why Choose BytLearn?</h2>
+        <p class="sub">
+          Our AI‑powered platform is dedicated to your learning, providing personalized education that grows with you.
+        </p>
+        <div class="features">
+          <div class="feature">
+            <div class="icon-circle">
+              <!-- AI icon -->
+              <img src="i4.png" alt="AI‑Powered Learning" style="width: 40px; height: 40px;" />
+            </div>
+            <h3>AI‑Powered Learning</h3>
+            <p>Personalized paths tailored just and only for you.</p>
+          </div>
+          <div class="feature">
+            <div class="icon-circle">
+              <!-- Book icon -->
+              <img src="i2.png" alt="Interactive Content" style="width: 40px; height: 40px;" />
+            </div>
+            <h3>Interactive Content</h3>
+            <p>Hands-on experiences that make learning stick.</p>
+          </div>
+          <div class="feature">
+            <div class="icon-circle">
+              <!-- Trophy icon -->
+              <img src="i3.png" alt="Progress Tracking" style="width: 40px; height: 40px;" />
+            </div>
+            <h3>Progress Tracking</h3>
+            <p>Monitor growth with clear, actionable analytics.</p>
+          </div>
+          <div class="feature">
+            <div class="icon-circle">
+              <!-- Users icon -->
+              <img src="i1.png" alt="Personalized Recommendations Icon" style="width: 40px; height: 40px;" />
+
+            </div>
+            <h3>Personalized Recommendations</h3>
+            <p>Smarter suggestions on how you learn, not just score.</p>
+          </div>
+        </div>
+      </section>
     </section>
   </main>
 
   <!-- Footer -->
   <footer>
-    © 2024 ByteLearn. Powered by 
-    <a class="inline" href="#" target="_blank" rel="noopener">VeloxCT</a>
-  </footer>
+  2024 BytLearn. Powered by <a class="inline" href="landing.html" >VeloxCT</a>
+</footer>
+
+  <script>
+    // Reveal-on-scroll observer (keeps everything else untouched)
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add('show');
+        });
+      },
+      { threshold: 0.15 }
+    );
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+  </script>
 </body>
 </html>
+
+
+
+
+

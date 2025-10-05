@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>BytLearn – Terms & Privacy Policy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * { 
+      box-sizing: border-box; 
+      margin: 0;
+      padding: 0;
+    }
+
+    html { 
+      scroll-behavior: smooth;
+      scroll-padding-top: 100px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      line-height: 1.65;
+      color: #1e293b;
+      background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 25%, #93c5fd 50%, #bfdbfe 75%, #dbeafe 100%);
+      background-attachment: fixed;
+      min-height: 100vh;
+    }
+
+    /* Unified Header with Navigation */
+    header {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 24px rgba(59, 130, 246, 0.15);
+    }
+
+    .header-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0 16px;
+    }
+
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .logo-section img {
+      width: 44px;
+      height: 44px;
+    }
+
+    .logo-text h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1e3a8a;
+      letter-spacing: -0.02em;
+    }
+
+    .logo-text p {
+      font-size: 13px;
+      color: #334155;
+      font-weight: 500;
+    }
+
+    .back-btn {
+      padding: 10px 22px;
+      background: rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: #1e40af;
+      text-decoration: none;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      transition: all 0.3s;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+    }
+
+    /* Navigation in Header */
+    .header-nav {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .nav-link {
+      color: #1e40af;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 24px;
+      border-radius: 8px;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: #1e3a8a;
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: #2563eb;
+      transition: width 0.3s;
+    }
+
+    .nav-link:hover::after {
+      width: 60%;
+    }
+
+    /* Main Content */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 40px;
+    }
+
+    .intro-section {
+      margin-bottom: 60px;
+    }
+
+    .last-updated {
+      display: block;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: #1e40af;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .page-title {
+      font-size: 48px;
+      font-weight: 800;
+      color: #1e3a8a;
+      margin-bottom: 24px;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      text-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
+    }
+
+    .intro-text {
+      color: #334155;
+      font-size: 17px;
+      line-height: 1.8;
+      max-width: 100%;
+      margin: 0;
+    }
+
+    .intro-text p {
+      margin-bottom: 16px;
+    }
+
+    /* Section Styling */
+    .section {
+      margin-bottom: 60px;
+    }
+
+    .section-title {
+      font-size: 36px;
+      font-weight: 700;
+      color: #1e3a8a;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+      letter-spacing: -0.01em;
+    }
+
+    .subsection {
+      margin-bottom: 36px;
+    }
+
+    .subsection-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #1e3a8a;
+      margin-bottom: 14px;
+      letter-spacing: -0.01em;
+    }
+
+    .subsection-title-numbered {
+      color: #2563eb;
+      font-weight: 700;
+    }
+
+    p {
+      color: #334155;
+      margin-bottom: 16px;
+      line-height: 1.8;
+      text-align: justify;
+    }
+
+    ul {
+      list-style: none;
+      margin-bottom: 16px;
+    }
+
+    ul li {
+      color: #334155;
+      padding-left: 28px;
+      margin-bottom: 12px;
+      position: relative;
+      line-height: 1.8;
+      text-align: justify;
+    }
+
+    ul li:before {
+      content: "•";
+      color: #2563eb;
+      font-weight: bold;
+      position: absolute;
+      left: 8px;
+      font-size: 20px;
+    }
+
+    strong {
+      color: #1e3a8a;
+      font-weight: 600;
+    }
+
+    a {
+      transition: color 0.3s;
+    }
+
+    a:hover {
+      color: #1e40af;
+    }
+
+    /* Footer */
+    footer {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 32px 24px;
+      margin-top: 80px;
+      box-shadow: 0 -4px 16px rgba(59, 130, 246, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    footer p {
+      color: #1e40af;
+      font-size: 14px;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    footer a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    footer a:hover {
+      color: #1e40af;
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header-top {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      }
+
+      .header-nav {
+        flex-wrap: wrap;
+      }
+
+      .page-title {
+        font-size: 32px;
+      }
+
+      .section-title {
+        font-size: 28px;
+      }
+
+      .container {
+        padding: 40px 24px;
+      }
+
+      .header-wrapper {
+        padding: 0 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-wrapper">
+      <div class="header-top">
+        <div class="logo-section" onclick="location.href='./welcome.html'">
+          <img src="logo.png" alt="BytLearn" />
+          <div class="logo-text">
+            <h1>BytLearn</h1>
+            <p>Legal Information</p>
+          </div>
+        </div>
+        <nav class="header-nav">
+          <a href="#terms" class="nav-link">Terms of Use</a>
+          <a href="#privacy" class="nav-link">Privacy Policy</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </nav>
+        <a class="back-btn" href="./login.html">Back to Login</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="intro-section">
+      <span class="last-updated">Last Updated: October 2025</span>
+      <h1 class="page-title">Terms of Use & Privacy Policy</h1>
+      <div class="intro-text">
+        <p>
+          Welcome to <strong>BytLearn</strong>, an AI-powered learning platform developed by <strong>VeloxCT</strong>.
+          BytLearn has been created as part of an academic minor project with the goal of providing students an interactive, 
+          AI-driven study companion for Biology (NCERT Class 11 & 12, NEET focused).
+        </p>
+        <p>
+          By accessing or using BytLearn, you agree to the following Terms of Use and Privacy Policy.
+        </p>
+      </div>
+    </div>
+
+    <section id="terms" class="section">
+      <h2 class="section-title">Terms of Use</h2>
+
+      <div class="subsection">
+        <h3 class="subsection-title"><span class="subsection-title-numbered">1.</span> Purpose</h3>
+        <p>
+          BytLearn is an educational project designed to demonstrate AI-powered study support. While it aims to provide 
+          helpful study tools, it is <strong>not a replacement for teachers, textbooks, or coaching institutes</strong>.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title"><span class="subsection-title-numbered">2.</span> Account Registration</h3>
+        <ul>
+          <li>Users register with name, email, and password.</li>
+          <li>An OTP verification system ensures that the email belongs to the student.</li>
+          <li>After verification, users log in using their email and password.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title"><span class="subsection-title-numbered">3.</span> Features Offered</h3>
+        <ul>
+          <li><strong>Summaries & Flashcards</strong> – Pre-prepared content stored in the database.</li>
+          <li><strong>Quizzes</strong> – AI-powered, time calculated with performance tracking.</li>
+          <li><strong>Doubt Solving</strong> – Real-time AI answers to subject-related questions.</li>
+          <li><strong>Profile Analytics</strong> – Insights on performance, including quiz scores, time taken, weak/strong areas, and common doubt topics.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title"><span class="subsection-title-numbered">4.</span> Acceptable Use</h3>
+        <p>You agree to:</p>
+        <ul>
+          <li>Use BytLearn only for personal learning.</li>
+          <li>Provide accurate details during registration.</li>
+          <li>Not misuse the AI responses for cheating in exams.</li>
+          <li>Not attempt to hack, disrupt, or damage the platform.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title"><span class="subsection-title-numbered">5.</span> Educational Disclaimer</h3>
+        <ul>
+          <li>Quizzes and doubt answers are AI-generated.</li>
+          <li>We cannot guarantee 100% accuracy. Students should always cross-check with NCERT textbooks.</li>
+          <li>Exam outcomes and learning results depend on multiple factors; BytLearn is only a support tool.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title"><span class="subsection-title-numbered">6.</span> Limitation of Responsibility</h3>
+        <ul>
+          <li>BytLearn is provided as a demonstration project.</li>
+          <li>VeloxCT and the project team are not liable for errors, downtime, or academic outcomes.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title"><span class="subsection-title-numbered">7.</span> Changes to Service</h3>
+        <p>
+          Features may be updated, improved, or modified as the project develops.
+        </p>
+      </div>
+    </section>
+
+    <section id="privacy" class="section">
+      <h2 class="section-title">Privacy Policy</h2>
+
+      <div class="subsection">
+        <h3 class="subsection-title"><span class="subsection-title-numbered">1.</span> Information Collected</h3>
+        <ul>
+          <li><strong>Account Data:</strong> Name, email, encrypted password.</li>
+          <li><strong>Verification Data:</strong> OTP sent to registered email.</li>
+          <li><strong>Usage Data:</strong> Quiz scores, time taken, doubts asked.</li>
+          <li><strong>Technical Data:</strong> Browser type, cookies, IP address (for basic analytics).</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title"><span class="subsection-title-numbered">2.</span> How Data is Used</h3>
+        <ul>
+          <li>To verify accounts and enable secure login.</li>
+          <li>To track and display progress in the Profile Page.</li>
+          <li>To improve study recommendations and analytics.</li>
+          <li>To ensure platform functionality and prevent misuse.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title"><span class="subsection-title-numbered">3.</span> Data Protection</h3>
+        <ul>
+          <li>Passwords are stored in encrypted form.</li>
+          <li>Data is kept in a secure cloud database.</li>
+          <li>Since this is a minor project, security measures are implemented at a basic level, but not commercial-grade.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title"><span class="subsection-title-numbered">4.</span> Sharing of Data</h3>
+        <ul>
+          <li>Data is <strong>not sold or rented</strong> to third parties.</li>
+          <li>Limited sharing may occur with service providers (e.g., hosting, AI models).</li>
+          <li>Data may be disclosed if required by law.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title"><span class="subsection-title-numbered">5.</span> Cookies</h3>
+        <p>
+          BytLearn uses cookies for login sessions and personalization. Users may disable cookies, but certain features may stop working.
+        </p>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title"><span class="subsection-title-numbered">6.</span> Your Rights</h3>
+        <p>You may request:</p>
+        <ul>
+          <li>Access to your stored data.</li>
+          <li>Correction of inaccurate data.</li>
+          <li>Deletion of your account and related data.</li>
+        </ul>
+      </div>
+
+      <div class="subsection">
+        <h3 class="subsection-title"><span class="subsection-title-numbered">7.</span> Project Context</h3>
+        <p>
+          This platform is developed as part of a <strong>minor academic project by VeloxCT</strong>. It is not a commercial service, 
+          but it follows professional standards in design, data handling, and user experience.
+        </p>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <h2 class="section-title">Contact Information</h2>
+
+      <div class="subsection">
+        <h3 class="subsection-title">Questions or Feedback?</h3>
+        <p>
+          For any inquiries regarding these terms or your data, please contact us at: 
+          <a href="mailto:labnotfound404@gmail.com" style="color: #2563eb; text-decoration: none; font-weight: 600;">labnotfound404@gmail.com</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2024 BytLearn. Powered by <a href="landing.html">VeloxCT</a></p>
+  </footer>
+</body>
+</html>

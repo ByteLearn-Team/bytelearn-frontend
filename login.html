@@ -1,34 +1,34 @@
-<!doctype html> <!-- Declares HTML5 document type -->
-<html lang="en"> <!-- Sets page language to English -->
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" /> <!-- Character encoding UTF-8 -->
-  <title>BytLearn — Login</title> <!-- Page title shown in browser tab -->
-  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Mobile responsiveness -->
+  <meta charset="utf-8" />
+  <title>BytLearn — Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
     /* Root variables for colors and reusable values */
     :root { 
-      --border: rgba(255,255,255,0.2);           /* Border color for inputs/buttons */
-      --glass: rgba(255,255,255,0.1);            /* Glass card effect */
-      --text: #fff;                              /* Base text color */
-      --muted: rgba(255,255,255,0.85);           /* Slightly muted white text */
+      --border: rgba(255,255,255,0.2);
+      --glass: rgba(255,255,255,0.1);
+      --text: #fff;
+      --muted: rgba(255,255,255,0.85);
     }
 
     /* Ensure full height and reset default styles */
     html, body {
       height: 100%; 
       margin: 0; 
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; /* Font stack */
-      color: var(--text); /* White text */
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--text);
     }
 
     /* Body background and layout centering */
     body {
-      background: linear-gradient(135deg, #0b1e3d, #08203a 40%, #101a4b); /* Dark gradient background */
-      display: grid; place-items: center; /* Grid to center card */
+      background: linear-gradient(135deg, #0b1e3d, #08203a 40%, #101a4b);
+      display: grid; place-items: center;
       background-attachment: fixed;
-      overflow: hidden; /* Prevent scrolling */
-      font-size: 18px; /* Base font size */
+      overflow: hidden;
+      font-size: 18px;
     }
 
     /* Scene for animated blobs in background */
@@ -37,10 +37,10 @@
     /* Blob base style */
     .blob { 
       position: absolute; 
-      border-radius: 9999px; /* Fully round circle */
+      border-radius: 9999px;
       filter: blur(80px); 
       opacity: .18; 
-      animation: float 20s ease-in-out infinite; /* Floating animation */
+      animation: float 20s ease-in-out infinite;
     }
 
     /* Top left blob */
@@ -68,11 +68,11 @@
     /* Card container (login/register box) */
     .card {
       position: relative; z-index: 1;
-      width: min(720px, 96vw); /* wider like preview */
+      width: min(720px, 96vw);
       background: var(--glass);
       border: 1px solid var(--border);
       border-radius: 18px;
-      padding: 32px; /* a bit more padding */
+      padding: 32px;
       backdrop-filter: blur(10px);
       overflow: hidden;
     }
@@ -85,8 +85,8 @@
       margin-bottom: 14px; 
     }
 
-    .logo img { width: 70px; height: 70px; } /* Logo icon size */
-    .logo.center { justify-content: center; text-align: center; } /* Center align */
+    .logo img { width: 70px; height: 70px; }
+    .logo.center { justify-content: center; text-align: center; }
 
     /* Gradient brand text */
     .brand {
@@ -121,13 +121,87 @@
       background: rgba(255,255,255,0.18); 
       color: var(--text); text-decoration: none; 
       transition: 150ms ease;
+      cursor: pointer;
     }
     .btn:hover { background: rgba(255,255,255,0.24); }
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      background: rgba(255,255,255,0.1);
+    }
+    .btn:disabled:hover {
+      background: rgba(255,255,255,0.1);
+    }
 
     /* Links like "Back to Welcome" */
     .link { 
       display:block; margin-top: 12px; text-align: center; 
       color: #fff; opacity: .9; text-decoration: underline; 
+    }
+
+    /* Message box for errors and success */
+    .message {
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+      font-size: 15px;
+      display: none;
+      animation: slideIn 0.3s ease;
+    }
+
+    .message.error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+    }
+
+    .message.success {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #86efac;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Terms checkbox container */
+    .terms-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .terms-container input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .terms-text {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .terms-text a {
+      color: #67e8f9;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .terms-text a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -144,10 +218,10 @@
 
     <!-- Logo inside the card (clickable -> Welcome page) -->
     <div class="logo center" style="cursor:pointer;" onclick="location.href='./welcome.html'">
-      <img src="./logo.png" alt="BytLearn" /> <!-- Brand logo -->
+      <img src="./logo.png" alt="BytLearn" />
       <div>
-        <h1 style="margin:0 0 4px; font-size:28px;"><span class="brand">BytLearn</span></h1> <!-- Brand name with gradient -->
-        <div style="font-size:12px;opacity:.85">Sign in or create an account</div> <!-- Subtitle -->
+        <h1 style="margin:0 0 4px; font-size:28px;"><span class="brand">BytLearn</span></h1>
+        <div style="font-size:12px;opacity:.85">Sign in or create an account</div>
       </div>
     </div>
 
@@ -159,6 +233,8 @@
 
     <!-- LOGIN FORM -->
     <form id="loginForm" style="margin-top:12px;">
+      <div id="loginMessage" class="message"></div>
+      
       <label for="loginEmail">Email</label>
       <input id="loginEmail" type="email" placeholder="you@gmail.com" required />
 
@@ -166,13 +242,15 @@
       <input id="loginPassword" type="password" placeholder="••••••••" required />
 
       <div class="row">
-        <button type="submit" class="btn" style="flex:1;">Login</button>
+        <button type="submit" id="loginBtn" class="btn" style="flex:1;">Login</button>
       </div>
       <a class="link" href="./welcome.html">← Back to Welcome</a>
     </form>
 
     <!-- REGISTER FORM (hidden by default) -->
     <form id="registerForm" style="margin-top:12px; display:none;">
+      <div id="registerMessage" class="message"></div>
+      
       <label for="regName">Student Name</label>
       <input id="regName" type="text" placeholder="Your name" required />
 
@@ -182,8 +260,16 @@
       <label for="regPassword">Password</label>
       <input id="regPassword" type="password" placeholder="Create a password" required />
 
+      <!-- Terms and Conditions Checkbox -->
+      <div class="terms-container">
+        <input type="checkbox" id="registerTerms" />
+        <label for="registerTerms" class="terms-text" style="margin: 0; cursor: pointer;">
+          I agree to the <a href="./legal.html#terms" >Terms of Use</a> and <a href="./legal.html#privacy" >Privacy Policy</a>
+        </label>
+      </div>
+
       <div class="row">
-        <button type="submit" class="btn" style="flex:1;">Create Account</button>
+        <button type="submit" id="registerBtn" class="btn" style="flex:1;" disabled>Create Account</button>
       </div>
       <a class="link" href="./welcome.html">← Back to Welcome</a>
     </form>
@@ -200,19 +286,42 @@
     const tabRegister = document.getElementById('tab-register');
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
+    const loginMessage = document.getElementById('loginMessage');
+    const registerMessage = document.getElementById('registerMessage');
+    const registerTerms = document.getElementById('registerTerms');
+    const registerBtn = document.getElementById('registerBtn');
+
+    // Enable/disable register button based on checkbox
+    registerTerms.addEventListener('change', function() {
+      registerBtn.disabled = !this.checked;
+    });
+
+    // Function to show message
+    function showMessage(element, text, type) {
+      element.textContent = text;
+      element.className = 'message ' + type;
+      element.style.display = 'block';
+      setTimeout(() => {
+        element.style.display = 'none';
+      }, 5000);
+    }
 
     // Function to toggle between login/register forms
     function activate(tab) {
+      // Hide all messages when switching tabs
+      loginMessage.style.display = 'none';
+      registerMessage.style.display = 'none';
+      
       if (tab === 'login') {
-        tabLogin.style.background = 'rgba(255,255,255,0.24)';  // highlight login tab
-        tabRegister.style.background = 'rgba(255,255,255,0.18)'; // dim register tab
-        loginForm.style.display = '';   // show login
-        registerForm.style.display = 'none'; // hide register
+        tabLogin.style.background = 'rgba(255,255,255,0.24)';
+        tabRegister.style.background = 'rgba(255,255,255,0.18)';
+        loginForm.style.display = '';
+        registerForm.style.display = 'none';
       } else {
-        tabLogin.style.background = 'rgba(255,255,255,0.18)';  // dim login tab
-        tabRegister.style.background = 'rgba(255,255,255,0.24)'; // highlight register tab
-        loginForm.style.display = 'none'; // hide login
-        registerForm.style.display = '';  // show register
+        tabLogin.style.background = 'rgba(255,255,255,0.18)';
+        tabRegister.style.background = 'rgba(255,255,255,0.24)';
+        loginForm.style.display = 'none';
+        registerForm.style.display = '';
       }
     }
     // Events for buttons to switch forms
@@ -222,12 +331,11 @@
     // Get saved users from localStorage safely
     function getUsers() {
       const raw = localStorage.getItem('users');
-      if (!raw) return []; // no user data
+      if (!raw) return [];
       try {
         const parsed = JSON.parse(raw);
-        return Array.isArray(parsed) ? parsed : []; // return array only
+        return Array.isArray(parsed) ? parsed : [];
       } catch {
-        // If corrupted data, clear it and reset
         localStorage.removeItem('users');
         return [];
       }
@@ -235,7 +343,7 @@
 
     // Save updated users list
     function saveUsers(list) {
-      if (!Array.isArray(list)) return; // only save arrays
+      if (!Array.isArray(list)) return;
       localStorage.setItem('users', JSON.stringify(list));
     }
 
@@ -254,7 +362,7 @@
       const password = document.getElementById('regPassword').value;
 
       if (!name || !email || !password) { 
-        alert('Please fill all fields.'); 
+        showMessage(registerMessage, 'Please fill all fields.', 'error');
         return; 
       }
 
@@ -272,19 +380,31 @@
         });
         if (!res.ok) {
           const data = await res.json();
-          alert(data.detail || "Registration failed.");
+          showMessage(registerMessage, data.detail || 'Registration failed.', 'error');
           return;
         }
+        
+        // Show success message
+        showMessage(registerMessage, 'Registration successful! Sending OTP...', 'success');
+        
         // Send OTP
         await fetch('http://localhost:8000/send_otp', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email })
         });
+        
         localStorage.setItem('pendingOtpEmail', email);
-        location.href = 'otp.html';
+        
+        // Show OTP sent message and redirect
+        setTimeout(() => {
+          showMessage(registerMessage, `OTP sent to ${email}. Redirecting...`, 'success');
+          setTimeout(() => {
+            location.href = 'otp.html';
+          }, 1500);
+        }, 1000);
       } catch (err) {
-        alert('Registration failed: ' + err.message);
+        showMessage(registerMessage, 'Registration failed: ' + err.message, 'error');
       }
     });
 
@@ -302,7 +422,7 @@
         });
         if (!res.ok) {
           const data = await res.json();
-          alert(data.detail || "Login failed.");
+          showMessage(loginMessage, data.detail || 'Login failed.', 'error');
           return;
         }
         // On successful login, set session and redirect to dashboard
@@ -312,7 +432,7 @@
         localStorage.setItem('currentUserName', user.name || 'Student');
         location.href = 'dashboard.html';
       } catch (err) {
-        alert('Login failed: ' + err.message);
+        showMessage(loginMessage, 'Login failed: ' + err.message, 'error');
       }
     });
   </script>

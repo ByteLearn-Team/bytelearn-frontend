@@ -39,7 +39,7 @@
     <!-- Header -->
    <header class="relative z-10 p-6 backdrop-blur-sm bg-black/20 border-b border-white/10 flex items-center justify-end pr-6">
   <a href="landing.html" class="absolute left-6 top-1/2 -translate-y-1/2 flex items-center" aria-label="Go to home" style="gap: 0;">
-    <img src="com1.png" alt="VeloxCT Logo" style="width: 85px; height: 85px; display: block;" />
+    <img src="_com1.png" alt="VeloxCT Logo" style="width: 85px; height: 85px; display: block;" />
     <span class="text-lg md:text-xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-tight leading-none" style="margin-left: 0;">
       VeloxCT
     </span>
@@ -232,11 +232,20 @@
     </section>
 
     <!-- Footer -->
-    <footer class="relative z-10 py-8 px-6 bg-gradient-to-r from-purple-900/40 via-purple-900/30 to-slate-900/40 border-t border-white/10 reveal">
-      <div class="max-w-7xl mx-auto text-center">
-        <p class="text-gray-200">Copyright © 2025 VeloxCT. All rights reserved.</p>
+    <footer class="relative z-10 py-8 px-6 bg-gradient-to-r from-purple-900/40 via-purple-900/30 to-slate-900/40 border-t border-white/10 backdrop-blur-sm">
+  <div class="max-w-7xl mx-auto text-center">
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <div style="margin-bottom: 16px;">
+        <a href="./legal.html#terms" style="color: #ffffff; text-decoration: none; font-weight: 600; margin: 0 12px; font-size: 16px; transition: color 0.3s;" onmouseover="this.style.color='#67e8f9'" onmouseout="this.style.color='#ffffff'">Terms of Use</a>
+        <span style="color: rgba(255, 255, 255, 0.5); font-size: 16px;">|</span>
+        <a href="./legal.html#privacy" style="color: #ffffff; text-decoration: none; font-weight: 600; margin: 0 12px; font-size: 16px; transition: color 0.3s;" onmouseover="this.style.color='#67e8f9'" onmouseout="this.style.color='#ffffff'">Privacy Policy</a>
+        <span style="color: rgba(255, 255, 255, 0.5); font-size: 16px;">|</span>
+        <a href="./legal.html#contact" style="color: #ffffff; text-decoration: none; font-weight: 600; margin: 0 12px; font-size: 16px; transition: color 0.3s;" onmouseover="this.style.color='#67e8f9'" onmouseout="this.style.color='#ffffff'">Contact</a>
       </div>
-    </footer>
+      <p style="color: rgba(255, 255, 255, 0.85); font-size: 15px; font-weight: 500; margin: 0;">© 2024 BytLearn. Powered by <a href="landing.html" style="color: #67e8f9; text-decoration: none; font-weight: 600; transition: color 0.3s;" onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#67e8f9'">VeloxCT</a></p>
+    </div>
+  </div>
+</footer>
 
     <!-- Add: IntersectionObserver to activate reveal on scroll -->
     <script>

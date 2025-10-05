@@ -6,13 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
       --border: rgba(255,255,255,0.2);
       --glass: rgba(255,255,255,0.1);
       --text: #fff;
       --muted: rgba(255,255,255,0.85);
+      --accent: #e5a054;
+      --accent-glow: rgba(229, 160, 84, 0.3);
     }
     * { box-sizing: border-box; }
     html, body {
@@ -102,12 +104,18 @@
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
     }
     .hidden { display: none; }
-    h2 { margin: 0 0 12px; }
+    h2 { 
+      margin: 0 0 12px;
+      font-weight: 800;
+      font-size: 28px;
+      letter-spacing: -0.5px;
+    }
     p { color: var(--muted); }
     .grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
     @media(min-width:768px) { .grid { grid-template-columns: 1fr 1fr; } }
     #flashcards .grid { 
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
       min-height: 300px;
@@ -118,8 +126,8 @@
     .flashcard-container {
       position: relative;
       width: 100%;
-      max-width: 800px;
-      height: 250px;
+      max-width: 1000px;
+      height: 350px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -159,8 +167,45 @@
     }
 
     .nav-arrow.disabled {
-      opacity: 0.3;
-      cursor: not-allowed;
+      opacity: 1;
+      cursor: pointer;
+    }
+    
+    .flashcard-scrollbar-wrapper {
+      width: 100%;
+      max-width: 1000px;
+      margin-top: 20px;
+      padding: 0 10px;
+    }
+    
+    .flashcard-scrollbar {
+      width: 100%;
+      height: 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      position: relative;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border);
+    }
+    
+    .flashcard-scrollbar-thumb {
+      height: 100%;
+      background: rgba(255,255,255,0.4);
+      border-radius: 4px;
+      position: absolute;
+      left: 0;
+      transition: background 0.2s;
+      cursor: grab;
+    }
+    
+    .flashcard-scrollbar-thumb:hover {
+      background: rgba(255,255,255,0.5);
+    }
+    
+    .flashcard-scrollbar-thumb:active {
+      cursor: grabbing;
+      background: rgba(255,255,255,0.6);
     }
     
     h2, h3, h1, p, .badge, .subtitle, .title, .lead, .actions, .stats, .pill, .item a, .list, .li {
@@ -174,31 +219,60 @@
     }
     .summary-text {
       white-space: pre-wrap;
-      text-align: justify;
-      font-size: 17px;
-      margin: 16px 30px;
-      padding: 0 0 0 2px;
-      line-height: 1.9;
+      text-align: left;
+      font-size: 16px;
+      margin: 24px 40px;
+      padding: 20px 32px;
+      line-height: 1.8;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      letter-spacing: 0.015em;
+      letter-spacing: 0.01em;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      border-left: 4px solid var(--accent);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
     }
 
     .summary-text .heading {
-      display: inline-block !important;
-      font-weight: 700 !important;
-      color: #fbbf24 !important;
-      font-size: 20px !important;
-      margin: 24px 0 12px 0 !important;
-      padding-bottom: 8px !important;
-      border-bottom: 2px solid #fbbf24 !important;
+      display: block !important;
+      font-weight: 800 !important;
+      color: var(--accent) !important;
+      font-size: 22px !important;
+      margin: 32px 0 16px 0 !important;
+      padding-bottom: 12px !important;
+      border-bottom: 3px solid var(--accent) !important;
       text-align: left !important;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
-      letter-spacing: 0.02em !important;
+      font-family: 'Playfair Display', 'Inter', serif !important;
+      letter-spacing: -0.02em !important;
       width: 100%;
+      text-shadow: 0 2px 8px var(--accent-glow);
+      position: relative;
+    }
+
+    .summary-text .heading::before {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, #fff 0%, var(--accent) 100%);
+      box-shadow: 0 0 10px var(--accent-glow);
     }
 
     .summary-text .heading:first-child {
       margin-top: 0 !important;
+    }
+
+    .summary-text p {
+      margin: 12px 0;
+      text-align: left;
+      color: rgba(255,255,255,0.95);
+      font-weight: 500;
+    }
+
+    .summary-text strong {
+      color: #fff;
+      font-weight: 700;
     }
     
     .flashcard-text {
@@ -212,8 +286,8 @@
 
     .card-item {
       position: absolute;
-      width: 380px;
-      height: 250px;
+      width: 480px;
+      height: 350px;
       border-radius: 18px;
       display: flex;
       flex-direction: column;
@@ -329,6 +403,61 @@
     .flashcard > div[style*="font-weight:600"] {
       display: none;
     }
+
+    /* Enhanced section headers */
+    .tab > .row {
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+      padding: 16px 20px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+
+    /* Loading state styling */
+    .loading-text {
+      color: var(--muted);
+      margin: 24px 0;
+      font-weight: 500;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    /* Error message styling */
+    .error-message {
+      color: #fca5a5;
+      font-weight: 500;
+      margin: 24px 0;
+      font-size: 16px;
+      letter-spacing: 0.01em;
+      opacity: 0.95;
+    }
+
+    .error-message::before {
+      content: "⚠ ";
+      margin-right: 6px;
+      opacity: 0.9;
+    }
+    .summary-text::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .summary-text::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.05);
+      border-radius: 4px;
+    }
+
+    .summary-text::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.2);
+      border-radius: 4px;
+    }
+
+    .summary-text::-webkit-scrollbar-thumb:hover {
+      background: rgba(255,255,255,0.3);
+    }
   </style>
 </head>
 <body>
@@ -410,7 +539,7 @@
 
     if (generateQuizBtn) {
       generateQuizBtn.addEventListener('click', async function() {
-        quizArea.innerHTML = '<div style="color:var(--muted);margin:18px 0;">Generating quiz...</div>';
+        quizArea.innerHTML = '<div class="loading-text">Generating quiz...</div>';
         generateQuizBtn.disabled = true;
         try {
           const res = await fetch('/generate_quiz', {
@@ -423,11 +552,11 @@
             quizData = data.questions;
             renderQuiz(quizData);
           } else {
-            quizArea.innerHTML = '<div style="color:#f87171">No quiz questions generated.</div>';
+            quizArea.innerHTML = '<div class="error-message">No quiz questions generated.</div>';
             generateQuizBtn.disabled = false;
           }
         } catch (e) {
-          quizArea.innerHTML = '<div style="color:#f87171">Error generating quiz: ' + (e.message || e) + '</div>';
+          quizArea.innerHTML = '<div class="error-message">Error generating quiz: ' + (e.message || e) + '</div>';
           generateQuizBtn.disabled = false;
         }
       });
@@ -435,7 +564,7 @@
 
     function renderQuiz(questions) {
       if (!questions || !questions.length) {
-        quizArea.innerHTML = '<div style="color:#f87171">No quiz questions available.</div>';
+        quizArea.innerHTML = '<div class="error-message">No quiz questions available.</div>';
         return;
       }
       let html = '<form id="quiz-form-area">';
@@ -498,13 +627,13 @@
           if (data.answer) {
             addMsg('Bot', data.answer, 'left');
           } else if (data.error) {
-            addMsg('Bot', `<span style='color:#fbbf24'>${data.error}</span>`, 'left');
+            addMsg('Bot', `<span style='color:#fca5a5;font-weight:500;'>⚠ ${data.error}</span>`, 'left');
           } else {
-            addMsg('Bot', '<span style="color:#f87171">No answer received.</span>', 'left');
+            addMsg('Bot', '<span style="color:#fca5a5;font-weight:500;">⚠ No answer received.</span>', 'left');
           }
         } catch (e) {
           removeMsg(loadingId);
-          addMsg('Bot', `<span style='color:#f87171'>Error: ${e.message}</span>`, 'left');
+          addMsg('Bot', `<span style='color:#fca5a5;font-weight:500;'>⚠ Error: ${e.message}</span>`, 'left');
         }
         chatInput.disabled = false;
         chatInput.focus();
@@ -553,11 +682,11 @@
     async function loadSummaries() {
       const grid = document.querySelector("#summary .grid");
       if (!grid) return;
-      grid.innerHTML = '<div style="color:var(--muted);margin:18px 0;">Loading summaries...</div>';
+      grid.innerHTML = '<div class="loading-text">Loading summaries...</div>';
 
       const chapterId = Number(localStorage.getItem("selectedChapterId"));
       if (!chapterId) {
-        grid.innerHTML = '<div style="color:#f87171">No chapter selected. Go to Dashboard and pick a chapter.</div>';
+        grid.innerHTML = '<div class="error-message">No chapter selected. Go to Dashboard and pick a chapter.</div>';
         return;
       }
 
@@ -569,9 +698,6 @@
         if (filtered.length > 0) {
           grid.innerHTML = "";
           filtered.forEach((summary) => {
-            const div = document.createElement("div");
-            div.className = "card";
-            
             let text = summary.summary_data;
             
             const lines = text.split('\n');
@@ -590,25 +716,24 @@
             }
             text = lines.join('\n');
             
-            div.innerHTML = `<div class="summary-text">${text}</div>`;
-            grid.appendChild(div);
+            grid.innerHTML += `<div class="summary-text">${text}</div>`;
           });
         } else {
-          grid.innerHTML = '<div style="color:#f87171">No summaries found for this chapter.</div>';
+          grid.innerHTML = '<div class="error-message">No summaries found for this chapter.</div>';
         }
       } catch (e) {
-        grid.innerHTML = `<div style="color:#f87171">Error loading summaries: ${e.message}</div>`;
+        grid.innerHTML = `<div class="error-message">Error loading summaries: ${e.message}</div>`;
       }
     }
 
     async function loadFlashcards() {
       const grid = document.querySelector("#flashcards .grid");
       if (!grid) return;
-      grid.innerHTML = '<div style="color:var(--muted);margin:18px 0;">Loading flashcards...</div>';
+      grid.innerHTML = '<div class="loading-text">Loading flashcards...</div>';
 
       const chapterId = Number(localStorage.getItem("selectedChapterId"));
       if (!chapterId) {
-        grid.innerHTML = '<div style="color:#f87171">No chapter selected. Go to Dashboard and pick a chapter.</div>';
+        grid.innerHTML = '<div class="error-message">No chapter selected. Go to Dashboard and pick a chapter.</div>';
         return;
       }
 
@@ -622,11 +747,18 @@
             <div class="nav-arrow left" id="prev-card">←</div>
             <div class="flashcard-container" id="card-container"></div>
             <div class="nav-arrow right" id="next-card">→</div>
+            <div class="flashcard-scrollbar-wrapper">
+              <div class="flashcard-scrollbar" id="flashcard-scrollbar">
+                <div class="flashcard-scrollbar-thumb" id="flashcard-scrollbar-thumb"></div>
+              </div>
+            </div>
           `;
           
           const container = document.getElementById('card-container');
           const prevBtn = document.getElementById('prev-card');
           const nextBtn = document.getElementById('next-card');
+          const scrollbar = document.getElementById('flashcard-scrollbar');
+          const scrollbarThumb = document.getElementById('flashcard-scrollbar-thumb');
           let currentCardIndex = 0;
           let isFlipped = false;
           
@@ -682,6 +814,13 @@
             return cardEl;
           }
           
+          function updateScrollbar() {
+            const thumbWidth = (1 / allCards.length) * 100;
+            const thumbPosition = (currentCardIndex / allCards.length) * 100;
+            scrollbarThumb.style.width = thumbWidth + '%';
+            scrollbarThumb.style.left = thumbPosition + '%';
+          }
+          
           function updateCardPositions() {
             const cards = Array.from(container.children);
             
@@ -699,6 +838,7 @@
             
             prevBtn.classList.toggle('disabled', currentCardIndex === 0);
             nextBtn.classList.toggle('disabled', currentCardIndex === allCards.length - 1);
+            updateScrollbar();
           }
           
           function goToNext() {
@@ -720,6 +860,43 @@
           prevBtn.addEventListener('click', goToPrev);
           nextBtn.addEventListener('click', goToNext);
           
+          scrollbar.addEventListener('click', function(e) {
+            if (e.target === scrollbarThumb) return;
+            const rect = scrollbar.getBoundingClientRect();
+            const clickPosition = (e.clientX - rect.left) / rect.width;
+            currentCardIndex = Math.round(clickPosition * (allCards.length - 1));
+            isFlipped = false;
+            updateCardPositions();
+          });
+          
+          let isDragging = false;
+          let startX = 0;
+          let startIndex = 0;
+          
+          scrollbarThumb.addEventListener('mousedown', function(e) {
+            isDragging = true;
+            startX = e.clientX;
+            startIndex = currentCardIndex;
+            e.preventDefault();
+          });
+          
+          document.addEventListener('mousemove', function(e) {
+            if (!isDragging) return;
+            const rect = scrollbar.getBoundingClientRect();
+            const deltaX = e.clientX - startX;
+            const deltaIndex = Math.round((deltaX / rect.width) * allCards.length);
+            const newIndex = Math.max(0, Math.min(allCards.length - 1, startIndex + deltaIndex));
+            if (newIndex !== currentCardIndex) {
+              currentCardIndex = newIndex;
+              isFlipped = false;
+              updateCardPositions();
+            }
+          });
+          
+          document.addEventListener('mouseup', function() {
+            isDragging = false;
+          });
+          
           allCards.forEach((cardData, idx) => {
             const card = createCard(idx, cardData);
             container.appendChild(card);
@@ -727,23 +904,23 @@
           
           updateCardPositions();
           
-          // Enable horizontal mouse wheel scrolling for flashcards
           container.addEventListener('wheel', function(e) {
+            const threshold = 30;
             if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-              // Horizontal scroll (trackpad or shift+wheel)
-              if (e.deltaX > 0 && currentCardIndex < allCards.length - 1) {
-                currentCardIndex++;
-                isFlipped = false;
-                updateCardPositions();
-                e.preventDefault();
-              } else if (e.deltaX < 0 && currentCardIndex > 0) {
-                currentCardIndex--;
-                isFlipped = false;
-                updateCardPositions();
-                e.preventDefault();
+              if (Math.abs(e.deltaX) > threshold) {
+                if (e.deltaX > 0 && currentCardIndex < allCards.length - 1) {
+                  currentCardIndex++;
+                  isFlipped = false;
+                  updateCardPositions();
+                  e.preventDefault();
+                } else if (e.deltaX < 0 && currentCardIndex > 0) {
+                  currentCardIndex--;
+                  isFlipped = false;
+                  updateCardPositions();
+                  e.preventDefault();
+                }
               }
-            } else if (Math.abs(e.deltaY) > 10) {
-              // Vertical scroll (mouse wheel)
+            } else if (Math.abs(e.deltaY) > threshold) {
               if (e.deltaY > 0 && currentCardIndex < allCards.length - 1) {
                 currentCardIndex++;
                 isFlipped = false;
@@ -758,10 +935,10 @@
             }
           }, { passive: false });
         } else {
-          grid.innerHTML = '<div style="color:#f87171">No flashcards found for this chapter.</div>';
+          grid.innerHTML = '<div class="error-message">No flashcards found for this chapter.</div>';
         }
       } catch (e) {
-        grid.innerHTML = `<div style="color:#f87171">Error loading flashcards: ${e.message}</div>`;
+        grid.innerHTML = `<div class="error-message">Error loading flashcards: ${e.message}</div>`;
       }
     }
 

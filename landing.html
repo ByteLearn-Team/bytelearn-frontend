@@ -1,104 +1,330 @@
 <!doctype html>
+<!-- This tells the browser that this is an HTML5 document -->
+
 <html lang="en" class="dark">
+  <!-- The main HTML tag. lang="en" means English language. class="dark" enables dark mode -->
+  
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Veloxct — Landing</title>
+    <!-- The head section contains information about the webpage (not visible to users) -->
     
-    <!-- Tailwind CDN -->
+    <meta charset="utf-8" />
+    <!-- This tells the browser to use UTF-8 character encoding (supports all languages and symbols) -->
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- This makes the website responsive (looks good on phones, tablets, and computers) -->
+    <!-- width=device-width: makes the page width match the device screen width -->
+    <!-- initial-scale=1: sets the initial zoom level to 100% -->
+    
+    <title>Veloxct — Landing</title>
+    <!-- This is the title that appears in the browser tab -->
+    
+    <!-- Loading Tailwind CSS from CDN (Content Delivery Network) -->
+    <!-- Tailwind is a CSS framework that provides ready-made styling classes -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuring Tailwind CSS settings -->
     <script>
+      // This JavaScript configures Tailwind CSS
       tailwind.config = {
+        // darkMode: enables dark mode styling when class="dark" is on the html tag
         darkMode: ['class'],
+        
+        // theme: customizes the default Tailwind theme
         theme: {
+          // extend: adds new values without removing default ones
           extend: {
+            // borderRadius: controls how rounded the corners are
             borderRadius: {
+              // '3xl': creates a new size option for very rounded corners (1.5rem = 24px)
               '3xl': '1.5rem',
             },
           },
         },
       }
     </script>
-    <!-- Add: reveal animation styles -->
+    
+    <!-- Custom CSS styles for the reveal animation effect -->
     <style>
-      .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s cubic-bezier(.22,1,.36,1); }
-      .reveal-active { opacity: 1; transform: translateY(0); }
+      /* .reveal class: makes elements invisible and moved down initially */
+      .reveal {
+        opacity: 0; /* Makes the element completely transparent (invisible) */
+        transform: translateY(24px); /* Moves the element 24 pixels down from its normal position */
+        /* transition: defines how the animation happens */
+        /* opacity .6s ease: fade-in takes 0.6 seconds with smooth easing */
+        /* transform .6s cubic-bezier: movement takes 0.6 seconds with custom smooth motion */
+        transition: opacity .6s ease, transform .6s cubic-bezier(.22,1,.36,1);
+      }
+      
+      /* .reveal-active class: makes elements visible and in correct position */
+      .reveal-active {
+        opacity: 1; /* Makes the element fully visible (100% opacity) */
+        transform: translateY(0); /* Moves element back to its normal position (0 pixels offset) */
+      }
+      
+      /* Media query: checks if user has enabled "reduce motion" in their device settings */
+      /* Some people get motion sickness from animations, so we respect their preference */
       @media (prefers-reduced-motion: reduce) {
-        .reveal { opacity: 1; transform: none; transition: none; }
+        .reveal {
+          opacity: 1; /* Make elements visible immediately (no fade-in) */
+          transform: none; /* Don't move elements (no slide-up) */
+          transition: none; /* Remove all animations */
+        }
       }
     </style>
   </head>
+  
   <body class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white overflow-x-hidden">
-    <!-- Animated background elements -->
+    <!-- Body tag contains all visible content on the page -->
+    <!-- min-h-screen: makes the page at least as tall as the screen -->
+    <!-- bg-gradient-to-br: creates a diagonal gradient background from top-left to bottom-right -->
+    <!-- from-slate-900 via-purple-900 to-slate-900: gradient colors (dark gray -> purple -> dark gray) -->
+    <!-- text-white: makes all text white by default -->
+    <!-- overflow-x-hidden: prevents horizontal scrolling (hides content that goes outside screen width) -->
+    
+    <!-- Animated background decoration elements -->
+    <!-- These are the floating colored circles in the background -->
     <div class="fixed inset-0 overflow-hidden pointer-events-none">
+      <!-- fixed: stays in the same position even when you scroll -->
+      <!-- inset-0: stretches to cover the entire screen (top, right, bottom, left all = 0) -->
+      <!-- overflow-hidden: hides any part of circles that goes outside this container -->
+      <!-- pointer-events-none: allows clicking through this layer (so buttons underneath still work) -->
+      
+      <!-- First decorative circle (top-left, cyan to purple) -->
       <div class="absolute top-20 left-20 w-32 h-32 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full opacity-20 animate-pulse"></div>
+      <!-- absolute: positions relative to the nearest positioned ancestor -->
+      <!-- top-20 left-20: positioned 80px (20×4px) from top and left edges -->
+      <!-- w-32 h-32: width and height of 128px (32×4px) - makes a square -->
+      <!-- bg-gradient-to-r: gradient going left to right -->
+      <!-- from-cyan-400 to-purple-500: gradient colors (light blue to purple) -->
+      <!-- rounded-full: makes it a perfect circle -->
+      <!-- opacity-20: 20% visible (80% transparent) -->
+      <!-- animate-pulse: built-in Tailwind animation that makes it fade in and out -->
+      
+      <!-- Second decorative circle (top-right, pink to yellow) -->
       <div class="absolute top-40 right-32 w-24 h-24 bg-gradient-to-r from-pink-400 to-yellow-400 rounded-full opacity-30 animate-bounce"></div>
+      <!-- top-40: 160px from top -->
+      <!-- right-32: 128px from right edge -->
+      <!-- w-24 h-24: width and height of 96px (24×4px) -->
+      <!-- opacity-30: 30% visible -->
+      <!-- animate-bounce: built-in Tailwind animation that makes it bounce up and down -->
+      
+      <!-- Third decorative circle (bottom-left area, blue to green) -->
       <div class="absolute bottom-32 left-1/4 w-40 h-40 bg-gradient-to-r from-blue-400 to-green-400 rounded-full opacity-15 animate-pulse"></div>
+      <!-- bottom-32: 128px from bottom -->
+      <!-- left-1/4: positioned at 25% from the left (1/4 of screen width) -->
+      <!-- w-40 h-40: width and height of 160px (40×4px) -->
+      <!-- opacity-15: 15% visible (very faint) -->
     </div>
 
-    <!-- Header -->
-   <header class="relative z-10 p-6 backdrop-blur-sm bg-black/20 border-b border-white/10 flex items-center justify-end pr-6">
-  <a href="landing.html" class="absolute left-6 top-1/2 -translate-y-1/2 flex items-center" aria-label="Go to home" style="gap: 0;">
-    <img src="_com1.png" alt="VeloxCT Logo" style="width: 85px; height: 85px; display: block;" />
-    <span class="text-lg md:text-xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-tight leading-none" style="margin-left: 0;">
-      VeloxCT
-    </span>
-  </a>
-
-
-
-
-
-
-    <!-- Nav menu moved fully right -->
-    <nav class="hidden md:flex space-x-8">
-      <a href="#home" class="text-gray-300 hover:text-white transition-colors duration-300 relative group">
-        Home
-        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:w-full transition-all duration-300"></span>
+    <!-- Header Section (Navigation Bar at the top) -->
+    <header class="relative z-10 p-6 backdrop-blur-sm bg-black/20 border-b border-white/10 flex items-center justify-end pr-6">
+      <!-- relative: allows absolute positioning of child elements relative to this header -->
+      <!-- z-10: stacking order (higher numbers appear on top) - ensures header is above background -->
+      <!-- p-6: padding of 24px on all sides (6×4px) -->
+      <!-- backdrop-blur-sm: creates a frosted glass blur effect on background behind header -->
+      <!-- bg-black/20: black background with 20% opacity (mostly transparent) -->
+      <!-- border-b: adds a border only at the bottom -->
+      <!-- border-white/10: white border with 10% opacity (very subtle) -->
+      <!-- flex: enables flexbox layout (arranges children in a row) -->
+      <!-- items-center: vertically centers items -->
+      <!-- justify-end: pushes items to the right side -->
+      <!-- pr-6: extra padding on the right side (24px) -->
+      
+      <!-- Logo and Brand Name (positioned on the left) -->
+      <a href="landing.html" class="absolute left-6 top-1/2 -translate-y-1/2 flex items-center" aria-label="Go to home" style="gap: 0;">
+        <!-- This is a clickable link that goes to landing.html -->
+        <!-- absolute: takes this element out of normal flow, positions it relative to the header -->
+        <!-- left-6: 24px from the left edge of header -->
+        <!-- top-1/2: positioned at 50% from top (middle of header vertically) -->
+        <!-- -translate-y-1/2: moves element up by 50% of its own height (perfectly centers it) -->
+        <!-- flex items-center: arranges logo and text in a row, centered vertically -->
+        <!-- aria-label: describes the link for screen readers (accessibility for blind users) -->
+        <!-- style="gap: 0;": removes space between logo and text -->
+        
+        <!-- Logo Image -->
+        <img src="_com1.png" alt="VeloxCT Logo" style="width: 85px; height: 85px; display: block;" />
+        <!-- src: the image file path -->
+        <!-- alt: describes image for screen readers and shows if image fails to load -->
+        <!-- width & height: sets exact size of logo -->
+        <!-- display: block: removes extra space below image -->
+        
+        <!-- Brand Name Text -->
+        <span class="text-lg md:text-xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-tight leading-none" style="margin-left: 0;">
+          <!-- text-lg: font size 18px on mobile devices -->
+          <!-- md:text-xl: font size 20px on medium screens and larger (tablets and desktops) -->
+          <!-- font-bold: makes text thick and bold -->
+          <!-- bg-gradient-to-r: creates horizontal gradient for text color -->
+          <!-- from-cyan-400 via-purple-400 to-pink-400: gradient colors (light blue -> purple -> pink) -->
+          <!-- bg-clip-text: clips the background gradient to the text shape -->
+          <!-- text-transparent: makes the actual text color transparent so gradient shows through -->
+          <!-- tracking-tight: reduces space between letters slightly -->
+          <!-- leading-none: removes extra line height (makes text compact) -->
+          <!-- style="margin-left: 0;": ensures no space between logo and text -->
+          VeloxCT
+        </span>
       </a>
-      <a href="#about" class="text-gray-300 hover:text-white transition-colors duration-300 relative group">
-        About Us
-        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:w-full transition-all duration-300"></span>
-      </a>
-      <a href="#team" class="text-gray-300 hover:text-white transition-colors duration-300 relative group">
-        Team
-        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:w-full transition-all duration-300"></span>
-      </a>
-      <a href="#current-project" class="text-gray-300 hover:text-white transition-colors duration-300 relative group">
-        Projects
-        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:w-full transition-all duration-300"></span>
-      </a>
-      <a href="#contact" class="text-gray-300 hover:text-white transition-colors duration-300 relative group">
-        Contacts
-        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:w-full transition-all duration-300"></span>
-      </a>
-    </nav>
-  </header>
 
-    <!-- Hero Section -->
+      <!-- Navigation Menu (positioned on the right) -->
+      <nav class="hidden md:flex space-x-8">
+        <!-- hidden: hides navigation on small screens (mobile phones) -->
+        <!-- md:flex: shows navigation on medium screens and larger (tablets and desktops) -->
+        <!-- space-x-8: adds 32px horizontal space between each navigation link -->
+        
+        <!-- Each navigation link follows the same pattern -->
+        <!-- Link to Home Section -->
+        <a href="#home" class="text-gray-300 hover:text-white transition-colors duration-300 relative group">
+          <!-- href="#home": clicking scrolls to the element with id="home" -->
+          <!-- text-gray-300: light gray text color -->
+          <!-- hover:text-white: changes to white when you hover mouse over it -->
+          <!-- transition-colors duration-300: smooth color change animation over 0.3 seconds -->
+          <!-- relative: allows absolute positioning of the underline effect -->
+          <!-- group: marks this as a group so child elements can respond to hover on parent -->
+          Home
+          <!-- Animated underline that appears on hover -->
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:w-full transition-all duration-300"></span>
+          <!-- absolute: positions relative to the link (parent) -->
+          <!-- -bottom-1: positioned 4px below the link text -->
+          <!-- left-0: starts from the left edge -->
+          <!-- w-0: width starts at 0 (invisible) -->
+          <!-- h-0.5: height of 2px (thin line) -->
+          <!-- bg-gradient-to-r: horizontal gradient (light blue to purple) -->
+          <!-- group-hover:w-full: when parent link is hovered, width expands to 100% -->
+          <!-- transition-all duration-300: smooth animation of width change over 0.3 seconds -->
+        </a>
+        
+        <!-- Link to About Us Section -->
+        <a href="#about" class="text-gray-300 hover:text-white transition-colors duration-300 relative group">
+          About Us
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:w-full transition-all duration-300"></span>
+        </a>
+        
+        <!-- Link to Team Section -->
+        <a href="#team" class="text-gray-300 hover:text-white transition-colors duration-300 relative group">
+          Team
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:w-full transition-all duration-300"></span>
+        </a>
+        
+        <!-- Link to Projects Section -->
+        <a href="#current-project" class="text-gray-300 hover:text-white transition-colors duration-300 relative group">
+          Projects
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:w-full transition-all duration-300"></span>
+        </a>
+        
+        <!-- Link to Contact Section -->
+        <a href="#contact" class="text-gray-300 hover:text-white transition-colors duration-300 relative group">
+          Contacts
+          <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-cyan-400 to-purple-500 group-hover:w-full transition-all duration-300"></span>
+        </a>
+      </nav>
+    </header>
+
+    <!-- Hero Section (Big welcome area with company name) -->
     <section id="home" class="relative z-10 py-20 px-6 reveal">
+      <!-- section: semantic HTML tag for a distinct section of content -->
+      <!-- id="home": unique identifier so navigation links can scroll to this section -->
+      <!-- relative z-10: stacking order, appears above background elements -->
+      <!-- py-20: padding top and bottom of 80px (20×4px) -->
+      <!-- px-6: padding left and right of 24px -->
+      <!-- reveal: custom class that triggers slide-up animation when scrolled into view -->
+      
       <div class="max-w-4xl mx-auto text-center">
+        <!-- max-w-4xl: maximum width of 56rem (896px) - prevents content from stretching too wide -->
+        <!-- mx-auto: margin left and right set to auto (centers the container horizontally) -->
+        <!-- text-center: centers all text inside -->
+        
+        <!-- Large Company Name Heading -->
         <h2 class="reveal text-6xl md:text-8xl font-bold mb-4 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+          <!-- h2: heading level 2 (main section heading) -->
+          <!-- reveal: triggers animation when scrolled into view -->
+          <!-- text-6xl: font size 60px on mobile -->
+          <!-- md:text-8xl: font size 96px on medium screens and up (tablets/desktops) -->
+          <!-- font-bold: thick, bold text -->
+          <!-- mb-4: margin bottom of 16px (creates space below) -->
+          <!-- bg-gradient/bg-clip-text/text-transparent: creates gradient text effect (explained earlier) -->
           VeloxCT
         </h2>
-        <a
-          href="landing.html"
-          class="inline-flex items-center justify-center bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white px-8 py-4 text-lg rounded-full shadow-2xl transition-all duration-300"
-        >
+        
+        <!-- Call-to-Action Button -->
+        <a href="landing.html" class="inline-flex items-center justify-center bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white px-8 py-4 text-lg rounded-full shadow-2xl transition-all duration-300">
+          <!-- href="landing.html": clicking goes to landing.html page -->
+          <!-- inline-flex: displays as inline element but uses flexbox inside -->
+          <!-- items-center justify-center: centers content vertically and horizontally -->
+          <!-- bg-gradient-to-r: horizontal gradient background -->
+          <!-- from-cyan-500 to-purple-600: gradient colors (light blue to purple) -->
+          <!-- hover:from-cyan-600 hover:to-purple-700: darker gradient on hover -->
+          <!-- text-white: white text color -->
+          <!-- px-8: padding left and right of 32px -->
+          <!-- py-4: padding top and bottom of 16px -->
+          <!-- text-lg: font size 18px -->
+          <!-- rounded-full: fully rounded corners (makes pill-shaped button) -->
+          <!-- shadow-2xl: large drop shadow effect -->
+          <!-- transition-all duration-300: smooth animation for all properties over 0.3 seconds -->
           Explore Us
         </a>
       </div>
     </section>
 
-    <!-- ABOUT US Section -->
+    <!-- About Us Section -->
     <section id="about" class="relative z-10 py-20 px-6">
+      <!-- id="about": unique identifier for navigation -->
+      <!-- relative z-10: stacking context, appears above background -->
+      <!-- py-20: vertical padding of 80px -->
+      <!-- px-6: horizontal padding of 24px -->
+      
       <div class="max-w-7xl mx-auto">
+        <!-- max-w-7xl: maximum width of 80rem (1280px) -->
+        <!-- mx-auto: centers horizontally -->
+        
+        <!-- Section Title -->
         <h3 class="reveal text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+          <!-- h3: heading level 3 (subsection heading) -->
+          <!-- reveal: animation trigger class -->
+          <!-- text-3xl: font size 30px on mobile -->
+          <!-- md:text-4xl: font size 36px on tablets and desktops -->
+          <!-- font-bold: bold weight -->
+          <!-- text-center: centers text -->
+          <!-- mb-12: margin bottom of 48px (creates space below heading) -->
+          <!-- gradient text effect -->
           About Us
         </h3>
+        
+        <!-- Content Card with Glassmorphism Effect -->
         <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl min-h-[270px] flex flex-col justify-center items-center text-center reveal">
+          <!-- bg-gradient-to-br: diagonal gradient background (top-left to bottom-right) -->
+          <!-- from-white/10 to-white/5: white with 10% opacity to 5% opacity (very subtle) -->
+          <!-- backdrop-blur-lg: strong frosted glass blur effect -->
+          <!-- border border-white/20: white border with 20% opacity -->
+          <!-- rounded-3xl: very rounded corners (24px) - custom size we defined earlier -->
+          <!-- shadow-2xl: large drop shadow -->
+          <!-- min-h-[270px]: minimum height of 270 pixels -->
+          <!-- flex flex-col: arranges children in a vertical column -->
+          <!-- justify-center: centers children vertically -->
+          <!-- items-center: centers children horizontally -->
+          <!-- text-center: centers text -->
+          <!-- reveal: animation trigger -->
+          
           <div class="p-6 md:p-12 w-full flex flex-col justify-center items-center text-center h-full">
+            <!-- p-6: padding 24px on mobile -->
+            <!-- md:p-12: padding 48px on tablets and desktops -->
+            <!-- w-full: width 100% (fills parent container) -->
+            <!-- flex flex-col: vertical layout -->
+            <!-- justify-center items-center: centers content -->
+            <!-- text-center: centers text -->
+            <!-- h-full: height 100% (fills parent container) -->
+            
+            <!-- About Us Paragraph Text -->
             <p class="text-lg md:text-xl text-gray-200 leading-relaxed text-center" style="font-size: 18px; line-height: 1.5; text-align: center; color: #e5e7eb;">
+              <!-- p: paragraph tag -->
+              <!-- text-lg: font size 18px on mobile (overridden by inline style) -->
+              <!-- md:text-xl: font size 20px on tablets and up (overridden by inline style) -->
+              <!-- text-gray-200: very light gray color (overridden by inline style) -->
+              <!-- leading-relaxed: line height 1.625 (more space between lines) (overridden) -->
+              <!-- text-center: centers text -->
+              <!-- Inline styles (inside style=""): these override Tailwind classes -->
+              <!-- font-size: 18px: sets exact font size -->
+              <!-- line-height: 1.5: sets spacing between lines -->
+              <!-- text-align: center: centers text -->
+              <!-- color: #e5e7eb: light gray color (RGB: 229, 231, 235) -->
               VeloxCT is a collaborative student-led company built on innovation, teamwork, and technology.
               We are a group of four dedicated members who come together with diverse skills in frontend design,
               backend systems, artificial intelligence, and integration. Our company name reflects our values:
@@ -113,29 +339,83 @@
 
     <!-- Team Section -->
     <section id="team" class="relative z-10 py-20 px-6">
+      <!-- id="team": unique identifier for navigation -->
+      <!-- Standard section spacing with reveal animation -->
+      
       <div class="max-w-7xl mx-auto">
+        <!-- Container with max width and centered -->
+        
+        <!-- Section Title -->
         <h3 class="reveal text-3xl md:text-4xl font-bold text-center mb-16 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+          <!-- mb-16: margin bottom of 64px (more space than other sections) -->
           Our Team
         </h3>
+        
+        <!-- Grid Layout for Team Member Cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <!-- Team Member Cards here, unchanged -->
-          <!-- Member 1 -->
+          <!-- grid: enables CSS grid layout (creates rows and columns) -->
+          <!-- grid-cols-1: 1 column on mobile (cards stack vertically) -->
+          <!-- md:grid-cols-2: 2 columns on tablets (2 cards per row) -->
+          <!-- lg:grid-cols-4: 4 columns on large screens (all 4 cards in one row) -->
+          <!-- gap-8: 32px space between cards -->
+          
+          <!-- Team Member Card 1: Parvathy Unnikrishnan -->
           <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl h-full reveal">
+            <!-- Glassmorphism card with gradient background -->
+            <!-- h-full: height 100% (makes all cards same height in grid) -->
+            <!-- reveal: animation trigger -->
+            
             <div class="p-6 text-center h-full flex flex-col">
+              <!-- p-6: padding 24px on all sides -->
+              <!-- text-center: centers all text -->
+              <!-- h-full: fills parent height -->
+              <!-- flex flex-col: vertical layout for card content -->
+              
+              <!-- Icon Container (circular gradient background) -->
               <div class="w-16 h-16 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white">
-                <!-- Target icon -->
+                <!-- w-16 h-16: width and height 64px (square) -->
+                <!-- bg-gradient-to-r: horizontal gradient (light blue to purple) -->
+                <!-- rounded-full: makes it a perfect circle -->
+                <!-- flex items-center justify-center: centers icon inside -->
+                <!-- mx-auto: centers circle horizontally -->
+                <!-- mb-4: margin bottom 16px -->
+                <!-- text-white: white text color -->
+                
+                <!-- Icon Image -->
                 <img src="int.png" alt="Personalized Recommendations Icon" style="width: 40px; height: 40px;" />
+                <!-- Integration icon representing their role -->
               </div>
+              
+              <!-- Team Member Name -->
               <h4 class="text-xl font-bold text-white mb-2">Parvathy Unnikrishnan</h4>
+              <!-- h4: heading level 4 (sub-subsection) -->
+              <!-- text-xl: font size 20px -->
+              <!-- font-bold: bold weight -->
+              <!-- text-white: white color -->
+              <!-- mb-2: margin bottom 8px -->
+              
+              <!-- Job Title/Role -->
               <p class="text-cyan-400 font-semibold mb-3 text-sm">Integration & Progress Analytics Developer</p>
+              <!-- p: paragraph tag -->
+              <!-- text-cyan-400: light blue color (matches brand colors) -->
+              <!-- font-semibold: semi-bold weight (between normal and bold) -->
+              <!-- mb-3: margin bottom 12px -->
+              <!-- text-sm: small font size 14px -->
+              
+              <!-- Description -->
               <p class="text-gray-300 text-sm flex-grow">Builds and maintains analytics and integrates systems.</p>
+              <!-- text-gray-300: light gray color -->
+              <!-- text-sm: small font size 14px -->
+              <!-- flex-grow: takes up remaining space (pushes content to fill card height evenly) -->
             </div>
           </div>
-          <!-- Member 2 -->
+          
+          <!-- Team Member Card 2: Rugmini T P -->
           <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl h-full reveal">
+            <!-- Same card styling as Card 1 -->
             <div class="p-6 text-center h-full flex flex-col">
+              <!-- Icon with frontend development image -->
               <div class="w-16 h-16 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white">
-                <!-- Code icon -->
                 <img src="fro.png" alt="Personalized Recommendations Icon" style="width: 40px; height: 40px;" />
               </div>
               <h4 class="text-xl font-bold text-white mb-2">Rugmini T P</h4>
@@ -143,11 +423,13 @@
               <p class="text-gray-300 text-sm flex-grow">Designs user-friendly interfaces for learning platforms.</p>
             </div>
           </div>
-          <!-- Member 3 -->
+          
+          <!-- Team Member Card 3: Vyshnav M D -->
           <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl h-full reveal">
+            <!-- Same card styling -->
             <div class="p-6 text-center h-full flex flex-col">
+              <!-- Icon with backend development image -->
               <div class="w-16 h-16 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white">
-                <!-- Users icon -->
                 <img src="back.png" alt="Personalized Recommendations Icon" style="width: 40px; height: 40px;" />
               </div>
               <h4 class="text-xl font-bold text-white mb-2">Vyshnav M D</h4>
@@ -155,11 +437,13 @@
               <p class="text-gray-300 text-sm flex-grow">Handles backend logic and data management.</p>
             </div>
           </div>
-          <!-- Member 4 -->
+          
+          <!-- Team Member Card 4: Vishnuprasad A -->
           <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl h-full reveal">
+            <!-- Same card styling -->
             <div class="p-6 text-center h-full flex flex-col">
+              <!-- Icon with AI development image -->
               <div class="w-16 h-16 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white">
-                <!-- Target icon -->
                 <img src="ai.png" alt="Personalized Recommendations Icon" style="width: 40px; height: 40px;" />
               </div>
               <h4 class="text-xl font-bold text-white mb-2">Vishnuprasad A</h4>
@@ -171,30 +455,61 @@
       </div>
     </section>
 
-    <!-- Current Project Section -->
+    <!-- Current Project Section (BytLearn) -->
     <section id="current-project" class="relative z-10 py-20 px-6">
+      <!-- id="current-project": unique identifier for navigation -->
+      <!-- Standard section spacing -->
+      
       <div class="max-w-7xl mx-auto">
+        <!-- Wide container for project content -->
+        
+        <!-- Section Title -->
         <h3 class="reveal text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
           Current Project: BytLearn
         </h3>
+        
+        <!-- Project Information Card -->
         <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl min-h-[270px] flex flex-col justify-center items-center text-center reveal">
+          <!-- Glassmorphism card with minimum height -->
+          <!-- flex flex-col: vertical layout -->
+          <!-- justify-center items-center: centers content -->
+          
           <div class="p-6 md:p-12 w-full flex flex-col justify-center items-center text-center h-full">
+            <!-- Responsive padding -->
+            <!-- w-full h-full: fills container -->
+            <!-- Centers all content -->
+            
+            <!-- Project Description Paragraph -->
             <p class="text-lg md:text-xl text-gray-200 leading-relaxed text-center" style="font-size: 18px; line-height: 1.5; text-align: center; color: #e5e7eb;">
+              <!-- Same styling as About Us paragraph -->
               BytLearn is an AI-powered web application designed for NEET and CBSE students. It delivers
               syllabus-aligned summaries, flashcards, quizzes, and doubt-solving tools, all
               based on preloaded NCERT content and AI. Our platform focuses on smart revision, adaptive
               feedback, and performance tracking to help students achieve success efficiently
               focusing only on Biology.
             </p>
+            
+            <!-- Call-to-Action Container -->
             <div class="mt-6">
+              <!-- mt-6: margin top 24px (creates space above button) -->
+              
               <div class="flex items-center justify-center">
-                <a
-  href="welcome.html"
-  rel="noopener noreferrer"
-  class="text-2xl font-semibold text-cyan-300 hover:text-cyan-200 no-underline"
->
-  Visit BytLearn!!
-</a>
+                <!-- flex: enables flexbox layout -->
+                <!-- items-center justify-center: centers link horizontally and vertically -->
+                
+                <!-- Link to BytLearn Project -->
+                <a href="welcome.html" rel="noopener noreferrer" class="text-2xl font-semibold text-cyan-300 hover:text-cyan-200 no-underline">
+                  <!-- href="welcome.html": clicking goes to welcome.html page -->
+                  <!-- rel="noopener noreferrer": security attribute for external links -->
+                  <!-- noopener: prevents new page from accessing the original page's window object -->
+                  <!-- noreferrer: prevents browser from sending referrer information -->
+                  <!-- text-2xl: font size 24px (large text) -->
+                  <!-- font-semibold: semi-bold weight -->
+                  <!-- text-cyan-300: light cyan/blue color -->
+                  <!-- hover:text-cyan-200: lighter cyan on hover -->
+                  <!-- no-underline: removes default link underline (CSS utility, non-standard Tailwind) -->
+                  Visit BytLearn!!
+                </a>
               </div>
             </div>
           </div>
@@ -204,69 +519,276 @@
 
     <!-- Contact Section -->
     <section id="contact" class="relative z-10 py-6 px-6">
+      <!-- id="contact": unique identifier for navigation -->
+      <!-- py-6: vertical padding of 24px (less than other sections) -->
+      <!-- px-6: horizontal padding 24px -->
+      
       <div class="max-w-7xl mx-auto text-center">
+        <!-- Wide container, all content centered -->
+        
+        <!-- Section Title -->
         <h3 class="reveal text-3xl md:text-4xl font-bold text-center mb-12 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
           Get In Touch
         </h3>
+        
+        <!-- Contact Information Card -->
         <div class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg border border-white/20 rounded-3xl shadow-2xl w-full flex flex-col items-center justify-center px-12 py-6 reveal">
+          <!-- Glassmorphism card -->
+          <!-- w-full: width 100% -->
+          <!-- flex flex-col: vertical layout -->
+          <!-- items-center justify-center: centers content -->
+          <!-- px-12: horizontal padding 48px -->
+          <!-- py-6: vertical padding 24px -->
+          <!-- reveal: animation trigger -->
+          
+          <!-- Email Information Container -->
           <div class="flex items-center justify-center space-x-4 mb-4">
+            <!-- flex: enables flexbox layout (horizontal by default) -->
+            <!-- items-center: vertically centers icon and text -->
+            <!-- justify-center: horizontally centers content -->
+            <!-- space-x-4: 16px horizontal space between icon and text -->
+            <!-- mb-4: margin bottom 16px -->
+            
+            <!-- Email Icon Container (circular gradient background) -->
             <div class="w-10 h-10 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-full flex items-center justify-center">
-              <!-- Mail icon -->
+              <!-- w-10 h-10: width and height 40px -->
+              <!-- bg-gradient-to-r: horizontal gradient -->
+              <!-- rounded-full: perfect circle -->
+              <!-- flex items-center justify-center: centers icon inside -->
+              
+              <!-- Mail Icon Image -->
               <img src="mail.png" alt="Personalized Recommendations Icon" style="width: 35px; height: 35px;" />
+              <!-- Mail icon image, 35x35 pixels -->
             </div>
+            
+            <!-- Email Text Container -->
             <div class="text-left">
+              <!-- text-left: aligns text to the left (overrides parent's center alignment) -->
+              
+              <!-- Introductory Text -->
               <p class="text-gray-300 text-sm mb-1">Ready to revolutionize your learning?</p>
+              <!-- p: paragraph tag -->
+              <!-- text-gray-300: light gray color -->
+              <!-- text-sm: small font size 14px -->
+              <!-- mb-1: margin bottom 4px (small space below) -->
+              
+              <!-- Email Address Link -->
               <a href="mailto:labnotfound404@gmail.com" class="text-lg font-semibold text-cyan-400 hover:text-cyan-300 transition-colors duration-300 block">
+                <!-- href="mailto:...": clicking opens user's default email app with this address -->
+                <!-- text-lg: font size 18px -->
+                <!-- font-semibold: semi-bold weight -->
+                <!-- text-cyan-400: light cyan color -->
+                <!-- hover:text-cyan-300: lighter cyan on hover -->
+                <!-- transition-colors duration-300: smooth color change over 0.3 seconds -->
+                <!-- block: displays as block element (takes full width) -->
                 labnotfound404@gmail.com
               </a>
             </div>
           </div>
-          <a
-            href="mailto:labnotfound404@gmail.com"
-            class="inline-flex items-center justify-center bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white px-7 py-2 rounded-full shadow-2xl transition-all duration-300 mt-2"
-          >
+          
+          <!-- Contact Button -->
+          <a href="mailto:labnotfound404@gmail.com" class="inline-flex items-center justify-center bg-gradient-to-r from-cyan-500 to-purple-600 hover:from-cyan-600 hover:to-purple-700 text-white px-7 py-2 rounded-full shadow-2xl transition-all duration-300 mt-2">
+            <!-- href="mailto:...": same email link functionality -->
+            <!-- inline-flex: displays inline but uses flexbox inside -->
+            <!-- items-center justify-center: centers button text -->
+            <!-- bg-gradient-to-r: horizontal gradient background -->
+            <!-- from-cyan-500 to-purple-600: gradient colors -->
+            <!-- hover:from-cyan-600 hover:to-purple-700: darker gradient on hover -->
+            <!-- text-white: white text -->
+            <!-- px-7: horizontal padding 28px -->
+            <!-- py-2: vertical padding 8px -->
+            <!-- rounded-full: fully rounded corners (pill shape) -->
+            <!-- shadow-2xl: large drop shadow -->
+            <!-- transition-all duration-300: smooth animation for all properties -->
+            <!-- mt-2: margin top 8px (space above button) -->
             Contact Us
           </a>
         </div>
       </div>
     </section>
 
-    <!-- Footer -->
+    <!-- Footer Section -->
     <footer class="relative z-10 py-8 px-6 bg-gradient-to-r from-purple-900/40 via-purple-900/30 to-slate-900/40 border-t border-white/10 backdrop-blur-sm">
-  <div class="max-w-7xl mx-auto text-center">
-    <div style="max-width: 1200px; margin: 0 auto;">
-      <div style="margin-bottom: 16px;">
-        <a href="./legal.html#terms" style="color: #ffffff; text-decoration: none; font-weight: 600; margin: 0 12px; font-size: 16px; transition: color 0.3s;" onmouseover="this.style.color='#67e8f9'" onmouseout="this.style.color='#ffffff'">Terms of Use</a>
-        <span style="color: rgba(255, 255, 255, 0.5); font-size: 16px;">|</span>
-        <a href="./legal.html#privacy" style="color: #ffffff; text-decoration: none; font-weight: 600; margin: 0 12px; font-size: 16px; transition: color 0.3s;" onmouseover="this.style.color='#67e8f9'" onmouseout="this.style.color='#ffffff'">Privacy Policy</a>
-        <span style="color: rgba(255, 255, 255, 0.5); font-size: 16px;">|</span>
-        <a href="./legal.html#contact" style="color: #ffffff; text-decoration: none; font-weight: 600; margin: 0 12px; font-size: 16px; transition: color 0.3s;" onmouseover="this.style.color='#67e8f9'" onmouseout="this.style.color='#ffffff'">Contact</a>
+      <!-- footer: semantic HTML tag for page footer -->
+      <!-- relative z-10: stacking order, appears above background -->
+      <!-- py-8: vertical padding 32px -->
+      <!-- px-6: horizontal padding 24px -->
+      <!-- bg-gradient-to-r: horizontal gradient background -->
+      <!-- from-purple-900/40 via-purple-900/30 to-slate-900/40: gradient with opacity values -->
+      <!-- /40 means 40% opacity, /30 means 30% opacity -->
+      <!-- border-t: border only at top -->
+      <!-- border-white/10: white border with 10% opacity -->
+      <!-- backdrop-blur-sm: small blur effect on background behind footer -->
+      
+      <div class="max-w-7xl mx-auto text-center">
+        <!-- Wide container, all content centered -->
+        
+        <!-- Footer Content Container -->
+        <div style="max-width: 1200px; margin: 0 auto;">
+          <!-- Inline styles for additional width control -->
+          <!-- max-width: 1200px: limits width to 1200 pixels -->
+          <!-- margin: 0 auto: centers horizontally (0 vertical margin, auto horizontal) -->
+          
+          <!-- Legal Links Container -->
+          <div style="margin-bottom: 16px;">
+            <!-- margin-bottom: 16px: creates space below legal links -->
+            
+            <!-- Terms of Use Link -->
+            <a href="./legal.html#terms" style="color: #ffffff; text-decoration: none; font-weight: 600; margin: 0 12px; font-size: 16px; transition: color 0.3s;" onmouseover="this.style.color='#67e8f9'" onmouseout="this.style.color='#ffffff'">
+              <!-- href="./legal.html#terms": goes to legal.html page and scrolls to #terms section -->
+              <!-- style="...": inline CSS styles -->
+              <!-- color: #ffffff: white text color (RGB: 255, 255, 255) -->
+              <!-- text-decoration: none: removes underline from link -->
+              <!-- font-weight: 600: semi-bold weight -->
+              <!-- margin: 0 12px: no vertical margin, 12px horizontal margin (spacing between links) -->
+              <!-- font-size: 16px: sets font size -->
+              <!-- transition: color 0.3s: smooth color change animation over 0.3 seconds -->
+              <!-- onmouseover="...": JavaScript that runs when mouse hovers over link -->
+              <!-- this.style.color='#67e8f9': changes text color to cyan (RGB: 103, 232, 249) -->
+              <!-- onmouseout="...": JavaScript that runs when mouse leaves link -->
+              <!-- this.style.color='#ffffff': changes text color back to white -->
+              Terms of Use
+            </a>
+            
+            <!-- Separator (vertical bar) -->
+            <span style="color: rgba(255, 255, 255, 0.5); font-size: 16px;">|</span>
+            <!-- span: inline container for text -->
+            <!-- color: rgba(255, 255, 255, 0.5): white with 50% opacity (semi-transparent) -->
+            <!-- rgba = Red Green Blue Alpha (opacity) -->
+            <!-- font-size: 16px: matches link font size -->
+            
+            <!-- Privacy Policy Link -->
+            <a href="./legal.html#privacy" style="color: #ffffff; text-decoration: none; font-weight: 600; margin: 0 12px; font-size: 16px; transition: color 0.3s;" onmouseover="this.style.color='#67e8f9'" onmouseout="this.style.color='#ffffff'">
+              <!-- Same styling and hover effect as Terms of Use link -->
+              Privacy Policy
+            </a>
+            
+            <!-- Separator -->
+            <span style="color: rgba(255, 255, 255, 0.5); font-size: 16px;">|</span>
+            
+            <!-- Contact Link -->
+            <a href="./legal.html#contact" style="color: #ffffff; text-decoration: none; font-weight: 600; margin: 0 12px; font-size: 16px; transition: color 0.3s;" onmouseover="this.style.color='#67e8f9'" onmouseout="this.style.color='#ffffff'">
+              <!-- Same styling and hover effect -->
+              Contact
+            </a>
+          </div>
+          
+          <!-- Copyright Text -->
+          <p style="color: rgba(255, 255, 255, 0.85); font-size: 15px; font-weight: 500; margin: 0;">
+            <!-- p: paragraph tag -->
+            <!-- color: rgba(255, 255, 255, 0.85): white with 85% opacity (slightly transparent) -->
+            <!-- font-size: 15px: slightly smaller than links -->
+            <!-- font-weight: 500: medium weight (between normal and semi-bold) -->
+            <!-- margin: 0: removes default paragraph margin -->
+            
+            <!-- Copyright Symbol and Year -->
+            © 2024 BytLearn. Powered by 
+            
+            <!-- VeloxCT Brand Link -->
+            <a href="landing.html" style="color: #67e8f9; text-decoration: none; font-weight: 600; transition: color 0.3s;" onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#67e8f9'">
+              <!-- href="landing.html": goes to landing page -->
+              <!-- color: #67e8f9: cyan color (RGB: 103, 232, 249) -->
+              <!-- text-decoration: none: no underline -->
+              <!-- font-weight: 600: semi-bold -->
+              <!-- transition: color 0.3s: smooth color change -->
+              <!-- onmouseover: changes to lighter blue #93c5fd (RGB: 147, 197, 253) -->
+              <!-- onmouseout: changes back to cyan -->
+              VeloxCT
+            </a>
+          </p>
+        </div>
       </div>
-      <p style="color: rgba(255, 255, 255, 0.85); font-size: 15px; font-weight: 500; margin: 0;">© 2024 BytLearn. Powered by <a href="landing.html" style="color: #67e8f9; text-decoration: none; font-weight: 600; transition: color 0.3s;" onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#67e8f9'">VeloxCT</a></p>
-    </div>
-  </div>
-</footer>
+    </footer>
 
-    <!-- Add: IntersectionObserver to activate reveal on scroll -->
+    <!-- JavaScript for Scroll-Based Reveal Animation -->
     <script>
+      // This JavaScript code handles the reveal animation as you scroll down the page
+      // It makes elements with the "reveal" class fade in and slide up when they come into view
+      
+      // IIFE (Immediately Invoked Function Expression) - runs immediately when page loads
+      // The (function () { ... })(); pattern creates a private scope to avoid polluting global namespace
       (function () {
+        
+        // Check if user has enabled "reduce motion" in their device accessibility settings
+        // Some people get motion sickness from animations, so we respect their preference
         var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        // window.matchMedia: checks if a CSS media query matches
+        // .matches: returns true if the media query matches, false otherwise
+        
+        // If user prefers reduced motion, exit this function early (don't add animations)
         if (reduced) return;
+        
+        // Find all elements on the page that have the "reveal" class
         var els = document.querySelectorAll('.reveal');
+        // document.querySelectorAll: finds ALL elements matching the CSS selector
+        // Returns a NodeList (similar to an array) of all matching elements
+        
+        // Check if browser supports IntersectionObserver API
+        // IntersectionObserver is the modern way to detect when elements enter the viewport
+        // Older browsers might not support it, so we check first
         if (!('IntersectionObserver' in window)) {
-          els.forEach(function (el) { el.classList.add('reveal-active'); });
-          return;
-        }
-        var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('reveal-active');
-              io.unobserve(entry.target);
-            }
+          // If not supported, immediately make all elements visible (no animation)
+          els.forEach(function (el) { 
+            el.classList.add('reveal-active'); 
           });
-        }, { threshold: 0.12, rootMargin: '0px 0px -10% 0px' });
-        els.forEach(function (el) { io.observe(el); });
+          // forEach: loops through each element in the els NodeList
+          // classList.add: adds the 'reveal-active' class (which makes element visible)
+          return; // Exit function early since we can't use IntersectionObserver
+        }
+        
+        // Create an IntersectionObserver instance
+        // This watches for when elements enter or leave the viewport (visible screen area)
+        var io = new IntersectionObserver(
+          // First argument: callback function that runs when observed elements change visibility
+          function (entries) {
+            // entries: array of all observed elements that changed visibility
+            
+            // Loop through each entry (element that changed visibility)
+            entries.forEach(function (entry) {
+              
+              // Check if this element is currently visible in the viewport
+              if (entry.isIntersecting) {
+                // isIntersecting: true if element is visible, false if not
+                
+                // Add 'reveal-active' class to trigger the fade-in and slide-up animation
+                entry.target.classList.add('reveal-active');
+                // entry.target: the actual DOM element that became visible
+                // classList.add: adds the CSS class that makes element visible
+                
+                // Stop observing this element (we only want animation to happen once)
+                io.unobserve(entry.target);
+                // unobserve: tells IntersectionObserver to stop watching this element
+                // This improves performance and prevents animation from repeating
+              }
+            });
+          },
+          // Second argument: options object to configure the IntersectionObserver
+          { 
+            threshold: 0.12, 
+            // threshold: how much of the element must be visible before triggering
+            // 0.12 = 12% of element must be visible
+            // Range: 0 (any pixel visible) to 1 (entire element visible)
+            
+            rootMargin: '0px 0px -10% 0px' 
+            // rootMargin: adjusts the viewport area (like adding/removing padding)
+            // Format: 'top right bottom left' (like CSS margin)
+            // '0px 0px -10% 0px': shrinks viewport by 10% at bottom
+            // This means elements need to be 10% further into view before triggering
+            // Helps animations feel more natural by triggering slightly earlier
+          }
+        );
+        
+        // Start observing each element with the "reveal" class
+        els.forEach(function (el) { 
+          io.observe(el); 
+        });
+        // observe: tells IntersectionObserver to start watching this element
+        // Now, whenever any of these elements becomes visible, the callback will run
+        
       })();
+      // End of IIFE - the function runs immediately and then the parentheses () execute it
     </script>
   </body>
+  <!-- End of body tag -->
 </html>
+<!-- End of HTML document -->

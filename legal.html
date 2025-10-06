@@ -1,355 +1,418 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html> <!-- HTML5 Document Type Declaration: Tells browser this is an HTML5 document -->
+<html lang="en"> <!-- HTML Root Element: Sets document language to English for accessibility -->
 <head>
-  <meta charset="utf-8" />
-  <title>BytLearn – Terms & Privacy Policy</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- HEAD SECTION: Contains metadata, title, and styles - not visible on page -->
+  
+  <meta charset="utf-8" /> <!-- Character Encoding: UTF-8 supports all characters and symbols -->
+  <title>BytLearn – Terms & Privacy Policy</title> <!-- Page Title: Appears in browser tab -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Responsive Viewport: Makes page responsive on mobile devices -->
+  
   <style>
+    /* UNIVERSAL RESET: Apply to ALL elements on the page */
+    /* box-sizing: border-box includes padding and border in element's total width/height */
     * { 
       box-sizing: border-box; 
-      margin: 0;
-      padding: 0;
+      margin: 0;                 /* Remove default browser margins */
+      padding: 0;                /* Remove default browser padding */
     }
 
+    /* HTML SMOOTH SCROLLING: Enable smooth scrolling for anchor links */
     html { 
-      scroll-behavior: smooth;
-      scroll-padding-top: 100px;
+      scroll-behavior: smooth;    /* Animated scrolling when clicking navigation links */
+      scroll-padding-top: 100px; /* Offset for fixed header when scrolling to anchors */
     }
 
+    /* BODY STYLING: Main page container with typography and background */
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-      line-height: 1.65;
-      color: #1e293b;
+      line-height: 1.65;          /* Comfortable line height for reading */
+      color: #1e293b;             /* Dark blue-gray text color for good readability */
+      /* Blue gradient background for visual appeal */
       background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 25%, #93c5fd 50%, #bfdbfe 75%, #dbeafe 100%);
-      background-attachment: fixed;
-      min-height: 100vh;
+      background-attachment: fixed; /* Background stays fixed when scrolling */
+      min-height: 100vh;          /* Minimum height of viewport */
     }
 
-    /* Unified Header with Navigation */
+    /* HEADER: Fixed navigation header with glass morphism effect */
     header {
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 4px 24px rgba(59, 130, 246, 0.15);
+      background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+      backdrop-filter: blur(20px);          /* Glass blur effect */
+      -webkit-backdrop-filter: blur(20px);  /* Safari support for backdrop-filter */
+      border-bottom: 1px solid rgba(255, 255, 255, 0.4); /* Subtle bottom border */
+      position: sticky;           /* Sticks to top when scrolling */
+      top: 0;                     /* Position at top of viewport */
+      z-index: 100;               /* High z-index to appear above other content */
+      box-shadow: 0 4px 24px rgba(59, 130, 246, 0.15); /* Blue tint shadow */
     }
 
+    /* HEADER WRAPPER: Centers and constrains header content */
     .header-wrapper {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 40px;
+      max-width: 1200px;          /* Maximum width on large screens */
+      margin: 0 auto;             /* Center horizontally */
+      padding: 0 40px;            /* Horizontal padding */
     }
 
+    /* HEADER TOP SECTION: Contains logo, navigation, and back button */
     .header-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 0 16px;
+      display: flex;              /* Flexbox for horizontal layout */
+      align-items: center;        /* Vertically center items */
+      justify-content: space-between; /* Space items evenly */
+      padding: 20px 0 16px;       /* Vertical padding: 20px top, 16px bottom */
     }
 
+    /* LOGO SECTION: Company branding area */
     .logo-section {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
+      display: flex;              /* Flexbox for logo and text */
+      align-items: center;        /* Vertically center */
+      gap: 12px;                  /* Space between logo and text */
+      cursor: pointer;            /* Show hand cursor on hover */
     }
 
+    /* LOGO IMAGE: Company logo */
     .logo-section img {
-      width: 44px;
-      height: 44px;
+      width: 44px;                /* Fixed width */
+      height: 44px;               /* Fixed height */
     }
 
+    /* LOGO TEXT: Company name and description */
     .logo-text h1 {
-      font-size: 22px;
-      font-weight: 700;
-      color: #1e3a8a;
-      letter-spacing: -0.02em;
+      font-size: 22px;            /* Medium font size */
+      font-weight: 700;           /* Bold weight */
+      color: #1e3a8a;             /* Dark blue color */
+      letter-spacing: -0.02em;    /* Tighter letter spacing */
     }
 
     .logo-text p {
-      font-size: 13px;
-      color: #334155;
-      font-weight: 500;
+      font-size: 13px;            /* Small font size */
+      color: #334155;             /* Medium gray color */
+      font-weight: 500;           /* Medium weight */
     }
 
+    /* BACK BUTTON: Returns to login page */
     .back-btn {
-      padding: 10px 22px;
-      background: rgba(255, 255, 255, 0.35);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      color: #1e40af;
-      text-decoration: none;
-      border-radius: 10px;
-      font-size: 14px;
-      font-weight: 600;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      transition: all 0.3s;
-      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+      padding: 10px 22px;         /* Internal spacing */
+      background: rgba(255, 255, 255, 0.35); /* Semi-transparent white */
+      backdrop-filter: blur(12px); /* Glass blur effect */
+      -webkit-backdrop-filter: blur(12px); /* Safari support */
+      color: #1e40af;             /* Blue text color */
+      text-decoration: none;      /* Remove underline */
+      border-radius: 10px;        /* Rounded corners */
+      font-size: 14px;            /* Small font size */
+      font-weight: 600;           /* Semi-bold weight */
+      border: 1px solid rgba(255, 255, 255, 0.5); /* Subtle border */
+      transition: all 0.3s;       /* Smooth transitions for all properties */
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15); /* Blue tint shadow */
     }
 
+    /* BACK BUTTON HOVER: Interactive feedback */
     .back-btn:hover {
-      background: rgba(255, 255, 255, 0.5);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+      background: rgba(255, 255, 255, 0.5); /* Lighten background */
+      transform: translateY(-2px); /* Lift button slightly */
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25); /* Enhanced shadow */
     }
 
-    /* Navigation in Header */
+    /* HEADER NAVIGATION: Section links in header */
     .header-nav {
-      display: flex;
-      gap: 8px;
-      align-items: center;
+      display: flex;              /* Flexbox for horizontal layout */
+      gap: 8px;                   /* Space between navigation links */
+      align-items: center;        /* Vertically center */
     }
 
+    /* NAVIGATION LINK: Individual section links */
     .nav-link {
-      color: #1e40af;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 600;
-      padding: 10px 24px;
-      border-radius: 8px;
-      transition: all 0.3s;
-      position: relative;
+      color: #1e40af;             /* Blue text color */
+      text-decoration: none;      /* Remove underline */
+      font-size: 14px;            /* Small font size */
+      font-weight: 600;           /* Semi-bold weight */
+      padding: 10px 24px;         /* Internal spacing */
+      border-radius: 8px;         /* Rounded corners */
+      transition: all 0.3s;       /* Smooth transitions */
+      position: relative;         /* For pseudo-element positioning */
     }
 
+    /* NAVIGATION LINK HOVER: Interactive feedback */
     .nav-link:hover {
-      color: #1e3a8a;
-      background: rgba(255, 255, 255, 0.3);
+      color: #1e3a8a;             /* Darker blue on hover */
+      background: rgba(255, 255, 255, 0.3); /* Light background on hover */
     }
 
+    /* NAVIGATION LINK UNDERLINE: Animated underline effect */
     .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 2px;
-      background: #2563eb;
-      transition: width 0.3s;
+      content: '';                /* Required for pseudo-element */
+      position: absolute;         /* Position relative to link */
+      bottom: 0;                  /* Position at bottom of link */
+      left: 50%;                  /* Start from center */
+      transform: translateX(-50%); /* Center the element */
+      width: 0;                   /* Start with no width */
+      height: 2px;                /* Thin line */
+      background: #2563eb;        /* Blue color */
+      transition: width 0.3s;     /* Animate width change */
     }
 
+    /* NAVIGATION LINK HOVER UNDERLINE: Expand underline on hover */
     .nav-link:hover::after {
-      width: 60%;
+      width: 60%;                 /* Expand to 60% of link width */
     }
 
-    /* Main Content */
+    /* MAIN CONTENT CONTAINER: Centers and constrains page content */
     .container {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 60px 40px;
+      max-width: 1100px;          /* Maximum width on large screens */
+      margin: 0 auto;             /* Center horizontally */
+      padding: 60px 40px;         /* Internal spacing: 60px top/bottom, 40px left/right */
     }
 
+    /* INTRODUCTION SECTION: Page header content */
     .intro-section {
-      margin-bottom: 60px;
+      margin-bottom: 60px;        /* Space below introduction */
     }
 
+    /* LAST UPDATED BADGE: Version information */
     .last-updated {
-      display: block;
-      text-align: center;
-      background: rgba(255, 255, 255, 0.35);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      color: #1e40af;
-      padding: 8px 16px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 600;
-      margin-bottom: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.5);
-      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
-      width: fit-content;
-      margin-left: auto;
-      margin-right: auto;
+      display: block;             /* Block-level element */
+      text-align: center;         /* Center text */
+      background: rgba(255, 255, 255, 0.35); /* Semi-transparent white */
+      backdrop-filter: blur(12px); /* Glass blur effect */
+      -webkit-backdrop-filter: blur(12px); /* Safari support */
+      color: #1e40af;             /* Blue text color */
+      padding: 8px 16px;          /* Internal spacing */
+      border-radius: 10px;        /* Rounded corners */
+      font-size: 13px;            /* Small font size */
+      font-weight: 600;           /* Semi-bold weight */
+      margin-bottom: 20px;        /* Space below badge */
+      border: 1px solid rgba(255, 255, 255, 0.5); /* Subtle border */
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15); /* Blue tint shadow */
+      width: fit-content;         /* Width based on content */
+      margin-left: auto;          /* Center horizontally with auto margins */
+      margin-right: auto;         /* Center horizontally with auto margins */
     }
 
+    /* PAGE TITLE: Main heading of the page */
     .page-title {
-      font-size: 48px;
-      font-weight: 800;
-      color: #1e3a8a;
-      margin-bottom: 24px;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      text-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
+      font-size: 48px;            /* Large font size */
+      font-weight: 800;           /* Extra bold weight */
+      color: #1e3a8a;             /* Dark blue color */
+      margin-bottom: 24px;        /* Space below title */
+      line-height: 1.15;          /* Tight line height */
+      letter-spacing: -0.02em;    /* Tighter letter spacing */
+      text-shadow: 0 2px 4px rgba(59, 130, 246, 0.1); /* Subtle text shadow */
     }
 
+    /* INTRODUCTION TEXT: Descriptive text below title */
     .intro-text {
-      color: #334155;
-      font-size: 17px;
-      line-height: 1.8;
-      max-width: 100%;
-      margin: 0;
+      color: #334155;             /* Medium gray color */
+      font-size: 17px;            /* Slightly larger than base font */
+      line-height: 1.8;           /* Comfortable line height for reading */
+      max-width: 100%;            /* Full width of container */
+      margin: 0;                  /* Remove default margin */
     }
 
+    /* INTRODUCTION PARAGRAPHS: Spacing between paragraphs */
     .intro-text p {
-      margin-bottom: 16px;
+      margin-bottom: 16px;        /* Space between paragraphs */
     }
 
-    /* Section Styling */
+    /* SECTION STYLING: Major content sections (Terms, Privacy, Contact) */
     .section {
-      margin-bottom: 60px;
+      margin-bottom: 60px;        /* Space between sections */
     }
 
+    /* SECTION TITLE: Headings for major sections */
     .section-title {
-      font-size: 36px;
-      font-weight: 700;
-      color: #1e3a8a;
-      margin-bottom: 32px;
-      padding-bottom: 16px;
-      border-bottom: 2px solid rgba(59, 130, 246, 0.3);
-      letter-spacing: -0.01em;
+      font-size: 36px;            /* Large font size */
+      font-weight: 700;           /* Bold weight */
+      color: #1e3a8a;             /* Dark blue color */
+      margin-bottom: 32px;        /* Space below title */
+      padding-bottom: 16px;       /* Space below text before border */
+      border-bottom: 2px solid rgba(59, 130, 246, 0.3); /* Blue bottom border */
+      letter-spacing: -0.01em;    /* Slightly tighter letter spacing */
     }
 
+    /* SUBSECTION: Content blocks within major sections */
     .subsection {
-      margin-bottom: 36px;
+      margin-bottom: 36px;        /* Space between subsections */
     }
 
+    /* SUBSECTION TITLE: Headings for subsections */
     .subsection-title {
-      font-size: 20px;
-      font-weight: 600;
-      color: #1e3a8a;
-      margin-bottom: 14px;
-      letter-spacing: -0.01em;
+      font-size: 20px;            /* Medium font size */
+      font-weight: 600;           /* Semi-bold weight */
+      color: #1e3a8a;             /* Dark blue color */
+      margin-bottom: 14px;        /* Space below title */
+      letter-spacing: -0.01em;    /* Slightly tighter letter spacing */
     }
 
+    /* NUMBERED SUBSECTION TITLE: For numbered list items */
     .subsection-title-numbered {
-      color: #2563eb;
-      font-weight: 700;
+      color: #2563eb;             /* Bright blue color */
+      font-weight: 700;           /* Bold weight */
     }
 
+    /* PARAGRAPH STYLING: General text content */
     p {
-      color: #334155;
-      margin-bottom: 16px;
-      line-height: 1.8;
-      text-align: justify;
+      color: #334155;             /* Medium gray color */
+      margin-bottom: 16px;        /* Space between paragraphs */
+      line-height: 1.8;           /* Comfortable line height */
+      text-align: justify;        /* Justify text for clean edges */
     }
 
+    /* UNORDERED LIST: Bulleted lists */
     ul {
-      list-style: none;
-      margin-bottom: 16px;
+      list-style: none;           /* Remove default bullets */
+      margin-bottom: 16px;        /* Space below list */
     }
 
+    /* LIST ITEM: Individual items in lists */
     ul li {
-      color: #334155;
-      padding-left: 28px;
-      margin-bottom: 12px;
-      position: relative;
-      line-height: 1.8;
-      text-align: justify;
+      color: #334155;             /* Medium gray color */
+      padding-left: 28px;         /* Space for custom bullet */
+      margin-bottom: 12px;        /* Space between list items */
+      position: relative;         /* For custom bullet positioning */
+      line-height: 1.8;           /* Comfortable line height */
+      text-align: justify;        /* Justify text */
     }
 
+    /* CUSTOM BULLET: Replace default bullets with blue dots */
     ul li:before {
-      content: "•";
-      color: #2563eb;
-      font-weight: bold;
-      position: absolute;
-      left: 8px;
-      font-size: 20px;
+      content: "•";               /* Bullet character */
+      color: #2563eb;             /* Blue color */
+      font-weight: bold;          /* Bold weight */
+      position: absolute;         /* Position relative to list item */
+      left: 8px;                  /* Position from left edge */
+      font-size: 20px;            /* Larger size for visibility */
     }
 
+    /* STRONG TEXT: Emphasized text within paragraphs */
     strong {
-      color: #1e3a8a;
-      font-weight: 600;
+      color: #1e3a8a;             /* Dark blue color */
+      font-weight: 600;           /* Semi-bold weight */
     }
 
+    /* LINK STYLING: Hyperlinks within content */
     a {
-      transition: color 0.3s;
+      transition: color 0.3s;     /* Smooth color transition */
     }
 
+    /* LINK HOVER: Interactive feedback for links */
     a:hover {
-      color: #1e40af;
+      color: #1e40af;             /* Darker blue on hover */
     }
 
-    /* Footer */
+    /* FOOTER: Page footer with copyright information */
     footer {
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-top: 1px solid rgba(255, 255, 255, 0.4);
-      padding: 32px 24px;
-      margin-top: 80px;
-      box-shadow: 0 -4px 16px rgba(59, 130, 246, 0.1);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+      backdrop-filter: blur(16px); /* Glass blur effect */
+      -webkit-backdrop-filter: blur(16px); /* Safari support */
+      border-top: 1px solid rgba(255, 255, 255, 0.4); /* Subtle top border */
+      padding: 32px 24px;         /* Internal spacing */
+      margin-top: 80px;           /* Space above footer */
+      box-shadow: 0 -4px 16px rgba(59, 130, 246, 0.1); /* Blue tint shadow */
+      display: flex;              /* Flexbox for centering */
+      justify-content: center;    /* Center horizontally */
+      align-items: center;        /* Center vertically */
     }
 
+    /* FOOTER TEXT: Copyright information */
     footer p {
-      color: #1e40af;
-      font-size: 14px;
-      font-weight: 500;
-      margin: 0;
+      color: #1e40af;             /* Blue text color */
+      font-size: 14px;            /* Small font size */
+      font-weight: 500;           /* Medium weight */
+      margin: 0;                  /* Remove default margin */
     }
 
+    /* FOOTER LINK: Link to company website */
     footer a {
-      color: #2563eb;
-      text-decoration: none;
-      font-weight: 600;
+      color: #2563eb;             /* Bright blue color */
+      text-decoration: none;      /* Remove underline */
+      font-weight: 600;           /* Semi-bold weight */
     }
 
+    /* FOOTER LINK HOVER: Interactive feedback */
     footer a:hover {
-      color: #1e40af;
-      text-decoration: underline;
+      color: #1e40af;             /* Darker blue on hover */
+      text-decoration: underline; /* Add underline on hover */
     }
 
-    /* Responsive */
+    /* RESPONSIVE DESIGN: Adjustments for mobile devices (768px and smaller) */
     @media (max-width: 768px) {
+      /* HEADER ADJUSTMENTS: Stack header elements vertically on mobile */
       .header-top {
-        flex-direction: column;
-        gap: 16px;
-        text-align: center;
+        flex-direction: column;   /* Stack children vertically */
+        gap: 16px;                /* Space between stacked elements */
+        text-align: center;       /* Center text alignment */
       }
 
+      /* NAVIGATION ADJUSTMENTS: Allow navigation to wrap on small screens */
       .header-nav {
-        flex-wrap: wrap;
+        flex-wrap: wrap;          /* Allow navigation items to wrap to new line */
       }
 
+      /* TITLE ADJUSTMENTS: Smaller font sizes on mobile */
       .page-title {
-        font-size: 32px;
+        font-size: 32px;          /* Smaller main title */
       }
 
       .section-title {
-        font-size: 28px;
+        font-size: 28px;          /* Smaller section titles */
       }
 
+      /* CONTAINER ADJUSTMENTS: Reduce padding on mobile */
       .container {
-        padding: 40px 24px;
+        padding: 40px 24px;       /* Less padding on small screens */
       }
 
+      /* HEADER WRAPPER ADJUSTMENTS: Reduce padding on mobile */
       .header-wrapper {
-        padding: 0 24px;
+        padding: 0 24px;          /* Less horizontal padding */
       }
     }
   </style>
 </head>
 
+<!-- BODY SECTION: All visible content goes here -->
 <body>
+  <!-- HEADER: Fixed navigation at top of page -->
   <header>
     <div class="header-wrapper">
       <div class="header-top">
+        <!-- LOGO SECTION: Clickable logo that returns to welcome page -->
         <div class="logo-section" onclick="location.href='./welcome.html'">
+          <!-- COMPANY LOGO: BytLearn logo image -->
           <img src="logo.png" alt="BytLearn" />
           <div class="logo-text">
+            <!-- COMPANY NAME: BytLearn title -->
             <h1>BytLearn</h1>
+            <!-- PAGE DESCRIPTION: Indicates this is legal information -->
             <p>Legal Information</p>
           </div>
         </div>
+        
+        <!-- NAVIGATION: Quick links to page sections -->
         <nav class="header-nav">
+          <!-- TERMS OF USE LINK: Jumps to Terms section -->
           <a href="#terms" class="nav-link">Terms of Use</a>
+          <!-- PRIVACY POLICY LINK: Jumps to Privacy section -->
           <a href="#privacy" class="nav-link">Privacy Policy</a>
+          <!-- CONTACT LINK: Jumps to Contact section -->
           <a href="#contact" class="nav-link">Contact</a>
         </nav>
+        
+        <!-- BACK BUTTON: Returns to login page -->
         <a class="back-btn" href="./login.html">Back to Login</a>
       </div>
     </div>
   </header>
 
+  <!-- MAIN CONTENT: Primary content of the page -->
   <main class="container">
+    <!-- INTRODUCTION SECTION: Page header with overview -->
     <div class="intro-section">
+      <!-- LAST UPDATED BADGE: Shows when document was last revised -->
       <span class="last-updated">Last Updated: October 2025</span>
+      
+      <!-- MAIN PAGE TITLE: Clearly indicates page purpose -->
       <h1 class="page-title">Terms of Use & Privacy Policy</h1>
+      
+      <!-- INTRODUCTION TEXT: Overview of BytLearn and legal agreement -->
       <div class="intro-text">
         <p>
           Welcome to <strong>BytLearn</strong>, an AI-powered learning platform developed by <strong>VeloxCT</strong>.
@@ -362,9 +425,11 @@
       </div>
     </div>
 
+    <!-- TERMS OF USE SECTION: Legal terms for using the platform -->
     <section id="terms" class="section">
       <h2 class="section-title">Terms of Use</h2>
 
+      <!-- PURPOSE SUBSECTION: Explains the educational nature of the platform -->
       <div class="subsection">
         <h3 class="subsection-title"><span class="subsection-title-numbered">1.</span> Purpose</h3>
         <p>
@@ -373,6 +438,7 @@
         </p>
       </div>
 
+      <!-- ACCOUNT REGISTRATION SUBSECTION: Explains user registration process -->
       <div class="subsection">
         <h3 class="subsection-title"><span class="subsection-title-numbered">2.</span> Account Registration</h3>
         <ul>
@@ -382,6 +448,7 @@
         </ul>
       </div>
 
+      <!-- FEATURES OFFERED SUBSECTION: Lists platform capabilities -->
       <div class="subsection">
         <h3 class="subsection-title"><span class="subsection-title-numbered">3.</span> Features Offered</h3>
         <ul>
@@ -392,6 +459,7 @@
         </ul>
       </div>
 
+      <!-- ACCEPTABLE USE SUBSECTION: Rules for proper platform usage -->
       <div class="subsection">
         <h3 class="subsection-title"><span class="subsection-title-numbered">4.</span> Acceptable Use</h3>
         <p>You agree to:</p>
@@ -403,6 +471,7 @@
         </ul>
       </div>
 
+      <!-- EDUCATIONAL DISCLAIMER SUBSECTION: Limits accuracy guarantees -->
       <div class="subsection">
         <h3 class="subsection-title"><span class="subsection-title-numbered">5.</span> Educational Disclaimer</h3>
         <ul>
@@ -412,6 +481,7 @@
         </ul>
       </div>
 
+      <!-- LIMITATION OF RESPONSIBILITY SUBSECTION: Limits legal liability -->
       <div class="subsection">
         <h3 class="subsection-title"><span class="subsection-title-numbered">6.</span> Limitation of Responsibility</h3>
         <ul>
@@ -420,6 +490,7 @@
         </ul>
       </div>
 
+      <!-- CHANGES TO SERVICE SUBSECTION: Reserves right to modify platform -->
       <div class="subsection">
         <h3 class="subsection-title"><span class="subsection-title-numbered">7.</span> Changes to Service</h3>
         <p>
@@ -428,9 +499,11 @@
       </div>
     </section>
 
+    <!-- PRIVACY POLICY SECTION: Explains data handling practices -->
     <section id="privacy" class="section">
       <h2 class="section-title">Privacy Policy</h2>
 
+      <!-- INFORMATION COLLECTED SUBSECTION: Lists data types gathered -->
       <div class="subsection">
         <h3 class="subsection-title"><span class="subsection-title-numbered">1.</span> Information Collected</h3>
         <ul>
@@ -441,6 +514,7 @@
         </ul>
       </div>
 
+      <!-- HOW DATA IS USED SUBSECTION: Explains purpose of data collection -->
       <div class="subsection">
         <h3 class="subsection-title"><span class="subsection-title-numbered">2.</span> How Data is Used</h3>
         <ul>
@@ -451,6 +525,7 @@
         </ul>
       </div>
 
+      <!-- DATA PROTECTION SUBSECTION: Describes security measures -->
       <div class="subsection">
         <h3 class="subsection-title"><span class="subsection-title-numbered">3.</span> Data Protection</h3>
         <ul>
@@ -460,6 +535,7 @@
         </ul>
       </div>
 
+      <!-- SHARING OF DATA SUBSECTION: Explains data sharing practices -->
       <div class="subsection">
         <h3 class="subsection-title"><span class="subsection-title-numbered">4.</span> Sharing of Data</h3>
         <ul>
@@ -469,6 +545,7 @@
         </ul>
       </div>
 
+      <!-- COOKIES SUBSECTION: Explains cookie usage -->
       <div class="subsection">
         <h3 class="subsection-title"><span class="subsection-title-numbered">5.</span> Cookies</h3>
         <p>
@@ -476,6 +553,7 @@
         </p>
       </div>
 
+      <!-- YOUR RIGHTS SUBSECTION: Explains user data rights -->
       <div class="subsection">
         <h3 class="subsection-title"><span class="subsection-title-numbered">6.</span> Your Rights</h3>
         <p>You may request:</p>
@@ -486,6 +564,7 @@
         </ul>
       </div>
 
+      <!-- PROJECT CONTEXT SUBSECTION: Clarifies academic nature of project -->
       <div class="subsection">
         <h3 class="subsection-title"><span class="subsection-title-numbered">7.</span> Project Context</h3>
         <p>
@@ -495,9 +574,11 @@
       </div>
     </section>
 
+    <!-- CONTACT SECTION: Provides contact information -->
     <section id="contact" class="section">
       <h2 class="section-title">Contact Information</h2>
 
+      <!-- QUESTIONS SUBSECTION: Contact details for inquiries -->
       <div class="subsection">
         <h3 class="subsection-title">Questions or Feedback?</h3>
         <p>
@@ -508,6 +589,7 @@
     </section>
   </main>
 
+  <!-- FOOTER: Copyright information at bottom of page -->
   <footer>
     <p>© 2024 BytLearn. Powered by <a href="landing.html">VeloxCT</a></p>
   </footer>

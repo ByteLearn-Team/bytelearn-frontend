@@ -1,134 +1,408 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <!-- Character encoding for proper text display -->
   <meta charset="utf-8" />
+  
+  <!-- Page title that appears in browser tab -->
   <title>BytLearn — Welcome</title>
+  
+  <!-- Makes the website responsive on mobile devices -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
+    /* ===================================
+       CSS CUSTOM PROPERTIES (VARIABLES)
+       These are like shortcuts for colors and values we use repeatedly
+       ================================== */
     :root {
+      /* Background colors - dark blue shades */
       --bg1: #0a1a3a;
       --bg2: #0b2a4a;
       --bg3: #11194a;
-      --text: #ffffff;
-      --muted: rgba(255,255,255,0.8);
-      --glass: rgba(255,255,255,0.1);
-      --glass-2: rgba(255,255,255,0.2);
+      
+      /* Text colors */
+      --text: #ffffff;  /* Pure white for main text */
+      --muted: rgba(255,255,255,0.8);  /* Slightly transparent white for secondary text */
+      
+      /* Glass effect colors - semi-transparent white for frosted glass look */
+      --glass: rgba(255,255,255,0.1);  /* 10% opacity white */
+      --glass-2: rgba(255,255,255,0.2);  /* 20% opacity white (for hover effects) */
+      
+      /* Border color - semi-transparent white */
       --border: rgba(255,255,255,0.2);
-      --accent1: #67e8f9;
-      --accent2: #60a5fa;
+      
+      /* Accent colors - bright cyan and blue for highlights */
+      --accent1: #67e8f9;  /* Cyan */
+      --accent2: #60a5fa;  /* Blue */
     }
 
-    * { box-sizing: border-box; }
+    /* ===================================
+       UNIVERSAL RESET
+       Makes all elements use border-box sizing (easier to calculate widths)
+       ================================== */
+    * { 
+      box-sizing: border-box; 
+    }
 
+    /* ===================================
+       HTML AND BODY BASE STYLES
+       ================================== */
     html, body {
-      height: 100%;
-      margin: 0;
+      height: 100%;  /* Make sure html and body take full viewport height */
+      margin: 0;  /* Remove default margins */
+      
+      /* Font stack - uses system fonts for best performance */
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      color: var(--text);
-      text-align: center;
+      
+      color: var(--text);  /* White text color */
+      text-align: center;  /* Center all text by default */
     }
 
+    /* ===================================
+       BODY SPECIFIC STYLES
+       ================================== */
     body {
-      margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      color: var(--text);
+      margin: 0;  /* Remove default margin */
+      
+      /* Same font as above (repeated for specificity) */
+      font-family: ui-sans-serif, system-ui, -apple-system, Segene UI, Roboto, Helvetica, Arial;
+      
+      color: var(--text);  /* White text */
+      
+      /* Gradient background - goes from dark blue to purple-blue */
       background: linear-gradient(135deg, #0b1e3d, #08203a 40%, #101a4b);
-      overflow-x: hidden;
-      font-size: 18px;
-      text-align: center;
-      background-attachment: fixed;
+      
+      overflow-x: hidden;  /* Prevent horizontal scrolling */
+      font-size: 18px;  /* Base font size */
+      text-align: center;  /* Center text */
+      background-attachment: fixed;  /* Keep background fixed when scrolling */
     }
 
-    .scene { position: fixed; inset: 0; z-index: 0; }
-    .blob {
-      position: absolute; border-radius: 9999px; filter: blur(80px);
-      opacity: 0.2; will-change: transform; animation: float 20s ease-in-out infinite;
-    }
-    .blob.a { width: 380px; height: 380px; left: -120px; top: 80px; 
-      background: linear-gradient(90deg,#38bdf8,#2563eb);}
-    .blob.b { width: 320px; height: 320px; right: -100px; bottom: 120px; 
-      background: linear-gradient(90deg,#6366f1,#22d3ee); animation-duration: 16s; }
-    .blob.c { width: 260px; height: 260px; left: 50%; top: 50%; 
-      transform: translate(-50%,-50%); background: linear-gradient(90deg,#60a5fa,#7dd3fc);
-      opacity: 0.12; animation-duration: 25s; }
-
-    @keyframes float {
-      0% { transform: translate(0,0) scale(1); }
-      50% { transform: translate(40px,-30px) scale(1.1); }
-      100% { transform: translate(0,0) scale(1); }
-    }
-
-    .container { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 32px; text-align: center; }
-    header.container { max-width: 1064px; }
-    main.container { min-height: calc(100vh - 140px); }
+    /* ===================================
+       ANIMATED BACKGROUND BLOBS
+       These create the glowing orbs in the background
+       ================================== */
     
-    .row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    /* Container for all blobs - covers entire screen */
+    .scene { 
+      position: fixed;  /* Fixed position so it doesn't scroll */
+      inset: 0;  /* Shorthand for top:0, right:0, bottom:0, left:0 */
+      z-index: 0;  /* Behind all other content */
+    }
+    
+    /* Base styles for all blob elements */
+    .blob {
+      position: absolute;  /* Position anywhere on screen */
+      border-radius: 9999px;  /* Makes it perfectly circular */
+      filter: blur(80px);  /* Creates the glowing blur effect */
+      opacity: 0.2;  /* 20% opacity for subtle effect */
+      will-change: transform;  /* Tells browser to optimize this for animation */
+      animation: float 20s ease-in-out infinite;  /* Smooth floating animation */
+    }
+    
+    /* First blob (top-left) - cyan/blue gradient */
+    .blob.a { 
+      width: 380px; 
+      height: 380px; 
+      left: -120px;  /* Positioned slightly off-screen to the left */
+      top: 80px; 
+      background: linear-gradient(90deg, #38bdf8, #2563eb);  /* Cyan to blue */
+    }
+    
+    /* Second blob (bottom-right) - purple/cyan gradient */
+    .blob.b { 
+      width: 320px; 
+      height: 320px; 
+      right: -100px;  /* Positioned slightly off-screen to the right */
+      bottom: 120px; 
+      background: linear-gradient(90deg, #6366f1, #22d3ee);  /* Purple to cyan */
+      animation-duration: 16s;  /* Floats faster than blob A */
+    }
+    
+    /* Third blob (center) - light blue gradient */
+    .blob.c { 
+      width: 260px; 
+      height: 260px; 
+      left: 50%;  /* Start at horizontal center */
+      top: 50%;  /* Start at vertical center */
+      transform: translate(-50%, -50%);  /* Adjust to truly center the element */
+      background: linear-gradient(90deg, #60a5fa, #7dd3fc);  /* Blue to light cyan */
+      opacity: 0.12;  /* Even more subtle than other blobs */
+      animation-duration: 25s;  /* Floats slower than other blobs */
+    }
 
-    .logo { display: flex; align-items: center; gap: 12px; cursor: default; }
-    .logo img { width: 85px; height: 85px; }
-    .title { font-weight: 800; font-size: 22px; line-height: 1; }
-    .subtitle { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    /* ===================================
+       FLOATING ANIMATION
+       Makes the blobs move slowly up/down and side to side
+       ================================== */
+    @keyframes float {
+      0% { 
+        transform: translate(0, 0) scale(1);  /* Start position - normal size */
+      }
+      50% { 
+        transform: translate(40px, -30px) scale(1.1);  /* Middle - move right/up and grow 10% */
+      }
+      100% { 
+        transform: translate(0, 0) scale(1);  /* End - back to start (creates loop) */
+      }
+    }
 
+    /* ===================================
+       CONTAINER - Main content wrapper
+       Centers content and adds padding
+       ================================== */
+    .container { 
+      position: relative;  /* So content appears above background blobs */
+      z-index: 1;  /* Above the background scene */
+      max-width: 1200px;  /* Maximum width for large screens */
+      margin: 0 auto;  /* Center horizontally */
+      padding: 32px;  /* Space around content */
+      text-align: center;  /* Center text inside */
+    }
+    
+    /* Header container has smaller max width */
+    header.container { 
+      max-width: 1064px; 
+    }
+    
+    /* Main container takes up most of the screen height */
+    main.container { 
+      min-height: calc(100vh - 140px);  /* Full viewport height minus 140px for header/footer */
+    }
+    
+    /* ===================================
+       ROW - Flexbox container for horizontal layouts
+       ================================== */
+    .row { 
+      display: flex;  /* Use flexbox layout */
+      align-items: center;  /* Vertically center items */
+      justify-content: space-between;  /* Spread items apart with space between */
+      gap: 16px;  /* 16px space between items */
+    }
+
+    /* ===================================
+       LOGO SECTION
+       ================================== */
+    .logo { 
+      display: flex;  /* Horizontal layout */
+      align-items: center;  /* Vertically center logo and text */
+      gap: 12px;  /* Space between logo image and text */
+      cursor: default;  /* Normal cursor (not a pointer) */
+    }
+    
+    /* Logo image size */
+    .logo img { 
+      width: 85px; 
+      height: 85px; 
+    }
+    
+    /* Main title next to logo */
+    .title { 
+      font-weight: 800;  /* Very bold */
+      font-size: 22px; 
+      line-height: 1;  /* Tight line spacing */
+    }
+    
+    /* Subtitle below main title */
+    .subtitle { 
+      font-size: 12px; 
+      color: var(--muted);  /* Slightly transparent white */
+      margin-top: 4px;  /* Small space above */
+    }
+
+    /* ===================================
+       BUTTON STYLES
+       Used for all clickable buttons
+       ================================== */
     .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      padding: 12px 16px; border-radius: 12px; border: 1px solid var(--border);
-      background: var(--glass); color: var(--text); text-decoration: none; transition: 150ms ease;
-      backdrop-filter: blur(6px);
+      display: inline-flex;  /* Inline flexbox for centering content */
+      align-items: center;  /* Vertically center text/icons */
+      justify-content: center;  /* Horizontally center text/icons */
+      gap: 8px;  /* Space between icon and text */
+      padding: 12px 16px;  /* Space inside button */
+      border-radius: 12px;  /* Rounded corners */
+      border: 1px solid var(--border);  /* Semi-transparent white border */
+      background: var(--glass);  /* Semi-transparent white background */
+      color: var(--text);  /* White text */
+      text-decoration: none;  /* Remove underline from links */
+      transition: 150ms ease;  /* Smooth transition for hover effects */
+      backdrop-filter: blur(6px);  /* Frosted glass effect */
     }
-    .btn:hover { background: var(--glass-2); }
-    .btn.primary { background: rgba(255,255,255,0.2); }
+    
+    /* Button hover effect - slightly more opaque */
+    .btn:hover { 
+      background: var(--glass-2); 
+    }
+    
+    /* Primary button variant - more visible */
+    .btn.primary { 
+      background: rgba(255, 255, 255, 0.2); 
+    }
 
-    .hero { text-align: center; padding: 80px 16px 40px; }
+    /* ===================================
+       HERO SECTION - Main content area
+       ================================== */
+    .hero { 
+      text-align: center;  /* Center all text */
+      padding: 80px 16px 40px;  /* Padding: 80px top, 16px sides, 40px bottom */
+    }
 
+    /* ===================================
+       BADGE - Small label with icon
+       ================================== */
     .badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 8px 12px; border-radius: 9999px; background: var(--glass);
-      border: 1px solid var(--border); backdrop-filter: blur(6px);
-      color: var(--text); font-size: 14px;
+      display: inline-flex;  /* Inline flexbox */
+      align-items: center;  /* Center content vertically */
+      gap: 8px;  /* Space between icon and text */
+      padding: 8px 12px;  /* Space inside badge */
+      border-radius: 9999px;  /* Fully rounded (pill shape) */
+      background: var(--glass);  /* Glass effect background */
+      border: 1px solid var(--border);  /* Semi-transparent border */
+      backdrop-filter: blur(6px);  /* Frosted glass effect */
+      color: var(--text);  /* White text */
+      font-size: 14px;  /* Small text */
     }
 
+    /* ===================================
+       MAIN HEADING
+       ================================== */
     .heading {
-      margin: 16px auto; font-size: clamp(40px, 6.5vw, 78px);
-      font-weight: 800; line-height: 1.05;
+      margin: 16px auto;  /* 16px top/bottom, auto left/right (centers it) */
+      
+      /* Responsive font size:
+         - Minimum 40px on small screens
+         - Scales up to 6.5% of viewport width
+         - Maximum 78px on large screens */
+      font-size: clamp(40px, 6.5vw, 78px);
+      
+      font-weight: 800;  /* Very bold */
+      line-height: 1.05;  /* Tight line spacing for big text */
     }
 
+    /* ===================================
+       GRADIENT TEXT EFFECT
+       Makes text have a colorful gradient
+       ================================== */
     .gradient-text {
+      /* Create gradient from cyan to light blue */
       background: linear-gradient(90deg, #67e8f9, #93c5fd);
-      -webkit-background-clip: text; background-clip: text; color: transparent;
+      
+      /* Clip the background to only show through the text */
+      -webkit-background-clip: text;
+      background-clip: text;
+      
+      /* Make text transparent so gradient shows through */
+      color: transparent;
     }
 
+    /* ===================================
+       LEAD PARAGRAPH - Main description text
+       ================================== */
     .lead {
-      margin: 12px auto 24px; max-width: 800px;
-      color: var(--muted); font-size: 20px; line-height: 1.7;
+      margin: 12px auto 24px;  /* 12px top, auto sides (centers), 24px bottom */
+      max-width: 800px;  /* Limit width for readability */
+      color: var(--muted);  /* Slightly transparent white */
+      font-size: 20px;  /* Larger than body text */
+      line-height: 1.7;  /* Comfortable reading space */
     }
 
-    .actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    /* ===================================
+       ACTION BUTTONS CONTAINER
+       ================================== */
+    .actions { 
+      display: flex;  /* Horizontal layout */
+      gap: 12px;  /* Space between buttons */
+      flex-wrap: wrap;  /* Allow buttons to wrap to next line on small screens */
+      justify-content: center;  /* Center buttons */
+    }
 
+    /* ===================================
+       STATISTICS GRID
+       Shows 4 stat cards in a grid
+       ================================== */
     .stats {
-      display: grid; grid-template-columns: repeat(2,minmax(0,1fr));
-      gap: 16px; margin: 40px auto 0; max-width: 1000px;
+      display: grid;  /* Use CSS grid layout */
+      
+      /* On mobile: 2 columns, each at least 0px wide, max content width */
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      
+      gap: 16px;  /* Space between cards */
+      margin: 40px auto 0;  /* 40px top, auto sides (centers), 0 bottom */
+      max-width: 1000px;  /* Maximum width */
     }
-    @media(min-width: 768px){ .stats{ grid-template-columns: repeat(4,minmax(0,1fr)); } }
+    
+    /* On tablets and larger (768px+): show 4 columns instead of 2 */
+    @media(min-width: 768px) { 
+      .stats { 
+        grid-template-columns: repeat(4, minmax(0, 1fr)); 
+      } 
+    }
 
+    /* ===================================
+       CARD - Individual stat or feature card
+       ================================== */
     .card {
-      background: var(--glass); border: 1px solid var(--border);
-      border-radius: 18px; text-align: center; padding: 26px; backdrop-filter: blur(8px);
+      background: var(--glass);  /* Semi-transparent background */
+      border: 1px solid var(--border);  /* Semi-transparent border */
+      border-radius: 18px;  /* Rounded corners */
+      text-align: center;  /* Center text */
+      padding: 26px;  /* Space inside card */
+      backdrop-filter: blur(8px);  /* Frosted glass effect */
     }
-    .card h3 { margin: 0 0 8px; font-size: 28px; font-weight: 800; }
-    .card p { margin: 0; color: var(--muted); }
+    
+    /* Card heading (the big number) */
+    .card h3 { 
+      margin: 0 0 8px;  /* 0 top, 0 sides, 8px bottom */
+      font-size: 28px;  /* Large text */
+      font-weight: 800;  /* Very bold */
+    }
+    
+    /* Card description text */
+    .card p { 
+      margin: 0;  /* No margin */
+      color: var(--muted);  /* Slightly transparent white */
+    }
 
+    /* ===================================
+       FOOTER
+       ================================== */
     footer {
-      text-align: center; padding: 24px; border-top: 1px solid var(--border);
-      margin-top: 40px; color: rgba(255,255,255,0.7);
+      text-align: center;  /* Center text */
+      padding: 24px;  /* Space inside footer */
+      border-top: 1px solid var(--border);  /* Top border line */
+      margin-top: 40px;  /* Space above footer */
+      color: rgba(255, 255, 255, 0.7);  /* Semi-transparent white text */
     }
-    footer { position: relative; z-index: 1000; }
-    a.inline { position: relative; z-index: 1001; cursor: pointer; }
+    
+    /* Make sure footer appears above background */
+    footer { 
+      position: relative; 
+      z-index: 1000; 
+    }
+    
+    /* Links inside footer */
+    a.inline { 
+      position: relative; 
+      z-index: 1001;  /* Above footer background */
+      cursor: pointer;  /* Show pointer cursor */
+    }
+    
+    /* Footer link color */
     a.inline {
-      color: rgba(255,255,255,0.7);
+      color: rgba(255, 255, 255, 0.7);  /* Semi-transparent white */
     }
-    a.inline { color: #fff; text-decoration: underline; }
+    
+    /* Footer link styles - white with underline */
+    a.inline { 
+      color: #fff; 
+      text-decoration: underline; 
+    }
 
+    /* ===================================
+       TEXT ALIGNMENT OVERRIDES
+       Forces all text elements to be centered
+       ================================== */
     .row {
       text-align: center;
     }
@@ -138,93 +412,156 @@
     }
 
     h2, h3, h1, p, .badge, .subtitle, .title, .lead, .actions, .stats, .pill, .item a, .list, .li {
-      text-align: center !important;
+      text-align: center !important;  /* !important forces this rule to override others */
     }
 
+    /* ===================================
+       WHY CHOOSE SECTION
+       Features section with cards
+       ================================== */
     #why-choose {
-      max-width: 1000px;
-      margin: 100px auto 0;
-      padding: 0;
-      background: transparent;
-      border: none;
-      border-radius: 0;
-      backdrop-filter: none;
+      max-width: 1000px;  /* Maximum width */
+      margin: 100px auto 0;  /* 100px top (big space), auto sides (centers), 0 bottom */
+      padding: 0;  /* No padding */
+      background: transparent;  /* No background */
+      border: none;  /* No border */
+      border-radius: 0;  /* No rounded corners */
+      backdrop-filter: none;  /* No glass effect */
     }
+    
+    /* Main heading in "Why Choose" section */
     #why-choose h2 {
-      margin: 0;
+      margin: 0;  /* No margin */
+      
+      /* Responsive font size: min 36px, scales to 5.5% viewport, max 52px */
       font-size: clamp(36px, 5.5vw, 52px);
-      font-weight: 800;
+      
+      font-weight: 800;  /* Very bold */
     }
+    
+    /* Subtitle paragraph in "Why Choose" section */
     #why-choose .sub {
-      margin: 20px auto 64px;
-      max-width: 900px;
-      color: var(--muted);
-      line-height: 1.8;
-      font-size: 20px;
+      margin: 20px auto 64px;  /* 20px top, auto sides (centers), 64px bottom */
+      max-width: 900px;  /* Limit width for readability */
+      color: var(--muted);  /* Slightly transparent white */
+      line-height: 1.8;  /* Comfortable reading space */
+      font-size: 20px;  /* Larger text */
     }
+    
+    /* ===================================
+       FEATURES GRID
+       Grid of feature cards
+       ================================== */
     .features {
-      display: grid;
+      display: grid;  /* Use CSS grid */
+      
+      /* On mobile: 2 columns */
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 20px;
+      
+      gap: 20px;  /* Space between cards */
     }
+    
+    /* On desktop (960px+): show 4 columns */
     @media (min-width: 960px) {
-      .features { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .features { 
+        grid-template-columns: repeat(4, minmax(0, 1fr)); 
+      }
     }
+    
+    /* Individual feature card */
     .feature {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      align-items: center;
-      text-align: center;
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 28px;
-      backdrop-filter: blur(8px);
+      display: flex;  /* Use flexbox */
+      flex-direction: column;  /* Stack items vertically */
+      gap: 12px;  /* Space between items */
+      align-items: center;  /* Center items horizontally */
+      text-align: center;  /* Center text */
+      background: var(--glass);  /* Glass effect background */
+      border: 1px solid var(--border);  /* Semi-transparent border */
+      border-radius: 18px;  /* Rounded corners */
+      padding: 28px;  /* Space inside card */
+      backdrop-filter: blur(8px);  /* Frosted glass effect */
     }
+    
+    /* ===================================
+       ICON CIRCLE - Container for feature icons
+       ================================== */
     .icon-circle {
-      width: 72px; height: 72px;
-      border-radius: 9999px;
-      display: grid; place-items: center;
-      background: rgba(255,255,255,0.12);
-      border: 1px solid var(--border);
+      width: 72px; 
+      height: 72px;
+      border-radius: 9999px;  /* Perfectly circular */
+      display: grid;  /* Use grid for centering */
+      place-items: center;  /* Center content both ways */
+      background: rgba(255, 255, 255, 0.12);  /* Semi-transparent white */
+      border: 1px solid var(--border);  /* Border */
+      
+      /* Multiple shadows for depth effect */
       box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,0.06),
-        0 8px 24px rgba(0,0,0,0.16);
-      backdrop-filter: blur(8px);
+        inset 0 0 0 1px rgba(255, 255, 255, 0.06),  /* Inner glow */
+        0 8px 24px rgba(0, 0, 0, 0.16);  /* Outer shadow */
+      
+      backdrop-filter: blur(8px);  /* Glass effect */
     }
+    
+    /* SVG icons inside circle */
     .icon-circle svg {
-      width: 32px; height: 32px;
-      stroke: rgba(255,255,255,0.85);
-      fill: none;
-      stroke-width: 2;
-      opacity: 0.9;
+      width: 32px; 
+      height: 32px;
+      stroke: rgba(255, 255, 255, 0.85);  /* Icon line color */
+      fill: none;  /* No fill, just outlines */
+      stroke-width: 2;  /* Line thickness */
+      opacity: 0.9;  /* Slightly transparent */
     }
+    
+    /* Feature card heading */
     .feature h3 {
-      margin: 0;
-      font-size: 18px;
-      font-weight: 700;
+      margin: 0;  /* No margin */
+      font-size: 18px; 
+      font-weight: 700;  /* Bold */
     }
+    
+    /* Feature card description */
     .feature p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.6;
+      margin: 0;  /* No margin */
+      color: var(--muted);  /* Slightly transparent white */
+      font-size: 14px;  /* Small text */
+      line-height: 1.6;  /* Comfortable reading space */
     }
-    .reveal { opacity: 0; transform: translateY(24px); transition: 500ms ease; }
-    .reveal.show { opacity: 1; transform: translateY(0); }
+    
+    /* ===================================
+       REVEAL ANIMATION
+       Elements with this class fade in when scrolled into view
+       ================================== */
+    .reveal { 
+      opacity: 0;  /* Start invisible */
+      transform: translateY(24px);  /* Start 24px below final position */
+      transition: 500ms ease;  /* Smooth transition over 500ms */
+    }
+    
+    /* When element comes into view, show it */
+    .reveal.show { 
+      opacity: 1;  /* Fully visible */
+      transform: translateY(0);  /* Move to final position */
+    }
   </style>
 </head>
 
 <body>
+  <!-- ===================================
+       ANIMATED BACKGROUND SCENE
+       Contains the three glowing blobs
+       ================================== -->
   <div class="scene">
-    <div class="blob a"></div>
-    <div class="blob b"></div>
-    <div class="blob c"></div>
+    <div class="blob a"></div>  <!-- Top-left cyan blob -->
+    <div class="blob b"></div>  <!-- Bottom-right purple blob -->
+    <div class="blob c"></div>  <!-- Center blue blob -->
   </div>
 
+  <!-- ===================================
+       HEADER - Top navigation bar
+       ================================== -->
   <header class="container">
     <div class="row">
+      <!-- Logo section - clickable, goes to welcome page -->
       <div class="logo" style="cursor:pointer;" onclick="location.href='./welcome.html'">
         <img src="logo.png" alt="BytLearn" />
         <div>
@@ -232,40 +569,83 @@
           <div class="subtitle">AI-Powered Learning</div>
         </div>
       </div>
+      
+      <!-- Profile button - checks if user is logged in before allowing access -->
       <a class="btn" href="./profile.html" title="Profile"
          onclick="if(localStorage.getItem('authed')!=='1'){event.preventDefault(); location.href='./login.html';}">
          Profile
       </a>
+      <!-- 
+        The onclick checks localStorage for 'authed' = '1'
+        If not logged in, it prevents going to profile.html and redirects to login.html instead
+      -->
     </div>
   </header>
 
+  <!-- ===================================
+       MAIN CONTENT AREA
+       ================================== -->
   <main class="container">
     <section class="hero">
+      <!-- Small badge at the top -->
       <span class="badge">✨ AI-Powered Education Platform</span>
+      
+      <!-- Main heading with gradient text effect on "BytLearn" -->
       <h1 class="heading">Learn Byte by Byte with <span class="gradient-text">BytLearn</span></h1>
+      
+      <!-- Tagline -->
       <p class="lead">Biology + AI = BytLearn.</p>
 
+      <!-- Action buttons -->
       <div class="actions">
+        <!-- Continue Learning button - white background, checks if logged in -->
         <a class="btn" style="background:#fff;color:#5b21b6;" href="./dashboard.html"
            onclick="if(localStorage.getItem('authed')!=='1'){event.preventDefault(); location.href='./login.html';}">
            ▶ Continue Learning
         </a>
+        <!-- 
+          Same login check as Profile button
+          If not logged in, redirects to login instead of dashboard
+        -->
+        
+        <!-- Start Journey button - goes directly to login -->
         <a class="btn" href="./login.html">📘 Start Journey</a>
       </div>
 
+      <!-- Statistics grid - 4 cards showing platform stats -->
       <div class="stats">
-        <div class="card"><h3>95%</h3><p>Progress Insights</p></div>
-        <div class="card"><h3>30+</h3><p>NCERT Lessons</p></div>
-        <div class="card"><h3>100%</h3><p>Syllabus-Aligned</p></div>
-        <div class="card"><h3>24/7</h3><p>AI Learning</p></div>
+        <div class="card">
+          <h3>95%</h3>
+          <p>Progress Insights</p>
+        </div>
+        <div class="card">
+          <h3>30+</h3>
+          <p>NCERT Lessons</p>
+        </div>
+        <div class="card">
+          <h3>100%</h3>
+          <p>Syllabus-Aligned</p>
+        </div>
+        <div class="card">
+          <h3>24/7</h3>
+          <p>AI Learning</p>
+        </div>
       </div>
 
+      <!-- ===================================
+           WHY CHOOSE SECTION
+           Features grid with 4 cards
+           Has "reveal" class for scroll animation
+           ================================== -->
       <section id="why-choose" class="reveal">
         <h2>Why Choose BytLearn?</h2>
         <p class="sub">
           Our AI‑powered platform is dedicated to your learning, providing personalized education that grows with you.
         </p>
+        
+        <!-- Grid of 4 feature cards -->
         <div class="features">
+          <!-- Feature 1: AI-Powered Learning -->
           <div class="feature">
             <div class="icon-circle">
               <img src="i4.png" alt="AI‑Powered Learning" style="width: 40px; height: 40px;" />
@@ -273,6 +653,8 @@
             <h3>AI‑Powered Learning</h3>
             <p>Personalized paths tailored just and only for you.</p>
           </div>
+          
+          <!-- Feature 2: Interactive Content -->
           <div class="feature">
             <div class="icon-circle">
               <img src="i2.png" alt="Interactive Content" style="width: 40px; height: 40px;" />
@@ -280,6 +662,8 @@
             <h3>Interactive Content</h3>
             <p>Hands-on experiences that make learning stick.</p>
           </div>
+          
+          <!-- Feature 3: Progress Tracking -->
           <div class="feature">
             <div class="icon-circle">
               <img src="i3.png" alt="Progress Tracking" style="width: 40px; height: 40px;" />
@@ -287,6 +671,8 @@
             <h3>Progress Tracking</h3>
             <p>Monitor growth with clear, actionable analytics.</p>
           </div>
+          
+          <!-- Feature 4: Personalized Recommendations -->
           <div class="feature">
             <div class="icon-circle">
               <img src="i1.png" alt="Personalized Recommendations Icon" style="width: 40px; height: 40px;" />
@@ -299,32 +685,104 @@
     </section>
   </main>
 
-   <!-- Footer -->
-    <footer class="relative z-10 py-8 px-6 bg-gradient-to-r from-purple-900/40 via-purple-900/30 to-slate-900/40 border-t border-white/10 backdrop-blur-sm">
-  <div class="max-w-7xl mx-auto text-center">
-    <div style="max-width: 1200px; margin: 0 auto;">
-      <div style="margin-bottom: 16px;">
-        <a href="./legal.html#terms" style="color: #ffffff; text-decoration: none; font-weight: 600; margin: 0 12px; font-size: 16px; transition: color 0.3s;" onmouseover="this.style.color='#67e8f9'" onmouseout="this.style.color='#ffffff'">Terms of Use</a>
-        <span style="color: rgba(255, 255, 255, 0.5); font-size: 16px;">|</span>
-        <a href="./legal.html#privacy" style="color: #ffffff; text-decoration: none; font-weight: 600; margin: 0 12px; font-size: 16px; transition: color 0.3s;" onmouseover="this.style.color='#67e8f9'" onmouseout="this.style.color='#ffffff'">Privacy Policy</a>
-        <span style="color: rgba(255, 255, 255, 0.5); font-size: 16px;">|</span>
-        <a href="./legal.html#contact" style="color: #ffffff; text-decoration: none; font-weight: 600; margin: 0 12px; font-size: 16px; transition: color 0.3s;" onmouseover="this.style.color='#67e8f9'" onmouseout="this.style.color='#ffffff'">Contact</a>
+  <!-- ===================================
+       FOOTER - Bottom section with links and copyright
+       ================================== -->
+  <footer class="relative z-10 py-8 px-6 bg-gradient-to-r from-purple-900/40 via-purple-900/30 to-slate-900/40 border-t border-white/10 backdrop-blur-sm">
+    <div class="max-w-7xl mx-auto text-center">
+      <div style="max-width: 1200px; margin: 0 auto;">
+        <!-- Footer navigation links -->
+        <div style="margin-bottom: 16px;">
+          <!-- Terms of Use link -->
+          <a href="./legal.html#terms" 
+             style="color: #ffffff; text-decoration: none; font-weight: 600; margin: 0 12px; font-size: 16px; transition: color 0.3s;" 
+             onmouseover="this.style.color='#67e8f9'" 
+             onmouseout="this.style.color='#ffffff'">
+            Terms of Use
+          </a>
+          <!-- 
+            onmouseover changes color to cyan when hovering
+            onmouseout changes back to white when not hovering
+          -->
+          
+          <span style="color: rgba(255, 255, 255, 0.5); font-size: 16px;">|</span>
+          
+          <!-- Privacy Policy link -->
+          <a href="./legal.html#privacy" 
+             style="color: #ffffff; text-decoration: none; font-weight: 600; margin: 0 12px; font-size: 16px; transition: color 0.3s;" 
+             onmouseover="this.style.color='#67e8f9'" 
+             onmouseout="this.style.color='#ffffff'">
+            Privacy Policy
+          </a>
+          
+          <span style="color: rgba(255, 255, 255, 0.5); font-size: 16px;">|</span>
+          
+          <!-- Contact link -->
+          <a href="./legal.html#contact" 
+             style="color: #ffffff; text-decoration: none; font-weight: 600; margin: 0 12px; font-size: 16px; transition: color 0.3s;" 
+             onmouseover="this.style.color='#67e8f9'" 
+             onmouseout="this.style.color='#ffffff'">
+            Contact
+          </a>
+        </div>
+        
+        <!-- Copyright text -->
+        <p style="color: rgba(255, 255, 255, 0.85); font-size: 15px; font-weight: 500; margin: 0;">
+          © 2024 BytLearn. Powered by 
+          <a href="landing.html" 
+             style="color: #67e8f9; text-decoration: none; font-weight: 600; transition: color 0.3s;" 
+             onmouseover="this.style.color='#93c5fd'" 
+             onmouseout="this.style.color='#67e8f9'">
+            VeloxCT
+          </a>
+        </p>
       </div>
-      <p style="color: rgba(255, 255, 255, 0.85); font-size: 15px; font-weight: 500; margin: 0;">© 2024 BytLearn. Powered by <a href="landing.html" style="color: #67e8f9; text-decoration: none; font-weight: 600; transition: color 0.3s;" onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#67e8f9'">VeloxCT</a></p>
     </div>
-  </div>
-</footer>
+  </footer>
 
+  <!-- ===================================
+       JAVASCRIPT - Scroll animation handler
+       ================================== -->
   <script>
+    /* 
+      INTERSECTION OBSERVER
+      This watches elements as they scroll into view and triggers animations
+    */
+    
+    // Create a new observer that watches when elements become visible
     const observer = new IntersectionObserver(
+      // This function runs whenever an observed element enters/exits the viewport
       (entries) => {
+        // Loop through each element that changed visibility
         entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add('show');
+          // If the element is now visible (intersecting with viewport)
+          if (entry.isIntersecting) {
+            // Add the "show" class to trigger the fade-in animation
+            entry.target.classList.add('show');
+          }
         });
       },
-      { threshold: 0.15 }
+      { 
+        threshold: 0.15  // Trigger when 15% of the element is visible
+      }
     );
+    
+    /*
+      Find all elements with the "reveal" class and start watching them
+      When they scroll into view (15% visible), the "show" class is added
+      which triggers the CSS animation (opacity 0 to 1, translateY 24px to 0)
+    */
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+    
+    /*
+      HOW THIS ANIMATION WORKS:
+      1. All elements with class "reveal" start invisible (opacity: 0) and moved down 24px
+      2. The Intersection Observer watches them as you scroll
+      3. When 15% of the element becomes visible on screen
+      4. The observer adds the "show" class to that element
+      5. CSS transition smoothly animates it to visible (opacity: 1) and final position (translateY: 0)
+      6. This creates a nice fade-up effect as you scroll down the page
+    */
   </script>
 </body>
 </html>

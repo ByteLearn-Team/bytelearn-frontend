@@ -6,335 +6,771 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
-    /* Root variables for colors and reusable values */
+    /* ============================================
+       CSS VARIABLES (CUSTOM PROPERTIES)
+       These are reusable color values that we can
+       reference throughout our stylesheet using var()
+       ============================================ */
     :root { 
-      --border: rgba(255,255,255,0.2);
-      --glass: rgba(255,255,255,0.1);
+      /* Border color - white with 20% opacity for glassmorphism effect */
+      --border: rgba(255, 255, 255, 0.2);
+      
+      /* Glass effect - white with 10% opacity for see-through background */
+      --glass: rgba(255, 255, 255, 0.1);
+      
+      /* Main text color - pure white */
       --text: #fff;
-      --muted: rgba(255,255,255,0.85);
+      
+      /* Muted text color - white with 85% opacity for secondary text */
+      --muted: rgba(255, 255, 255, 0.85);
     }
 
-    /* Ensure full height and reset default styles */
+    /* ============================================
+       BASIC PAGE SETUP
+       Reset default browser styles and set up
+       full-height layout
+       ============================================ */
     html, body {
+      /* Make page take full viewport height */
       height: 100%; 
+      
+      /* Remove default spacing around edges */
       margin: 0; 
+      
+      /* Set font family with fallbacks for different systems */
       font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      
+      /* Use our white text color variable */
       color: var(--text);
+      
+      /* Make fonts look smoother on different operating systems */
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Body background and layout centering */
+    /* ============================================
+       BODY BACKGROUND AND CENTERING
+       Create the dark blue gradient background and
+       center all content on the page
+       ============================================ */
     body {
+      /* Create a diagonal gradient from dark blue to purple-blue */
       background: linear-gradient(135deg, #0b1e3d, #08203a 40%, #101a4b);
-      display: grid; place-items: center;
+      
+      /* Use CSS Grid to center content both horizontally and vertically */
+      display: grid; 
+      place-items: center;
+      
+      /* Make background stay fixed when scrolling (not that we scroll) */
       background-attachment: fixed;
+      
+      /* Hide any overflow to prevent scrollbars from animated elements */
       overflow: hidden;
+      
+      /* Set base font size */
       font-size: 16px;
+      
+      /* Set line height for better readability */
       line-height: 1.6;
     }
 
-    /* Scene for animated blobs in background */
-    .scene { position: fixed; inset: 0; z-index: 0; }
+    /* ============================================
+       ANIMATED BACKGROUND BLOBS
+       These create the floating colored circles
+       in the background for visual interest
+       ============================================ */
+    
+    /* Container that holds all the blob elements */
+    .scene { 
+      /* Position fixed so it stays in place */
+      position: fixed; 
+      
+      /* Cover the entire screen (top, right, bottom, left all at 0) */
+      inset: 0; 
+      
+      /* Put it behind other content */
+      z-index: 0; 
+    }
 
-    /* Blob base style */
+    /* Base styles for all blob elements */
     .blob { 
+      /* Position absolutely so we can place them anywhere */
       position: absolute; 
+      
+      /* Make them perfect circles (9999px is effectively infinite) */
       border-radius: 9999px;
+      
+      /* Blur them heavily for a soft glow effect */
       filter: blur(80px); 
+      
+      /* Make them semi-transparent (18% opacity) */
       opacity: .18; 
+      
+      /* Apply floating animation that lasts 20 seconds and loops forever */
       animation: float 20s ease-in-out infinite;
     }
 
-    /* Top left blob */
+    /* First blob - top left corner with cyan to blue gradient */
     .blob.a { 
-      width: 360px; height: 360px; 
-      left: -80px; top: -40px; 
-      background: linear-gradient(90deg,#38bdf8,#2563eb); 
+      /* Size of the blob */
+      width: 360px; 
+      height: 360px; 
+      
+      /* Position it partially off-screen in top-left corner */
+      left: -80px; 
+      top: -40px; 
+      
+      /* Create gradient from cyan to blue */
+      background: linear-gradient(90deg, #38bdf8, #2563eb); 
     }
 
-    /* Bottom right blob */
+    /* Second blob - bottom right corner with purple to cyan gradient */
     .blob.b { 
-      width: 280px; height: 280px; 
-      right: -80px; bottom: -40px; 
-      background: linear-gradient(90deg,#6366f1,#22d3ee); 
+      /* Slightly smaller than first blob */
+      width: 280px; 
+      height: 280px; 
+      
+      /* Position it partially off-screen in bottom-right corner */
+      right: -80px; 
+      bottom: -40px; 
+      
+      /* Create gradient from purple to cyan */
+      background: linear-gradient(90deg, #6366f1, #22d3ee); 
+      
+      /* Make this one animate faster (16 seconds instead of 20) */
       animation-duration: 16s; 
     }
 
-    /* Floating animation keyframes */
+    /* ============================================
+       FLOATING ANIMATION
+       Makes the blobs move gently up and down
+       ============================================ */
     @keyframes float { 
-      0% { transform:translate(0,0) } 
-      50%{ transform:translate(30px,-20px) } 
-      100%{ transform:translate(0,0) } 
+      /* Start position - no movement */
+      0% { 
+        transform: translate(0, 0);
+      } 
+      
+      /* Middle position - move right and up slightly */
+      50% { 
+        transform: translate(30px, -20px);
+      } 
+      
+      /* End position - back to start (creates loop) */
+      100% { 
+        transform: translate(0, 0);
+      } 
     }
 
-    /* Card container (login/register box) */
+    /* ============================================
+       MAIN CARD (LOGIN/REGISTER BOX)
+       The glassmorphic card that contains the form
+       ============================================ */
     .card {
-      position: relative; z-index: 1;
+      /* Position relative so elements inside can be positioned relative to it */
+      position: relative; 
+      
+      /* Put it above the background blobs */
+      z-index: 1;
+      
+      /* Make it responsive: 580px wide on large screens, 92% width on small screens */
       width: min(580px, 92vw);
+      
+      /* Semi-transparent white background for glass effect */
       background: var(--glass);
+      
+      /* Subtle border using our border color variable */
       border: 1px solid var(--border);
+      
+      /* Rounded corners */
       border-radius: 20px;
+      
+      /* Inner spacing: 24px top/bottom, 44px left/right */
       padding: 24px 44px;
+      
+      /* Blur the background behind the card for glassmorphism effect */
       backdrop-filter: blur(20px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      
+      /* Soft shadow to lift the card off the background */
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
 
-    /* Logo row */
+    /* ============================================
+       LOGO AND BRANDING SECTION
+       The BytLearn logo and title at the top
+       ============================================ */
     .logo { 
+      /* Use flexbox to stack items vertically */
       display: flex; 
       flex-direction: column;
+      
+      /* Center items horizontally */
       align-items: center; 
+      
+      /* Small gap between logo image and text */
       gap: 6px; 
+      
+      /* Space below the logo section */
       margin-bottom: 14px; 
+      
+      /* Center all text */
       text-align: center;
     }
 
+    /* The logo image itself */
     .logo img { 
+      /* Size of the logo */
       width: 64px; 
       height: 64px;
+      
+      /* Add a glowing shadow effect around the logo */
       filter: drop-shadow(0 4px 12px rgba(103, 232, 249, 0.3));
     }
 
-    /* Gradient brand text */
+    /* ============================================
+       GRADIENT BRAND TEXT
+       The "BytLearn" text with rainbow gradient
+       ============================================ */
     .brand {
-      background: linear-gradient(135deg,#67e8f9,#60a5fa,#8b5cf6);
-      -webkit-background-clip:text; 
-      background-clip:text; 
+      /* Create a gradient background */
+      background: linear-gradient(135deg, #67e8f9, #60a5fa, #8b5cf6);
+      
+      /* Clip the background to only show where the text is */
+      -webkit-background-clip: text; 
+      background-clip: text; 
+      
+      /* Make the text transparent so the gradient shows through */
       color: transparent;
+      
+      /* Make the text bold */
       font-weight: 700;
+      
+      /* Tighten letter spacing slightly */
       letter-spacing: -0.02em;
     }
 
-    /* Headings */
+    /* ============================================
+       HEADINGS AND SUBTITLES
+       ============================================ */
+    
+    /* Main heading (BytLearn title) */
     h1 { 
+      /* Remove default margins, add small bottom margin */
       margin: 0 0 2px; 
+      
+      /* Large text size */
       font-size: 32px; 
+      
+      /* Bold weight */
       font-weight: 700;
+      
+      /* Tighter letter spacing for modern look */
       letter-spacing: -0.02em;
     }
     
+    /* Subtitle text below the title */
     .subtitle { 
+      /* Small margins */
       margin: 0 0 14px; 
+      
+      /* Slightly faded white color */
       color: var(--muted); 
+      
+      /* Medium font size */
       font-size: 15px;
+      
+      /* Normal weight */
       font-weight: 400;
     }
 
-    /* Tab container */
+    /* ============================================
+       TAB SWITCHER (LOGIN/REGISTER)
+       The buttons that switch between forms
+       ============================================ */
     .tabs {
+      /* Use flexbox to lay out tabs horizontally */
       display: flex;
+      
+      /* Small gap between tab buttons */
       gap: 8px;
+      
+      /* Space below the tabs */
       margin-bottom: 16px;
+      
+      /* Inner padding around all tabs */
       padding: 4px;
-      background: rgba(255,255,255,0.05);
+      
+      /* Very subtle background color */
+      background: rgba(255, 255, 255, 0.05);
+      
+      /* Rounded corners */
       border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.08);
+      
+      /* Subtle border */
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
+    /* Individual tab button */
     .tab {
+      /* Take up equal space (each tab gets 50% width) */
       flex: 1;
+      
+      /* Inner spacing */
       padding: 12px 24px;
+      
+      /* Rounded corners */
       border-radius: 10px;
+      
+      /* Remove default button border */
       border: none;
+      
+      /* Start with transparent background */
       background: transparent;
+      
+      /* Muted text color */
       color: var(--muted);
+      
+      /* Medium font size */
       font-size: 15px;
+      
+      /* Medium bold weight */
       font-weight: 500;
+      
+      /* Show pointer cursor on hover */
       cursor: pointer;
+      
+      /* Smooth transitions for hover effects */
       transition: all 200ms ease;
+      
+      /* Use the same font as the page */
       font-family: inherit;
     }
 
+    /* Active tab (currently selected) */
     .tab.active {
-      background: rgba(255,255,255,0.15);
+      /* Brighter background */
+      background: rgba(255, 255, 255, 0.15);
+      
+      /* Full white text */
       color: var(--text);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      
+      /* Subtle shadow for depth */
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
+    /* Tab hover effect (but not when active) */
     .tab:hover:not(.active) {
-      background: rgba(255,255,255,0.08);
+      /* Slightly brighter background on hover */
+      background: rgba(255, 255, 255, 0.08);
     }
 
-    /* Form labels */
+    /* ============================================
+       FORM LABELS
+       The text above each input field
+       ============================================ */
     label { 
+      /* Display as block so it takes full width */
       display: block; 
+      
+      /* Small font size */
       font-size: 14px; 
+      
+      /* Space below the label */
       margin: 0 0 8px; 
+      
+      /* White text color */
       color: var(--text); 
+      
+      /* Medium bold weight */
       font-weight: 500;
+      
+      /* Slightly wider letter spacing */
       letter-spacing: 0.01em;
     }
 
-    /* Input wrapper for better styling */
+    /* ============================================
+       INPUT GROUP CONTAINER
+       Wraps each label and input pair
+       ============================================ */
     .input-group {
+      /* Space below each input group */
       margin-bottom: 12px;
     }
 
-    /* Input fields */
+    /* ============================================
+       INPUT FIELDS
+       The text boxes where users type information
+       ============================================ */
     input {
+      /* Take full width of container */
       width: 100%; 
+      
+      /* Inner spacing */
       padding: 12px 16px;
+      
+      /* Rounded corners */
       border-radius: 10px; 
+      
+      /* Subtle border */
       border: 1px solid var(--border);
-      background: rgba(255,255,255,0.08);
+      
+      /* Semi-transparent background */
+      background: rgba(255, 255, 255, 0.08);
+      
+      /* White text */
       color: var(--text); 
+      
+      /* Remove default outline (we'll add custom focus style) */
       outline: none; 
+      
+      /* Include padding and border in width calculation */
       box-sizing: border-box;
+      
+      /* Medium font size */
       font-size: 15px;
+      
+      /* Use same font as page */
       font-family: inherit;
+      
+      /* Smooth transition for focus effect */
       transition: all 200ms ease;
     }
 
+    /* Input field when focused (user clicks/tabs into it) */
     input:focus {
+      /* Cyan-colored border */
       border-color: rgba(103, 232, 249, 0.5);
-      background: rgba(255,255,255,0.12);
+      
+      /* Slightly brighter background */
+      background: rgba(255, 255, 255, 0.12);
+      
+      /* Glowing effect around the input */
       box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.1);
     }
 
+    /* Placeholder text inside inputs (the hint text) */
     input::placeholder {
-      color: rgba(255,255,255,0.4);
+      /* Faded white color */
+      color: rgba(255, 255, 255, 0.4);
     }
 
-    /* Buttons styling */
-    .btn {
-      width: 100%;
-      display: inline-flex; 
-      align-items: center; 
-      justify-content: center;
-      padding: 12px 24px;
-      border-radius: 10px; 
-      border: none;
-      background: linear-gradient(135deg, rgba(103, 232, 249, 0.2), rgba(96, 165, 250, 0.2)); 
-      color: var(--text); 
-      text-decoration: none; 
-      transition: all 200ms ease;
-      cursor: pointer;
-      font-size: 15px;
-      font-weight: 600;
-      font-family: inherit;
-      margin-top: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    
-    .btn:hover:not(:disabled) { 
-      background: linear-gradient(135deg, rgba(103, 232, 249, 0.3), rgba(96, 165, 250, 0.3));
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(103, 232, 249, 0.2);
+    /* ============================================
+       PASSWORD VALIDATION HINT
+       Shows password strength requirements
+       ============================================ */
+    .password-hint {
+      /* Small font size */
+      font-size: 12px;
+      
+      /* Faded text color */
+      color: rgba(255, 255, 255, 0.6);
+      
+      /* Small space above the hint */
+      margin-top: 6px;
+      
+      /* Tighter line spacing */
+      line-height: 1.4;
     }
 
-    .btn:active:not(:disabled) {
-      transform: translateY(0);
-    }
-
-    .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      background: rgba(255,255,255,0.1);
-    }
-    
-    .btn:disabled:hover {
-      background: rgba(255,255,255,0.1);
-      transform: none;
-      box-shadow: none;
-    }
-
-    /* Links like "Back to Welcome" */
-    .link { 
-      display: block; 
-      margin-top: 16px; 
-      text-align: center; 
-      color: rgba(103, 232, 249, 0.9); 
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      transition: all 200ms ease;
-    }
-
-    .link:hover {
-      color: #67e8f9;
-      text-decoration: none;
-    }
-
-    /* Message box for errors and success */
-    .message {
-      padding: 14px 16px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      font-size: 14px;
-      display: none;
-      animation: slideIn 0.3s ease;
-      font-weight: 500;
-    }
-
-    .message.error {
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.3);
+    /* Error state for password hint */
+    .password-hint.error {
+      /* Red color for errors */
       color: #fca5a5;
     }
 
+    /* ============================================
+       BUTTONS
+       Submit buttons for forms
+       ============================================ */
+    .btn {
+      /* Take full width */
+      width: 100%;
+      
+      /* Use inline-flex for centering content */
+      display: inline-flex; 
+      align-items: center; 
+      justify-content: center;
+      
+      /* Inner spacing */
+      padding: 12px 24px;
+      
+      /* Rounded corners */
+      border-radius: 10px; 
+      
+      /* Remove default button border */
+      border: none;
+      
+      /* Gradient background with cyan and blue */
+      background: linear-gradient(135deg, rgba(103, 232, 249, 0.2), rgba(96, 165, 250, 0.2)); 
+      
+      /* White text */
+      color: var(--text); 
+      
+      /* Remove underline if used as link */
+      text-decoration: none; 
+      
+      /* Smooth transitions for hover effects */
+      transition: all 200ms ease;
+      
+      /* Show pointer cursor */
+      cursor: pointer;
+      
+      /* Medium font size */
+      font-size: 15px;
+      
+      /* Bold text */
+      font-weight: 600;
+      
+      /* Use same font as page */
+      font-family: inherit;
+      
+      /* Small space above button */
+      margin-top: 4px;
+      
+      /* Subtle shadow */
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Button hover effect (but not when disabled) */
+    .btn:hover:not(:disabled) { 
+      /* Brighter gradient on hover */
+      background: linear-gradient(135deg, rgba(103, 232, 249, 0.3), rgba(96, 165, 250, 0.3));
+      
+      /* Lift button up slightly */
+      transform: translateY(-1px);
+      
+      /* Stronger glowing shadow */
+      box-shadow: 0 4px 12px rgba(103, 232, 249, 0.2);
+    }
+
+    /* Button when being clicked (active state) */
+    .btn:active:not(:disabled) {
+      /* Return to normal position */
+      transform: translateY(0);
+    }
+
+    /* Disabled button state */
+    .btn:disabled {
+      /* Faded appearance */
+      opacity: 0.5;
+      
+      /* Show not-allowed cursor */
+      cursor: not-allowed;
+      
+      /* Gray background */
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Disabled button hover (no effects) */
+    .btn:disabled:hover {
+      /* Keep same background */
+      background: rgba(255, 255, 255, 0.1);
+      
+      /* No movement */
+      transform: none;
+      
+      /* No shadow change */
+      box-shadow: none;
+    }
+
+    /* ============================================
+       LINKS
+       Text links like "Back to Welcome"
+       ============================================ */
+    .link { 
+      /* Display as block for full width */
+      display: block; 
+      
+      /* Space above the link */
+      margin-top: 16px; 
+      
+      /* Center the text */
+      text-align: center; 
+      
+      /* Cyan color */
+      color: rgba(103, 232, 249, 0.9); 
+      
+      /* Remove underline */
+      text-decoration: none;
+      
+      /* Small font size */
+      font-size: 14px;
+      
+      /* Medium bold weight */
+      font-weight: 500;
+      
+      /* Smooth transition */
+      transition: all 200ms ease;
+    }
+
+    /* Link hover effect */
+    .link:hover {
+      /* Brighter cyan on hover */
+      color: #67e8f9;
+      
+      /* Still no underline */
+      text-decoration: none;
+    }
+
+    /* ============================================
+       MESSAGE BOX
+       Shows error or success messages
+       ============================================ */
+    .message {
+      /* Inner spacing */
+      padding: 14px 16px;
+      
+      /* Rounded corners */
+      border-radius: 10px;
+      
+      /* Space below message */
+      margin-bottom: 20px;
+      
+      /* Small font */
+      font-size: 14px;
+      
+      /* Hidden by default (shown via JavaScript) */
+      display: none;
+      
+      /* Slide in animation when shown */
+      animation: slideIn 0.3s ease;
+      
+      /* Medium bold text */
+      font-weight: 500;
+    }
+
+    /* Error message styling */
+    .message.error {
+      /* Red semi-transparent background */
+      background: rgba(239, 68, 68, 0.15);
+      
+      /* Red border */
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      
+      /* Light red text */
+      color: #fca5a5;
+    }
+
+    /* Success message styling */
     .message.success {
+      /* Green semi-transparent background */
       background: rgba(34, 197, 94, 0.15);
+      
+      /* Green border */
       border: 1px solid rgba(34, 197, 94, 0.3);
+      
+      /* Light green text */
       color: #86efac;
     }
 
+    /* ============================================
+       SLIDE IN ANIMATION
+       Makes messages appear smoothly
+       ============================================ */
     @keyframes slideIn {
+      /* Start state - invisible and above final position */
       from {
         opacity: 0;
         transform: translateY(-10px);
       }
+      
+      /* End state - fully visible at normal position */
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
 
-    /* Terms checkbox container */
+    /* ============================================
+       TERMS AND CONDITIONS CHECKBOX
+       The checkbox and text for agreeing to terms
+       ============================================ */
     .terms-container {
+      /* Use flexbox for layout */
       display: flex;
+      
+      /* Align items to top (in case text wraps) */
       align-items: flex-start;
+      
+      /* Space between checkbox and text */
       gap: 12px;
+      
+      /* Space above container */
       margin-top: 12px;
+      
+      /* Small space below */
       margin-bottom: 4px;
     }
 
+    /* The checkbox itself */
     .terms-container input[type="checkbox"] {
+      /* Size of checkbox */
       width: 18px;
       height: 18px;
+      
+      /* Align with text baseline */
       margin-top: 2px;
+      
+      /* Show pointer cursor */
       cursor: pointer;
+      
+      /* Don't let it shrink when text wraps */
       flex-shrink: 0;
+      
+      /* Custom checkbox color (cyan) */
       accent-color: #67e8f9;
     }
 
+    /* The terms text next to checkbox */
     .terms-text {
+      /* Small font */
       font-size: 13px;
+      
+      /* Muted white color */
       color: var(--muted);
+      
+      /* Comfortable line height for readability */
       line-height: 1.6;
     }
 
+    /* Links inside terms text */
     .terms-text a {
+      /* Cyan color */
       color: #67e8f9;
+      
+      /* No underline by default */
       text-decoration: none;
+      
+      /* Medium bold weight */
       font-weight: 500;
     }
 
+    /* Links hover effect */
     .terms-text a:hover {
+      /* Add underline on hover */
       text-decoration: underline;
     }
 
-    /* Form container */
+    /* ============================================
+       FORM CONTAINER
+       Reset default form spacing
+       ============================================ */
     form {
+      /* No top margin */
       margin-top: 0;
     }
 
-    /* Responsive adjustments */
+    /* ============================================
+       RESPONSIVE DESIGN
+       Adjustments for mobile devices
+       ============================================ */
     @media (max-width: 640px) {
+      /* Reduce card padding on small screens */
       .card {
         padding: 32px 24px;
       }
       
+      /* Slightly smaller heading on mobile */
       h1 {
         font-size: 28px;
       }
@@ -343,241 +779,562 @@
 </head>
 
 <body>
-  <!-- Floating blobs background -->
+  <!-- ============================================
+       ANIMATED BACKGROUND
+       The floating colored blobs behind everything
+       ============================================ -->
   <div class="scene">
+    <!-- First blob - top left -->
     <div class="blob a"></div>
+    
+    <!-- Second blob - bottom right -->
     <div class="blob b"></div>
   </div>
 
-  <!-- Main login/register form card -->
+  <!-- ============================================
+       MAIN CARD
+       The white glassmorphic box containing everything
+       ============================================ -->
   <div class="card">
 
-    <!-- Logo inside the card (clickable -> Welcome page) -->
+    <!-- ============================================
+         LOGO AND HEADER SECTION
+         Shows BytLearn logo, title, and subtitle
+         Clicking this section goes back to welcome page
+         ============================================ -->
     <div class="logo" style="cursor:pointer;" onclick="location.href='./welcome.html'">
+      <!-- BytLearn logo image -->
       <img src="./logo.png" alt="BytLearn" />
+      
+      <!-- Title and subtitle container -->
       <div>
+        <!-- Main title with gradient text -->
         <h1><span class="brand">BytLearn</span></h1>
+        
+        <!-- Subtitle that changes based on login/register mode -->
         <div class="subtitle">Welcome back! Please enter your details.</div>
       </div>
     </div>
 
-    <!-- Tabs (Login/Register switcher) -->
+    <!-- ============================================
+         TAB SWITCHER
+         Buttons to switch between Login and Register forms
+         ============================================ -->
     <div class="tabs">
+      <!-- Login tab (active by default) -->
       <button id="tab-login" class="tab active" type="button">Login</button>
+      
+      <!-- Register tab (inactive by default) -->
       <button id="tab-register" class="tab" type="button">Register</button>
     </div>
 
-    <!-- LOGIN FORM -->
+    <!-- ============================================
+         LOGIN FORM
+         Shown by default when page loads
+         ============================================ -->
     <form id="loginForm">
+      <!-- Message area for login errors/success (hidden by default) -->
       <div id="loginMessage" class="message"></div>
       
+      <!-- Email input field -->
       <div class="input-group">
         <label for="loginEmail">Email</label>
         <input id="loginEmail" type="email" placeholder="you@example.com" required />
       </div>
 
+      <!-- Password input field -->
       <div class="input-group">
         <label for="loginPassword">Password</label>
         <input id="loginPassword" type="password" placeholder="Enter your password" required />
       </div>
 
+      <!-- Submit button for login -->
       <button type="submit" id="loginBtn" class="btn">Sign In</button>
       
+      <!-- Link to go back to welcome page -->
       <a class="link" href="./welcome.html">← Back to Welcome</a>
     </form>
 
-    <!-- REGISTER FORM (hidden by default) -->
+    <!-- ============================================
+         REGISTER FORM
+         Hidden by default, shown when Register tab clicked
+         ============================================ -->
     <form id="registerForm" style="display:none;">
+      <!-- Message area for registration errors/success (hidden by default) -->
       <div id="registerMessage" class="message"></div>
       
+      <!-- Full name input field -->
       <div class="input-group">
         <label for="regName">Full Name</label>
         <input id="regName" type="text" placeholder="Enter your full name" required />
       </div>
 
+      <!-- Email input field -->
       <div class="input-group">
         <label for="regEmail">Email</label>
         <input id="regEmail" type="email" placeholder="you@example.com" required />
       </div>
 
+      <!-- Password input field with validation -->
       <div class="input-group">
         <label for="regPassword">Password</label>
         <input id="regPassword" type="password" placeholder="Create a strong password" required />
+        
+        <!-- Hint text that shows password requirements and validation status -->
+        <div id="passwordHint" class="password-hint">
+          Password must be at least 8 characters with uppercase, lowercase, number, and special character
+        </div>
       </div>
 
-      <!-- Terms and Conditions Checkbox -->
+      <!-- Terms and conditions checkbox -->
       <div class="terms-container">
+        <!-- Checkbox that must be checked to enable Register button -->
         <input type="checkbox" id="registerTerms" />
+        
+        <!-- Label with links to terms and privacy policy -->
         <label for="registerTerms" class="terms-text" style="margin: 0; cursor: pointer;">
           I agree to the <a href="./legal.html#terms">Terms of Use</a> and <a href="./legal.html#privacy">Privacy Policy</a>
         </label>
       </div>
 
+      <!-- Submit button for registration (disabled until checkbox is checked) -->
       <button type="submit" id="registerBtn" class="btn" disabled>Create Account</button>
       
+      <!-- Link to go back to welcome page -->
       <a class="link" href="./welcome.html">← Back to Welcome</a>
     </form>
   </div>
 
+  <!-- ============================================
+       JAVASCRIPT CODE
+       All the interactive functionality
+       ============================================ -->
   <script>
-    // If already logged in (authed), redirect directly to dashboard
-    if (localStorage.getItem('authed') === '1') {
+    /* ============================================
+       STEP 1: CHECK IF USER IS ALREADY LOGGED IN
+       If user is already authenticated, send them
+       directly to dashboard
+       ============================================ */
+    
+    // Get the 'authed' value from localStorage
+    // localStorage is like a permanent storage in the browser that persists even after closing
+    var isAuthenticated = localStorage.getItem('authed');
+    
+    // Check if the value equals '1' (which means user is logged in)
+    if (isAuthenticated === '1') {
+      // If logged in, redirect to dashboard page
+      // replace() is used instead of href so user can't press back button to return here
       location.replace('./dashboard.html');
     }
 
-    // Tab buttons and form references
-    const tabLogin = document.getElementById('tab-login');
-    const tabRegister = document.getElementById('tab-register');
-    const loginForm = document.getElementById('loginForm');
-    const registerForm = document.getElementById('registerForm');
-    const loginMessage = document.getElementById('loginMessage');
-    const registerMessage = document.getElementById('registerMessage');
-    const registerTerms = document.getElementById('registerTerms');
-    const registerBtn = document.getElementById('registerBtn');
+    /* ============================================
+       STEP 2: GET REFERENCES TO HTML ELEMENTS
+       Store references to elements we'll need to manipulate
+       ============================================ */
+    
+    // Get the Login tab button
+    var tabLogin = document.getElementById('tab-login');
+    
+    // Get the Register tab button
+    var tabRegister = document.getElementById('tab-register');
+    
+    // Get the entire login form
+    var loginForm = document.getElementById('loginForm');
+    
+    // Get the entire register form
+    var registerForm = document.getElementById('registerForm');
+    
+    // Get the message div inside login form (for showing errors/success)
+    var loginMessage = document.getElementById('loginMessage');
+    
+    // Get the message div inside register form (for showing errors/success)
+    var registerMessage = document.getElementById('registerMessage');
+    
+    // Get the terms checkbox in register form
+    var registerTerms = document.getElementById('registerTerms');
+    
+    // Get the register submit button
+    var registerBtn = document.getElementById('registerBtn');
+    
+    // Get the password input field in register form
+    var regPassword = document.getElementById('regPassword');
+    
+    // Get the password hint text element
+    var passwordHint = document.getElementById('passwordHint');
 
-    // Enable/disable register button based on checkbox
+    /* ============================================
+       STEP 3: PASSWORD VALIDATION FUNCTION
+       Function that checks if password meets all requirements
+       ============================================ */
+    
+    function validatePassword(password) {
+      // Check if password is at least 8 characters long
+      var minLength = password.length >= 8;
+      
+      // Check if password contains at least one uppercase letter (A-Z)
+      // The /[A-Z]/ is a regular expression pattern
+      // .test() checks if the pattern exists in the password
+      var hasUpperCase = /[A-Z]/.test(password);
+      
+      // Check if password contains at least one lowercase letter (a-z)
+      var hasLowerCase = /[a-z]/.test(password);
+      
+      // Check if password contains at least one number (0-9)
+      var hasNumber = /[0-9]/.test(password);
+      
+      // Check if password contains at least one special character
+      // The pattern includes: ! @ # $ % ^ & * ( ) _ + - = [ ] { } ; ' : " \ | , . < > / ?
+      var hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+      
+      // Return true only if ALL conditions are met
+      // The && operator means "and" - all must be true for result to be true
+      return minLength && hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
+    }
+
+    /* ============================================
+       STEP 4: REAL-TIME PASSWORD VALIDATION
+       Update the hint text as user types in password field
+       ============================================ */
+    
+    // Listen for the 'input' event (fires every time user types)
+    regPassword.addEventListener('input', function() {
+      // 'this' refers to the password input field
+      // Check if current password value is valid
+      var isValid = validatePassword(this.value);
+      
+      // Only show feedback if user has typed something
+      if (this.value.length > 0) {
+        // If password is valid
+        if (isValid) {
+          // Change hint text to show success
+          passwordHint.textContent = '✓ Password is strong';
+          
+          // Change color to green
+          passwordHint.style.color = '#86efac';
+          
+          // Remove error class if it was there
+          passwordHint.classList.remove('error');
+        } else {
+          // If password is NOT valid, show requirements again
+          passwordHint.textContent = 'Password must be at least 8 characters with uppercase, lowercase, number, and special character';
+          
+          // Add error class to turn text red
+          passwordHint.classList.add('error');
+        }
+      } else {
+        // If user cleared the field (empty), show default hint
+        passwordHint.textContent = 'Password must be at least 8 characters with uppercase, lowercase, number, and special character';
+        
+        // Reset to default color
+        passwordHint.style.color = 'rgba(255,255,255,0.6)';
+        
+        // Remove error class
+        passwordHint.classList.remove('error');
+      }
+    });
+
+    /* ============================================
+       STEP 5: ENABLE/DISABLE REGISTER BUTTON
+       Register button only works if checkbox is checked
+       ============================================ */
+    
+    // Listen for 'change' event on checkbox (fires when checked/unchecked)
     registerTerms.addEventListener('change', function() {
+      // 'this.checked' is true if checkbox is checked, false if not
+      // Set button disabled property to opposite of checked state
+      // If checked = true, then disabled = false (button enabled)
+      // If checked = false, then disabled = true (button disabled)
       registerBtn.disabled = !this.checked;
     });
 
-    // Function to show message
+    /* ============================================
+       STEP 6: FUNCTION TO SHOW MESSAGES
+       Displays error or success messages to user
+       ============================================ */
+    
     function showMessage(element, text, type) {
+      // Set the text content of the message div
       element.textContent = text;
+      
+      // Set the CSS class to 'message' plus the type ('error' or 'success')
+      // This applies the appropriate styling (red for error, green for success)
       element.className = 'message ' + type;
+      
+      // Make the message visible
       element.style.display = 'block';
-      setTimeout(() => {
+      
+      // Set a timer to hide the message after 5 seconds (5000 milliseconds)
+      setTimeout(function() {
+        // This code runs after 5 seconds
         element.style.display = 'none';
       }, 5000);
     }
 
-    // Function to toggle between login/register forms
+    /* ============================================
+       STEP 7: FUNCTION TO SWITCH BETWEEN FORMS
+       Toggle between Login form and Register form
+       ============================================ */
+    
     function activate(tab) {
-      // Hide all messages when switching tabs
+      // First, hide any messages that might be showing
       loginMessage.style.display = 'none';
       registerMessage.style.display = 'none';
       
+      // Check which tab should be activated
       if (tab === 'login') {
+        // ACTIVATE LOGIN TAB
+        
+        // Add 'active' class to login tab (makes it highlighted)
         tabLogin.classList.add('active');
+        
+        // Remove 'active' class from register tab
         tabRegister.classList.remove('active');
+        
+        // Show the login form (empty string means display: block or default)
         loginForm.style.display = '';
+        
+        // Hide the register form
         registerForm.style.display = 'none';
+        
+        // Change subtitle text for login
         document.querySelector('.subtitle').textContent = 'Welcome back! Please enter your details.';
       } else {
+        // ACTIVATE REGISTER TAB
+        
+        // Remove 'active' class from login tab
         tabLogin.classList.remove('active');
+        
+        // Add 'active' class to register tab (makes it highlighted)
         tabRegister.classList.add('active');
+        
+        // Hide the login form
         loginForm.style.display = 'none';
+        
+        // Show the register form
         registerForm.style.display = '';
+        
+        // Change subtitle text for registration
         document.querySelector('.subtitle').textContent = 'Create your account to get started.';
       }
     }
-    // Events for buttons to switch forms
-    tabLogin.addEventListener('click', () => activate('login'));
-    tabRegister.addEventListener('click', () => activate('register'));
 
-    // Get saved users from localStorage safely
+    /* ============================================
+       STEP 8: ADD CLICK LISTENERS TO TAB BUTTONS
+       Make tabs clickable to switch forms
+       ============================================ */
+    
+    // When login tab is clicked, activate login form
+    tabLogin.addEventListener('click', function() {
+      activate('login');
+    });
+    
+    // When register tab is clicked, activate register form
+    tabRegister.addEventListener('click', function() {
+      activate('register');
+    });
+
+    /* ============================================
+       STEP 9: HELPER FUNCTIONS FOR USER DATA
+       Functions to get and save user data in localStorage
+       (Note: In real production, this would be in a database)
+       ============================================ */
+    
+    // Function to get list of all registered users
     function getUsers() {
-      const raw = localStorage.getItem('users');
-      if (!raw) return [];
+      // Try to get the 'users' data from localStorage
+      var raw = localStorage.getItem('users');
+      
+      // If nothing is stored yet, return empty array
+      if (!raw) {
+        return [];
+      }
+      
+      // Try to convert the stored string back to JavaScript object
       try {
-        const parsed = JSON.parse(raw);
+        // JSON.parse converts string back to object/array
+        var parsed = JSON.parse(raw);
+        
+        // Make sure it's actually an array before returning
+        // If it's an array, return it; otherwise return empty array
         return Array.isArray(parsed) ? parsed : [];
-      } catch {
+      } catch (error) {
+        // If parsing fails (corrupted data), remove it and return empty array
         localStorage.removeItem('users');
         return [];
       }
     }
 
-    // Save updated users list
+    // Function to save the users list to localStorage
     function saveUsers(list) {
-      if (!Array.isArray(list)) return;
+      // First check if input is actually an array
+      if (!Array.isArray(list)) {
+        return; // Exit function if not an array
+      }
+      
+      // Convert array to string and save to localStorage
+      // JSON.stringify converts JavaScript object/array to string
       localStorage.setItem('users', JSON.stringify(list));
     }
 
-    // Set authenticated user session info
+    // Function to save logged-in user information
     function setSession(user) {
+      // Set authentication flag to '1' (meaning logged in)
       localStorage.setItem('authed', '1');
+      
+      // Save user's email
       localStorage.setItem('currentUserEmail', user.email);
+      
+      // Save user's name (or 'Student' as default if no name)
       localStorage.setItem('currentUserName', user.name || 'Student');
     }
 
-    // Handle REGISTER form submission
-    registerForm.addEventListener('submit', async (e) => {
+    /* ============================================
+       STEP 10: HANDLE REGISTER FORM SUBMISSION
+       What happens when user clicks "Create Account"
+       ============================================ */
+    
+    // Listen for 'submit' event on register form
+    registerForm.addEventListener('submit', async function(e) {
+      // Prevent the default form submission (which would reload the page)
       e.preventDefault();
-      const name = document.getElementById('regName').value.trim();
-      const email = document.getElementById('regEmail').value.trim().toLowerCase();
-      const password = document.getElementById('regPassword').value;
+      
+      // Get the values from the form fields and clean them up
+      // .trim() removes extra spaces from beginning and end
+      var name = document.getElementById('regName').value.trim();
+      
+      // .toLowerCase() converts email to lowercase for consistency
+      var email = document.getElementById('regEmail').value.trim().toLowerCase();
+      
+      var password = document.getElementById('regPassword').value;
 
+      // Validate that all fields have values
       if (!name || !email || !password) { 
+        // If any field is empty, show error message
         showMessage(registerMessage, 'Please fill all fields.', 'error');
-        return; 
+        return; // Exit the function, don't continue
       }
 
+      // Validate password strength using our validation function
+      if (!validatePassword(password)) {
+        // If password doesn't meet requirements, show error
+        showMessage(registerMessage, 'Password must be at least 8 characters and contain uppercase, lowercase, number, and special character.', 'error');
+        return; // Exit the function
+      }
+
+      // Try to register the user with the backend server
       try {
-        // Register user in backend
-        const res = await fetch('http://127.0.0.1:8000/register', {
+        // Send a POST request to the backend registration endpoint
+        // fetch() is used to make HTTP requests
+        // await means "wait for this to complete before continuing"
+        var res = await fetch('http://127.0.0.1:8000/register', {
+          // Specify this is a POST request (sending data)
           method: 'POST',
+          
+          // Tell server we're sending JSON data
           headers: { 'Content-Type': 'application/json' },
+          
+          // Convert our data to JSON string format for sending
           body: JSON.stringify({
             name: name,
             email: email,
             password_hash: password,
-            class_id: null
+            class_id: null // No class assigned yet
           })
         });
+        
+        // Check if the request failed (status code 400, 500, etc.)
         if (!res.ok) {
-          const data = await res.json();
+          // Try to get error message from server response
+          var data = await res.json();
+          
+          // Show the error message to user
           showMessage(registerMessage, data.detail || 'Registration failed.', 'error');
-          return;
+          return; // Exit function
         }
+        
+        // If we get here, registration was successful!
         
         // Show success message
         showMessage(registerMessage, 'Registration successful! Sending OTP...', 'success');
         
-        // Send OTP
+        // Send OTP (One-Time Password) to user's email for verification
         await fetch('http://localhost:8000/send_otp', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email })
+          body: JSON.stringify({ email: email })
         });
         
+        // Save the email temporarily so OTP page knows which user to verify
         localStorage.setItem('pendingOtpEmail', email);
         
-        // Show OTP sent message and redirect
-        setTimeout(() => {
-          showMessage(registerMessage, `OTP sent to ${email}. Redirecting...`, 'success');
-          setTimeout(() => {
+        // Show message that OTP was sent, then redirect after delay
+        setTimeout(function() {
+          // Show OTP sent message
+          showMessage(registerMessage, 'OTP sent to ' + email + '. Redirecting...', 'success');
+          
+          // After 1.5 seconds, redirect to OTP verification page
+          setTimeout(function() {
             location.href = 'otp.html';
           }, 1500);
         }, 1000);
+        
       } catch (err) {
+        // If any error occurs during the process, show error message
         showMessage(registerMessage, 'Registration failed: ' + err.message, 'error');
       }
     });
 
-    // Handle LOGIN form submission
-    loginForm.addEventListener('submit', async (e) => {
+    /* ============================================
+       STEP 11: HANDLE LOGIN FORM SUBMISSION
+       What happens when user clicks "Sign In"
+       ============================================ */
+    
+    // Listen for 'submit' event on login form
+    loginForm.addEventListener('submit', async function(e) {
+      // Prevent default form submission (page reload)
       e.preventDefault();
-      const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-      const password = document.getElementById('loginPassword').value;
+      
+      // Get email and password from form fields
+      var email = document.getElementById('loginEmail').value.trim().toLowerCase();
+      var password = document.getElementById('loginPassword').value;
 
+      // Try to log in with the backend server
       try {
-        const res = await fetch('http://127.0.0.1:8000/login', {
+        // Send POST request to login endpoint
+        var res = await fetch('http://127.0.0.1:8000/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password })
+          body: JSON.stringify({ 
+            email: email, 
+            password: password 
+          })
         });
+        
+        // Check if login failed
         if (!res.ok) {
-          const data = await res.json();
+          // Get error message from server
+          var data = await res.json();
+          
+          // Show error to user
           showMessage(loginMessage, data.detail || 'Login failed.', 'error');
-          return;
+          return; // Exit function
         }
-        // On successful login, set session and redirect to dashboard
-        const user = await res.json();
+        
+        // If we get here, login was successful!
+        
+        // Get user data from server response
+        var user = await res.json();
+        
+        // Save user session data to localStorage
         localStorage.setItem('authed', '1');
         localStorage.setItem('currentUserEmail', user.email);
         localStorage.setItem('currentUserName', user.name || 'Student');
+        
+        // Redirect to dashboard page
         location.href = 'dashboard.html';
+        
       } catch (err) {
+        // If any error occurs, show error message
         showMessage(loginMessage, 'Login failed: ' + err.message, 'error');
       }
     });

@@ -1,403 +1,491 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html> <!-- HTML5 Document Type Declaration: Tells browser this is an HTML5 document -->
+<html lang="en"> <!-- HTML Root Element: Sets document language to English for accessibility -->
 <head>
-  <meta charset="utf-8" />
-  <title>BytLearn – OTP Verification</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- HEAD SECTION: Contains metadata, title, and styles - not visible on page -->
+  
+  <meta charset="utf-8" /> <!-- Character Encoding: UTF-8 supports all characters and symbols -->
+  <title>BytLearn – OTP Verification</title> <!-- Page Title: Appears in browser tab -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Responsive Viewport: Makes page responsive on mobile devices -->
 
   <style>
-    /* Root variables for colors and reusable values */
+    /* CSS VARIABLES (Custom Properties): Define reusable values for consistent theming */
     :root { 
-      --border: rgba(255,255,255,0.2);
-      --glass: rgba(255,255,255,0.1);
-      --text: #fff;
-      --muted: rgba(255,255,255,0.85);
+      --border: rgba(255,255,255,0.2);   /* Semi-transparent white for borders (20% opacity) */
+      --glass: rgba(255,255,255,0.1);    /* Very transparent white for glass morphism effects (10% opacity) */
+      --text: #fff;                      /* Pure white for primary text content */
+      --muted: rgba(255,255,255,0.85);   /* Semi-transparent white for secondary text (85% opacity) */
     }
 
-    /* Ensure full height and reset default styles */
+    /* HTML AND BODY: Base styling for the entire document */
     html, body {
-      height: 100%; 
-      margin: 0; 
+      height: 100%;               /* Make page take full height of viewport */
+      margin: 0;                  /* Remove default browser margins */
+      /* Font stack: Try Inter first, then system fonts as fallbacks */
       font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      color: var(--text);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      color: var(--text);         /* Use CSS variable for text color */
+      -webkit-font-smoothing: antialiased;  /* Smooth font rendering on Webkit browsers (Chrome, Safari) */
+      -moz-osx-font-smoothing: grayscale;   /* Smooth font rendering on Firefox */
     }
 
-    /* Body background and layout centering */
+    /* BODY STYLING: Main page container with background and layout */
     body {
+      /* Dark blue gradient background for professional look */
       background: linear-gradient(135deg, #0b1e3d, #08203a 40%, #101a4b);
-      display: grid; place-items: center;
-      background-attachment: fixed;
-      overflow: hidden;
-      font-size: 16px;
-      line-height: 1.6;
+      display: grid;              /* Use CSS Grid for centering */
+      place-items: center;        /* Center content both horizontally and vertically */
+      background-attachment: fixed; /* Background stays fixed when scrolling */
+      overflow: hidden;           /* Hide scrollbars (page doesn't scroll) */
+      font-size: 16px;            /* Base font size */
+      line-height: 1.6;           /* Comfortable line height for readability */
     }
 
-    /* Scene for animated blobs in background */
-    .scene { position: fixed; inset: 0; z-index: 0; }
+    /* SCENE CONTAINER: Holds animated background elements */
+    .scene { 
+      position: fixed;            /* Fixed to viewport (doesn't scroll) */
+      inset: 0;                   /* Cover entire viewport (top, right, bottom, left: 0) */
+      z-index: 0;                 /* Place behind all other content */
+    }
 
-    /* Blob base style */
+    /* BLOB ELEMENTS: Animated gradient circles in background */
     .blob { 
-      position: absolute; 
-      border-radius: 9999px;
-      filter: blur(80px); 
-      opacity: .18; 
-      animation: float 20s ease-in-out infinite;
+      position: absolute;         /* Position within scene container */
+      border-radius: 9999px;      /* Perfect circle */
+      filter: blur(80px);         /* Heavy blur for soft, cloud-like appearance */
+      opacity: .18;               /* Very transparent */
+      animation: float 20s ease-in-out infinite; /* Continuous floating animation */
     }
 
-    /* Top left blob */
+    /* BLOB A: Top-left blob with blue gradient */
     .blob.a { 
-      width: 360px; height: 360px; 
-      left: -80px; top: -40px; 
+      width: 360px;               /* Large size */
+      height: 360px; 
+      left: -80px;                /* Position partially off-screen */
+      top: -40px; 
+      /* Blue gradient from light blue to dark blue */
       background: linear-gradient(90deg,#38bdf8,#2563eb); 
     }
 
-    /* Bottom right blob */
+    /* BLOB B: Bottom-right blob with purple-blue gradient */
     .blob.b { 
-      width: 280px; height: 280px; 
-      right: -80px; bottom: -40px; 
+      width: 280px;               /* Medium size */
+      height: 280px; 
+      right: -80px;               /* Position partially off-screen */
+      bottom: -40px; 
+      /* Purple to blue gradient */
       background: linear-gradient(90deg,#6366f1,#22d3ee); 
-      animation-duration: 16s; 
+      animation-duration: 16s;    /* Slightly faster animation than blob A */
     }
 
-    /* Floating animation keyframes */
+    /* FLOATING ANIMATION: Creates gentle movement for blobs */
     @keyframes float { 
-      0% { transform:translate(0,0) } 
-      50%{ transform:translate(30px,-20px) } 
-      100%{ transform:translate(0,0) } 
+      0% { 
+        transform: translate(0, 0); /* Start position */
+      } 
+      50% { 
+        transform: translate(30px, -20px); /* Move right and up */
+      } 
+      100% { 
+        transform: translate(0, 0); /* Return to start */
+      } 
     }
 
-    /* Card container (login/register box) */
+    /* CARD CONTAINER: Main content area with glass morphism effect */
     .card {
-      position: relative; z-index: 1;
-      width: min(580px, 92vw);
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 24px 44px;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      position: relative;         /* Establish positioning context */
+      z-index: 1;                 /* Appear above background elements */
+      width: min(580px, 92vw);    /* Responsive width: 580px max, 92% of viewport on small screens */
+      background: var(--glass);   /* Glass effect background */
+      border: 1px solid var(--border); /* Border using CSS variable */
+      border-radius: 20px;        /* Rounded corners */
+      padding: 24px 44px;         /* Internal spacing: 24px top/bottom, 44px left/right */
+      backdrop-filter: blur(20px); /* Strong blur for glass effect */
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3); /* Subtle shadow for depth */
     }
 
-    /* Logo row */
+    /* LOGO AREA: Company branding at top of card */
     .logo { 
-      display: flex; 
-      flex-direction: column;
-      align-items: center; 
-      gap: 6px; 
-      margin-bottom: 14px; 
-      text-align: center;
+      display: flex;              /* Flexbox for layout */
+      flex-direction: column;     /* Stack children vertically */
+      align-items: center;        /* Center horizontally */
+      gap: 6px;                   /* Space between logo image and text */
+      margin-bottom: 14px;        /* Space below logo */
+      text-align: center;         /* Center text alignment */
     }
 
+    /* LOGO IMAGE: Company logo */
     .logo img { 
-      width: 64px; 
-      height: 64px;
+      width: 64px;                /* Fixed width */
+      height: 64px;               /* Fixed height */
+      /* Blue glow effect around logo */
       filter: drop-shadow(0 4px 12px rgba(103, 232, 249, 0.3));
     }
 
-    /* Gradient brand text */
+    /* BRAND TEXT: Gradient text for company name */
     .brand {
+      /* Cyan to blue to purple gradient */
       background: linear-gradient(135deg,#67e8f9,#60a5fa,#8b5cf6);
-      -webkit-background-clip:text; 
-      background-clip:text; 
-      color: transparent;
-      font-weight: 700;
-      letter-spacing: -0.02em;
+      -webkit-background-clip: text; /* Clip background to text (Webkit browsers) */
+      background-clip: text;      /* Clip background to text (standard property) */
+      color: transparent;         /* Make text color transparent to show gradient */
+      font-weight: 700;           /* Bold weight */
+      letter-spacing: -0.02em;    /* Tighter letter spacing */
     }
 
-    /* Headings */
+    /* MAIN HEADING: Page title */
     h1 { 
-      margin: 0 0 2px; 
-      font-size: 32px; 
-      font-weight: 700;
-      letter-spacing: -0.02em;
+      margin: 0 0 2px;           /* No top margin, 2px bottom margin */
+      font-size: 32px;            /* Large font size */
+      font-weight: 700;           /* Bold weight */
+      letter-spacing: -0.02em;    /* Tighter letter spacing */
     }
     
+    /* SUBTITLE: Descriptive text below heading */
     .subtitle { 
-      margin: 0 0 14px; 
-      color: var(--muted); 
-      font-size: 15px;
-      font-weight: 400;
+      margin: 0 0 14px;          /* No top margin, 14px bottom margin */
+      color: var(--muted);        /* Use muted color for less emphasis */
+      font-size: 15px;            /* Slightly smaller than base font */
+      font-weight: 400;           /* Normal weight */
     }
 
-    /* Form labels */
+    /* FORM LABELS: Text above input fields */
     label { 
-      display: block; 
-      font-size: 14px; 
-      margin: 0 0 8px; 
-      color: var(--text); 
-      font-weight: 500;
-      letter-spacing: 0.01em;
+      display: block;             /* Make label take full width */
+      font-size: 14px;            /* Smaller font size */
+      margin: 0 0 8px;            /* No top margin, 8px bottom margin */
+      color: var(--text);         /* Text color */
+      font-weight: 500;           /* Medium weight */
+      letter-spacing: 0.01em;     /* Slightly increased letter spacing */
     }
 
-    /* Input wrapper for better styling */
+    /* INPUT GROUP: Container for label and input */
     .input-group {
-      margin-bottom: 12px;
+      margin-bottom: 12px;        /* Space between input groups */
     }
 
-    /* Input fields */
+    /* INPUT FIELDS: Text input styling */
     input {
-      width: 100%; 
-      padding: 12px 16px;
-      border-radius: 10px; 
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.08);
-      color: var(--text); 
-      outline: none; 
-      box-sizing: border-box;
-      font-size: 15px;
-      font-family: inherit;
-      transition: all 200ms ease;
+      width: 100%;                /* Full width of container */
+      padding: 12px 16px;         /* Internal spacing */
+      border-radius: 10px;        /* Rounded corners */
+      border: 1px solid var(--border); /* Border using CSS variable */
+      background: rgba(255,255,255,0.08); /* Semi-transparent background */
+      color: var(--text);         /* Text color */
+      outline: none;              /* Remove default browser outline */
+      box-sizing: border-box;     /* Include padding in width calculation */
+      font-size: 15px;            /* Comfortable reading size */
+      font-family: inherit;       /* Inherit font from body */
+      transition: all 200ms ease; /* Smooth transitions for all properties */
     }
 
+    /* INPUT FOCUS STATE: When user clicks into input */
     input:focus {
-      border-color: rgba(103, 232, 249, 0.5);
-      background: rgba(255,255,255,0.12);
-      box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.1);
+      border-color: rgba(103, 232, 249, 0.5); /* Cyan border */
+      background: rgba(255,255,255,0.12);     /* Lighten background */
+      box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.1); /* Cyan glow */
     }
 
+    /* INPUT PLACEHOLDER: Text shown when input is empty */
     input::placeholder {
-      color: rgba(255,255,255,0.4);
+      color: rgba(255,255,255,0.4); /* Semi-transparent white */
     }
 
-    /* Buttons styling */
+    /* BUTTON COMPONENT: Primary action buttons */
     .btn {
-      width: 100%;
-      display: inline-flex; 
-      align-items: center; 
-      justify-content: center;
-      padding: 12px 24px;
-      border-radius: 10px; 
-      border: none;
+      width: 100%;                /* Full width by default */
+      display: inline-flex;       /* Flexbox for centering content */
+      align-items: center;        /* Center vertically */
+      justify-content: center;    /* Center horizontally */
+      padding: 12px 24px;         /* Internal spacing */
+      border-radius: 10px;        /* Rounded corners */
+      border: none;               /* Remove default border */
+      /* Cyan to blue gradient background */
       background: linear-gradient(135deg, rgba(103, 232, 249, 0.2), rgba(96, 165, 250, 0.2)); 
-      color: var(--text); 
-      text-decoration: none; 
-      transition: all 200ms ease;
-      cursor: pointer;
-      font-size: 15px;
-      font-weight: 600;
-      font-family: inherit;
-      margin-top: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      color: var(--text);         /* Text color */
+      text-decoration: none;      /* Remove underline */
+      transition: all 200ms ease; /* Smooth transitions */
+      cursor: pointer;            /* Show hand cursor on hover */
+      font-size: 15px;            /* Comfortable reading size */
+      font-weight: 600;           /* Semi-bold weight */
+      font-family: inherit;       /* Inherit font from body */
+      margin-top: 4px;            /* Small top margin */
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* Subtle shadow */
     }
     
+    /* BUTTON HOVER STATE: When mouse is over button */
     .btn:hover:not(:disabled) { 
+      /* Lighten gradient on hover */
       background: linear-gradient(135deg, rgba(103, 232, 249, 0.3), rgba(96, 165, 250, 0.3));
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(103, 232, 249, 0.2);
+      transform: translateY(-1px); /* Lift button slightly */
+      box-shadow: 0 4px 12px rgba(103, 232, 249, 0.2); /* Enhanced shadow with cyan tint */
     }
 
+    /* BUTTON ACTIVE STATE: When button is being clicked */
     .btn:active:not(:disabled) {
-      transform: translateY(0);
+      transform: translateY(0);   /* Return to normal position */
     }
 
+    /* BUTTON DISABLED STATE: When button is not clickable */
     .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      background: rgba(255,255,255,0.1);
+      opacity: 0.5;               /* Semi-transparent */
+      cursor: not-allowed;        /* Show not-allowed cursor */
+      background: rgba(255,255,255,0.1); /* Solid gray background */
     }
     
+    /* BUTTON DISABLED HOVER: No changes when disabled */
     .btn:disabled:hover {
-      background: rgba(255,255,255,0.1);
-      transform: none;
-      box-shadow: none;
+      background: rgba(255,255,255,0.1); /* Keep same background */
+      transform: none;            /* No movement */
+      box-shadow: none;           /* No shadow */
     }
 
-    /* Links like "Back to Welcome" */
+    /* LINK STYLING: Secondary navigation links */
     .link { 
-      display: block; 
-      margin-top: 16px; 
-      text-align: center; 
-      color: rgba(103, 232, 249, 0.9); 
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 500;
-      transition: all 200ms ease;
+      display: block;             /* Make link take full width */
+      margin-top: 16px;           /* Space above link */
+      text-align: center;         /* Center text */
+      color: rgba(103, 232, 249, 0.9); /* Cyan color with transparency */
+      text-decoration: none;      /* Remove underline */
+      font-size: 14px;            /* Smaller font size */
+      font-weight: 500;           /* Medium weight */
+      transition: all 200ms ease; /* Smooth color transition */
     }
 
+    /* LINK HOVER STATE: When mouse is over link */
     .link:hover {
-      color: #67e8f9;
-      text-decoration: none;
+      color: #67e8f9;            /* Brighter cyan */
+      text-decoration: none;      /* Keep underline removed */
     }
 
-    /* Message box for errors and success */
+    /* MESSAGE BOX: For displaying status messages (errors, success, info) */
     .message {
-      padding: 14px 16px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-      font-size: 14px;
-      display: none;
-      animation: slideIn 0.3s ease;
-      font-weight: 500;
+      padding: 14px 16px;         /* Internal spacing */
+      border-radius: 10px;        /* Rounded corners */
+      margin-bottom: 20px;        /* Space below message */
+      font-size: 14px;            /* Smaller font size */
+      display: none;              /* Hidden by default */
+      animation: slideIn 0.3s ease; /* Slide-in animation when shown */
+      font-weight: 500;           /* Medium weight */
     }
 
+    /* ERROR MESSAGE: Red styling for error states */
     .message.error {
-      background: rgba(239, 68, 68, 0.15);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: #fca5a5;
+      background: rgba(239, 68, 68, 0.15); /* Light red background */
+      border: 1px solid rgba(239, 68, 68, 0.3); /* Red border */
+      color: #fca5a5;             /* Light red text */
     }
 
+    /* SUCCESS MESSAGE: Green styling for success states */
     .message.success {
-      background: rgba(34, 197, 94, 0.15);
-      border: 1px solid rgba(34, 197, 94, 0.3);
-      color: #86efac;
+      background: rgba(34, 197, 94, 0.15); /* Light green background */
+      border: 1px solid rgba(34, 197, 94, 0.3); /* Green border */
+      color: #86efac;             /* Light green text */
     }
 
+    /* INFO MESSAGE: Blue styling for information */
     .message.info {
-      background: rgba(59, 130, 246, 0.15);
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      color: #93c5fd;
+      background: rgba(59, 130, 246, 0.15); /* Light blue background */
+      border: 1px solid rgba(59, 130, 246, 0.3); /* Blue border */
+      color: #93c5fd;             /* Light blue text */
     }
 
+    /* SLIDE-IN ANIMATION: For message appearance */
     @keyframes slideIn {
       from {
-        opacity: 0;
-        transform: translateY(-10px);
+        opacity: 0;               /* Start invisible */
+        transform: translateY(-10px); /* Start 10px above final position */
       }
       to {
-        opacity: 1;
-        transform: translateY(0);
+        opacity: 1;               /* End fully visible */
+        transform: translateY(0); /* End at normal position */
       }
     }
 
-    /* Form container */
+    /* FORM CONTAINER: Main form element */
     form {
-      margin-top: 0;
+      margin-top: 0;              /* Remove top margin */
     }
 
-    /* Button row for two buttons side by side */
+    /* BUTTON ROW: Container for side-by-side buttons */
     .button-row {
-      display: flex;
-      gap: 12px;
-      margin-top: 4px;
+      display: flex;              /* Flexbox for horizontal layout */
+      gap: 12px;                  /* Space between buttons */
+      margin-top: 4px;            /* Small top margin */
     }
 
+    /* BUTTONS IN BUTTON ROW: Share available space equally */
     .button-row .btn {
-      flex: 1;
-      margin-top: 0;
+      flex: 1;                    /* Equal width for both buttons */
+      margin-top: 0;              /* Remove individual button margin */
     }
 
-    /* Responsive adjustments */
+    /* RESPONSIVE ADJUSTMENTS: For mobile devices (640px and smaller) */
     @media (max-width: 640px) {
       .card {
-        padding: 32px 24px;
+        padding: 32px 24px;       /* Reduce horizontal padding on mobile */
       }
       
       h1 {
-        font-size: 28px;
+        font-size: 28px;          /* Slightly smaller heading on mobile */
       }
     }
   </style>
 </head>
 
+<!-- BODY SECTION: All visible content goes here -->
 <body>
-  <!-- Floating blobs background -->
+  <!-- BACKGROUND SCENE: Animated gradient blobs -->
   <div class="scene">
+    <!-- BLOB A: Top-left animated gradient circle -->
     <div class="blob a"></div>
+    <!-- BLOB B: Bottom-right animated gradient circle -->
     <div class="blob b"></div>
   </div>
 
-  <!-- Main OTP verification card -->
+  <!-- MAIN CARD: OTP verification form container -->
   <div class="card">
 
-    <!-- Logo inside the card (clickable -> Welcome page) -->
+    <!-- LOGO AREA: Clickable logo that returns to welcome page -->
     <div class="logo" style="cursor:pointer;" onclick="location.href='./welcome.html'">
+      <!-- COMPANY LOGO: BytLearn logo image -->
       <img src="./logo.png" alt="BytLearn" />
       <div>
+        <!-- COMPANY NAME: Gradient text -->
         <h1><span class="brand">BytLearn</span></h1>
+        <!-- PAGE SUBTITLE: Describes current action -->
         <div class="subtitle">Verify your email address</div>
       </div>
     </div>
 
-    <!-- OTP FORM -->
+    <!-- OTP VERIFICATION FORM: For entering and verifying OTP code -->
     <form id="otpForm">
+      <!-- MESSAGE DISPLAY: Shows status messages (hidden by default) -->
       <div id="otpMessage" class="message"></div>
       
+      <!-- OTP INPUT GROUP: Label and input field for OTP code -->
       <div class="input-group">
         <label for="otpInput">Enter OTP</label>
+        <!-- OTP INPUT FIELD: Text input for 6-digit code -->
         <input id="otpInput" type="text" maxlength="6" placeholder="Enter 6-digit OTP" required />
       </div>
 
+      <!-- BUTTON ROW: Two buttons side by side -->
       <div class="button-row">
+        <!-- VERIFY BUTTON: Submits the OTP for verification -->
         <button type="submit" class="btn">Verify OTP</button>
+        <!-- RESEND BUTTON: Requests a new OTP code -->
         <button type="button" id="resendBtn" class="btn">Resend OTP</button>
       </div>
 
+      <!-- BACK LINK: Returns to login page -->
       <a class="link" href="./login.html">← Back to Login</a>
     </form>
   </div>
 
+  <!-- JAVASCRIPT: All interactive functionality -->
   <script>
+    // Get email from localStorage that needs OTP verification
     const email = localStorage.getItem('pendingOtpEmail');
+    // Get reference to message display element
     const otpMessage = document.getElementById('otpMessage');
+    // Get reference to OTP form element
     const otpForm = document.getElementById('otpForm');
     
-    // Function to show message
+    // FUNCTION: Display status message to user
     function showMessage(text, type) {
+      // Set message text content
       otpMessage.textContent = text;
+      // Set appropriate CSS class for styling (error, success, or info)
       otpMessage.className = 'message ' + type;
+      // Make message visible
       otpMessage.style.display = 'block';
+      // Hide message after 5 seconds automatically
       setTimeout(() => {
         otpMessage.style.display = 'none';
       }, 5000);
     }
 
-    // Redirect if no email found
+    // SECURITY CHECK: Redirect if no email is found in localStorage
+    // This prevents direct access to OTP page without going through login flow
     if (!email) { 
-      location.href = 'login.html'; 
+      location.href = 'login.html'; // Redirect to login page
     } else {
-      // Show initial message
+      // Show informational message confirming OTP was sent
       showMessage(`OTP sent to ${email}`, 'info');
     }
 
-    // Verify OTP form submission
-    otpForm.addEventListener('submit', async function(e) {
-      e.preventDefault();
+    // OTP FORM SUBMISSION: Handle when user submits OTP for verification
+    otpForm.addEventListener('submit', async function(event) {
+      event.preventDefault(); // Prevent default form submission (page refresh)
+      
+      // Get OTP value from input field and remove whitespace
       const otp = document.getElementById('otpInput').value.trim();
+      
+      // Validation: Check if OTP is provided
       if (!otp) {
         showMessage('Please enter OTP', 'error');
-        return;
+        return; // Stop execution if OTP is empty
       }
       
       try {
-        const res = await fetch('http://localhost:8000/verify_otp', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, otp })
+        // Send OTP verification request to server
+        const response = await fetch('http://localhost:8000/verify_otp', {
+          method: 'POST',           // HTTP method
+          headers: { 
+            'Content-Type': 'application/json' // Specify JSON content
+          },
+          body: JSON.stringify({    // Request body with email and OTP
+            email: email,
+            otp: otp
+          })
         });
         
-        if (res.ok) {
-          localStorage.removeItem('pendingOtpEmail');
-          showMessage('OTP verified! You can now login.', 'success');
+        // Check if server responded with success status (200-299)
+        if (response.ok) {
+          // OTP verified successfully
+          localStorage.removeItem('pendingOtpEmail'); // Clear pending email
+          showMessage('OTP verified! You can now login.', 'success'); // Success message
+          
+          // Redirect to login page after 2 seconds
           setTimeout(() => {
             location.href = 'login.html';
           }, 2000);
         } else {
-          const data = await res.json();
-          showMessage(data.detail || 'Invalid OTP', 'error');
+          // OTP verification failed
+          const errorData = await response.json(); // Parse error response
+          // Show error message from server or default message
+          showMessage(errorData.detail || 'Invalid OTP', 'error');
         }
-      } catch (err) {
-        showMessage('Verification failed: ' + err.message, 'error');
+      } catch (error) {
+        // Network error or other exception
+        showMessage('Verification failed: ' + error.message, 'error');
       }
     });
 
-    // Resend OTP button
+    // RESEND OTP BUTTON: Handle click to request new OTP code
     document.getElementById('resendBtn').onclick = async function() {
       try {
-        const res = await fetch('http://localhost:8000/send_otp', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email })
+        // Send OTP resend request to server
+        const response = await fetch('http://localhost:8000/send_otp', {
+          method: 'POST',           // HTTP method
+          headers: { 
+            'Content-Type': 'application/json' // Specify JSON content
+          },
+          body: JSON.stringify({    // Request body with email
+            email: email
+          })
         });
         
-        if (res.ok) {
+        // Check if server responded with success status
+        if (response.ok) {
+          // OTP resent successfully
           showMessage('OTP resent successfully!', 'success');
         } else {
+          // Failed to resend OTP
           showMessage('Failed to resend OTP', 'error');
         }
-      } catch (err) {
-        showMessage('Failed to resend OTP: ' + err.message, 'error');
+      } catch (error) {
+        // Network error or other exception
+        showMessage('Failed to resend OTP: ' + error.message, 'error');
       }
     };
   </script>

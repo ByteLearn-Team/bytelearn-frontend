@@ -736,25 +736,22 @@
     </section>
     
     <!-- DOUBT ASKING SECTION: Chat interface for asking questions (initially hidden) -->
-    <section id="doubts" class="card tab hidden">
+    <section id="doubts" class="card tab hidden"
+  style="background:var(--glass);border-radius:22px;padding:32px 24px 24px 24px;box-shadow:0 8px 32px rgba(0,0,0,0.18);backdrop-filter:blur(12px);text-align:left;width:100%;max-width:100%;margin:0;">
       <!-- SECTION HEADER: Title and badge -->
-      <div class="row" style="justify-content:space-between;">
-        <h2>Ask a Doubt</h2>
-        <!-- BADGE: Question mark symbol -->
-        <span class="pill" style="cursor:default;">?</span>
+      <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:18px;">
+        <h2 style="font-size:32px;font-weight:800;margin:0;text-align:left;">Ask a Doubt</h2>
+        <span class="pill" style="cursor:default;font-size:20px;padding:10px 18px;">?</span>
       </div>
-        <!-- CHAT HISTORY: Container for message history -->
-        <div id="chat-history" style="height:260px;overflow-y:auto;background:rgba(255,255,255,0.08);border-radius:12px;padding:12px 8px 12px 8px;margin-bottom:12px;text-align:left;font-size:16px;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.06);">
-          <!-- INITIAL PLACEHOLDER MESSAGE: Shown when no messages yet -->
-          <div style="color:var(--muted);text-align:center;">Choose a topic from your notes and ask question's about it.</div>
-        </div>
-        <!-- CHAT INPUT FORM: For sending new messages -->
-        <form id="chat-form" style="display:flex;gap:8px;align-items:center;" autocomplete="off" onsubmit="return false;">
-          <!-- TEXT INPUT: Where user types questions -->
-          <input id="chat-input" type="text" placeholder="Type your doubt..." style="flex:1;padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,0.13);color:var(--text);font-size:16px;outline:none;" />
-          <!-- SEND BUTTON: Submits the message -->
-          <button type="submit" class="btn" style="padding:10px 18px;font-size:16px;">Send</button>
-        </form>
+      <!-- CHAT HISTORY: Container for message history -->
+      <div id="rag-chat-history" style="height:260px;overflow-y:auto;background:rgba(255,255,255,0.08);border-radius:18px;padding:18px 18px 18px 18px;margin-bottom:18px;text-align:left;font-size:18px;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:8px;">
+        <div style="color:var(--muted);text-align:left;">Choose a topic from your notes and ask question's about it.</div>
+      </div>
+      <!-- CHAT INPUT FORM: For sending new messages -->
+      <form id="rag-chat-form" style="display:flex;gap:12px;align-items:center;" autocomplete="off" onsubmit="return false;">
+        <input id="rag-chat-input" type="text" placeholder="Type your doubt..." style="flex:1;padding:14px 18px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,0.13);color:var(--text);font-size:18px;outline:none;text-align:left;" />
+        <button type="submit" class="btn" style="padding:14px 28px;font-size:18px;">Send</button>
+      </form>
     </section>
     
     <!-- QUIZZES SECTION: Interactive quiz interface (initially hidden) -->
@@ -1377,6 +1374,44 @@
         // Show error if fetch fails
         grid.innerHTML = `<div class="error-message">Error loading flashcards: ${e.message}</div>`;
       }
+    }
+
+    // === RAG Doubt Answering Integration ===
+    const ragApiUrl = "https://cloud.flowiseai.com/api/v1/prediction/95ac6cf3-9302-44b5-b406-28fb18d3dd31";
+    const ragChatForm = document.getElementById('rag-chat-form');
+    const ragChatInput = document.getElementById('rag-chat-input');
+    const ragChatHistory = document.getElementById('rag-chat-history');
+
+    if (ragChatForm && ragChatInput && ragChatHistory) {
+      ragChatForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const question = ragChatInput.value.trim();
+        if (!question) return;
+        // Show user question (left aligned, styled, dark blue for "You")
+        ragChatHistory.innerHTML += `<div style="text-align:left;"><span style="font-weight:700;color:#233876;">You:</span> <span style="color:#fff;">${question}</span></div>`;
+        ragChatInput.value = '';
+        ragChatInput.disabled = true;
+        // Show loading
+        ragChatHistory.innerHTML += `<div id="rag-loading" style="color:#aaa;text-align:left;">AI is thinking...</div>`;
+        ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
+        try {
+          const res = await fetch(ragApiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question })
+          });
+          const data = await res.json();
+          document.getElementById('rag-loading').remove();
+          // Show only the AI's answer text, styled and left aligned, yellow for "AI"
+          ragChatHistory.innerHTML += `<div style="text-align:left;"><span style="font-weight:700;color:#ffe066;">AI:</span> <span style="color:var(--muted);">${data.text || "No answer."}</span></div>`;
+          ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
+        } catch (err) {
+          document.getElementById('rag-loading').remove();
+          ragChatHistory.innerHTML += `<div style="color:#f55;text-align:left;">Error: Could not get answer.</div>`;
+        }
+        ragChatInput.disabled = false;
+        ragChatInput.focus();
+      });
     }
 
     // INITIAL PAGE LOAD

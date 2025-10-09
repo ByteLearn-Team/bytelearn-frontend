@@ -1,572 +1,456 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <!-- This tells the browser what character set to use (supports all languages) -->
   <meta charset="utf-8" />
-  
-  <!-- The title that appears in the browser tab -->
   <title>BytLearn Profile</title>
-  
-  <!-- This makes the website responsive on mobile devices -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   
-  <!-- These lines load the Inter font from Google Fonts for beautiful typography -->
+  <!-- Load Inter font for consistent typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
   
   <style>
-    /* ============================================
-       CSS VARIABLES (Color Palette)
-       ============================================
-       These are like labeled paint buckets that we can reuse throughout our design.
-       Instead of writing the same color code multiple times, we define it once here.
-    */
+    /* CSS Variables - Define reusable color values for consistent theming */
     :root {
-      /* Dark blue backgrounds - these create the beautiful gradient effect */
-      --bg1: #0b1e3d;    /* Darkest blue */
-      --bg2: #08203a;    /* Medium blue */
-      --bg3: #101a4b;    /* Purple-ish blue */
+      /* Background gradient colors */
+      --bg1: #0b1e3d;
+      --bg2: #08203a;
+      --bg3: #101a4b;
       
       /* Text colors */
-      --text: #ffffff;   /* White color for main text */
-      --muted: #ffffff;  /* White color for less important text */
+      --text: #ffffff;
+      --muted: #ffffff;
       
-      /* Glass effect colors - these create the frosted glass look */
-      --glass: rgba(255, 255, 255, 0.12);    /* 12% white transparency */
-      --glass-2: rgba(255, 255, 255, 0.26);  /* 26% white transparency */
-      --border: rgba(255, 255, 255, 0.20);   /* 20% white transparency for borders */
+      /* Glassmorphism effect colors with varying opacity levels */
+      --glass: rgba(255, 255, 255, 0.12);
+      --glass-2: rgba(255, 255, 255, 0.26);
+      --border: rgba(255, 255, 255, 0.20);
       
-      /* Accent colors - bright colors used for highlights and charts */
-      --accent1: #67e8f9;  /* Bright cyan */
-      --accent2: #60a5fa;  /* Bright blue */
-      --bar: #7dd3fc;      /* Light blue for bar charts */
-      --line: #93c5fd;     /* Light blue for line charts */
+      /* Chart and accent colors */
+      --accent1: #67e8f9;
+      --accent2: #60a5fa;
+      --bar: #7dd3fc;
+      --line: #93c5fd;
     }
     
-    /* ============================================
-       RESET & BASE STYLES
-       ============================================
-       These styles apply to all elements and set up the foundation
-    */
-    
-    /* This makes sure all elements calculate their size the same way */
+    /* Ensure consistent box-sizing across all elements */
     *::after {
       box-sizing: border-box;
     }
 
-    /* Set up the html and body to take full screen height */
+    /* Base styles for full-height layout */
     html, 
     body {
-      height: 100%;              /* Take up full viewport height */
-      margin: 0;                 /* Remove default spacing */
+      height: 100%;
+      margin: 0;
       font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      color: var(--text);        /* Use our white text color */
-      text-align: center;        /* Center all text by default */
+      color: var(--text);
+      text-align: center;
     }
     
-    /* Style the main body element */
+    /* Apply gradient background that stays fixed during scroll */
     body {
       margin: 0;
-      /* Create a beautiful gradient background from top-left to bottom-right */
       background: linear-gradient(135deg, #0b1e3d 0%, #08203a 40%, #101a4b 100%);
-      font-size: 18px;           /* Base font size */
-      background-attachment: fixed;  /* Keep background fixed when scrolling */
-      overflow-x: hidden;        /* Prevent horizontal scrollbar */
+      font-size: 18px;
+      background-attachment: fixed;
+      overflow-x: hidden;
     }
 
-    /* ============================================
-       ANIMATED BACKGROUND BLOBS
-       ============================================
-       These create the floating colored blobs in the background
-    */
-    
-    /* Container for all the animated blobs */
+    /* Animated background blobs - Fixed container covering entire viewport */
     .scene {
-      position: fixed;    /* Stay in place even when scrolling */
-      inset: 0;          /* Cover the entire screen (top, right, bottom, left all = 0) */
-      z-index: 0;        /* Put behind all other content */
+      position: fixed;
+      inset: 0;
+      z-index: 0;
     }
     
-    /* Style for each individual blob */
+    /* Individual blob styling with blur effect for soft appearance */
     .blob {
-      position: absolute;           /* Position freely on the screen */
-      border-radius: 9999px;        /* Make it perfectly circular */
-      filter: blur(80px);           /* Apply heavy blur for soft glow effect */
-      opacity: .2;                  /* Make it semi-transparent (20% visible) */
-      will-change: transform;       /* Optimize for smooth animations */
-      animation: float 22s ease-in-out infinite;  /* Animate floating motion for 22 seconds, repeat forever */
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(80px);
+      opacity: .2;
+      will-change: transform;
+      animation: float 22s ease-in-out infinite;
     }
     
-    /* First blob - top left area */
+    /* Blob A - Top left position with blue gradient */
     .blob.a {
       width: 380px;
       height: 380px;
-      left: -120px;      /* Position slightly off-screen to the left */
-      top: 80px;         /* 80px from top */
-      background: linear-gradient(90deg, #38bdf8, #2563eb);  /* Blue gradient */
+      left: -120px;
+      top: 80px;
+      background: linear-gradient(90deg, #38bdf8, #2563eb);
     }
     
-    /* Second blob - bottom right area */
+    /* Blob B - Bottom right position with faster animation */
     .blob.b {
       width: 320px;
       height: 320px;
-      right: -100px;      /* Position slightly off-screen to the right */
-      bottom: 120px;      /* 120px from bottom */
-      background: linear-gradient(90deg, #6366f1, #22d3ee);  /* Purple to cyan gradient */
-      animation-duration: 16s;  /* This blob moves faster (16 seconds instead of 22) */
+      right: -100px;
+      bottom: 120px;
+      background: linear-gradient(90deg, #6366f1, #22d3ee);
+      animation-duration: 16s;
     }
     
-    /* Third blob - center of screen */
+    /* Blob C - Center position with slowest animation and lower opacity */
     .blob.c {
       width: 260px;
       height: 260px;
-      left: 50%;         /* Start at horizontal center */
-      top: 52%;          /* Start at vertical center (slightly below middle) */
-      transform: translate(-50%, -50%);  /* Center it properly using transform */
-      background: linear-gradient(90deg, #60a5fa, #7dd3fc);  /* Light blue gradient */
-      opacity: .13;      /* More transparent than other blobs (13% visible) */
-      animation-duration: 25s;  /* This blob moves slowest (25 seconds) */
+      left: 50%;
+      top: 52%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(90deg, #60a5fa, #7dd3fc);
+      opacity: .13;
+      animation-duration: 25s;
     }
     
-    /* Animation that makes blobs float around */
+    /* Floating animation - Creates gentle movement effect */
     @keyframes float {
       0%   { 
-        transform: translate(0, 0) scale(1);           /* Start at original position and size */
+        transform: translate(0, 0) scale(1);
       }
       50%  { 
-        transform: translate(40px, -30px) scale(1.1);  /* Move right 40px, up 30px, and grow 10% bigger */
+        transform: translate(40px, -30px) scale(1.1);
       }
       100% { 
-        transform: translate(0, 0) scale(1);           /* Return to original position and size */
+        transform: translate(0, 0) scale(1);
       }
     }
 
-    /* ============================================
-       LAYOUT CONTAINER
-       ============================================
-       This wraps all the main content and centers it on the page
-    */
+    /* Main container - Centers content and adds padding */
     .container {
-      position: relative;   /* Allow positioned children */
-      z-index: 1;          /* Put above the animated background blobs */
-      max-width: 1200px;   /* Don't get wider than 1200px */
-      margin: 0 auto;      /* Center horizontally on the page */
-      padding: 32px;       /* Add space inside the container */
-      text-align: center;  /* Center text inside */
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px;
+      text-align: center;
     }
     
-    /* Make the main content area take up most of the screen */
+    /* Main content area with minimum height */
     main.container {
-      min-height: calc(100vh - 110px);  /* Full screen height minus 110px for header */
+      min-height: calc(100vh - 110px);
     }
 
-    /* ============================================
-       CARD COMPONENT
-       ============================================
-       Cards are the glass-like boxes that hold content
-    */
+    /* Card component - Glassmorphism design with backdrop blur */
     .card {
-      background: var(--glass);         /* Semi-transparent white background */
-      border: 1px solid var(--border);  /* Subtle white border */
-      border-radius: 18px;              /* Rounded corners */
-      padding: 22px;                    /* Space inside the card */
-      backdrop-filter: blur(8px);       /* Blur effect for glass appearance */
-      text-align: center;               /* Center text inside */
-      box-shadow: 0 6px 36px rgba(40, 57, 101, 0.22);  /* Soft shadow for depth */
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+      backdrop-filter: blur(8px);
+      text-align: center;
+      box-shadow: 0 6px 36px rgba(40, 57, 101, 0.22);
     }
 
-    /* ============================================
-       BUTTON COMPONENT
-       ============================================
-       Reusable button style used throughout the page
-    */
+    /* Button component - Standard interactive element */
     .btn {
-      display: inline-flex;         /* Display as inline element with flex properties */
-      align-items: center;          /* Center content vertically */
-      justify-content: center;      /* Center content horizontally */
-      padding: 12px 16px;          /* Space inside button (top/bottom 12px, left/right 16px) */
-      border-radius: 12px;         /* Rounded corners */
-      border: 1px solid var(--border);  /* Subtle border */
-      background: var(--glass);    /* Glass effect background */
-      color: #fff;                 /* White text */
-      text-decoration: none;       /* Remove underline from links */
-      transition: 150ms;           /* Smooth transition for hover effect (150 milliseconds) */
-      backdrop-filter: blur(6px);  /* Blur background behind button */
-      cursor: pointer;             /* Show pointer cursor on hover */
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--glass);
+      color: #fff;
+      text-decoration: none;
+      transition: 150ms;
+      backdrop-filter: blur(6px);
+      cursor: pointer;
     }
     
-    /* Primary button variant - slightly more visible */
+    /* Primary button variant - More prominent appearance */
     .btn.primary {
-      background: var(--glass-2);  /* More opaque glass effect */
+      background: var(--glass-2);
     }
     
-    /* Button hover effect - brighten when user hovers mouse over it */
+    /* Button hover state - Brightens on interaction */
     .btn:hover {
-      background: rgba(255, 255, 255, 0.20);  /* 20% white background */
+      background: rgba(255, 255, 255, 0.20);
     }
 
-    /* ============================================
-       ROW LAYOUT
-       ============================================
-       Used to arrange items horizontally in a line
-    */
+    /* Flexbox row layout - Distributes items with space between */
     .row {
-      display: flex;                /* Use flexbox layout */
-      align-items: center;          /* Align items vertically in the center */
-      justify-content: space-between;  /* Put maximum space between items */
-      gap: 14px;                    /* 14px space between each item */
-      text-align: center;           /* Center text */
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      text-align: center;
     }
     
-    /* ============================================
-       LOGO COMPONENT
-       ============================================
-       The BytLearn logo with icon and text
-    */
+    /* Logo component - Icon and text layout */
     .logo {
-      display: flex;           /* Use flexbox layout */
-      align-items: center;     /* Align items vertically in the center */
-      gap: 12px;              /* 12px space between logo image and text */
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
     
-    /* Style for the logo image */
+    /* Logo image sizing */
     .logo img {
-      width: 70px;            /* Set width */
-      height: 70px;           /* Set height */
-      object-fit: contain;    /* Scale image to fit without distortion */
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
     }
     
-    /* ============================================
-       BADGE COMPONENT
-       ============================================
-       Small pill-shaped label (like "Biology AI - Student Dashboard")
-    */
+    /* Badge component - Pill-shaped label element */
     .badge {
-      display: inline-flex;        /* Display as inline element with flex properties */
-      align-items: center;         /* Center content vertically */
-      padding: 8px 12px;          /* Space inside badge */
-      background: var(--glass);   /* Glass effect background */
-      border: 1px solid var(--border);  /* Subtle border */
-      border-radius: 999px;       /* Make it pill-shaped (fully rounded) */
-      font-size: 14px;            /* Smaller text */
-      backdrop-filter: blur(6px); /* Blur background behind badge */
-      color: var(--text);         /* White text */
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 12px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 14px;
+      backdrop-filter: blur(6px);
+      color: var(--text);
     }
 
-    /* ============================================
-       TAB PILLS (Navigation Buttons)
-       ============================================
-       The buttons that switch between Charts, Analysis, etc.
-    */
-    
-    /* Grid container for all the pills */
+    /* Tab navigation pills - Grid layout for equal-width buttons */
     .pills {
-      display: grid;                                   /* Use grid layout */
-      grid-template-columns: repeat(5, minmax(0, 1fr));  /* Create 5 equal columns */
-      gap: 12px;                                      /* 12px space between pills */
-      margin-bottom: 8px;                             /* 8px space below the pills */
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 8px;
     }
     
-    /* Individual pill button */
+    /* Individual pill button styling */
     .pill {
-      padding: 10px 16px;                      /* Space inside pill */
-      border-radius: 14px;                     /* Rounded corners */
-      border: 1px solid var(--border);         /* Subtle border */
-      background: rgba(255, 255, 255, 0.08);   /* Light transparent background */
-      color: var(--text);                      /* White text */
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);  /* Inner glow effect */
-      cursor: pointer;                         /* Show pointer cursor on hover */
-      transition: 120ms;                       /* Smooth transition for interactions */
+      padding: 10px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+      cursor: pointer;
+      transition: 120ms;
     }
     
-    /* Active pill (currently selected tab) */
+    /* Active pill state - Indicates currently selected tab */
     .pill.active {
-      background: rgba(255, 255, 255, 0.18);   /* Brighter background */
-      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);  /* Brighter inner glow */
+      background: rgba(255, 255, 255, 0.18);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
     }
     
-    /* Hidden class - used to hide inactive tabs */
+    /* Hidden utility class - Toggles element visibility */
     .hidden {
-      display: none;  /* Completely remove from display */
+      display: none;
     }
 
-    /* ============================================
-       TYPOGRAPHY
-       ============================================
-       Styles for headings, paragraphs, and text elements
-    */
-    
-    /* Force center alignment for all these text elements */
+    /* Typography - Force center alignment for text elements */
     h1, h2, h3, p, .badge, .subtitle, .title, .lead, .actions, .stats, .pill, .item a, .list, .li {
-      text-align: center !important;  /* !important overrides any other text-align rules */
+      text-align: center !important;
     }
 
-    /* Main heading style (h1) */
+    /* Heading styles with consistent spacing */
     h1 {
-      font-size: 32px;      /* Large text */
-      font-weight: 800;     /* Extra bold */
-      margin: 0 0 20px 0;   /* No top margin, 20px bottom margin */
+      font-size: 32px;
+      font-weight: 800;
+      margin: 0 0 20px 0;
     }
     
-    /* Secondary heading style (h2) */
     h2 {
-      margin: 0 0 12px 0;   /* No top margin, 12px bottom margin */
-      font-size: 22px;      /* Medium-large text */
-      font-weight: 700;     /* Bold */
+      margin: 0 0 12px 0;
+      font-size: 22px;
+      font-weight: 700;
     }
     
-    /* Tertiary heading style (h3) */
     h3 {
-      font-size: 18px;      /* Medium text */
-      font-weight: 600;     /* Semi-bold */
-      margin: 0 0 10px 0;   /* No top margin, 10px bottom margin */
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 10px 0;
     }
     
-    /* Paragraph style */
+    /* Paragraph with muted color for secondary text */
     p {
-      color: var(--muted);  /* Use muted white color */
+      color: var(--muted);
     }
 
-    /* ============================================
-       GRID LAYOUT (4 Columns)
-       ============================================
-       Used for the stats cards at the top (Study Streak, Average Score, etc.)
-    */
+    /* Four-column grid layout for stat cards */
     .grid4 {
-      display: grid;                                   /* Use grid layout */
-      grid-template-columns: repeat(4, minmax(0, 1fr));  /* Create 4 equal columns */
-      gap: 12px;                                      /* 12px space between items */
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
     }
 
-    /* ============================================
-       CHART COMPONENTS
-       ============================================
-       Styles for displaying bar charts and line charts
-    */
-    
-    /* Container for each chart */
+    /* Chart container - Fixed height for consistent appearance */
     .chart {
-      height: 260px;       /* Fixed height for charts */
-      position: relative;  /* Allow absolute positioning of children */
+      height: 260px;
+      position: relative;
     }
     
-    /* Container for bar chart bars */
+    /* Bar chart container - Absolute positioning within chart */
     .bars {
-      position: absolute;              /* Position absolutely within .chart */
-      inset: 12px 12px 32px 40px;     /* Position: 12px from top, 12px from right, 32px from bottom, 40px from left */
-      display: flex;                   /* Use flexbox layout */
-      gap: 16px;                      /* 16px space between bars */
-      align-items: flex-end;          /* Align bars to the bottom */
+      position: absolute;
+      inset: 12px 12px 32px 40px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-end;
     }
     
-    /* Individual bar in bar chart */
+    /* Individual bar styling - Height set inline via style attribute */
     .bar {
-      width: 40px;                    /* Each bar is 40px wide */
-      background: var(--bar);         /* Light blue color */
-      border-radius: 8px 8px 0 0;    /* Round only the top corners */
+      width: 40px;
+      background: var(--bar);
+      border-radius: 8px 8px 0 0;
     }
     
-    /* Labels below the chart (x-axis labels) */
+    /* X-axis labels positioned below chart */
     .xlabels {
-      position: absolute;              /* Position absolutely within .chart */
-      bottom: 6px;                    /* 6px from bottom */
-      left: 40px;                     /* 40px from left */
-      right: 12px;                    /* 12px from right */
-      display: flex;                  /* Use flexbox layout */
-      gap: 16px;                      /* 16px space between labels */
-      justify-content: space-between; /* Spread labels evenly */
-      font-size: 12px;                /* Small text */
-      opacity: 1;                     /* Fully visible */
+      position: absolute;
+      bottom: 6px;
+      left: 40px;
+      right: 12px;
+      display: flex;
+      gap: 16px;
+      justify-content: space-between;
+      font-size: 12px;
+      opacity: 1;
     }
     
-    /* Container for line chart (SVG) */
+    /* Line chart SVG container */
     .linechart {
-      position: absolute;              /* Position absolutely within .chart */
-      inset: 12px 12px 32px 40px;     /* Same positioning as bars */
+      position: absolute;
+      inset: 12px 12px 32px 40px;
     }
     
-    /* Dot indicator in legend */
+    /* Legend indicator dot */
     .dot {
-      width: 10px;                    /* 10px wide */
-      height: 10px;                   /* 10px tall */
-      border-radius: 9999px;          /* Perfectly circular */
-      background: var(--line);        /* Light blue color */
-      display: inline-block;          /* Display inline with text */
+      width: 10px;
+      height: 10px;
+      border-radius: 9999px;
+      background: var(--line);
+      display: inline-block;
     }
     
-    /* Legend below charts */
+    /* Chart legend layout */
     .legend {
-      display: flex;                  /* Use flexbox layout */
-      gap: 10px;                      /* 10px space between items */
-      justify-content: center;        /* Center horizontally */
-      font-size: 12px;                /* Small text */
-      opacity: 1;                     /* Fully visible */
-      margin-top: 8px;                /* 8px space above */
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      font-size: 12px;
+      opacity: 1;
+      margin-top: 8px;
     }
     
-    /* Grid for multiple charts side by side */
+    /* Charts grid - Single column on mobile, switches to two-column on desktop */
     .charts-grid {
-      display: grid;                  /* Use grid layout */
-      gap: 12px;                      /* 12px space between charts */
-      grid-template-columns: 1fr;     /* Single column by default (mobile) */
-      min-height: 55vh;               /* Minimum height is 55% of viewport height */
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 1fr;
+      min-height: 55vh;
     }
     
-    /* ============================================
-       RESPONSIVE DESIGN
-       ============================================
-       Changes layout for larger screens (tablets and desktops)
-    */
-    
-    /* Apply these styles only on screens 1024px wide or larger */
+    /* Desktop layout adjustments for screens 1024px and wider */
     @media (min-width: 1024px) {
-      /* Show charts side by side on desktop */
+      /* Two-column layout for charts */
       .charts-grid {
-        grid-template-columns: 1fr 1fr;  /* Two equal columns */
+        grid-template-columns: 1fr 1fr;
       }
       
-      /* Keep 4-column grid on desktop */
+      /* Maintain four-column grid for stats */
       .grid4 {
-        grid-template-columns: repeat(4, minmax(0, 1fr));  /* 4 equal columns */
+        grid-template-columns: repeat(4, minmax(0, 1fr));
       }
     }
 
-    /* ============================================
-       LIST COMPONENTS
-       ============================================
-       Used for displaying lists of items (activity, suggestions, etc.)
-    */
-    
-    /* Container for list items */
+    /* List container for activity and suggestion items */
     .list {
-      display: grid;   /* Use grid layout */
-      gap: 10px;      /* 10px space between items */
+      display: grid;
+      gap: 10px;
     }
     
-    /* Individual list item */
+    /* List item styling with subtle background */
     .li {
-      padding: 12px;                      /* Space inside item */
-      border-radius: 12px;                /* Rounded corners */
-      background: rgba(255, 255, 255, 0.06);  /* Light transparent background */
-      border: 1px solid var(--border);    /* Subtle border */
-      color: var(--text);                 /* White text */
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: var(--text);
     }
   </style>
 </head>
 
 <body>
-  <!-- ============================================
-       ANIMATED BACKGROUND SCENE
-       ============================================
-       These are the floating blobs in the background
-  -->
+  <!-- Animated background layer with floating gradient blobs -->
   <div class="scene">
-    <div class="blob a"></div>  <!-- First blob (top-left) -->
-    <div class="blob b"></div>  <!-- Second blob (bottom-right) -->
-    <div class="blob c"></div>  <!-- Third blob (center) -->
+    <div class="blob a"></div>
+    <div class="blob b"></div>
+    <div class="blob c"></div>
   </div>
 
-  <!-- ============================================
-       HEADER SECTION
-       ============================================
-       Contains the logo and navigation buttons at the top
-  -->
+  <!-- Header section with logo and navigation -->
   <header class="container">
     <div class="row">
-      <!-- Logo section - clicking it goes to welcome.html -->
+      <!-- Logo - Clickable, navigates to welcome page -->
       <div class="logo" style="cursor:pointer" onclick="location.href='welcome.html'">
         <img src="logo.png" alt="BytLearn" />
         <div>
-          <!-- Main logo text -->
           <div style="font-weight: 800; font-size: 22px;">BytLearn</div>
-          <!-- Subtitle below logo -->
           <div class="subtitle" style="font-size: 12px; opacity: 1;">Student Profile</div>
         </div>
       </div>
       
-      <!-- Navigation buttons on the right side -->
+      <!-- Navigation buttons -->
       <div class="row" style="gap: 10px;">
-        <!-- Dashboard button - links to dashboard.html -->
         <a class="btn" href="dashboard.html">Dashboard</a>
-        
-        <!-- Sign Out button - removes authentication and goes to welcome.html -->
+        <!-- Sign out button - Clears authentication and redirects -->
         <a class="btn" href="welcome.html" onclick="event.preventDefault(); localStorage.removeItem('authed'); location.href='welcome.html';">Sign Out</a>
       </div>
     </div>
   </header>
 
-  <!-- ============================================
-       MAIN CONTENT SECTION
-       ============================================
-       All the page content goes here
-  -->
+  <!-- Main content area -->
   <main class="container">
     
-    <!-- ============================================
-         USER PROFILE CARD
-         ============================================
-         Shows the student's name, email, and badge
-    -->
+    <!-- User profile card with avatar, name, and email -->
     <div class="card" style="margin-bottom: 12px;">
       <div class="row" style="gap: 12px; align-items: center;">
-        <!-- Left side: User avatar and info -->
         <div class="row" style="gap: 12px;">
-          <!-- User avatar (emoji icon) -->
+          <!-- User avatar icon -->
           <div style="width: 48px; height: 48px; border-radius: 9999px; background: rgba(255, 255, 255, 0.18); display: flex; align-items: center; justify-content: center;">
             👤
           </div>
-          <!-- User name and email (populated by JavaScript) -->
+          <!-- User information - Populated via JavaScript -->
           <div>
             <div style="font-weight: 700;" id="pName">Student</div>
             <div style="opacity: 1; font-size: 13px;" id="pEmail">student@bytlearn.app</div>
           </div>
         </div>
         
-        <!-- Right side: Badge showing dashboard type -->
+        <!-- Dashboard type badge -->
         <span class="badge">Biology AI — Student Dashboard</span>
       </div>
     </div>
 
-    <!-- ============================================
-         STATS CARDS (4 Columns)
-         ============================================
-         Shows key metrics: Study Streak, Average Score, etc.
-    -->
+    <!-- Stats overview - Four metric cards -->
     <div class="grid4" style="margin-bottom: 12px;">
-      <!-- Stat card 1: Study Streak -->
       <div class="card">
         <div style="opacity: 1; font-size: 13px;">Study Streak</div>
         <div style="font-weight: 700; font-size: 22px;">15 days</div>
       </div>
       
-      <!-- Stat card 2: Average Score -->
       <div class="card">
         <div style="opacity: 1; font-size: 13px;">Average Score</div>
         <div style="font-weight: 700; font-size: 22px;">82.3%</div>
       </div>
       
-      <!-- Stat card 3: Average Quiz Time -->
       <div class="card">
         <div style="opacity: 1; font-size: 13px;">Avg Quiz Time</div>
         <div style="font-weight: 700; font-size: 22px;">165s</div>
       </div>
       
-      <!-- Stat card 4: Doubt Resolution Rate -->
       <div class="card">
         <div style="opacity: 1; font-size: 13px;">Doubt Resolution</div>
         <div style="font-weight: 700; font-size: 22px;">89%</div>
       </div>
     </div>
 
-    <!-- ============================================
-         TAB NAVIGATION PILLS
-         ============================================
-         Buttons to switch between different sections
-    -->
+    <!-- Tab navigation - Switches between different content sections -->
     <div class="card" style="margin-bottom: 12px;">
       <div class="pills">
-        <!-- Each button has a data-tab attribute that matches the section ID it controls -->
+        <!-- Each pill has data-tab attribute matching corresponding section ID -->
         <button class="pill active" data-tab="charts">Charts</button>
         <button class="pill" data-tab="analysis">Analysis</button>
         <button class="pill" data-tab="performance">Performance</button>
@@ -575,35 +459,28 @@
       </div>
     </div>
 
-    <!-- ============================================
-         TAB SECTION 1: CHARTS
-         ============================================
-         Shows performance charts (bar chart and line chart)
-         This section is visible by default (no "hidden" class)
-    -->
+    <!-- Tab 1: Charts - Performance visualizations (visible by default) -->
     <section id="charts" class="tab">
       <div class="charts-grid">
         
-        <!-- Chart 1: Performance by Topic (Bar Chart) -->
+        <!-- Bar chart showing performance across different topics -->
         <div class="card">
-          <!-- Chart header with title and time period badge -->
           <div class="row" style="justify-content: space-between;">
             <h2>Performance by Topic</h2>
             <span class="badge">Weekly</span>
           </div>
           
-          <!-- Chart container -->
           <div class="chart">
-            <!-- Bar chart - each bar has a height percentage -->
+            <!-- Bar heights represent performance percentages -->
             <div class="bars">
-              <div class="bar" style="height: 78%;"></div>  <!-- Cell: 78% -->
-              <div class="bar" style="height: 82%;"></div>  <!-- Biomolecules: 82% -->
-              <div class="bar" style="height: 76%;"></div>  <!-- Genetics: 76% -->
-              <div class="bar" style="height: 88%;"></div>  <!-- Physiology: 88% -->
-              <div class="bar" style="height: 91%;"></div>  <!-- Ecology: 91% -->
+              <div class="bar" style="height: 78%;"></div>
+              <div class="bar" style="height: 82%;"></div>
+              <div class="bar" style="height: 76%;"></div>
+              <div class="bar" style="height: 88%;"></div>
+              <div class="bar" style="height: 91%;"></div>
             </div>
             
-            <!-- Labels below each bar -->
+            <!-- Topic labels below each bar -->
             <div class="xlabels">
               <span>Cell</span>
               <span>Biomol.</span>
@@ -612,40 +489,36 @@
               <span>Ecology</span>
             </div>
             
-            <!-- Legend explaining what the chart shows -->
             <div class="legend"><span class="dot"></span> Score</div>
           </div>
         </div>
 
-        <!-- Chart 2: Recent Performance Trend (Line Chart) -->
+        <!-- Line chart showing performance trend over time -->
         <div class="card">
-          <!-- Chart header with title and time period badge -->
           <div class="row" style="justify-content: space-between;">
             <h2>Recent Performance Trend</h2>
             <span class="badge">Last 7 Days</span>
           </div>
           
-          <!-- Chart container -->
           <div class="chart">
-            <!-- SVG line chart -->
+            <!-- SVG line chart with data points for each day -->
             <svg class="linechart" viewBox="0 0 400 220" preserveAspectRatio="none">
-              <!-- The line connecting all points -->
-              <!-- points format: "x1,y1 x2,y2 x3,y3" where lower y = better score -->
+              <!-- Polyline connects all data points -->
               <polyline fill="none" stroke="#93c5fd" stroke-width="3" points="10,170 70,160 130,145 190,135 250,125 310,115 370,110" />
               
-              <!-- Dots at each data point -->
+              <!-- Circle markers at each data point -->
               <g fill="#93c5fd">
-                <circle cx="10" cy="170" r="3"></circle>   <!-- Monday -->
-                <circle cx="70" cy="160" r="3"></circle>   <!-- Tuesday -->
-                <circle cx="130" cy="145" r="3"></circle>  <!-- Wednesday -->
-                <circle cx="190" cy="135" r="3"></circle>  <!-- Thursday -->
-                <circle cx="250" cy="125" r="3"></circle>  <!-- Friday -->
-                <circle cx="310" cy="115" r="3"></circle>  <!-- Saturday -->
-                <circle cx="370" cy="110" r="3"></circle>  <!-- Sunday -->
+                <circle cx="10" cy="170" r="3"></circle>
+                <circle cx="70" cy="160" r="3"></circle>
+                <circle cx="130" cy="145" r="3"></circle>
+                <circle cx="190" cy="135" r="3"></circle>
+                <circle cx="250" cy="125" r="3"></circle>
+                <circle cx="310" cy="115" r="3"></circle>
+                <circle cx="370" cy="110" r="3"></circle>
               </g>
             </svg>
             
-            <!-- Labels for each day -->
+            <!-- Day labels below chart -->
             <div class="xlabels" style="left: 36px; right: 12px;">
               <span>Mon</span>
               <span>Tue</span>
@@ -656,34 +529,25 @@
               <span>Sun</span>
             </div>
             
-            <!-- Legend explaining what the chart shows -->
             <div class="legend"><span class="dot"></span> Score</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============================================
-         TAB SECTION 2: ANALYSIS
-         ============================================
-         Shows strong areas and weak areas
-         Hidden by default (has "hidden" class)
-    -->
+    <!-- Tab 2: Analysis - Strong and weak areas (hidden by default) -->
     <section id="analysis" class="tab hidden">
-      <!-- Two columns: Strong Areas and Weak Areas -->
       <div style="display: grid; gap: 12px; grid-template-columns: 1fr 1fr;">
         
-        <!-- Column 1: Strong Areas -->
+        <!-- Strong areas - Topics where student excels -->
         <div class="card">
           <h2>Strong Areas</h2>
           <div class="list">
-            <!-- Strong area 1: Ecology -->
             <div class="li">
               <div style="font-weight: 600;">Ecology</div>
               <div style="color: var(--muted); font-size: 13px;">High quiz accuracy (92%)</div>
             </div>
             
-            <!-- Strong area 2: Physiology -->
             <div class="li">
               <div style="font-weight: 600;">Physiology</div>
               <div style="color: var(--muted); font-size: 13px;">Consistent improvement over 4 weeks</div>
@@ -691,17 +555,15 @@
           </div>
         </div>
         
-        <!-- Column 2: Weak Areas -->
+        <!-- Weak areas - Topics needing improvement -->
         <div class="card">
           <h2>Weak Areas</h2>
           <div class="list">
-            <!-- Weak area 1: Genetics -->
             <div class="li">
               <div style="font-weight: 600;">Genetics</div>
               <div style="color: var(--muted); font-size: 13px;">Lower recall on terminology</div>
             </div>
             
-            <!-- Weak area 2: Biomolecules -->
             <div class="li">
               <div style="font-weight: 600;">Biomolecules</div>
               <div style="color: var(--muted); font-size: 13px;">Time-outs in 2 quizzes</div>
@@ -711,44 +573,34 @@
       </div>
     </section>
 
-    <!-- ============================================
-         TAB SECTION 3: PERFORMANCE
-         ============================================
-         Shows overall performance statistics
-         Hidden by default (has "hidden" class)
-    -->
+    <!-- Tab 3: Performance - Overall statistics (hidden by default) -->
     <section id="performance" class="tab hidden">
       <div class="card">
         <h2>Overall Performance</h2>
         
-        <!-- Grid of 3 columns showing different metrics -->
+        <!-- Grid of performance metrics -->
         <div style="display: grid; gap: 12px; grid-template-columns: 1fr 1fr 1fr;">
           
-          <!-- Metric 1: Total quizzes completed -->
           <div class="li">
             <div style="opacity: 1; font-size: 13px;">Quizzes Completed</div>
             <div style="font-weight: 700; font-size: 22px;">18</div>
           </div>
           
-          <!-- Metric 2: Average score across all quizzes -->
           <div class="li">
             <div style="opacity: 1; font-size: 13px;">Average Score</div>
             <div style="font-weight: 700; font-size: 22px;">82.3%</div>
           </div>
           
-          <!-- Metric 3: Best score achieved -->
           <div class="li">
             <div style="opacity: 1; font-size: 13px;">Best Score</div>
             <div style="font-weight: 700; font-size: 22px;">96%</div>
           </div>
           
-          <!-- Metric 4: Average time spent per quiz -->
           <div class="li">
             <div style="opacity: 1; font-size: 13px;">Average Time/Quiz</div>
             <div style="font-weight: 700; font-size: 22px;">165s</div>
           </div>
           
-          <!-- Metric 5: Fastest quiz completion time -->
           <div class="li">
             <div style="opacity: 1; font-size: 13px;">Fastest Completion</div>
             <div style="font-weight: 700; font-size: 22px;">122s</div>
@@ -757,18 +609,12 @@
       </div>
     </section>
 
-    <!-- ============================================
-         TAB SECTION 4: SUGGESTIONS
-         ============================================
-         Shows personalized study suggestions for improvement
-         Hidden by default (has "hidden" class)
-    -->
+    <!-- Tab 4: Suggestions - Personalized study recommendations (hidden by default) -->
     <section id="suggestions" class="tab hidden">
       <div class="card">
         <h2>Personalized Suggestions</h2>
         <div class="list">
           
-          <!-- Suggestion 1: Focus on Genetics -->
           <div class="li">
             <div style="font-weight: 600;">Revise Mendelian genetics</div>
             <div style="color: var(--muted); font-size: 13px;">
@@ -776,7 +622,6 @@
             </div>
           </div>
           
-          <!-- Suggestion 2: Study Biomolecules -->
           <div class="li">
             <div style="font-weight: 600;">Biomolecules quick sheet</div>
             <div style="color: var(--muted); font-size: 13px;">
@@ -784,7 +629,6 @@
             </div>
           </div>
           
-          <!-- Suggestion 3: Improve speed -->
           <div class="li">
             <div style="font-weight: 600;">Timed drills</div>
             <div style="color: var(--muted); font-size: 13px;">
@@ -795,67 +639,51 @@
       </div>
     </section>
 
-    <!-- ============================================
-         TAB SECTION 5: ACTIVITY
-         ============================================
-         Shows recent activities and quiz history
-         Hidden by default (has "hidden" class)
-    -->
+    <!-- Tab 5: Activity - Recent learning activity log (hidden by default) -->
     <section id="activity" class="tab hidden">
       <div class="card">
         <h2>Recent Activity</h2>
         <div class="list">
           
-          <!-- Activity 1: Most recent quiz (Today) -->
+          <!-- Activity entries with quiz name, date, score, and time -->
           <div class="li row" style="justify-content: space-between;">
-            <!-- Left side: Quiz name and date -->
             <div>
               <div style="font-weight: 600;">Quiz Plant Physiology</div>
               <div style="opacity: 1; font-size: 12px;">Today</div>
             </div>
-            <!-- Right side: Score and time -->
             <div style="text-align: right;">
               <div>Score: 88</div>
               <div style="opacity: 1; font-size: 12px;">Time: 158s</div>
             </div>
           </div>
           
-          <!-- Activity 2: Yesterday's quiz -->
           <div class="li row" style="justify-content: space-between;">
-            <!-- Left side: Quiz name and date -->
             <div>
               <div style="font-weight: 600;">Quiz Genetics Basics</div>
               <div style="opacity: 1; font-size: 12px;">Yesterday</div>
             </div>
-            <!-- Right side: Score and time -->
             <div style="text-align: right;">
               <div>Score: 74</div>
               <div style="opacity: 1; font-size: 12px;">Time: 171s</div>
             </div>
           </div>
           
-          <!-- Activity 3: Flashcards session from 2 days ago -->
           <div class="li row" style="justify-content: space-between;">
-            <!-- Left side: Activity name and date -->
             <div>
               <div style="font-weight: 600;">Flashcards Biomolecules</div>
               <div style="opacity: 1; font-size: 12px;">2 days ago</div>
             </div>
-            <!-- Right side: Score and time -->
             <div style="text-align: right;">
               <div>Score:</div>
               <div style="opacity: 1; font-size: 12px;">Time: 12m</div>
             </div>
           </div>
           
-          <!-- Activity 4: Quiz from 3 days ago -->
           <div class="li row" style="justify-content: space-between;">
-            <!-- Left side: Quiz name and date -->
             <div>
               <div style="font-weight: 600;">Quiz Ecology Mix</div>
               <div style="opacity: 1; font-size: 12px;">3 days ago</div>
             </div>
-            <!-- Right side: Score and time -->
             <div style="text-align: right;">
               <div>Score: 91</div>
               <div style="opacity: 1; font-size: 12px;">Time: 149s</div>
@@ -866,99 +694,66 @@
     </section>
   </main>
 
-  <!-- ============================================
-       JAVASCRIPT CODE
-       ============================================
-       This makes the page interactive
-  -->
   <script>
-    /* =============================================
-       TAB SWITCHING FUNCTIONALITY
-       =============================================
-       This code makes the navigation pills work to switch between tabs
-    */
+    /* Tab Switching Logic
+     * Manages tab navigation by toggling visibility of content sections
+     * when corresponding pill buttons are clicked
+     */
     
-    // Step 1: Find all the pill buttons on the page
-    // querySelectorAll finds ALL elements that match the selector
-    // '.pill[data-tab]' means "find all elements with class 'pill' that have a 'data-tab' attribute"
+    // Select all pill buttons and tab content sections
     const pills = document.querySelectorAll('.pill[data-tab]');
-    
-    // Step 2: Find all the tab sections (Charts, Analysis, Performance, etc.)
-    // '.tab' means "find all elements with class 'tab'"
     const tabs = document.querySelectorAll('.tab');
     
-    // Step 3: Add a click event listener to each pill button
-    // forEach runs the code for each pill button
+    // Attach click handler to each pill button
     pills.forEach(function(p) {
-      // When this pill is clicked, run this function
       p.addEventListener('click', function() {
         
-        // Step 3a: Remove 'active' class from ALL pills (deactivate all)
+        // Deactivate all pills
         pills.forEach(function(pp) {
           pp.classList.remove('active');
         });
         
-        // Step 3b: Add 'active' class to the pill that was clicked
+        // Activate clicked pill
         p.classList.add('active');
         
-        // Step 3c: Get the ID of the tab this pill should show
-        // For example, if pill has data-tab="charts", this gets "charts"
+        // Get target tab ID from data-tab attribute
         const id = p.getAttribute('data-tab');
         
-        // Step 3d: Hide ALL tabs by adding 'hidden' class to each
+        // Hide all tab sections
         tabs.forEach(function(t) {
           t.classList.add('hidden');
         });
         
-        // Step 3e: Show the specific tab by removing 'hidden' class
-        // getElementById finds the element with matching ID
-        // The '?' checks if element exists before trying to remove class
+        // Show target tab section
         document.getElementById(id)?.classList.remove('hidden');
         
-        // Step 3f: Scroll to top of page smoothly
-        // This provides a better user experience when switching tabs
+        // Scroll to top for better UX
         window.scrollTo({ 
-          top: 0,              // Scroll to top (0 pixels from top)
-          behavior: 'smooth'   // Animate the scroll smoothly
+          top: 0,
+          behavior: 'smooth'
         });
       });
     });
 
-    /* =============================================
-       USER PROFILE DISPLAY
-       =============================================
-       This function fills in the user's name and email from browser storage
-    */
-    
+    /* User Profile Display
+     * Retrieves and displays user information from localStorage
+     * Falls back to default values if not found
+     */
     function fillUserProfile() {
-      // Step 1: Get the user's name from browser's localStorage
-      // localStorage.getItem('currentUserName') retrieves the stored name
-      // || 'Student' means "if no name is found, use 'Student' as default"
+      // Retrieve stored user data with fallback defaults
       const n = localStorage.getItem('currentUserName') || 'Student';
-      
-      // Step 2: Get the user's email from browser's localStorage
-      // || 'student@bytlearn.app' means "if no email is found, use this default"
       const e = localStorage.getItem('currentUserEmail') || 'student@bytlearn.app';
       
-      // Step 3: Find the HTML element that should show the name
-      // getElementById finds the element with id="pName"
+      // Get DOM elements for name and email
       const nEl = document.getElementById('pName');
-      
-      // Step 4: Find the HTML element that should show the email
-      // getElementById finds the element with id="pEmail"
       const eEl = document.getElementById('pEmail');
       
-      // Step 5: Update the name element's text content
-      // if (nEl) checks if the element exists before trying to update it
-      // textContent sets the text inside the element
+      // Update text content if elements exist
       if (nEl) nEl.textContent = n;
-      
-      // Step 6: Update the email element's text content
       if (eEl) eEl.textContent = e;
     }
     
-    // Run the function immediately when the page loads
-    // This fills in the user's name and email right away
+    // Initialize user profile on page load
     fillUserProfile();
   </script>
 </body>

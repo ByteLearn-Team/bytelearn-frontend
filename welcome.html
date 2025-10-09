@@ -1,408 +1,367 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <!-- Character encoding for proper text display -->
+  <!-- Character encoding for proper text display across all languages -->
   <meta charset="utf-8" />
   
-  <!-- Page title that appears in browser tab -->
+  <!-- Page title displayed in browser tab -->
   <title>BytLearn — Welcome</title>
   
-  <!-- Makes the website responsive on mobile devices -->
+  <!-- Responsive design: ensures proper scaling on mobile devices -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
-    /* ===================================
-       CSS CUSTOM PROPERTIES (VARIABLES)
-       These are like shortcuts for colors and values we use repeatedly
-       ================================== */
+    /* CSS CUSTOM PROPERTIES (VARIABLES)
+       Define reusable color values and design tokens for consistent styling throughout the page */
     :root {
-      /* Background colors - dark blue shades */
+      /* Background gradient colors for depth effect */
       --bg1: #0a1a3a;
       --bg2: #0b2a4a;
       --bg3: #11194a;
       
-      /* Text colors */
-      --text: #ffffff;  /* Pure white for main text */
-      --muted: rgba(255,255,255,0.8);  /* Slightly transparent white for secondary text */
+      /* Text colors for readability */
+      --text: #ffffff;
+      --muted: rgba(255,255,255,0.8);
       
-      /* Glass effect colors - semi-transparent white for frosted glass look */
-      --glass: rgba(255,255,255,0.1);  /* 10% opacity white */
-      --glass-2: rgba(255,255,255,0.2);  /* 20% opacity white (for hover effects) */
+      /* Glass morphism effect: semi-transparent backgrounds */
+      --glass: rgba(255,255,255,0.1);
+      --glass-2: rgba(255,255,255,0.2);
       
-      /* Border color - semi-transparent white */
+      /* Border styling */
       --border: rgba(255,255,255,0.2);
       
-      /* Accent colors - bright cyan and blue for highlights */
-      --accent1: #67e8f9;  /* Cyan */
-      --accent2: #60a5fa;  /* Blue */
+      /* Accent colors for highlights and interactive elements */
+      --accent1: #67e8f9;
+      --accent2: #60a5fa;
     }
 
-    /* ===================================
-       UNIVERSAL RESET
-       Makes all elements use border-box sizing (easier to calculate widths)
-       ================================== */
+    /* UNIVERSAL BOX-SIZING
+       Ensures padding and borders are included in element width calculations */
     * { 
       box-sizing: border-box; 
     }
 
-    /* ===================================
-       HTML AND BODY BASE STYLES
-       ================================== */
+    /* BASE STYLES
+       Sets default styling for entire page */
     html, body {
-      height: 100%;  /* Make sure html and body take full viewport height */
-      margin: 0;  /* Remove default margins */
-      
-      /* Font stack - uses system fonts for best performance */
+      height: 100%;
+      margin: 0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      
-      color: var(--text);  /* White text color */
-      text-align: center;  /* Center all text by default */
+      color: var(--text);
+      text-align: center;
     }
 
-    /* ===================================
-       BODY SPECIFIC STYLES
-       ================================== */
     body {
-      margin: 0;  /* Remove default margin */
-      
-      /* Same font as above (repeated for specificity) */
+      margin: 0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segene UI, Roboto, Helvetica, Arial;
-      
-      color: var(--text);  /* White text */
-      
-      /* Gradient background - goes from dark blue to purple-blue */
+      color: var(--text);
+      /* Diagonal gradient background for visual depth */
       background: linear-gradient(135deg, #0b1e3d, #08203a 40%, #101a4b);
-      
-      overflow-x: hidden;  /* Prevent horizontal scrolling */
-      font-size: 18px;  /* Base font size */
-      text-align: center;  /* Center text */
-      background-attachment: fixed;  /* Keep background fixed when scrolling */
+      overflow-x: hidden;
+      font-size: 18px;
+      text-align: center;
+      /* Keep background fixed during scroll for parallax effect */
+      background-attachment: fixed;
     }
 
-    /* ===================================
-       ANIMATED BACKGROUND BLOBS
-       These create the glowing orbs in the background
-       ================================== */
-    
-    /* Container for all blobs - covers entire screen */
+    /* ANIMATED BACKGROUND SCENE
+       Container for floating gradient blobs that create ambient background effect */
     .scene { 
-      position: fixed;  /* Fixed position so it doesn't scroll */
-      inset: 0;  /* Shorthand for top:0, right:0, bottom:0, left:0 */
-      z-index: 0;  /* Behind all other content */
+      position: fixed;
+      inset: 0;
+      z-index: 0;
     }
     
-    /* Base styles for all blob elements */
+    /* Base blob styling: circular shape with blur effect */
     .blob {
-      position: absolute;  /* Position anywhere on screen */
-      border-radius: 9999px;  /* Makes it perfectly circular */
-      filter: blur(80px);  /* Creates the glowing blur effect */
-      opacity: 0.2;  /* 20% opacity for subtle effect */
-      will-change: transform;  /* Tells browser to optimize this for animation */
-      animation: float 20s ease-in-out infinite;  /* Smooth floating animation */
+      position: absolute;
+      border-radius: 9999px;
+      /* Creates soft, glowing appearance */
+      filter: blur(80px);
+      opacity: 0.2;
+      /* Optimize animation performance */
+      will-change: transform;
+      /* Continuous floating animation */
+      animation: float 20s ease-in-out infinite;
     }
     
-    /* First blob (top-left) - cyan/blue gradient */
+    /* Individual blob configurations with unique positions and colors */
     .blob.a { 
       width: 380px; 
       height: 380px; 
-      left: -120px;  /* Positioned slightly off-screen to the left */
+      left: -120px;
       top: 80px; 
-      background: linear-gradient(90deg, #38bdf8, #2563eb);  /* Cyan to blue */
+      background: linear-gradient(90deg, #38bdf8, #2563eb);
     }
     
-    /* Second blob (bottom-right) - purple/cyan gradient */
     .blob.b { 
       width: 320px; 
       height: 320px; 
-      right: -100px;  /* Positioned slightly off-screen to the right */
+      right: -100px;
       bottom: 120px; 
-      background: linear-gradient(90deg, #6366f1, #22d3ee);  /* Purple to cyan */
-      animation-duration: 16s;  /* Floats faster than blob A */
+      background: linear-gradient(90deg, #6366f1, #22d3ee);
+      /* Faster animation for visual variety */
+      animation-duration: 16s;
     }
     
-    /* Third blob (center) - light blue gradient */
     .blob.c { 
       width: 260px; 
       height: 260px; 
-      left: 50%;  /* Start at horizontal center */
-      top: 50%;  /* Start at vertical center */
-      transform: translate(-50%, -50%);  /* Adjust to truly center the element */
-      background: linear-gradient(90deg, #60a5fa, #7dd3fc);  /* Blue to light cyan */
-      opacity: 0.12;  /* Even more subtle than other blobs */
-      animation-duration: 25s;  /* Floats slower than other blobs */
+      /* Center blob using transform technique */
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(90deg, #60a5fa, #7dd3fc);
+      opacity: 0.12;
+      /* Slower animation creates layered motion effect */
+      animation-duration: 25s;
     }
 
-    /* ===================================
-       FLOATING ANIMATION
-       Makes the blobs move slowly up/down and side to side
-       ================================== */
+    /* FLOATING ANIMATION
+       Creates gentle movement effect for background blobs */
     @keyframes float {
       0% { 
-        transform: translate(0, 0) scale(1);  /* Start position - normal size */
+        transform: translate(0, 0) scale(1);
       }
       50% { 
-        transform: translate(40px, -30px) scale(1.1);  /* Middle - move right/up and grow 10% */
+        /* Move and slightly enlarge at midpoint */
+        transform: translate(40px, -30px) scale(1.1);
       }
       100% { 
-        transform: translate(0, 0) scale(1);  /* End - back to start (creates loop) */
+        /* Return to starting position for seamless loop */
+        transform: translate(0, 0) scale(1);
       }
     }
 
-    /* ===================================
-       CONTAINER - Main content wrapper
-       Centers content and adds padding
-       ================================== */
+    /* CONTAINER
+       Centers content and ensures it appears above background elements */
     .container { 
-      position: relative;  /* So content appears above background blobs */
-      z-index: 1;  /* Above the background scene */
-      max-width: 1200px;  /* Maximum width for large screens */
-      margin: 0 auto;  /* Center horizontally */
-      padding: 32px;  /* Space around content */
-      text-align: center;  /* Center text inside */
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px;
+      text-align: center;
     }
     
-    /* Header container has smaller max width */
+    /* Specific container widths for different sections */
     header.container { 
       max-width: 1064px; 
     }
     
-    /* Main container takes up most of the screen height */
+    /* Calculate main height to fill viewport minus header/footer space */
     main.container { 
-      min-height: calc(100vh - 140px);  /* Full viewport height minus 140px for header/footer */
+      min-height: calc(100vh - 140px);
     }
     
-    /* ===================================
-       ROW - Flexbox container for horizontal layouts
-       ================================== */
+    /* FLEXBOX ROW
+       Horizontal layout with items spread across available space */
     .row { 
-      display: flex;  /* Use flexbox layout */
-      align-items: center;  /* Vertically center items */
-      justify-content: space-between;  /* Spread items apart with space between */
-      gap: 16px;  /* 16px space between items */
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
     }
 
-    /* ===================================
-       LOGO SECTION
-       ================================== */
+    /* LOGO SECTION
+       Brand identity display in header */
     .logo { 
-      display: flex;  /* Horizontal layout */
-      align-items: center;  /* Vertically center logo and text */
-      gap: 12px;  /* Space between logo image and text */
-      cursor: default;  /* Normal cursor (not a pointer) */
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: default;
     }
     
-    /* Logo image size */
     .logo img { 
       width: 85px; 
       height: 85px; 
     }
     
-    /* Main title next to logo */
+    /* Primary brand text */
     .title { 
-      font-weight: 800;  /* Very bold */
+      font-weight: 800;
       font-size: 22px; 
-      line-height: 1;  /* Tight line spacing */
+      line-height: 1;
     }
     
-    /* Subtitle below main title */
+    /* Secondary descriptive text */
     .subtitle { 
       font-size: 12px; 
-      color: var(--muted);  /* Slightly transparent white */
-      margin-top: 4px;  /* Small space above */
+      color: var(--muted);
+      margin-top: 4px;
     }
 
-    /* ===================================
-       BUTTON STYLES
-       Used for all clickable buttons
-       ================================== */
+    /* BUTTON STYLES
+       Consistent styling for all clickable buttons with glass morphism effect */
     .btn {
-      display: inline-flex;  /* Inline flexbox for centering content */
-      align-items: center;  /* Vertically center text/icons */
-      justify-content: center;  /* Horizontally center text/icons */
-      gap: 8px;  /* Space between icon and text */
-      padding: 12px 16px;  /* Space inside button */
-      border-radius: 12px;  /* Rounded corners */
-      border: 1px solid var(--border);  /* Semi-transparent white border */
-      background: var(--glass);  /* Semi-transparent white background */
-      color: var(--text);  /* White text */
-      text-decoration: none;  /* Remove underline from links */
-      transition: 150ms ease;  /* Smooth transition for hover effects */
-      backdrop-filter: blur(6px);  /* Frosted glass effect */
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--glass);
+      color: var(--text);
+      text-decoration: none;
+      /* Smooth transitions for interactive feedback */
+      transition: 150ms ease;
+      /* Frosted glass appearance */
+      backdrop-filter: blur(6px);
     }
     
-    /* Button hover effect - slightly more opaque */
+    /* Hover state: slightly more visible */
     .btn:hover { 
       background: var(--glass-2); 
     }
     
-    /* Primary button variant - more visible */
+    /* Primary button variant with enhanced visibility */
     .btn.primary { 
       background: rgba(255, 255, 255, 0.2); 
     }
 
-    /* ===================================
-       HERO SECTION - Main content area
-       ================================== */
+    /* HERO SECTION
+       Main content area with primary messaging */
     .hero { 
-      text-align: center;  /* Center all text */
-      padding: 80px 16px 40px;  /* Padding: 80px top, 16px sides, 40px bottom */
+      text-align: center;
+      padding: 80px 16px 40px;
     }
 
-    /* ===================================
-       BADGE - Small label with icon
-       ================================== */
+    /* BADGE
+       Small decorative label for highlighting features */
     .badge {
-      display: inline-flex;  /* Inline flexbox */
-      align-items: center;  /* Center content vertically */
-      gap: 8px;  /* Space between icon and text */
-      padding: 8px 12px;  /* Space inside badge */
-      border-radius: 9999px;  /* Fully rounded (pill shape) */
-      background: var(--glass);  /* Glass effect background */
-      border: 1px solid var(--border);  /* Semi-transparent border */
-      backdrop-filter: blur(6px);  /* Frosted glass effect */
-      color: var(--text);  /* White text */
-      font-size: 14px;  /* Small text */
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      /* Fully rounded pill shape */
+      border-radius: 9999px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(6px);
+      color: var(--text);
+      font-size: 14px;
     }
 
-    /* ===================================
-       MAIN HEADING
-       ================================== */
+    /* MAIN HEADING
+       Large, responsive heading that scales with viewport */
     .heading {
-      margin: 16px auto;  /* 16px top/bottom, auto left/right (centers it) */
-      
-      /* Responsive font size:
-         - Minimum 40px on small screens
-         - Scales up to 6.5% of viewport width
-         - Maximum 78px on large screens */
+      margin: 16px auto;
+      /* Responsive font sizing: minimum 40px, maximum 78px */
       font-size: clamp(40px, 6.5vw, 78px);
-      
-      font-weight: 800;  /* Very bold */
-      line-height: 1.05;  /* Tight line spacing for big text */
+      font-weight: 800;
+      /* Tight line spacing for large text readability */
+      line-height: 1.05;
     }
 
-    /* ===================================
-       GRADIENT TEXT EFFECT
-       Makes text have a colorful gradient
-       ================================== */
+    /* GRADIENT TEXT EFFECT
+       Creates colorful text using background gradient clipping technique */
     .gradient-text {
-      /* Create gradient from cyan to light blue */
       background: linear-gradient(90deg, #67e8f9, #93c5fd);
-      
-      /* Clip the background to only show through the text */
+      /* Clip gradient to text shape only */
       -webkit-background-clip: text;
       background-clip: text;
-      
-      /* Make text transparent so gradient shows through */
+      /* Make text transparent to reveal gradient underneath */
       color: transparent;
     }
 
-    /* ===================================
-       LEAD PARAGRAPH - Main description text
-       ================================== */
+    /* LEAD PARAGRAPH
+       Primary descriptive text with optimal reading width */
     .lead {
-      margin: 12px auto 24px;  /* 12px top, auto sides (centers), 24px bottom */
-      max-width: 800px;  /* Limit width for readability */
-      color: var(--muted);  /* Slightly transparent white */
-      font-size: 20px;  /* Larger than body text */
-      line-height: 1.7;  /* Comfortable reading space */
+      margin: 12px auto 24px;
+      /* Limit width for comfortable reading experience */
+      max-width: 800px;
+      color: var(--muted);
+      font-size: 20px;
+      line-height: 1.7;
     }
 
-    /* ===================================
-       ACTION BUTTONS CONTAINER
-       ================================== */
+    /* ACTION BUTTONS
+       Container for call-to-action buttons */
     .actions { 
-      display: flex;  /* Horizontal layout */
-      gap: 12px;  /* Space between buttons */
-      flex-wrap: wrap;  /* Allow buttons to wrap to next line on small screens */
-      justify-content: center;  /* Center buttons */
+      display: flex;
+      gap: 12px;
+      /* Allow buttons to wrap on smaller screens */
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
-    /* ===================================
-       STATISTICS GRID
-       Shows 4 stat cards in a grid
-       ================================== */
+    /* STATISTICS GRID
+       Displays key metrics in card format */
     .stats {
-      display: grid;  /* Use CSS grid layout */
-      
-      /* On mobile: 2 columns, each at least 0px wide, max content width */
+      display: grid;
+      /* Mobile: 2 columns, Desktop: 4 columns (see media query) */
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      
-      gap: 16px;  /* Space between cards */
-      margin: 40px auto 0;  /* 40px top, auto sides (centers), 0 bottom */
-      max-width: 1000px;  /* Maximum width */
+      gap: 16px;
+      margin: 40px auto 0;
+      max-width: 1000px;
     }
     
-    /* On tablets and larger (768px+): show 4 columns instead of 2 */
+    /* Tablet and desktop layout: 4 columns for better use of space */
     @media(min-width: 768px) { 
       .stats { 
         grid-template-columns: repeat(4, minmax(0, 1fr)); 
       } 
     }
 
-    /* ===================================
-       CARD - Individual stat or feature card
-       ================================== */
+    /* CARD
+       Individual statistic or feature display with glass effect */
     .card {
-      background: var(--glass);  /* Semi-transparent background */
-      border: 1px solid var(--border);  /* Semi-transparent border */
-      border-radius: 18px;  /* Rounded corners */
-      text-align: center;  /* Center text */
-      padding: 26px;  /* Space inside card */
-      backdrop-filter: blur(8px);  /* Frosted glass effect */
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      text-align: center;
+      padding: 26px;
+      backdrop-filter: blur(8px);
     }
     
-    /* Card heading (the big number) */
+    /* Card heading: prominent number or metric */
     .card h3 { 
-      margin: 0 0 8px;  /* 0 top, 0 sides, 8px bottom */
-      font-size: 28px;  /* Large text */
-      font-weight: 800;  /* Very bold */
+      margin: 0 0 8px;
+      font-size: 28px;
+      font-weight: 800;
     }
     
-    /* Card description text */
+    /* Card description: explanatory text */
     .card p { 
-      margin: 0;  /* No margin */
-      color: var(--muted);  /* Slightly transparent white */
+      margin: 0;
+      color: var(--muted);
     }
 
-    /* ===================================
-       FOOTER
-       ================================== */
+    /* FOOTER
+       Bottom section with legal links and copyright information */
     footer {
-      text-align: center;  /* Center text */
-      padding: 24px;  /* Space inside footer */
-      border-top: 1px solid var(--border);  /* Top border line */
-      margin-top: 40px;  /* Space above footer */
-      color: rgba(255, 255, 255, 0.7);  /* Semi-transparent white text */
+      text-align: center;
+      padding: 24px;
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+      color: rgba(255, 255, 255, 0.7);
     }
     
-    /* Make sure footer appears above background */
+    /* Ensure footer appears above background elements */
     footer { 
       position: relative; 
       z-index: 1000; 
     }
     
-    /* Links inside footer */
+    /* Footer link styling */
     a.inline { 
       position: relative; 
-      z-index: 1001;  /* Above footer background */
-      cursor: pointer;  /* Show pointer cursor */
+      z-index: 1001;
+      cursor: pointer;
     }
     
-    /* Footer link color */
     a.inline {
-      color: rgba(255, 255, 255, 0.7);  /* Semi-transparent white */
+      color: rgba(255, 255, 255, 0.7);
     }
     
-    /* Footer link styles - white with underline */
     a.inline { 
       color: #fff; 
       text-decoration: underline; 
     }
 
-    /* ===================================
-       TEXT ALIGNMENT OVERRIDES
-       Forces all text elements to be centered
-       ================================== */
+    /* TEXT ALIGNMENT OVERRIDES
+       Force center alignment for all text elements */
     .row {
       text-align: center;
     }
@@ -411,57 +370,49 @@
       text-align: center;
     }
 
+    /* Important flag ensures these rules take precedence */
     h2, h3, h1, p, .badge, .subtitle, .title, .lead, .actions, .stats, .pill, .item a, .list, .li {
-      text-align: center !important;  /* !important forces this rule to override others */
+      text-align: center !important;
     }
 
-    /* ===================================
-       WHY CHOOSE SECTION
-       Features section with cards
-       ================================== */
+    /* WHY CHOOSE SECTION
+       Features showcase area */
     #why-choose {
-      max-width: 1000px;  /* Maximum width */
-      margin: 100px auto 0;  /* 100px top (big space), auto sides (centers), 0 bottom */
-      padding: 0;  /* No padding */
-      background: transparent;  /* No background */
-      border: none;  /* No border */
-      border-radius: 0;  /* No rounded corners */
-      backdrop-filter: none;  /* No glass effect */
+      max-width: 1000px;
+      margin: 100px auto 0;
+      padding: 0;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      backdrop-filter: none;
     }
     
-    /* Main heading in "Why Choose" section */
+    /* Section heading with responsive sizing */
     #why-choose h2 {
-      margin: 0;  /* No margin */
-      
-      /* Responsive font size: min 36px, scales to 5.5% viewport, max 52px */
+      margin: 0;
       font-size: clamp(36px, 5.5vw, 52px);
-      
-      font-weight: 800;  /* Very bold */
+      font-weight: 800;
     }
     
-    /* Subtitle paragraph in "Why Choose" section */
+    /* Section description with optimal reading width */
     #why-choose .sub {
-      margin: 20px auto 64px;  /* 20px top, auto sides (centers), 64px bottom */
-      max-width: 900px;  /* Limit width for readability */
-      color: var(--muted);  /* Slightly transparent white */
-      line-height: 1.8;  /* Comfortable reading space */
-      font-size: 20px;  /* Larger text */
+      margin: 20px auto 64px;
+      max-width: 900px;
+      color: var(--muted);
+      line-height: 1.8;
+      font-size: 20px;
     }
     
-    /* ===================================
-       FEATURES GRID
-       Grid of feature cards
-       ================================== */
+    /* FEATURES GRID
+       Displays feature cards in responsive layout */
     .features {
-      display: grid;  /* Use CSS grid */
-      
-      /* On mobile: 2 columns */
+      display: grid;
+      /* Mobile: 2 columns, Desktop: 4 columns (see media query) */
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      
-      gap: 20px;  /* Space between cards */
+      gap: 20px;
     }
     
-    /* On desktop (960px+): show 4 columns */
+    /* Desktop layout for wider screens */
     @media (min-width: 960px) {
       .features { 
         grid-template-columns: repeat(4, minmax(0, 1fr)); 
@@ -470,98 +421,94 @@
     
     /* Individual feature card */
     .feature {
-      display: flex;  /* Use flexbox */
-      flex-direction: column;  /* Stack items vertically */
-      gap: 12px;  /* Space between items */
-      align-items: center;  /* Center items horizontally */
-      text-align: center;  /* Center text */
-      background: var(--glass);  /* Glass effect background */
-      border: 1px solid var(--border);  /* Semi-transparent border */
-      border-radius: 18px;  /* Rounded corners */
-      padding: 28px;  /* Space inside card */
-      backdrop-filter: blur(8px);  /* Frosted glass effect */
+      display: flex;
+      /* Stack icon, heading, and text vertically */
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      text-align: center;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 28px;
+      backdrop-filter: blur(8px);
     }
     
-    /* ===================================
-       ICON CIRCLE - Container for feature icons
-       ================================== */
+    /* ICON CIRCLE
+       Decorative container for feature icons */
     .icon-circle {
       width: 72px; 
       height: 72px;
-      border-radius: 9999px;  /* Perfectly circular */
-      display: grid;  /* Use grid for centering */
-      place-items: center;  /* Center content both ways */
-      background: rgba(255, 255, 255, 0.12);  /* Semi-transparent white */
-      border: 1px solid var(--border);  /* Border */
-      
-      /* Multiple shadows for depth effect */
+      border-radius: 9999px;
+      /* Grid layout for perfect centering */
+      display: grid;
+      place-items: center;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid var(--border);
+      /* Layered shadows for depth effect */
       box-shadow:
-        inset 0 0 0 1px rgba(255, 255, 255, 0.06),  /* Inner glow */
-        0 8px 24px rgba(0, 0, 0, 0.16);  /* Outer shadow */
-      
-      backdrop-filter: blur(8px);  /* Glass effect */
+        inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+        0 8px 24px rgba(0, 0, 0, 0.16);
+      backdrop-filter: blur(8px);
     }
     
-    /* SVG icons inside circle */
+    /* Icon styling for consistent appearance */
     .icon-circle svg {
       width: 32px; 
       height: 32px;
-      stroke: rgba(255, 255, 255, 0.85);  /* Icon line color */
-      fill: none;  /* No fill, just outlines */
-      stroke-width: 2;  /* Line thickness */
-      opacity: 0.9;  /* Slightly transparent */
+      stroke: rgba(255, 255, 255, 0.85);
+      fill: none;
+      stroke-width: 2;
+      opacity: 0.9;
     }
     
-    /* Feature card heading */
+    /* Feature heading */
     .feature h3 {
-      margin: 0;  /* No margin */
+      margin: 0;
       font-size: 18px; 
-      font-weight: 700;  /* Bold */
+      font-weight: 700;
     }
     
-    /* Feature card description */
+    /* Feature description text */
     .feature p {
-      margin: 0;  /* No margin */
-      color: var(--muted);  /* Slightly transparent white */
-      font-size: 14px;  /* Small text */
-      line-height: 1.6;  /* Comfortable reading space */
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
     }
     
-    /* ===================================
-       REVEAL ANIMATION
-       Elements with this class fade in when scrolled into view
-       ================================== */
+    /* REVEAL ANIMATION
+       Scroll-triggered fade-in effect for elements */
     .reveal { 
-      opacity: 0;  /* Start invisible */
-      transform: translateY(24px);  /* Start 24px below final position */
-      transition: 500ms ease;  /* Smooth transition over 500ms */
+      /* Start hidden and slightly below final position */
+      opacity: 0;
+      transform: translateY(24px);
+      /* Smooth animation transition */
+      transition: 500ms ease;
     }
     
-    /* When element comes into view, show it */
+    /* Active state when element enters viewport */
     .reveal.show { 
-      opacity: 1;  /* Fully visible */
-      transform: translateY(0);  /* Move to final position */
+      opacity: 1;
+      transform: translateY(0);
     }
   </style>
 </head>
 
 <body>
-  <!-- ===================================
-       ANIMATED BACKGROUND SCENE
-       Contains the three glowing blobs
-       ================================== -->
+  <!-- ANIMATED BACKGROUND
+       Three floating gradient orbs create dynamic visual interest -->
   <div class="scene">
-    <div class="blob a"></div>  <!-- Top-left cyan blob -->
-    <div class="blob b"></div>  <!-- Bottom-right purple blob -->
-    <div class="blob c"></div>  <!-- Center blue blob -->
+    <div class="blob a"></div>
+    <div class="blob b"></div>
+    <div class="blob c"></div>
   </div>
 
-  <!-- ===================================
-       HEADER - Top navigation bar
-       ================================== -->
+  <!-- HEADER NAVIGATION
+       Contains logo and profile access -->
   <header class="container">
     <div class="row">
-      <!-- Logo section - clickable, goes to welcome page -->
+      <!-- Logo: clickable brand identity -->
       <div class="logo" style="cursor:pointer;" onclick="location.href='./welcome.html'">
         <img src="logo.png" alt="BytLearn" />
         <div>
@@ -570,49 +517,42 @@
         </div>
       </div>
       
-      <!-- Profile button - checks if user is logged in before allowing access -->
+      <!-- Profile button with authentication check
+           Redirects to login if user is not authenticated -->
       <a class="btn" href="./profile.html" title="Profile"
          onclick="if(localStorage.getItem('authed')!=='1'){event.preventDefault(); location.href='./login.html';}">
          Profile
       </a>
-      <!-- 
-        The onclick checks localStorage for 'authed' = '1'
-        If not logged in, it prevents going to profile.html and redirects to login.html instead
-      -->
     </div>
   </header>
 
-  <!-- ===================================
-       MAIN CONTENT AREA
-       ================================== -->
+  <!-- MAIN CONTENT
+       Primary messaging and feature presentation -->
   <main class="container">
     <section class="hero">
-      <!-- Small badge at the top -->
+      <!-- Platform identifier badge -->
       <span class="badge">✨ AI-Powered Education Platform</span>
       
-      <!-- Main heading with gradient text effect on "BytLearn" -->
+      <!-- Primary value proposition with gradient emphasis -->
       <h1 class="heading">Learn Byte by Byte with <span class="gradient-text">BytLearn</span></h1>
       
-      <!-- Tagline -->
+      <!-- Concise tagline -->
       <p class="lead">Biology + AI = BytLearn.</p>
 
-      <!-- Action buttons -->
+      <!-- Call-to-action buttons -->
       <div class="actions">
-        <!-- Continue Learning button - white background, checks if logged in -->
+        <!-- Continue Learning: requires authentication -->
         <a class="btn" style="background:#fff;color:#5b21b6;" href="./dashboard.html"
            onclick="if(localStorage.getItem('authed')!=='1'){event.preventDefault(); location.href='./login.html';}">
            ▶ Continue Learning
         </a>
-        <!-- 
-          Same login check as Profile button
-          If not logged in, redirects to login instead of dashboard
-        -->
         
-        <!-- Start Journey button - goes directly to login -->
+        <!-- Start Journey: directs new users to login/signup -->
         <a class="btn" href="./login.html">📘 Start Journey</a>
       </div>
 
-      <!-- Statistics grid - 4 cards showing platform stats -->
+      <!-- KEY METRICS
+           Highlight platform statistics and features -->
       <div class="stats">
         <div class="card">
           <h3>95%</h3>
@@ -632,20 +572,18 @@
         </div>
       </div>
 
-      <!-- ===================================
-           WHY CHOOSE SECTION
-           Features grid with 4 cards
-           Has "reveal" class for scroll animation
-           ================================== -->
+      <!-- FEATURES SECTION
+           Detailed explanation of platform benefits
+           Uses scroll animation for progressive reveal -->
       <section id="why-choose" class="reveal">
         <h2>Why Choose BytLearn?</h2>
         <p class="sub">
           Our AI‑powered platform is dedicated to your learning, providing personalized education that grows with you.
         </p>
         
-        <!-- Grid of 4 feature cards -->
+        <!-- Feature cards grid -->
         <div class="features">
-          <!-- Feature 1: AI-Powered Learning -->
+          <!-- Feature 1: AI personalization -->
           <div class="feature">
             <div class="icon-circle">
               <img src="i4.png" alt="AI‑Powered Learning" style="width: 40px; height: 40px;" />
@@ -654,7 +592,7 @@
             <p>Personalized paths tailored just and only for you.</p>
           </div>
           
-          <!-- Feature 2: Interactive Content -->
+          <!-- Feature 2: Interactive engagement -->
           <div class="feature">
             <div class="icon-circle">
               <img src="i2.png" alt="Interactive Content" style="width: 40px; height: 40px;" />
@@ -663,7 +601,7 @@
             <p>Hands-on experiences that make learning stick.</p>
           </div>
           
-          <!-- Feature 3: Progress Tracking -->
+          <!-- Feature 3: Progress monitoring -->
           <div class="feature">
             <div class="icon-circle">
               <img src="i3.png" alt="Progress Tracking" style="width: 40px; height: 40px;" />
@@ -672,7 +610,7 @@
             <p>Monitor growth with clear, actionable analytics.</p>
           </div>
           
-          <!-- Feature 4: Personalized Recommendations -->
+          <!-- Feature 4: Smart recommendations -->
           <div class="feature">
             <div class="icon-circle">
               <img src="i1.png" alt="Personalized Recommendations Icon" style="width: 40px; height: 40px;" />
@@ -685,29 +623,24 @@
     </section>
   </main>
 
-  <!-- ===================================
-       FOOTER - Bottom section with links and copyright
-       ================================== -->
+  <!-- FOOTER
+       Legal information and site navigation -->
   <footer class="relative z-10 py-8 px-6 bg-gradient-to-r from-purple-900/40 via-purple-900/30 to-slate-900/40 border-t border-white/10 backdrop-blur-sm">
     <div class="max-w-7xl mx-auto text-center">
       <div style="max-width: 1200px; margin: 0 auto;">
-        <!-- Footer navigation links -->
+        <!-- Legal and contact links -->
         <div style="margin-bottom: 16px;">
-          <!-- Terms of Use link -->
+          <!-- Terms of Use: legal agreement -->
           <a href="./legal.html#terms" 
              style="color: #ffffff; text-decoration: none; font-weight: 600; margin: 0 12px; font-size: 16px; transition: color 0.3s;" 
              onmouseover="this.style.color='#67e8f9'" 
              onmouseout="this.style.color='#ffffff'">
             Terms of Use
           </a>
-          <!-- 
-            onmouseover changes color to cyan when hovering
-            onmouseout changes back to white when not hovering
-          -->
           
           <span style="color: rgba(255, 255, 255, 0.5); font-size: 16px;">|</span>
           
-          <!-- Privacy Policy link -->
+          <!-- Privacy Policy: data handling information -->
           <a href="./legal.html#privacy" 
              style="color: #ffffff; text-decoration: none; font-weight: 600; margin: 0 12px; font-size: 16px; transition: color 0.3s;" 
              onmouseover="this.style.color='#67e8f9'" 
@@ -717,7 +650,7 @@
           
           <span style="color: rgba(255, 255, 255, 0.5); font-size: 16px;">|</span>
           
-          <!-- Contact link -->
+          <!-- Contact: support information -->
           <a href="./legal.html#contact" 
              style="color: #ffffff; text-decoration: none; font-weight: 600; margin: 0 12px; font-size: 16px; transition: color 0.3s;" 
              onmouseover="this.style.color='#67e8f9'" 
@@ -726,7 +659,7 @@
           </a>
         </div>
         
-        <!-- Copyright text -->
+        <!-- Copyright notice -->
         <p style="color: rgba(255, 255, 255, 0.85); font-size: 15px; font-weight: 500; margin: 0;">
           © 2024 BytLearn. Powered by 
           <a href="landing.html" 
@@ -740,49 +673,34 @@
     </div>
   </footer>
 
-  <!-- ===================================
-       JAVASCRIPT - Scroll animation handler
-       ================================== -->
+  <!-- SCROLL ANIMATION SCRIPT
+       Implements fade-in effect for elements as they enter viewport -->
   <script>
-    /* 
-      INTERSECTION OBSERVER
-      This watches elements as they scroll into view and triggers animations
-    */
+    /* INTERSECTION OBSERVER API
+       Detects when elements become visible during scroll and triggers animations */
     
-    // Create a new observer that watches when elements become visible
+    /* Create observer instance
+       Callback function executes when observed elements cross visibility threshold */
     const observer = new IntersectionObserver(
-      // This function runs whenever an observed element enters/exits the viewport
       (entries) => {
-        // Loop through each element that changed visibility
+        /* Process each element that changed visibility state */
         entries.forEach((entry) => {
-          // If the element is now visible (intersecting with viewport)
+          /* Check if element is now visible in viewport */
           if (entry.isIntersecting) {
-            // Add the "show" class to trigger the fade-in animation
+            /* Add 'show' class to trigger CSS fade-in animation */
             entry.target.classList.add('show');
           }
         });
       },
       { 
-        threshold: 0.15  // Trigger when 15% of the element is visible
+        /* Trigger animation when 15% of element is visible */
+        threshold: 0.15
       }
     );
     
-    /*
-      Find all elements with the "reveal" class and start watching them
-      When they scroll into view (15% visible), the "show" class is added
-      which triggers the CSS animation (opacity 0 to 1, translateY 24px to 0)
-    */
+    /* Find all elements marked for reveal animation and start observing them
+       When they scroll into view, they automatically animate from hidden to visible */
     document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
-    
-    /*
-      HOW THIS ANIMATION WORKS:
-      1. All elements with class "reveal" start invisible (opacity: 0) and moved down 24px
-      2. The Intersection Observer watches them as you scroll
-      3. When 15% of the element becomes visible on screen
-      4. The observer adds the "show" class to that element
-      5. CSS transition smoothly animates it to visible (opacity: 1) and final position (translateY: 0)
-      6. This creates a nice fade-up effect as you scroll down the page
-    */
   </script>
 </body>
 </html>

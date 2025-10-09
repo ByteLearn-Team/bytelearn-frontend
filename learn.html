@@ -1,689 +1,632 @@
 <!DOCTYPE html>
-<!-- HTML DOCUMENT TYPE: Tells browser this is an HTML5 document -->
 <html lang="en">
-<!-- HTML OPENING TAG: Sets language to English for accessibility -->
 
 <head>
-  <!-- HEAD SECTION: Contains metadata, title, and styles - not visible on page -->
-  
-  <!-- CHARACTER ENCODING: UTF-8 supports all characters and symbols including emoji -->
   <meta charset="utf-8" />
-  
-  <!-- PAGE TITLE: Appears in browser tab and search results -->
   <title>BytLearn — Learn</title>
-  
-  <!-- VIEWPORT SETTINGS: Makes page responsive on mobile devices -->
-  <!-- width=device-width: Match device screen width -->
-  <!-- initial-scale=1: No zoom applied initially -->
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  
-  <!-- GOOGLE FONTS PRE-CONNECT: Improves performance by pre-establishing connections -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  
-  <!-- GOOGLE FONTS: Loads Inter (sans-serif) and Playfair Display (serif) font families -->
-  <!-- Inter weights: 400 (normal), 500 (medium), 600 (semi-bold), 700 (bold), 800 (extra-bold) -->
-  <!-- Playfair Display weights: 700 (bold), 800 (extra-bold) -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
   
-  <!-- STYLE SECTION: All CSS that controls visual appearance of the page -->
   <style>
-    /* CSS VARIABLES (Custom Properties): Define reusable values for consistent theming */
-    /* These can be changed once to update the entire site's color scheme */
+    /* Define CSS custom properties for consistent theming across the application */
     :root {
-      /* --border: Semi-transparent white for borders (20% opacity white) */
       --border: rgba(255,255,255,0.2);
-      /* --glass: Very transparent white for glass morphism effects (10% opacity white) */
       --glass: rgba(255,255,255,0.1);
-      /* --text: Pure white for primary text content */
       --text: #fff;
-      /* --muted: Semi-transparent white for secondary/less important text (85% opacity white) */
       --muted: rgba(255,255,255,0.85);
-      /* --accent: Orange-gold color used for highlights, accents, and important elements */
       --accent: #e5a054;
-      /* --accent-glow: Transparent version of accent color for glow/shadow effects */
       --accent-glow: rgba(229, 160, 84, 0.3);
     }
 
-    /* UNIVERSAL SELECTOR: Applies to EVERY element on the page */
-    /* box-sizing: border-box includes padding and border in element's total width/height */
-    /* This prevents unexpected layout issues when adding padding or borders */
+    /* Reset box-sizing for all elements to include padding and border in element's total width/height */
     * { 
       box-sizing: border-box; 
     }
 
-    /* HTML AND BODY ELEMENTS: Base styling for the entire document */
+    /* Set full viewport height and base font styling for html and body */
     html, body {
-      height: 100%;               /* Make page take full height of viewport */
-      margin: 0;                  /* Remove default browser margins (usually 8px) */
-      /* Font stack: Try Inter first, then system fonts as fallbacks */
+      height: 100%;
+      margin: 0;
       font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial;
-      color: var(--text);         /* Use CSS variable for text color (white) */
-      text-align: center;         /* Center-align all text by default */
+      color: var(--text);
+      text-align: center;
     }
 
-    /* BODY ELEMENT: Main page container with background and layout */
+    /* Create gradient background and set up base body styles */
     body {
-      /* Background gradient: Purple (#7e22ce) to Pink (#f472b6) to Blue (#6366f1) */
-      /* 135deg: Gradient direction from bottom-left to top-right */
-      /* 0%, 45%, 100%: Color stop positions in the gradient */
       background: linear-gradient(135deg, #7e22ce 0%, #f472b6 45%, #6366f1 100%);
-      background-attachment: fixed; /* Gradient stays fixed when scrolling (parallax effect) */
-      position: relative;          /* Establishes positioning context for pseudo-elements */
-      overflow-x: hidden;          /* Hide horizontal scrollbar (prevent side scrolling) */
-      font-size: 18px;            /* Base font size for the entire page */
-      text-align: center;         /* Center-align text (redundant but ensures consistency) */
+      background-attachment: fixed;
+      position: relative;
+      overflow-x: hidden;
+      font-size: 18px;
+      text-align: center;
     }
 
-    /* BODY PSEUDO-ELEMENT: Creates dark overlay over background gradient */
-    /* ::before creates a virtual element that appears before body content */
+    /* Add dark overlay to body for better text readability over gradient */
     body::before {
-      content: "";                /* Required for pseudo-element to render */
-      position: fixed;            /* Fixed to viewport (doesn't scroll with content) */
-      inset: 0;                   /* Shorthand for top:0, right:0, bottom:0, left:0 (cover entire viewport) */
-      background: rgba(0,0,0,0.35); /* Black with 35% opacity (darkens the background) */
-      pointer-events: none;       /* Allows clicks to pass through to elements below */
-      z-index: 0;                 /* Places behind all other content (lowest stacking order) */
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      pointer-events: none;
+      z-index: 0;
     }
 
-    /* OVERLAY CLASS: Alternative dark overlay (redundant with body::before) */
+    /* Additional overlay layer for visual depth */
     .overlay { 
-      position: fixed;            /* Fixed positioning */
-      inset: 0;                   /* Cover entire viewport */
-      background: rgba(0,0,0,0.35); /* Same as body::before */
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
     }
 
-    /* MAIN CONTAINER: Centers and constrains page content */
+    /* Container for content sections with max-width and centered alignment */
     .container {
-      position: relative;         /* Establishes positioning context for z-index */
-      z-index: 1;                 /* Appears above the background overlay (z-index: 0) */
-      max-width: 1200px;          /* Maximum width on large screens */
-      margin: 0 auto;             /* Center horizontally: 0 margin top/bottom, auto left/right */
-      padding: 32px;              /* Internal spacing inside container */
-      text-align: center;         /* Center-align content */
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px;
+      text-align: center;
     }
 
-    /* MAIN CONTENT AREA: Specific styling for main container */
+    /* Ensure main content area has minimum height accounting for header space */
     main.container { 
-      /* Calculate minimum height to fill viewport minus header space */
-      /* 100vh = 100% of viewport height, 110px = estimated header height */
       min-height: calc(100vh - 110px); 
     }
 
-    /* ROW LAYOUT: Flexbox-based horizontal layout helper */
+    /* Flexbox row layout for header and navigation elements */
     .row {
-      display: flex;              /* Use flexbox for layout */
-      align-items: center;        /* Vertically center items in the row */
-      justify-content: space-between; /* Push items to left and right edges with space between */
-      gap: 12px;                  /* Space between flex items (modern alternative to margins) */
-      text-align: center;         /* Center text alignment */
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      text-align: center;
     }
 
-    /* LOGO CONTAINER: Company branding area */
+    /* Logo container with icon and text layout */
     .logo { 
-      display: flex;              /* Flexbox to align logo image and text horizontally */
-      align-items: center;        /* Vertically center logo and text */
-      gap: 12px;                  /* Space between logo image and text */
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
-    /* LOGO IMAGE: Styling for the company logo */
+    /* Set logo image dimensions */
     .logo img { 
-      width: 70px;                /* Fixed width */
-      height: 70px;               /* Fixed height (maintains aspect ratio) */
+      width: 70px;
+      height: 70px;
     }
 
-    /* BUTTON COMPONENT: Reusable button styling */
+    /* Button styling with glassmorphism effect and smooth transitions */
     .btn {
-      display: inline-flex;       /* Flexbox but inline (doesn't take full width) */
-      align-items: center;        /* Center content vertically */
-      justify-content: center;    /* Center content horizontally */
-      padding: 12px 16px;         /* Internal spacing: 12px top/bottom, 16px left/right */
-      border-radius: 12px;        /* Rounded corners */
-      border: 1px solid var(--border); /* Border using CSS variable */
-      background: rgba(255,255,255,0.18); /* Semi-transparent white background (18% opacity) */
-      color: var(--text);         /* Text color using CSS variable */
-      text-decoration: none;      /* Remove underline from link buttons */
-      transition: 150ms;          /* Smooth transitions for hover effects (150 milliseconds) */
-      backdrop-filter: blur(6px); /* Frosted glass effect: blurs background behind element */
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.18);
+      color: var(--text);
+      text-decoration: none;
+      transition: 150ms;
+      backdrop-filter: blur(6px);
     }
 
-    /* BUTTON HOVER STATE: Changes when mouse is over button */
+    /* Increase button background opacity on hover for visual feedback */
     .btn:hover { 
-      background: rgba(255,255,255,0.24); /* Lighten background on hover (24% opacity) */
+      background: rgba(255,255,255,0.24);
     }
 
-    /* CARD COMPONENT: Reusable card with glass morphism effect */
+    /* Card component with glassmorphism effect for content containers */
     .card {
-      background: var(--glass);     /* Use glass effect background from CSS variable */
-      border: 1px solid var(--border); /* Border using CSS variable */
-      border-radius: 18px;         /* Rounded corners */
-      padding: 14px;               /* Internal spacing */
-      backdrop-filter: blur(8px);  /* Stronger blur effect for glass morphism */
-      text-align: center;          /* Center text alignment */
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 14px;
+      backdrop-filter: blur(8px);
+      text-align: center;
     }
 
-    /* SUMMARY CARD: Specific styling for summary section */
+    /* Ensure summary card takes full width of its container */
     #summary.card {
-      max-width: 100%;            /* Don't exceed container width */
-      width: 100%;                /* Take full available width */
-      margin-left: auto;          /* These auto margins center the element horizontally */
-      margin-right: auto;         
-      box-sizing: border-box;     /* Include padding in width calculation */
+      max-width: 100%;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      box-sizing: border-box;
     }
 
-    /* SUMMARY GRID: Layout container for summary content */
+    /* Single column grid layout for summary content */
     #summary .grid {
-      max-width: 100%;            /* Don't exceed container width */
-      width: 100%;                /* Full width */
-      margin-left: auto;          /* Center horizontally */
-      margin-right: auto;         
-      grid-template-columns: 1fr; /* Single column layout (for mobile) */
+      max-width: 100%;
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      grid-template-columns: 1fr;
     }
 
-    /* INDIVIDUAL SUMMARY CARD: Ensures proper sizing */
+    /* Nested cards within summary section inherit full width */
     #summary .card {
-      width: 100%;                /* Full width */
-      max-width: 100%;            /* Don't exceed container */
-      margin-left: auto;          /* Center horizontally */
-      margin-right: auto;         
-      box-sizing: border-box;     /* Include padding in width */
+      width: 100%;
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      box-sizing: border-box;
     }
 
-    /* PILLS CONTAINER: Tab navigation using CSS Grid */
+    /* Four-column grid layout for navigation pills */
     .pills {
-      display: grid;                      /* Use CSS Grid for layout */
-      /* 4 equal columns that can shrink but not grow beyond equal distribution */
+      display: grid;
       grid-template-columns: repeat(4, minmax(0,1fr)); 
-      gap: 12px;                         /* Space between pills */
+      gap: 12px;
     }
 
-    /* INDIVIDUAL PILL/TAB: Navigation button styling */
+    /* Individual pill button styling with subtle glassmorphism */
     .pill {
-      padding: 10px 16px;                /* Internal spacing */
-      border-radius: 14px;               /* Rounded corners */
-      border: 1px solid var(--border);   /* Border using CSS variable */
-      background: rgba(255,255,255,0.08); /* Very transparent background (8% opacity) */
-      color: var(--text);                /* Text color */
-      /* Inner shadow creates subtle inset effect for depth */
+      padding: 10px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
     }
 
-    /* ACTIVE PILL/TAB: Styling for currently selected navigation item */
+    /* Active state for selected pill with increased opacity */
     .pill.active {
-      background: rgba(255,255,255,0.2);     /* More opaque background (20% opacity) */
-      /* Stronger inner shadow for more pronounced active state */
+      background: rgba(255,255,255,0.2);
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
     }
 
-    /* UTILITY CLASS: Completely hides elements from the page */
+    /* Utility class to hide elements */
     .hidden { 
-      display: none; 
+      display: none !important; 
     }
 
-    /* HEADING LEVEL 2: Section titles */
+    /* Heading styling with tight letter spacing */
     h2 { 
-      margin: 0 0 12px;          /* No top margin, 12px bottom margin */
-      font-weight: 800;          /* Extra bold weight */
-      font-size: 28px;           /* Large font size */
-      letter-spacing: -0.5px;    /* Tighter letter spacing for modern, compact look */
+      margin: 0 0 12px;
+      font-weight: 800;
+      font-size: 28px;
+      letter-spacing: -0.5px;
     }
 
-    /* PARAGRAPH TEXT: General content text */
+    /* Paragraph text with slightly muted color */
     p { 
-      color: var(--muted);       /* Use muted color for less emphasis */
+      color: var(--muted);
     }
 
-    /* GRID LAYOUT SYSTEM: Basic grid container */
+    /* Single column grid by default for responsive layouts */
     .grid { 
-      display: grid;             /* Use CSS Grid layout */
-      grid-template-columns: 1fr; /* Single column by default (mobile-first) */
-      gap: 12px;                 /* Space between grid items */
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
     }
 
-    /* RESPONSIVE DESIGN: Media query for tablets and larger screens (768px and up) */
+    /* Two-column grid layout for larger screens */
     @media(min-width:768px) { 
       .grid { 
-        grid-template-columns: 1fr 1fr; /* Two equal columns on larger screens */
+        grid-template-columns: 1fr 1fr;
       } 
     }
 
-    /* FLASHCARDS GRID: Special layout for flashcards section */
+    /* Flashcard container uses flexbox for centered vertical layout */
     #flashcards .grid { 
-      display: flex;                     /* Use flexbox instead of grid for this specific case */
-      flex-direction: column;            /* Stack children vertically */
-      justify-content: center;           /* Center content vertically */
-      align-items: center;               /* Center content horizontally */
-      min-height: 300px;                 /* Minimum height so container doesn't collapse when empty */
-      position: relative;                /* For absolute positioning of child elements */
-      overflow: visible;                 /* Allow content to overflow container if needed */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 300px;
+      position: relative;
+      overflow: visible;
     }
     
-    /* FLASHCARD CONTAINER: Holds the flashcard carousel */
+    /* Container for flashcard carousel with fixed dimensions */
     .flashcard-container {
-      position: relative;                /* Establishes positioning context for absolute children */
-      width: 100%;                       /* Take full available width */
-      max-width: 1000px;                 /* But don't exceed 1000px width */
-      height: 350px;                     /* Fixed height for consistent card sizing */
-      display: flex;                     /* Flexbox for centering */
-      align-items: center;               /* Center vertically */
-      justify-content: center;           /* Center horizontally */
+      position: relative;
+      width: 100%;
+      max-width: 1000px;
+      height: 350px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    /* NAVIGATION ARROWS: Previous/Next buttons for flashcard carousel */
+    /* Navigation arrow buttons positioned on sides of carousel */
     .nav-arrow {
-      position: absolute;                /* Position relative to container */
-      top: 50%;                         /* Start at vertical center of container */
-      transform: translateY(-50%);      /* Adjust position to truly center (accounts for element's own height) */
-      width: 40px;                      /* Fixed width */
-      height: 40px;                     /* Fixed height */
-      border-radius: 50%;               /* Perfect circle */
-      background: rgba(255,255,255,0.18); /* Semi-transparent background */
-      border: 1px solid var(--border);  /* Border using CSS variable */
-      backdrop-filter: blur(6px);       /* Glass effect blur */
-      display: flex;                    /* Flexbox to center arrow icon */
-      align-items: center;              /* Center vertically */
-      justify-content: center;          /* Center horizontally */
-      cursor: pointer;                  /* Show hand cursor on hover */
-      transition: 150ms;                /* Smooth hover transitions */
-      z-index: 20;                      /* High z-index to appear above cards */
-      font-size: 20px;                  /* Arrow icon size */
-      color: var(--text);               /* Arrow color */
-      user-select: none;                /* Prevent text selection on arrows */
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 150ms;
+      z-index: 20;
+      font-size: 20px;
+      color: var(--text);
+      user-select: none;
     }
 
-    /* ARROW HOVER EFFECT: Visual feedback when hovering */
+    /* Hover effect for navigation arrows */
     .nav-arrow:hover {
-      background: rgba(255,255,255,0.24); /* Lighten background on hover */
+      background: rgba(255,255,255,0.24);
     }
 
-    /* LEFT ARROW POSITIONING: Places arrow on left side */
+    /* Position left arrow on the left side */
     .nav-arrow.left {
-      left: 10px;                       /* Position from left edge of container */
+      left: 10px;
     }
 
-    /* RIGHT ARROW POSITIONING: Places arrow on right side */
+    /* Position right arrow on the right side */
     .nav-arrow.right {
-      right: 10px;                      /* Position from right edge of container */
+      right: 10px;
     }
 
-    /* DISABLED ARROW STATE: Visual indication when navigation is not available */
+    /* Disabled state maintains visibility for navigation arrows */
     .nav-arrow.disabled {
-      opacity: 1;                       /* Keep fully opaque (typically would reduce opacity) */
-      cursor: pointer;                  /* Keep pointer cursor (typically would use 'not-allowed') */
+      opacity: 1;
+      cursor: pointer;
     }
     
-    /* SCROLLBAR WRAPPER: Container for custom flashcard progress indicator */
+    /* Wrapper for custom scrollbar below flashcards */
     .flashcard-scrollbar-wrapper {
-      width: 100%;                      /* Full width of container */
-      max-width: 1000px;                /* Match flashcard container max-width */
-      margin-top: 20px;                 /* Space above scrollbar */
-      padding: 0 10px;                  /* Horizontal padding */
+      width: 100%;
+      max-width: 1000px;
+      margin-top: 20px;
+      padding: 0 10px;
     }
     
-    /* SCROLLBAR TRACK: The background bar that thumb moves along */
+    /* Custom scrollbar track for flashcard navigation */
     .flashcard-scrollbar {
-      width: 100%;                      /* Full width of wrapper */
-      height: 8px;                      /* Thin bar height */
-      background: rgba(255,255,255,0.1); /* Semi-transparent track */
-      border-radius: 4px;               /* Rounded corners */
-      position: relative;                /* For positioning thumb absolutely within track */
-      cursor: pointer;                  /* Show pointer cursor over entire track */
-      backdrop-filter: blur(6px);       /* Glass effect */
-      border: 1px solid var(--border);  /* Border using CSS variable */
+      width: 100%;
+      height: 8px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      position: relative;
+      cursor: pointer;
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border);
     }
     
-    /* SCROLLBAR THUMB: The draggable indicator showing current position */
+    /* Scrollbar thumb represents current position in flashcard stack */
     .flashcard-scrollbar-thumb {
-      height: 100%;                     /* Same height as track (8px) */
-      background: rgba(255,255,255,0.4); /* More opaque white for visibility */
-      border-radius: 4px;               /* Rounded corners */
-      position: absolute;                /* Position within track */
-      left: 0;                          /* Start from left edge */
-      transition: background 0.2s;      /* Smooth color transitions */
-      cursor: grab;                     /* Show grab cursor (open hand) */
+      height: 100%;
+      background: rgba(255,255,255,0.4);
+      border-radius: 4px;
+      position: absolute;
+      left: 0;
+      transition: background 0.2s;
+      cursor: grab;
     }
     
-    /* SCROLLBAR THUMB HOVER: Visual feedback when hovering thumb */
+    /* Hover state for scrollbar thumb */
     .flashcard-scrollbar-thumb:hover {
-      background: rgba(255,255,255,0.5); /* Lighten color on hover */
+      background: rgba(255,255,255,0.5);
     }
     
-    /* SCROLLBAR THUMB ACTIVE: When user is dragging the thumb */
+    /* Active dragging state for scrollbar thumb */
     .flashcard-scrollbar-thumb:active {
-      cursor: grabbing;                 /* Show grabbing cursor (closed hand) */
-      background: rgba(255,255,255,0.6); /* Darken color when active */
+      cursor: grabbing;
+      background: rgba(255,255,255,0.6);
     }
     
-    /* FORCE CENTER ALIGNMENT: Important overrides for all text elements */
-    /* !important overrides any other text-align declarations */
+    /* Force center alignment for all text elements throughout the application */
     h2, h3, h1, p, .badge, .subtitle, .title, .lead, .actions, .stats, .pill, .item a, .list, .li {
       text-align: center !important;
     }
 
-    /* FLASHCARD FOCUS INDICATOR: Accessibility feature for keyboard navigation */
+    /* Add focus indicator for flashcards when interacted with */
     .flashcard {
-      transition: box-shadow 0.2s;      /* Smooth shadow transitions */
+      transition: box-shadow 0.2s;
     }
 
-    /* FLASHCARD FOCUS STATE: Visual indicator when card is focused (keyboard/tap) */
     .flashcard:active, .flashcard:focus {
-      box-shadow: 0 0 0 4px #a21caf;   /* Purple glow around card */
+      box-shadow: 0 0 0 4px #a21caf;
     }
 
-    /* SUMMARY TEXT CONTENT: Styling for the actual summary text */
+    /* Summary text container with styled background and left-aligned text */
     .summary-text {
-      white-space: pre-wrap;            /* Preserve line breaks but wrap long lines */
-      text-align: left;                 /* Left-align for better readability of long text */
-      font-size: 16px;                  /* Comfortable reading size */
-      margin: 24px 40px;                /* External spacing: 24px top/bottom, 40px left/right */
-      padding: 20px 32px;               /* Internal spacing: 20px top/bottom, 32px left/right */
-      line-height: 1.8;                 /* Comfortable line height for reading */
-      /* Font stack with system font fallbacks */
+      white-space: pre-wrap;
+      text-align: left;
+      font-size: 16px;
+      margin: 24px 40px;
+      padding: 20px 32px;
+      line-height: 1.8;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      letter-spacing: 0.01em;           /* Slightly increased letter spacing for readability */
-      background: rgba(255,255,255,0.05); /* Very subtle background */
-      border-radius: 12px;              /* Rounded corners */
-      border-left: 4px solid var(--accent); /* Accent-colored left border for visual interest */
-      /* Inner shadow creates subtle border effect */
+      letter-spacing: 0.01em;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      border-left: 4px solid var(--accent);
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
     }
 
-    /* SUMMARY HEADINGS: Special styling for section titles within summaries */
+    /* Heading style within summary text with accent color and decorative border */
     .summary-text .heading {
-      display: block !important;        /* Force block-level display */
-      font-weight: 800 !important;      /* Extra bold weight */
-      color: var(--accent) !important;  /* Use accent color */
-      font-size: 22px !important;       /* Larger font size */
-      /* Spacing: 32px top, 0 right/left, 16px bottom */
+      display: block !important;
+      font-weight: 800 !important;
+      color: var(--accent) !important;
+      font-size: 22px !important;
       margin: 32px 0 16px 0 !important;
-      padding-bottom: 12px !important;  /* Space below text before border */
-      border-bottom: 3px solid var(--accent) !important; /* Accent-colored underline */
-      text-align: left !important;      /* Left-align headings */
-      /* Decorative serif font for headings */
+      padding-bottom: 12px !important;
+      border-bottom: 3px solid var(--accent) !important;
+      text-align: left !important;
       font-family: 'Playfair Display', 'Inter', serif !important;
-      letter-spacing: -0.02em !important; /* Tighter letter spacing for headings */
-      width: 100%;                      /* Full width */
-      text-shadow: 0 2px 8px var(--accent-glow); /* Glow effect using accent color */
-      position: relative;               /* For pseudo-element positioning */
+      letter-spacing: -0.02em !important;
+      width: 100%;
+      text-shadow: 0 2px 8px var(--accent-glow);
+      position: relative;
     }
 
-    /* HEADING DECORATION: Gradient line under headings */
+    /* Decorative gradient underline for headings */
     .summary-text .heading::before {
-      content: '';                      /* Required for pseudo-element */
-      position: absolute;               /* Position relative to heading */
-      bottom: -3px;                     /* Align with border-bottom */
-      left: 0;                          /* Start from left edge */
-      width: 60px;                      /* Short width for decorative effect */
-      height: 3px;                      /* Match border thickness */
-      /* Gradient from white to accent color */
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 60px;
+      height: 3px;
       background: linear-gradient(90deg, #fff 0%, var(--accent) 100%);
-      box-shadow: 0 0 10px var(--accent-glow); /* Glow effect */
+      box-shadow: 0 0 10px var(--accent-glow);
     }
 
-    /* FIRST HEADING: Remove extra top margin from first heading in container */
+    /* Remove top margin from first heading in summary */
     .summary-text .heading:first-child {
       margin-top: 0 !important;
     }
 
-    /* SUMMARY PARAGRAPHS: Text content within summaries */
+    /* Paragraph styling within summary text */
     .summary-text p {
-      margin: 12px 0;                   /* Vertical spacing between paragraphs */
-      text-align: left;                 /* Left-align paragraph text */
-      color: rgba(255,255,255,0.95);    /* Near-white color (95% opacity) */
-      font-weight: 500;                 /* Medium font weight */
+      margin: 12px 0;
+      text-align: left;
+      color: rgba(255,255,255,0.95);
+      font-weight: 500;
     }
 
-    /* BOLD TEXT IN SUMMARIES: Emphasis within paragraph text */
+    /* Bold text styling within summaries */
     .summary-text strong {
-      color: #fff;                      /* Pure white for maximum contrast */
-      font-weight: 700;                 /* Bold weight */
+      color: #fff;
+      font-weight: 700;
     }
     
-    /* FLASHCARD TEXT: Styling for text inside flashcards */
+    /* Flashcard content text with serif font and justified alignment */
     .flashcard-text {
-      white-space: pre-wrap;            /* Preserve line breaks but wrap text */
-      /* Classic serif font for flashcards (traditional educational feel) */
+      white-space: pre-wrap;
       font-family: "Times New Roman", Times, serif;
-      text-align: justify;              /* Justify text for clean edges */
-      font-size: 19px;                  /* Slightly larger font for readability */
-      margin: 16px 30px;                /* External spacing */
-      padding: 0 0 0 2px;               /* Minimal left padding */
+      text-align: justify;
+      font-size: 19px;
+      margin: 16px 30px;
+      padding: 0 0 0 2px;
     }
 
-    /* INDIVIDUAL FLASHCARD ITEM: Each card in the carousel */
+    /* Individual flashcard styling with absolute positioning for carousel effect */
     .card-item {
-      position: absolute;               /* Absolute positioning within container */
-      width: 480px;                     /* Fixed width for cards */
-      height: 350px;                    /* Fixed height for cards */
-      border-radius: 18px;              /* Rounded corners */
-      display: flex;                    /* Flexbox for content layout */
-      flex-direction: column;           /* Stack content vertically */
-      align-items: center;              /* Center horizontally */
-      justify-content: center;          /* Center vertically */
-      padding: 20px;                    /* Internal spacing */
-      background: var(--glass);         /* Glass effect background */
-      border: 1px solid var(--border);  /* Border */
-      backdrop-filter: blur(8px);       /* Background blur */
-      /* Smooth transitions for positioning and visual changes */
+      position: absolute;
+      width: 480px;
+      height: 350px;
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(8px);
       transition: transform 0.4s ease, opacity 0.4s ease, left 0.4s ease;
-      cursor: pointer;                  /* Pointer cursor indicates clickability */
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Subtle shadow for depth */
-      user-select: none;                /* Prevent text selection on cards */
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      user-select: none;
     }
     
-    /* VISITED CARDS: Cards that have been viewed (positioned to the left) */
+    /* Visited cards appear stacked on the left with reduced scale and opacity */
     .card-item.visited {
-      left: -120px;                     /* Position off-screen to the left */
-      transform: scale(0.75);           /* Smaller size */
-      opacity: 0.5;                     /* Semi-transparent */
-      z-index: 5;                       /* Lower stacking order */
+      left: -120px;
+      transform: scale(0.75);
+      opacity: 0.5;
+      z-index: 5;
     }
     
-    /* STACKING ORDER: Specific positioning for multiple visited cards */
-    /* Creates cascading effect with each card slightly offset */
+    /* First visited card positioning */
     .card-item.visited:nth-child(1) {
       left: -120px;
       z-index: 5;
     }
     
+    /* Second visited card slightly more visible */
     .card-item.visited:nth-child(2) {
       left: -100px;
       z-index: 6;
     }
     
+    /* Third visited card most visible in stack */
     .card-item.visited:nth-child(3) {
       left: -80px;
       z-index: 7;
     }
     
-    /* CURRENT CARD: The actively viewed card in center position */
+    /* Current card centered and at full scale/opacity */
     .card-item.current {
-      left: 50%;                        /* Center horizontally */
-      /* Translate by -50% to truly center (accounts for element's own width) */
+      left: 50%;
       transform: translateX(-50%) scale(1);
-      opacity: 1;                       /* Fully opaque */
-      z-index: 10;                      /* Highest stacking order */
+      opacity: 1;
+      z-index: 10;
     }
     
-    /* UNVISITED CARDS: Cards not yet viewed (positioned to the right) */
+    /* Unvisited cards stacked on the right with reduced scale and opacity */
     .card-item.unvisited {
-      left: auto;                       /* Reset left positioning */
-      right: -120px;                    /* Position off-screen to the right */
-      transform: scale(0.75);           /* Smaller size */
-      opacity: 0.5;                     /* Semi-transparent */
-      z-index: 5;                       /* Lower stacking order */
+      left: auto;
+      right: -120px;
+      transform: scale(0.75);
+      opacity: 0.5;
+      z-index: 5;
     }
     
-    /* STACKING ORDER: Specific positioning for multiple unvisited cards */
-    /* Creates cascading effect with each card slightly offset */
+    /* Last unvisited card positioning */
     .card-item.unvisited:nth-last-child(1) {
       right: -120px;
       z-index: 5;
     }
     
+    /* Second-to-last unvisited card */
     .card-item.unvisited:nth-last-child(2) {
       right: -100px;
       z-index: 6;
     }
     
+    /* Third-to-last unvisited card */
     .card-item.unvisited:nth-last-child(3) {
       right: -80px;
       z-index: 7;
     }
 
-    /* FRONT OF FLASHCARD: Styling for card front (question side) */
+    /* Front side of flashcard with purple gradient background */
     .card-front {
-      /* Purple gradient background */
       background: linear-gradient(135deg, rgba(162, 28, 175, 0.4) 0%, rgba(109, 40, 217, 0.4) 100%);
     }
 
-    /* BACK OF FLASHCARD: Styling for card back (answer side) */
+    /* Back side of flashcard with gold gradient background */
     .card-back {
-      /* Gold gradient background */
       background: linear-gradient(135deg, rgba(251, 191, 36, 0.25) 0%, rgba(245, 158, 11, 0.25) 100%);
     }
 
-    /* FLASHCARD TITLE: Heading on flashcard back */
+    /* Title text on flashcard */
     .flashcard-title {
-      font-size: 20px;                  /* Larger font size */
-      font-weight: 800;                 /* Extra bold */
-      color: #ffffff;                   /* Pure white */
-      margin-bottom: 16px;              /* Space below title */
-      text-align: center;               /* Center alignment */
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 16px;
+      text-align: center;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Text shadow for readability */
-      letter-spacing: 0.3px;            /* Slightly increased letter spacing */
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      letter-spacing: 0.3px;
     }
 
-    /* FLASHCARD CONTENT: Main text on flashcard back */
+    /* Main content area on flashcard back with scrollable overflow */
     .flashcard-content {
-      font-size: 17px;                  /* Comfortable reading size */
-      line-height: 1.8;                 /* Generous line height for readability */
-      text-align: justify;              /* Justify text */
-      text-align-last: center;          /* But center the last line */
-      color: #ffffff;                   /* White text */
+      font-size: 17px;
+      line-height: 1.8;
+      text-align: justify;
+      text-align-last: center;
+      color: #ffffff;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      overflow-y: auto;                 /* Enable scrolling if content overflows */
-      max-height: 100%;                 /* Limit height to container */
-      font-weight: 600;                 /* Semi-bold weight */
-      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); /* Subtle text shadow */
-      letter-spacing: 0.3px;            /* Slightly increased letter spacing */
-      word-spacing: 0.5px;              /* Slightly increased word spacing */
-      padding: 0 8px;                   /* Horizontal padding */
-      hyphens: auto;                    /* Automatic hyphenation for better text flow */
+      overflow-y: auto;
+      max-height: 100%;
+      font-weight: 600;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+      letter-spacing: 0.3px;
+      word-spacing: 0.5px;
+      padding: 0 8px;
+      hyphens: auto;
     }
 
-    /* FLASHCARD PROMPT: Text on flashcard front (before flipping) */
+    /* Prompt text shown on flashcard front */
     .flashcard-prompt {
-      font-size: 22px;                  /* Larger font size */
-      font-weight: 800;                 /* Extra bold */
-      color: #ffffff;                   /* White text */
+      font-size: 22px;
+      font-weight: 800;
+      color: #ffffff;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25); /* Stronger text shadow */
-      letter-spacing: 0.5px;            /* Increased letter spacing */
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+      letter-spacing: 0.5px;
     }
 
-    /* HIDE SPECIFIC ELEMENTS: Target elements with specific inline styles */
+    /* Hide weight indicator on flashcards */
     .flashcard > div[style*="font-weight:600"] {
-      display: none;                    /* Completely hide these elements */
+      display: none;
     }
 
-    /* ENHANCED SECTION HEADERS: Styling for tab section headers */
+    /* Tab section header styling with gradient background */
     .tab > .row {
-      /* Subtle gradient background for section headers */
       background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-      padding: 16px 20px;               /* Internal spacing */
-      border-radius: 12px;              /* Rounded corners */
-      margin-bottom: 16px;              /* Space below header */
-      border: 1px solid rgba(255,255,255,0.15); /* Subtle border */
+      padding: 16px 20px;
+      border-radius: 12px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(255,255,255,0.15);
     }
 
-    /* LOADING TEXT: Styling for loading states */
+    /* Loading indicator with pulsing animation */
     .loading-text {
-      color: var(--muted);              /* Use muted color */
-      margin: 24px 0;                   /* Vertical spacing */
-      font-weight: 500;                 /* Medium weight */
-      animation: pulse 2s ease-in-out infinite; /* Pulsing animation */
+      color: var(--muted);
+      margin: 24px 0;
+      font-weight: 500;
+      animation: pulse 2s ease-in-out infinite;
     }
 
-    /* PULSE ANIMATION: Creates breathing effect for loading text */
+    /* Keyframe animation for loading pulse effect */
     @keyframes pulse {
       0%, 100% { 
-        opacity: 0.6;                   /* More transparent */
+        opacity: 0.6;
       }
       50% { 
-        opacity: 1;                     /* Fully opaque */
+        opacity: 1;
       }
     }
 
-    /* ERROR MESSAGE: Styling for error states */
+    /* Error message styling with warning icon */
     .error-message {
-      color: #fca5a5;                   /* Light red color for errors */
-      font-weight: 500;                 /* Medium weight */
-      margin: 24px 0;                   /* Vertical spacing */
-      font-size: 16px;                  /* Standard font size */
-      letter-spacing: 0.01em;           /* Slightly increased letter spacing */
-      opacity: 0.95;                    /* Slightly transparent */
+      color: #fca5a5;
+      font-weight: 500;
+      margin: 24px 0;
+      font-size: 16px;
+      letter-spacing: 0.01em;
+      opacity: 0.95;
     }
 
-    /* ERROR ICON: Warning symbol before error messages */
+    /* Add warning icon before error messages */
     .error-message::before {
-      content: "⚠ ";                    /* Warning symbol (Unicode) */
-      margin-right: 6px;                /* Space after symbol */
-      opacity: 0.9;                     /* Slightly transparent */
+      content: "⚠ ";
+      margin-right: 6px;
+      opacity: 0.9;
     }
 
-    /* CUSTOM SCROLLBAR: For summary text areas (Webkit browsers only) */
+    /* Custom scrollbar styling for summary text */
     .summary-text::-webkit-scrollbar {
-      width: 8px;                       /* Thin scrollbar */
+      width: 8px;
     }
 
-    /* SCROLLBAR TRACK: Background of the scrollbar */
     .summary-text::-webkit-scrollbar-track {
-      background: rgba(255,255,255,0.05); /* Very transparent track */
-      border-radius: 4px;               /* Rounded corners */
+      background: rgba(255,255,255,0.05);
+      border-radius: 4px;
     }
 
-    /* SCROLLBAR THUMB: Draggable part of scrollbar */
     .summary-text::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,0.2); /* Semi-transparent thumb */
-      border-radius: 4px;               /* Rounded corners */
+      background: rgba(255,255,255,0.2);
+      border-radius: 4px;
     }
 
-    /* SCROLLBAR THUMB HOVER: When mouse is over thumb */
     .summary-text::-webkit-scrollbar-thumb:hover {
-      background: rgba(255,255,255,0.3); /* Lighten on hover */
+      background: rgba(255,255,255,0.3);
     }
   </style>
 </head>
 
-<!-- BODY SECTION: All visible content goes here -->
 <body>
-  <!-- DARK OVERLAY: Semi-transparent layer over background gradient -->
   <div class="overlay"></div>
   
-  <!-- HEADER: Top navigation area with logo and menu -->
+  <!-- Header section with logo and navigation -->
   <header class="container">
     <div class="row">
-      <!-- LOGO AREA: Clickable logo that returns to welcome page -->
+      <!-- Logo and brand name with click handler to return to welcome page -->
       <div class="logo" style="cursor:pointer;" onclick="location.href='./welcome.html'">
-        <!-- LOGO IMAGE: Company logo -->
         <img src="./logo.png" alt="BytLearn" />
         <div>
-          <!-- COMPANY NAME: Bold and prominent -->
           <div style="font-weight:800;font-size:22px;">BytLearn</div>
-          <!-- SUBTITLE: Smaller descriptive text with dynamic user name -->
+          <!-- Display current user's name from localStorage -->
           <div style="font-size:12px;opacity:.8">Learning Workspace — <span id="lName">Student</span></div>
         </div>
       </div>
       
-      <!-- NAVIGATION BUTTONS: Right side of header -->
+      <!-- Navigation buttons for main application sections -->
       <div class="row" style="gap:10px;">
-        <!-- DASHBOARD LINK: Navigate to dashboard page -->
         <a class="btn" href="./dashboard.html">Dashboard</a>
-        <!-- PROFILE LINK: Navigate to profile page -->
         <a class="btn" href="./profile.html" title="Profile">Profile</a>
-        <!-- SIGN OUT BUTTON: Clears authentication and returns to welcome page -->
+        <!-- Sign out button that clears authentication and redirects -->
         <a class="btn" href="./welcome.html"
            onclick="event.preventDefault(); localStorage.removeItem('authed'); location.href='./welcome.html';">
           Sign Out
@@ -692,152 +635,128 @@
     </div>
   </header>
   
-  <!-- MAIN CONTENT: Primary content area between header and footer -->
   <main class="container">
-    <!-- TAB NAVIGATION: Pills for switching between content sections -->
+    <!-- Tab navigation pills for switching between different learning modes -->
     <div class="card" style="margin-bottom:12px;">
       <div class="pills">
-        <!-- SUMMARY TAB: Active by default -->
         <button class="pill active" data-tab="summary">Summaries</button>
-        <!-- FLASHCARDS TAB: Initially hidden -->
         <button class="pill" data-tab="flashcards">Flashcards</button>
-        <!-- DOUBT ASKING TAB: Initially hidden -->
         <button class="pill" data-tab="doubts">Doubt Asking</button>
-        <!-- QUIZZES TAB: Initially hidden -->
         <button class="pill" data-tab="quizzes">Quizzes</button>
       </div>
     </div>
     
-    <!-- SUMMARY SECTION: Content for chapter summaries (initially visible) -->
+    <!-- Summary section - displays chapter summaries -->
     <section id="summary" class="card tab">
-      <!-- SECTION HEADER: Title and badge -->
       <div class="row" style="justify-content:space-between;">
         <h2>Chapter Summary</h2>
-        <!-- BADGE: Decorative element indicating content type -->
         <span class="pill" style="cursor:default;">Summary</span>
       </div>
-      <!-- PLACEHOLDER FOR DYNAMIC CONTENT: Will be filled by JavaScript -->
       <p></p>
-      <!-- GRID CONTAINER: Where summary content will be loaded dynamically -->
+      <!-- Grid container for summary content, populated dynamically -->
       <div class="grid" style="margin-top:10px">
       </div>
     </section>
     
-    <!-- FLASHCARDS SECTION: Interactive flashcard carousel (initially hidden) -->
+    <!-- Flashcards section - interactive card-based learning -->
     <section id="flashcards" class="card tab hidden">
-      <!-- SECTION HEADER: Title and badge -->
       <div class="row" style="justify-content:space-between;">
         <h2>Flashcards</h2>
-        <!-- BADGE: Decorative element indicating content type -->
         <span class="pill" style="cursor:default;">Recall</span>
       </div>
-      <!-- GRID CONTAINER: Where flashcards will be loaded dynamically -->
+      <!-- Grid container for flashcard carousel, populated dynamically -->
       <div class="grid" style="margin-top:10px"></div>
     </section>
     
-    <!-- DOUBT ASKING SECTION: Chat interface for asking questions (initially hidden) -->
-    <section id="doubts" class="card tab hidden"
-  style="background:var(--glass);border-radius:22px;padding:32px 24px 24px 24px;box-shadow:0 8px 32px rgba(0,0,0,0.18);backdrop-filter:blur(12px);text-align:left;width:100%;max-width:100%;margin:0;">
-      <!-- SECTION HEADER: Title and badge -->
-      <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:18px;">
+    <!-- Doubts section - AI-powered Q&A interface -->
+    <section id="doubts" class="tab hidden"
+  style="background:var(--glass);border:1px solid var(--border);border-radius:22px;padding:24px;box-shadow:0 8px 32px rgba(0,0,0,0.18);backdrop-filter:blur(12px);text-align:left;width:100%;max-width:100%;margin:0;display:flex;flex-direction:column;height:calc(100vh - 280px);">
+      <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:18px;flex-shrink:0;">
         <h2 style="font-size:32px;font-weight:800;margin:0;text-align:left;">Ask a Doubt</h2>
         <span class="pill" style="cursor:default;font-size:20px;padding:10px 18px;">?</span>
       </div>
-      <!-- CHAT HISTORY: Container for message history -->
-      <div id="rag-chat-history" style="height:260px;overflow-y:auto;background:rgba(255,255,255,0.08);border-radius:18px;padding:18px 18px 18px 18px;margin-bottom:18px;text-align:left;font-size:18px;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:8px;">
-        <div style="color:var(--muted);text-align:left;">Choose a topic from your notes and ask question's about it.</div>
+      <!-- Chat history container - scrollable area showing conversation -->
+      <div id="rag-chat-history" style="flex:1;overflow-y:auto;background:rgba(255,255,255,0.08);border-radius:18px;padding:18px;margin-bottom:18px;text-align:left;font-size:18px;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:8px;min-height:0;">
+        <div style="color:var(--muted);text-align:left;">Clear your Doubts...</div>
       </div>
-      <!-- CHAT INPUT FORM: For sending new messages -->
-      <form id="rag-chat-form" style="display:flex;gap:12px;align-items:center;" autocomplete="off" onsubmit="return false;">
+      <!-- Input form for submitting questions -->
+      <form id="rag-chat-form" style="display:flex;gap:12px;align-items:center;flex-shrink:0;" autocomplete="off" onsubmit="return false;">
         <input id="rag-chat-input" type="text" placeholder="Type your doubt..." style="flex:1;padding:14px 18px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,0.13);color:var(--text);font-size:18px;outline:none;text-align:left;" />
         <button type="submit" class="btn" style="padding:14px 28px;font-size:18px;">Send</button>
       </form>
     </section>
     
-    <!-- QUIZZES SECTION: Interactive quiz interface (initially hidden) -->
+    <!-- Quizzes section - multiple choice question interface -->
     <section id="quizzes" class="card tab hidden">
-      <!-- SECTION HEADER: Title and badge -->
       <div class="row" style="justify-content:space-between;">
         <h2>Quick Quiz</h2>
-        <!-- BADGE: Decorative element indicating content type -->
         <span class="pill" style="cursor:default;">Practice</span>
       </div>
-      <!-- SECTION DESCRIPTION: Explains what this section does -->
       <p>Test yourself with quick objective questions and instant feedback.</p>
-        <!-- QUIZ CONTROLS: Area for quiz generation button -->
+        <!-- Button container for quiz generation -->
         <div id="quiz-controls" style="margin:18px 0;">
-          <!-- GENERATE QUIZ BUTTON: Triggers quiz creation -->
           <button id="generate-quiz-btn" class="btn" style="font-size:16px;padding:10px 22px;">Generate Quiz</button>
         </div>
-        <!-- QUIZ AREA: Where quiz questions and results will be displayed -->
+        <!-- Container where quiz questions will be rendered -->
         <div id="quiz-area"></div>
     </section>
   </main>
 
-  <!-- JAVASCRIPT: All interactive functionality and dynamic behavior -->
   <script>
-    // QUIZ FUNCTIONALITY
-    // Get references to DOM elements for quiz functionality
-    const quizArea = document.getElementById('quiz-area');        // Container for quiz content
-    const quizControls = document.getElementById('quiz-controls'); // Container for quiz controls
-    const generateQuizBtn = document.getElementById('generate-quiz-btn'); // Button to generate quiz
-    let quizData = null; // Variable to store quiz questions data
+    /* 
+       QUIZ FUNCTIONALITY
+ */
+    
+    const quizArea = document.getElementById('quiz-area');
+    const quizControls = document.getElementById('quiz-controls');
+    const generateQuizBtn = document.getElementById('generate-quiz-btn');
+    let quizData = null; // Stores the current quiz questions and answers
 
-    // Check if generate quiz button exists before adding event listener
     if (generateQuizBtn) {
-      // Add click event listener to generate quiz button
+      // When user clicks generate quiz button, fetch questions from backend
       generateQuizBtn.addEventListener('click', async function() {
-        // Show loading state while generating quiz
         quizArea.innerHTML = '<div class="loading-text">Generating quiz...</div>';
-        // Disable button to prevent multiple clicks during generation
-        generateQuizBtn.disabled = true;
+        generateQuizBtn.disabled = true; // Prevent multiple simultaneous requests
         
         try {
-          // Send POST request to server to generate quiz
+          // Request quiz generation from backend API
           const res = await fetch('/generate_quiz', {
-            method: 'POST',                          // HTTP method
-            headers: { 'Content-Type': 'application/json' }, // Request headers
-            body: JSON.stringify({ topic: 'current' }) // Request body with current topic
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ topic: 'current' })
           });
-          // Parse JSON response from server
           const data = await res.json();
           
-          // Check if valid quiz data was received
+          // Validate response contains questions array
           if (data && Array.isArray(data.questions) && data.questions.length > 0) {
-            // Store quiz data for later use
             quizData = data.questions;
-            // Render the quiz questions to the page
             renderQuiz(quizData);
           } else {
-            // Show error message if no questions were generated
             quizArea.innerHTML = '<div class="error-message">No quiz questions generated.</div>';
-            // Re-enable the generate button
             generateQuizBtn.disabled = false;
           }
         } catch (e) {
-          // Show error message if request failed
+          // Handle network or parsing errors
           quizArea.innerHTML = '<div class="error-message">Error generating quiz: ' + (e.message || e) + '</div>';
-          // Re-enable the generate button
           generateQuizBtn.disabled = false;
         }
       });
     }
 
-    // Function to render quiz questions to the page
+    /**
+     * Renders quiz questions with multiple choice options
+     * Creates form with radio buttons for each question
+     */
     function renderQuiz(questions) {
-      // Check if questions exist and are valid
       if (!questions || !questions.length) {
-        // Show error if no questions available
         quizArea.innerHTML = '<div class="error-message">No quiz questions available.</div>';
         return;
       }
       
-      // Start building HTML for quiz form
       let html = '<form id="quiz-form-area">';
       
-      // Loop through each question and create HTML
+      // Build HTML for each question with its options
       questions.forEach((q, idx) => {
-        // Create card for each question
         html += `<div class="card" style="margin-bottom:18px;text-align:left;">
           <div style="font-weight:600;margin-bottom:8px;">Q${idx+1}. ${q.question || ''}</div>
           <ul style="opacity:.85;line-height:1.8;list-style-type:upper-alpha;">
@@ -853,274 +772,252 @@
         </div>`;
       });
       
-      // Add submit button and close form
       html += '<button type="submit" class="btn" style="font-size:16px;padding:10px 22px;">Submit Quiz</button>';
       html += '</form>';
       
-      // Insert the generated HTML into the quiz area
       quizArea.innerHTML = html;
 
-      // Get reference to the newly created quiz form
       const quizForm = document.getElementById('quiz-form-area');
-      // Add submit event listener to the quiz form
       if (quizForm) {
+        // Handle quiz submission and scoring
         quizForm.addEventListener('submit', function(e) {
-          // Prevent default form submission (page refresh)
           e.preventDefault();
-          // Check if quiz data exists
           if (!quizData || !quizData.length) return;
           
-          // Calculate quiz score
-          let correct = 0;  // Counter for correct answers
-          let total = quizData.length;  // Total number of questions
+          let correct = 0;
+          let total = quizData.length;
           
-          // Loop through each question to check answers
+          // Compare each selected answer with correct answer
           quizData.forEach((q, idx) => {
-            // Find the selected radio button for this question
             const selected = quizForm.querySelector(`input[name='q${idx}']:checked`);
-            // Check if answer is correct (compare selected value with correct answer index)
             if (selected && q.answer !== undefined && Number(selected.value) === q.answer) correct++;
           });
           
-          // Display quiz results
+          // Display score to user
           quizArea.innerHTML += `<div style='margin:18px 0;font-size:18px;font-weight:600;'>You got ${correct} out of ${total} correct.</div>`;
         });
       }
-      // Re-enable the generate quiz button
-      generateQuizBtn.disabled = false;
+      generateQuizBtn.disabled = false; // Re-enable generate button after rendering
     }
 
-    // CHAT FUNCTIONALITY
-    // Get references to DOM elements for chat functionality
-    const chatForm = document.getElementById('chat-form');  // Chat input form
-    const chatInput = document.getElementById('chat-input'); // Text input field
-    const chatHistory = document.getElementById('chat-history'); // Message history container
+    /* 
+       Doubt Sestion
+ */
+    
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+    const chatHistory = document.getElementById('chat-history');
 
-    // Check if all chat elements exist before setting up functionality
     if (chatForm && chatInput && chatHistory) {
-      // Add submit event listener to chat form
+      // Handle chat message submission
       chatForm.addEventListener('submit', async function() {
-        // Get user message and remove whitespace
         const userMsg = chatInput.value.trim();
-        // Don't send empty messages
-        if (!userMsg) return;
+        if (!userMsg) return; // Ignore empty messages
         
-        // Add user message to chat history (aligned to right)
         addMsg('You', userMsg, 'right');
-        // Clear input field after sending
         chatInput.value = '';
-        // Disable input while processing
-        chatInput.disabled = true;
+        chatInput.disabled = true; // Disable input while processing
         
-        // Add loading message and store its ID for later removal
+        // Show loading indicator while waiting for response
         const loadingId = addMsg('Bot', '<span style="opacity:.7;">Thinking...</span>', 'left', true);
         
         try {
-          // Send user message to AI API
+          // Send message to backend API
           const res = await fetch('http://127.0.0.1:8000/generate', {
-            method: 'POST',                          // HTTP method
-            headers: { 'Content-Type': 'application/json' }, // Request headers
-            body: JSON.stringify({ prompt: userMsg }) // Request body with user message
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt: userMsg })
           });
-          // Parse JSON response from AI
           const data = await res.json();
           
-          // Remove the loading message
-          removeMsg(loadingId);
+          removeMsg(loadingId); // Remove loading indicator
           
-          // Check what kind of response we received
+          // Display bot response or error message
           if (data.answer) {
-            // Add AI response to chat history
             addMsg('Bot', data.answer, 'left');
           } else if (data.error) {
-            // Add error message to chat history
             addMsg('Bot', `<span style='color:#fca5a5;font-weight:500;'>⚠ ${data.error}</span>`, 'left');
           } else {
-            // Add generic error if no specific response
             addMsg('Bot', '<span style="color:#fca5a5;font-weight:500;">⚠ No answer received.</span>', 'left');
           }
         } catch (e) {
-          // Remove loading message on error
+          // Handle network errors
           removeMsg(loadingId);
-          // Add network error message to chat history
           addMsg('Bot', `<span style='color:#fca5a5;font-weight:500;'>⚠ Error: ${e.message}</span>`, 'left');
         }
         
-        // Re-enable input field
-        chatInput.disabled = false;
-        // Focus back on input for convenience
+        chatInput.disabled = false; // Re-enable input
         chatInput.focus();
       });
       
-      // Function to add a message to chat history
+      /**
+       * Adds a message to the chat history
+       * @param {string} sender - Name of message sender
+       * @param {string} text - Message content (can include HTML)
+       * @param {string} align - 'left' or 'right' alignment
+       * @param {boolean} isLoading - Whether this is a loading indicator
+       * @returns {string|null} - ID of message if loading, null otherwise
+       */
       function addMsg(sender, text, align, isLoading) {
-        // Create new message element
         const msg = document.createElement('div');
         msg.className = 'chat-msg';
-        // Style based on alignment (left for bot, right for user)
         msg.style = `margin:8px 0;display:flex;justify-content:${align==='right'?'flex-end':'flex-start'};`;
-        // Set message content with appropriate styling
         msg.innerHTML = `<div style="max-width:80%;background:${align==='right'?'#a21caf':'rgba(255,255,255,0.13)'};color:${align==='right'?'#fff':'var(--text)'};padding:10px 14px;border-radius:12px;font-size:16px;box-shadow:0 1px 4px 0 rgba(0,0,0,0.07);">${text}</div>`;
-        // Add message to chat history
         chatHistory.appendChild(msg);
-        // Scroll to bottom to show latest message
-        chatHistory.scrollTop = chatHistory.scrollHeight;
+        chatHistory.scrollTop = chatHistory.scrollHeight; // Auto-scroll to bottom
         
-        // If this is a loading message, give it an ID for later removal
+        // Generate unique ID for loading messages so they can be removed
         if (isLoading) {
           const id = 'loading-' + Math.random().toString(36).slice(2);
           msg.id = id;
-          return id; // Return ID so we can remove this specific message later
+          return id;
         }
-        return null; // Regular messages don't need special handling
+        return null;
       }
       
-      // Function to remove a message by its ID
+      /**
+       * Removes a message from chat history by ID
+       * Used to remove loading indicators
+       */
       function removeMsg(id) {
         const el = document.getElementById(id);
-        if (el) el.remove(); // Remove element from DOM if it exists
+        if (el) el.remove();
       }
     }
 
-    // AUTHENTICATION CHECK
-    // Check if user is authenticated, redirect to login if not
+    /* ===========================
+       AUTHENTICATION CHECK
+       Redirects unauthenticated users to login page
+       =========================== */
+    
     if (localStorage.getItem('authed') !== '1') {
       location.replace('./login.html');
     }
 
-    // TAB SWITCHING FUNCTIONALITY
-    // Get all tab navigation pills and tab content sections
-    const pills = document.querySelectorAll(".pill[data-tab]"); // Navigation buttons
-    const tabs = document.querySelectorAll(".tab");             // Content sections
+    /* ===========================
+       TAB SWITCHING FUNCTIONALITY
+       Handles navigation between different learning sections
+       =========================== */
+    
+    const pills = document.querySelectorAll(".pill[data-tab]");
+    const tabs = document.querySelectorAll(".tab");
 
-    // Add click event listeners to all tab navigation pills
     pills.forEach(p => p.addEventListener("click", () => {
-      // Remove active class from all pills
+      // Remove active state from all pills
       pills.forEach(pp => pp.classList.remove("active"));
-      // Add active class to clicked pill
-      p.classList.add("active");
+      p.classList.add("active"); // Set clicked pill as active
       
-      // Get the tab ID from data attribute
       const id = p.getAttribute("data-tab");
       
-      // Hide all tabs
+      // Hide all tab sections
       tabs.forEach(t => t.classList.add("hidden"));
-      // Show the selected tab (if it exists)
+      // Show selected tab section
       document.getElementById(id)?.classList.remove("hidden");
       
-      // Smooth scroll to top when switching tabs
+      // Scroll to top of page for better UX
       window.scrollTo({ top: 0, behavior: "smooth" });
     }));
 
-    // USER NAME DISPLAY
-    // Immediately-invoked function to set user name on page load
+    /* ===========================
+       USER NAME DISPLAY
+       Loads and displays current user's name from localStorage
+       =========================== */
+    
     (function(){
-      // Get user name from localStorage or use default
       const n = localStorage.getItem("currentUserName") || "Student";
-      // Get reference to name display element
       const el = document.getElementById("lName");
-      // Update display if element exists
       if (el) el.textContent = n;
     })();
 
-    // SUMMARY LOADING FUNCTION
+    /* ===========================
+       SUMMARY LOADING FUNCTION
+       Fetches and displays chapter summaries from backend
+       =========================== */
+    
     async function loadSummaries() {
-      // Get the grid where summaries will be displayed
       const grid = document.querySelector("#summary .grid");
-      // Exit if grid doesn't exist
       if (!grid) return;
       
-      // Show loading state
       grid.innerHTML = '<div class="loading-text">Loading summaries...</div>';
 
       // Get selected chapter ID from localStorage
       const chapterId = Number(localStorage.getItem("selectedChapterId"));
-      // Check if chapter is selected
       if (!chapterId) {
-        // Show error if no chapter selected
         grid.innerHTML = '<div class="error-message">No chapter selected. Go to Dashboard and pick a chapter.</div>';
         return;
       }
 
       try {
-        // Fetch summaries from server
+        // Fetch all summaries from backend API
         const res = await fetch("http://127.0.0.1:8000/summaries");
         const summaries = await res.json();
-        // Filter summaries for current chapter only
+        // Filter summaries for the selected chapter
         const filtered = summaries.filter((s) => s.chapter_id === chapterId);
 
-        // Check if we found summaries for this chapter
         if (filtered.length > 0) {
-          // Clear loading state
           grid.innerHTML = "";
-          // Process and display each summary
           filtered.forEach((summary) => {
             let text = summary.summary_data;
             
-            // Split text into lines for processing
+            // Parse summary text and add heading styling to section markers
             const lines = text.split('\n');
             
-            // Process each line to detect and style headings
             for (let i = 0; i < lines.length; i++) {
               const line = lines[i].trim();
               
-              // Check for different heading patterns and wrap in heading span
+              // Identify section headings by various patterns
               if (line.startsWith('Section:') || line.startsWith('Section ')) {
                 lines[i] = '<span class="heading">' + lines[i] + '</span>';
               }
-              // Match pattern like "1.1 Introduction"
+              // Numbered sections like "1.1 Introduction"
               else if (/^\d+\.\d+\s/.test(line)) {
                 lines[i] = '<span class="heading">' + lines[i] + '</span>';
               }
-              // Specific heading types
+              // Standard section titles
               else if (line === 'Key Terms' || line === 'Chapter Summary' || line === 'High-Yield Exam Facts') {
                 lines[i] = '<span class="heading">' + lines[i] + '</span>';
               }
             }
             
-            // Rejoin lines and display in summary text container
+            // Reconstruct text with heading markup
             text = lines.join('\n');
             grid.innerHTML += `<div class="summary-text">${text}</div>`;
           });
         } else {
-          // Show message if no summaries found
           grid.innerHTML = '<div class="error-message">No summaries found for this chapter.</div>';
         }
       } catch (e) {
-        // Show error if fetch fails
         grid.innerHTML = `<div class="error-message">Error loading summaries: ${e.message}</div>`;
       }
     }
 
-    // FLASHCARDS LOADING FUNCTION
+    /* ===========================
+       FLASHCARDS LOADING FUNCTION
+       Creates interactive flashcard carousel with navigation
+       =========================== */
+    
     async function loadFlashcards() {
-      // Get the grid where flashcards will be displayed
       const grid = document.querySelector("#flashcards .grid");
-      // Exit if grid doesn't exist
       if (!grid) return;
       
-      // Show loading state
       grid.innerHTML = '<div class="loading-text">Loading flashcards...</div>';
 
       // Get selected chapter ID from localStorage
       const chapterId = Number(localStorage.getItem("selectedChapterId"));
-      // Check if chapter is selected
       if (!chapterId) {
-        // Show error if no chapter selected
         grid.innerHTML = '<div class="error-message">No chapter selected. Go to Dashboard and pick a chapter.</div>';
         return;
       }
 
       try {
-        // Fetch flashcards from server
+        // Fetch all flashcards from backend API
         const res = await fetch("http://127.0.0.1:8000/flashcards");
         const flashcards = await res.json();
-        // Filter flashcards for current chapter only
+        // Filter flashcards for the selected chapter
         const filtered = flashcards.filter((f) => f.chapter_id === chapterId);
 
-        // Check if we found flashcards for this chapter
         if (filtered.length > 0) {
-          // Create flashcards interface with navigation and scrollbar
+          // Build carousel HTML structure with navigation controls
           grid.innerHTML = `
             <div class="nav-arrow left" id="prev-card">←</div>
             <div class="flashcard-container" id="card-container"></div>
@@ -1132,61 +1029,66 @@
             </div>
           `;
           
-          // Get references to flashcard interface elements
-          const container = document.getElementById('card-container');     // Card container
-          const prevBtn = document.getElementById('prev-card');            // Previous button
-          const nextBtn = document.getElementById('next-card');            // Next button
-          const scrollbar = document.getElementById('flashcard-scrollbar'); // Scrollbar track
-          const scrollbarThumb = document.getElementById('flashcard-scrollbar-thumb'); // Scrollbar thumb
+          // Get references to navigation elements
+          const container = document.getElementById('card-container');
+          const prevBtn = document.getElementById('prev-card');
+          const nextBtn = document.getElementById('next-card');
+          const scrollbar = document.getElementById('flashcard-scrollbar');
+          const scrollbarThumb = document.getElementById('flashcard-scrollbar-thumb');
           
-          // Initialize flashcard state variables
-          let currentCardIndex = 0;  // Index of currently displayed card
-          let isFlipped = false;     // Track if current card is flipped (showing back)
+          let currentCardIndex = 0; // Track which card is currently displayed
+          let isFlipped = false; // Track if current card is showing answer
           
-          // Process flashcard data to extract topic and keypoint
+          // Parse flashcard data into topic and keypoint pairs
           const allCards = filtered.map((flashcard, idx) => {
             const raw = (flashcard.flashcard_data || '').replace(/\r/g, '');
             let topic = '', keypoint = '';
             
-            // Parse flashcard data based on different format patterns
+            // Parse flashcard format: "Topic | Key Point: explanation"
             if (/Key Point:/i.test(raw)) {
-              // Format: "Topic Key Point: Explanation"
               const parts = raw.split(/Key Point:/i);
               topic = parts[0].trim();
               keypoint = parts.slice(1).join('Key Point:').trim();
-            } else if (raw.includes('|')) {
-              // Format: "Topic | Explanation"
+            } 
+            // Alternative format with pipe delimiter
+            else if (raw.includes('|')) {
               const parts = raw.split('|');
               topic = parts[0].trim().replace(/\|+$/, "");
               keypoint = parts.slice(1).join(' ').trim();
-            } else {
-              // Default format: First line is topic, rest is keypoint
+            } 
+            // Fallback: first line is topic, rest is keypoint
+            else {
               const lines = raw.split('\n').map(s=>s.trim()).filter(Boolean);
               topic = lines.shift() || '';
               keypoint = lines.join(' ') || '';
             }
 
-            // Clean up text by removing pipes and citation numbers
+            // Clean up formatting artifacts
             topic = topic.replace(/\|/g, '').replace(/\[\d+\]/g, '').trim();
             keypoint = keypoint.replace(/\|/g, '').replace(/\[\d+\]/g, '').trim();
             
             return { topic, keypoint };
           });
           
-          // Function to create a flashcard element
+          /**
+           * Creates a flashcard DOM element
+           * @param {number} index - Position in card array
+           * @param {object} cardData - Object with topic and keypoint
+           * @returns {HTMLElement} - Flashcard element
+           */
           function createCard(index, cardData) {
             const cardEl = document.createElement('div');
             cardEl.className = 'card-item card-front';
             cardEl.dataset.index = index;
             cardEl.innerHTML = `<div class="flashcard-prompt">Tap to reveal (${index + 1}/${allCards.length})</div>`;
             
-            // Add click event for flipping card
+            // Click handler to flip card between question and answer
             cardEl.addEventListener('click', function() {
-              // Only allow flipping of current card (not cards in background)
+              // Only allow flipping the current card
               if (parseInt(cardEl.dataset.index) !== currentCardIndex) return;
               
               if (!isFlipped) {
-                // Flip to back (show answer)
+                // Show answer side
                 cardEl.classList.remove('card-front');
                 cardEl.classList.add('card-back');
                 cardEl.innerHTML = `
@@ -1195,7 +1097,7 @@
                 `;
                 isFlipped = true;
               } else {
-                // Flip to front (show prompt)
+                // Show question side
                 cardEl.classList.remove('card-back');
                 cardEl.classList.add('card-front');
                 cardEl.innerHTML = `<div class="flashcard-prompt">Tap to reveal (${index + 1}/${allCards.length})</div>`;
@@ -1206,177 +1108,176 @@
             return cardEl;
           }
           
-          // Function to update scrollbar position based on current card
+          /**
+           * Updates scrollbar thumb position and width based on current card
+           */
           function updateScrollbar() {
-            // Calculate thumb width as percentage of total cards
             const thumbWidth = (1 / allCards.length) * 100;
-            // Calculate thumb position based on current card index
             const thumbPosition = (currentCardIndex / allCards.length) * 100;
-            // Apply calculated styles to scrollbar thumb
             scrollbarThumb.style.width = thumbWidth + '%';
             scrollbarThumb.style.left = thumbPosition + '%';
           }
           
-          // Function to update card positions based on current index
+          /**
+           * Updates CSS classes for all cards based on their position relative to current card
+           * Creates stacking effect for visited/unvisited cards
+           */
           function updateCardPositions() {
-            // Get all card elements
             const cards = Array.from(container.children);
             
-            // Update classes for all cards based on their position
             cards.forEach((card, idx) => {
-              // Remove all positioning classes
               card.classList.remove('visited', 'current', 'unvisited');
               
               if (idx < currentCardIndex) {
-                // Cards before current are "visited" (positioned to left)
-                card.classList.add('visited');
+                card.classList.add('visited'); // Cards before current
               } else if (idx === currentCardIndex) {
-                // Current card is centered and full size
-                card.classList.add('current');
+                card.classList.add('current'); // Current card
               } else {
-                // Cards after current are "unvisited" (positioned to right)
-                card.classList.add('unvisited');
+                card.classList.add('unvisited'); // Cards after current
               }
             });
             
-            // Update arrow states (disable if at beginning or end)
+            // Update navigation button states
             prevBtn.classList.toggle('disabled', currentCardIndex === 0);
             nextBtn.classList.toggle('disabled', currentCardIndex === allCards.length - 1);
-            // Update scrollbar to reflect current position
             updateScrollbar();
           }
           
-          // Function to navigate to previous card
+          /**
+           * Navigate to next card (decreases index as we're moving through stack)
+           */
           function goToNext() {
             if (currentCardIndex > 0) {
               currentCardIndex--;
-              isFlipped = false; // Reset flip state when changing cards
-              updateCardPositions();
-            }
-          }
-          
-          // Function to navigate to next card
-          function goToPrev() {
-            if (currentCardIndex < allCards.length - 1) {
-              currentCardIndex++;
-              isFlipped = false; // Reset flip state when changing cards
-              updateCardPositions();
-            }
-          }
-          
-          // Add event listeners for navigation arrows
-          prevBtn.addEventListener('click', goToPrev);
-          nextBtn.addEventListener('click', goToPrev);
-          
-          // Add click event for scrollbar navigation
-          scrollbar.addEventListener('click', function(e) {
-            // Don't interfere if clicking directly on thumb
-            if (e.target === scrollbarThumb) return;
-            // Calculate click position as percentage of scrollbar width
-            const rect = scrollbar.getBoundingClientRect();
-            const clickPosition = (e.clientX - rect.left) / rect.width;
-            // Convert percentage to card index
-            currentCardIndex = Math.round(clickPosition * (allCards.length - 1));
-            isFlipped = false; // Reset flip state
-            updateCardPositions();
-          });
-          
-          // Scrollbar dragging functionality
-          let isDragging = false;  // Track if thumb is being dragged
-          let startX = 0;          // Initial mouse X position when drag starts
-          let startIndex = 0;      // Initial card index when drag starts
-          
-          // Mouse down event for scrollbar thumb (start dragging)
-          scrollbarThumb.addEventListener('mousedown', function(e) {
-            isDragging = true;
-            startX = e.clientX;           // Store initial mouse position
-            startIndex = currentCardIndex; // Store initial card index
-            e.preventDefault();           // Prevent default browser behavior
-          });
-          
-          // Mouse move event for scrollbar dragging
-          document.addEventListener('mousemove', function(e) {
-            // Only respond if we're currently dragging
-            if (!isDragging) return;
-            // Calculate how far we've dragged
-            const rect = scrollbar.getBoundingClientRect();
-            const deltaX = e.clientX - startX;
-            // Convert drag distance to card index change
-            const deltaIndex = Math.round((deltaX / rect.width) * allCards.length);
-            // Calculate new index with bounds checking
-            const newIndex = Math.max(0, Math.min(allCards.length - 1, startIndex + deltaIndex));
-            // Update if index has changed
-            if (newIndex !== currentCardIndex) {
-              currentCardIndex = newIndex;
               isFlipped = false; // Reset flip state
               updateCardPositions();
             }
+          }
+          
+          /**
+           * Navigate to previous card (increases index)
+           */
+          function goToPrev() {
+            if (currentCardIndex < allCards.length - 1) {
+              currentCardIndex++;
+              isFlipped = false; // Reset flip state
+              updateCardPositions();
+            }
+          }
+          
+          // Bind navigation buttons
+          prevBtn.addEventListener('click', goToPrev);
+          nextBtn.addEventListener('click', goToPrev);
+          
+          /**
+           * Handle clicks on scrollbar track to jump to specific card
+           */
+          scrollbar.addEventListener('click', function(e) {
+            if (e.target === scrollbarThumb) return; // Ignore clicks on thumb itself
+            const rect = scrollbar.getBoundingClientRect();
+            const clickPosition = (e.clientX - rect.left) / rect.width;
+            currentCardIndex = Math.round(clickPosition * (allCards.length - 1));
+            isFlipped = false;
+            updateCardPositions();
           });
           
-          // Mouse up event to stop dragging
+          // Scrollbar thumb dragging functionality
+          let isDragging = false;
+          let startX = 0;
+          let startIndex = 0;
+          
+          /**
+           * Initialize drag operation on thumb
+           */
+          scrollbarThumb.addEventListener('mousedown', function(e) {
+            isDragging = true;
+            startX = e.clientX;
+            startIndex = currentCardIndex;
+            e.preventDefault();
+          });
+          
+          /**
+           * Update card position during drag
+           */
+          document.addEventListener('mousemove', function(e) {
+            if (!isDragging) return;
+            const rect = scrollbar.getBoundingClientRect();
+            const deltaX = e.clientX - startX;
+            const deltaIndex = Math.round((deltaX / rect.width) * allCards.length);
+            const newIndex = Math.max(0, Math.min(allCards.length - 1, startIndex + deltaIndex));
+            if (newIndex !== currentCardIndex) {
+              currentCardIndex = newIndex;
+              isFlipped = false;
+              updateCardPositions();
+            }
+          });
+          
+          /**
+           * End drag operation
+           */
           document.addEventListener('mouseup', function() {
             isDragging = false;
           });
           
-          // Create and add all flashcards to container
+          // Create and add all flashcard elements to container
           allCards.forEach((cardData, idx) => {
             const card = createCard(idx, cardData);
             container.appendChild(card);
           });
           
-          // Initialize card positions
-          updateCardPositions();
+          updateCardPositions(); // Initialize card positions
           
-          // Add wheel event for mouse wheel navigation
+          /**
+           * Handle mouse wheel scrolling for card navigation
+           * Supports both horizontal and vertical scroll gestures
+           */
           container.addEventListener('wheel', function(e) {
             const threshold = 30; // Minimum scroll distance to trigger navigation
             
-            // Check if horizontal or vertical scroll is dominant
+            // Check if scroll is primarily horizontal
             if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-              // Horizontal scroll
               if (Math.abs(e.deltaX) > threshold) {
                 if (e.deltaX > 0 && currentCardIndex < allCards.length - 1) {
-                  // Scroll right - go to next card
                   currentCardIndex++;
                   isFlipped = false;
                   updateCardPositions();
-                  e.preventDefault(); // Prevent default scroll behavior
+                  e.preventDefault();
                 } else if (e.deltaX < 0 && currentCardIndex > 0) {
-                  // Scroll left - go to previous card
                   currentCardIndex--;
                   isFlipped = false;
                   updateCardPositions();
-                  e.preventDefault(); // Prevent default scroll behavior
+                  e.preventDefault();
                 }
               }
-            } else if (Math.abs(e.deltaY) > threshold) {
-              // Vertical scroll
+            } 
+            // Handle vertical scroll
+            else if (Math.abs(e.deltaY) > threshold) {
               if (e.deltaY > 0 && currentCardIndex < allCards.length - 1) {
-                // Scroll down - go to next card
                 currentCardIndex++;
                 isFlipped = false;
                 updateCardPositions();
-                e.preventDefault(); // Prevent default scroll behavior
+                e.preventDefault();
               } else if (e.deltaY < 0 && currentCardIndex > 0) {
-                // Scroll up - go to previous card
                 currentCardIndex--;
                 isFlipped = false;
                 updateCardPositions();
-                e.preventDefault(); // Prevent default scroll behavior
+                e.preventDefault();
               }
             }
-          }, { passive: false }); // passive: false allows us to call preventDefault()
+          }, { passive: false }); // Allow preventDefault
         } else {
-          // Show message if no flashcards found
           grid.innerHTML = '<div class="error-message">No flashcards found for this chapter.</div>';
         }
       } catch (e) {
-        // Show error if fetch fails
         grid.innerHTML = `<div class="error-message">Error loading flashcards: ${e.message}</div>`;
       }
     }
 
-    // === RAG Doubt Answering Integration ===
+    /* ===========================
+       RAG DOUBT ANSWERING INTEGRATION
+       AI-powered Q&A using Flowise API with chapter-specific context
+       =========================== */
+    
     const ragApiUrl = "https://cloud.flowiseai.com/api/v1/prediction/95ac6cf3-9302-44b5-b406-28fb18d3dd31";
     const ragChatForm = document.getElementById('rag-chat-form');
     const ragChatInput = document.getElementById('rag-chat-input');
@@ -1386,15 +1287,42 @@
       ragChatForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         const question = ragChatInput.value.trim();
-        if (!question) return;
-        // Show user question (left aligned, styled, dark blue for "You")
+        if (!question) return; // Ignore empty questions
+        
+        // Retrieve selected chapter to verify content availability
+        const selectedChapterId = Number(localStorage.getItem("selectedChapterId"));
+        
+        // Display user's question in chat history
         ragChatHistory.innerHTML += `<div style="text-align:left;"><span style="font-weight:700;color:#233876;">You:</span> <span style="color:#fff;">${question}</span></div>`;
         ragChatInput.value = '';
-        ragChatInput.disabled = true;
-        // Show loading
+        ragChatInput.disabled = true; // Prevent multiple submissions
+        
+        // Show loading indicator while waiting for AI response
         ragChatHistory.innerHTML += `<div id="rag-loading" style="color:#aaa;text-align:left;">AI is thinking...</div>`;
         ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
+        
+        // Validate chapter selection
+        if (!selectedChapterId) {
+          document.getElementById('rag-loading').remove();
+          ragChatHistory.innerHTML += `<div style="text-align:left;"><span style="font-weight:700;color:#ffe066;">AI:</span> <span style="color:var(--muted);">Please select a chapter from the Dashboard first.</span></div>`;
+          ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
+          ragChatInput.disabled = false;
+          ragChatInput.focus();
+          return;
+        }
+        
+        // Check if selected chapter has available content (only Chapter 1 currently)
+        if (selectedChapterId !== 1) {
+          document.getElementById('rag-loading').remove();
+          ragChatHistory.innerHTML += `<div style="text-align:left;"><span style="font-weight:700;color:#ffe066;">AI:</span> <span style="color:var(--muted);">This chapter is not ready yet. Currently, only Chapter 1 content is available. Please select Chapter 1 from the Dashboard to ask questions.</span></div>`;
+          ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
+          ragChatInput.disabled = false;
+          ragChatInput.focus();
+          return;
+        }
+        
         try {
+          // Send question to Flowise RAG API
           const res = await fetch(ragApiUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -1402,20 +1330,27 @@
           });
           const data = await res.json();
           document.getElementById('rag-loading').remove();
-          // Show only the AI's answer text, styled and left aligned, yellow for "AI"
+          
+          // Display AI's answer in chat history
           ragChatHistory.innerHTML += `<div style="text-align:left;"><span style="font-weight:700;color:#ffe066;">AI:</span> <span style="color:var(--muted);">${data.text || "No answer."}</span></div>`;
           ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
         } catch (err) {
+          // Handle API errors
           document.getElementById('rag-loading').remove();
           ragChatHistory.innerHTML += `<div style="color:#f55;text-align:left;">Error: Could not get answer.</div>`;
         }
+        
+        // Re-enable input for next question
         ragChatInput.disabled = false;
         ragChatInput.focus();
       });
     }
 
-    // INITIAL PAGE LOAD
-    // Load summaries and flashcards when page first loads
+    /* ===========================
+       INITIAL PAGE LOAD
+       Load content for active tabs when page first opens
+       =========================== */
+    
     loadSummaries();
     loadFlashcards();
   </script>

@@ -1,421 +1,371 @@
-<!DOCTYPE html> <!-- HTML5 Document Type Declaration: Tells browser this is an HTML5 document -->
-<html lang="en"> <!-- HTML Root Element: Sets document language to English for accessibility -->
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <!-- HEAD SECTION: Contains metadata, title, and styles - not visible on page -->
-  
-  <meta charset="utf-8" /> <!-- Character Encoding: UTF-8 supports all characters and symbols -->
-  <title>BytLearn — Dashboard</title> <!-- Page Title: Appears in browser tab and search results -->
-  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Responsive Viewport: Makes page responsive on mobile devices -->
+  <meta charset="utf-8" />
+  <title>BytLearn — Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
-    /* CSS VARIABLES (Custom Properties): Define reusable values for consistent theming */
+    /* Theme colors for consistent design throughout the page */
     :root { 
-      --border: rgba(255,255,255,0.2);   /* Semi-transparent white for borders (20% opacity) */
-      --glass: rgba(255,255,255,0.1);    /* Very transparent white for glass morphism effects (10% opacity) */
-      --text: #fff;                      /* Pure white for primary text content */
-      --muted: rgba(255,255,255,0.8);    /* Semi-transparent white for secondary text (80% opacity) */
+      --border: rgba(255,255,255,0.2);
+      --glass: rgba(255,255,255,0.1);
+      --text: #fff;
+      --muted: rgba(255,255,255,0.8);
     }
 
-    /* UNIVERSAL SELECTOR: Applies to EVERY element on the page */
-    /* box-sizing: border-box includes padding and border in element's total width/height */
+    /* Reset default browser spacing and use border-box for easier sizing */
     * { box-sizing: border-box; } 
 
-    /* HTML AND BODY: Base styling for the entire document */
+    /* Base page setup */
     html, body { 
-      height: 100%;               /* Make page take full height of viewport */
-      margin: 0;                  /* Remove default browser margins */
-      /* Font stack: Try system fonts first for performance */
+      height: 100%;
+      margin: 0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; 
-      color: var(--text);         /* Use CSS variable for text color */
+      color: var(--text);
     }
 
-    /* BODY STYLING: Main page container with background and layout */
+    /* Main background gradient from purple to pink to blue */
     body {
-      /* Background gradient: Purple (#7e22ce) to Pink (#f472b6) to Blue (#6366f1) */
-      /* 135deg: Gradient direction from bottom-left to top-right */
       background: linear-gradient(135deg, #7e22ce 0%, #f472b6 45%, #6366f1 100%);
-      background-attachment: fixed; /* Gradient stays fixed when scrolling (parallax effect) */
-      position: relative;          /* Establishes positioning context for pseudo-elements */
-      overflow-x: hidden;          /* Hide horizontal scrollbar */
-      font-size: 18px;            /* Base font size for the entire page */
-      text-align: center;         /* Center-align text by default */
+      background-attachment: fixed;
+      position: relative;
+      overflow-x: hidden;
+      font-size: 18px;
+      text-align: center;
     }
 
-    /* BODY PSEUDO-ELEMENT: Creates dark overlay over background gradient */
+    /* Dark overlay to improve text readability */
     body::before {
-      content: "";                /* Required for pseudo-element to render */
-      position: fixed;            /* Fixed to viewport (doesn't scroll with content) */
-      inset: 0;                   /* Shorthand for top:0, right:0, bottom:0, left:0 (cover entire viewport) */
-      background: rgba(0,0,0,0.35); /* Black with 35% opacity (darkens the background) */
-      pointer-events: none;       /* Allows clicks to pass through to elements below */
-      z-index: 0;                 /* Places behind all other content */
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      pointer-events: none;
+      z-index: 0;
     }
 
-    /* OVERLAY CLASS: Alternative dark overlay (redundant with body::before) */
     .overlay { 
-      position: fixed;            /* Fixed positioning */
-      inset: 0;                   /* Cover entire viewport */
-      background: rgba(0,0,0,0.35); /* Same as body::before */
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
     }
 
-    /* MAIN CONTAINER: Centers and constrains page content */
+    /* Main container that centers content and limits width */
     .container { 
-      position: relative;         /* Establishes positioning context for z-index */
-      z-index: 1;                 /* Appears above the background overlay (z-index: 0) */
-      max-width: 1200px;          /* Maximum width on large screens */
-      margin: 0 auto;             /* Center horizontally: 0 margin top/bottom, auto left/right */
-      padding: 32px;              /* Internal spacing inside container */
-      text-align: center;         /* Center-align content */
+      position: relative;
+      z-index: 1;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px;
+      text-align: center;
     }
 
-    /* MAIN CONTENT AREA: Specific styling for main container */
     main.container { 
-      /* Calculate minimum height to fill viewport minus header space */
-      min-height: calc(100vh - 120px); 
+      min-height: calc(100vh - 120px);
     }
 
-    /* ROW LAYOUT: Flexbox-based horizontal layout helper */
+    /* Flexbox row for horizontal layouts */
     .row { 
-      display: flex;              /* Use flexbox for layout */
-      align-items: center;        /* Vertically center items in the row */
-      justify-content: space-between; /* Push items to left and right edges with space between */
-      gap: 14px;                  /* Space between flex items */
-      text-align: center;         /* Center text alignment */
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      text-align: center;
     }
 
-    /* LOGO CONTAINER: Company branding area */
+    /* Logo section styling */
     .logo { 
-      display: flex;              /* Flexbox to align logo image and text horizontally */
-      align-items: center;        /* Vertically center logo and text */
-      gap: 12px;                  /* Space between logo image and text */
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
-    /* LOGO IMAGE: Styling for the company logo */
     .logo img { 
-      width: 70px;                /* Fixed width */
-      height: 70px;               /* Fixed height */
+      width: 70px;
+      height: 70px;
     }
 
-    /* BUTTON COMPONENT: Reusable button styling */
+    /* Reusable button with glass effect */
     .btn { 
-      display: inline-flex;       /* Flexbox but inline (doesn't take full width) */
-      align-items: center;        /* Center content vertically */
-      justify-content: center;    /* Center content horizontally */
-      padding: 12px 16px;         /* Internal spacing: 12px top/bottom, 16px left/right */
-      border-radius: 12px;        /* Rounded corners */
-      border: 1px solid var(--border); /* Border using CSS variable */
-      background: rgba(255,255,255,0.12); /* Semi-transparent white background (12% opacity) */
-      color: #fff;                /* White text color */
-      text-decoration: none;      /* Remove underline from link buttons */
-      transition: 150ms;          /* Smooth transitions for hover effects */
-      backdrop-filter: blur(6px); /* Frosted glass effect: blurs background behind element */
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      text-decoration: none;
+      transition: 150ms;
+      backdrop-filter: blur(6px);
     }
 
-    /* BUTTON HOVER STATE: Changes when mouse is over button */
     .btn:hover { 
-      background: rgba(255,255,255,0.2); /* Lighten background on hover (20% opacity) */
+      background: rgba(255,255,255,0.2);
     }
 
-    /* CARD COMPONENT: Reusable card with glass morphism effect */
+    /* Glass morphism card component */
     .card { 
-      background: rgba(255,255,255,0.105); /* Slightly more opaque glass effect (10.5% opacity) */
-      border: 1px solid rgba(255,255,255,0.22); /* Brighter border (22% opacity) */
-      border-radius: 18px;        /* Rounded corners */
-      padding: 24px;              /* Internal spacing */
-      backdrop-filter: blur(8px); /* Background blur for glass effect */
-      text-align: center;         /* Center text alignment */
+      background: rgba(255,255,255,0.105);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 18px;
+      padding: 24px;
+      backdrop-filter: blur(8px);
+      text-align: center;
     }
 
-    /* HEADING LEVEL 2: Section titles */
     h2 { 
-      font-size: 28px;            /* Large font size for prominence */
-      font-weight: 800;           /* Extra bold weight */
-      margin: 0 0 16px;           /* No top margin, 16px bottom margin */
-      text-align: center;         /* Center alignment */
+      font-size: 28px;
+      font-weight: 800;
+      margin: 0 0 16px;
+      text-align: center;
     }
 
-    /* GRID LAYOUT SYSTEM: Basic grid container */
+    /* Grid layout for panels - starts as single column on mobile */
     .grid { 
-      display: grid;              /* Use CSS Grid layout */
-      grid-template-columns: 1fr; /* Single column by default (mobile-first) */
-      gap: 16px;                  /* Space between grid items */
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
     }
 
-    /* RESPONSIVE DESIGN: Media query for large screens (1024px and up) */
+    /* Desktop view: three equal columns */
     @media(min-width:1024px){ 
       .grid { 
-        grid-template-columns: repeat(3, minmax(0, 1fr)); /* Three equal columns */
-        min-height: 520px;        /* Minimum height for consistent layout */
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        min-height: 520px;
       } 
     }
 
-    /* LIST ITEM: Container for navigation links */
     .item { 
-      margin-bottom: 10px;        /* Space between items */
+      margin-bottom: 10px;
     }
 
-    /* ITEM LINK: Styling for clickable chapter/class/subject links */
+    /* Clickable items for class, subject, and chapter selection */
     .item a { 
-      display: block;             /* Make link take full width */
-      width: 100%;                /* Full width of container */
-      text-decoration: none;      /* Remove underline */
-      color: #fff;                /* White text */
-      border: 1px solid var(--border); /* Border using CSS variable */
-      background: rgba(255,255,255,0.06); /* Very transparent background (6% opacity) */
-      border-radius: 12px;        /* Rounded corners */
-      padding: 18px;              /* Internal spacing */
-      transition: 150ms;          /* Smooth hover transitions */
-      text-align: center;         /* Center text alignment */
-      font-size: 18px;            /* Comfortable reading size */
+      display: block;
+      width: 100%;
+      text-decoration: none;
+      color: #fff;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 18px;
+      transition: 150ms;
+      text-align: center;
+      font-size: 18px;
     }
 
-    /* ITEM LINK HOVER: Visual feedback when hovering links */
     .item a:hover { 
-      background: rgba(255,255,255,0.14); /* Lighten background on hover (14% opacity) */
+      background: rgba(255,255,255,0.14);
     }
 
-    /* PROGRESS INDICATOR: Breadcrumb-style progress bar */
+    /* Progress indicator showing current step */
     .progress { 
-      margin: 0 0 18px;          /* No top margin, 18px bottom margin */
-      display: flex;              /* Flexbox for horizontal layout */
-      align-items: center;        /* Vertically center items */
-      gap: 10px;                  /* Space between progress items */
+      margin: 0 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    /* BADGE: Styling for progress steps */
+    /* Pill-shaped badges for progress steps */
     .badge { 
-      display: inline-flex;       /* Flexbox but inline */
-      align-items: center;        /* Center content vertically */
-      padding: 8px 14px;          /* Internal spacing */
-      background: rgba(255,255,255,0.14); /* Semi-transparent background (14% opacity) */
-      border: 1px solid var(--border); /* Border using CSS variable */
-      border-radius: 999px;       /* Pill-shaped (fully rounded) */
-      font-size: 14px;            /* Smaller font size */
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 14px;
+      background: rgba(255,255,255,0.14);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-size: 14px;
     }
 
-    /* HIGHLIGHT ANIMATION: Visual feedback for panel transitions */
+    /* Highlight animation when a new panel becomes active */
     .highlight { 
-      animation: dashHighlight 900ms ease-out; /* 900ms highlight animation */
+      animation: dashHighlight 900ms ease-out;
     }
 
-    /* HIGHLIGHT ANIMATION KEYFRAMES: Creates pulsing glow effect */
     @keyframes dashHighlight {
       0% { 
-        box-shadow: 0 0 0 0 rgba(255,255,255,0.5); /* Start with small white glow */
+        box-shadow: 0 0 0 0 rgba(255,255,255,0.5);
       }
       100% { 
-        box-shadow: 0 0 0 16px rgba(255,255,255,0); /* Expand glow and fade out */
+        box-shadow: 0 0 0 16px rgba(255,255,255,0);
       }
     }
 
-    /* UTILITY CLASS: Completely hides elements from the page */
     .hidden { 
-      display: none !important;   /* Important overrides other display rules */
+      display: none !important;
     }
 
-    /* PANEL TRANSITIONS: Smooth animations for panel positioning */
+    /* Smooth transitions for panel movement */
     .panel { 
-      transition: transform 500ms ease, opacity 500ms ease; /* Smooth transitions */
+      transition: transform 500ms ease, opacity 500ms ease;
     }
 
-    /* CENTER PANEL: Fully visible and centered */
+    /* Panel positioning states for the three-panel flow */
     .panel.center { 
-      transform: translateX(0) scale(1); /* No translation, full size */
-      opacity: 1;                 /* Fully opaque */
+      transform: translateX(0) scale(1);
+      opacity: 1;
     }
 
-    /* LEFT PANEL: Slightly shifted left and scaled down */
     .panel.left { 
-      transform: translateX(0) scale(.99); /* Minimal scale reduction */
-      opacity: .96;               /* Slightly transparent */
+      transform: translateX(0) scale(.99);
+      opacity: .96;
     }
 
-    /* FAR LEFT PANEL: Further shifted for three-panel layout */
     .panel.far-left { 
-      transform: translateX(0) scale(.985); /* Slightly more scaled down */
-      opacity: .94;               /* More transparent */
+      transform: translateX(0) scale(.985);
+      opacity: .94;
     }
 
-    /* RIGHT PANEL: Shifted to the right */
     .panel.right { 
-      transform: translateX(16px) scale(.99); /* Shifted right and scaled down */
-      opacity: .96;               /* Slightly transparent */
+      transform: translateX(16px) scale(.99);
+      opacity: .96;
     }
 
-    /* STAGE LAYOUT: Container for the three selection panels */
-    /* Responsive design for large screens */
+    /* Desktop: three panels side-by-side */
     @media(min-width:1024px){
       .stage { 
-        display: flex;            /* Use flexbox for horizontal layout */
-        align-items: stretch;     /* Stretch panels to equal height */
-        justify-content: center;  /* Center panels horizontally */
-        gap: 16px;                /* Space between panels */
-        min-height: 600px;        /* Minimum height for consistent layout */
+        display: flex;
+        align-items: stretch;
+        justify-content: center;
+        gap: 16px;
+        min-height: 600px;
       }
       .stage .card { 
-        width: 100%;              /* Full width within flex container */
-        max-width: 384px;         /* Maximum width for each panel */
-        /* 384px * 3 panels + 16px * 2 gaps = 1184px (fits within 1200px container) */
+        width: 100%;
+        max-width: 384px;
       }
       .stage { 
-        margin-top: 0 !important; /* Remove any top margin for tight layout */
+        margin-top: 0 !important;
       }
     }
 
-    /* STAGE DEFAULT SIZING: Mobile and tablet layout */
     .stage { 
-      min-height: 60vh;           /* Minimum height as percentage of viewport */
+      min-height: 60vh;
     }
 
-    /* STAGE SIZING: Large screen adjustments */
     @media(min-width:1024px){ 
       .stage { 
-        min-height: 640px;        /* Fixed minimum height on large screens */
+        min-height: 640px;
       } 
     }
 
-    /* STAGE MARGIN: Consistent spacing */
     .stage {
-      margin-top: 0 !important;   /* Remove top margin for alignment */
+      margin-top: 0 !important;
     }
 
-    /* CHAPTER PANEL: Specific adjustments for chapter selection */
     #panel-chapter { 
-      display: flex;              /* Flexbox layout */
-      flex-direction: column;     /* Stack children vertically */
+      display: flex;
+      flex-direction: column;
     }
 
-    /* CHAPTER PANEL HEADING: Adjust spacing */
     #panel-chapter h2 { 
-      margin-bottom: 12px;        /* Reduced bottom margin */
+      margin-bottom: 12px;
     }
 
-    /* CHAPTERS LIST: Scrollable container for chapter links */
+    /* Scrollable chapter list with custom scrollbar */
     #chapters-list {
-      overflow: auto;             /* Enable scrolling if content overflows */
-      max-height: min(70vh, 640px); /* Dynamic height: 70% of viewport or 640px max */
-      padding-right: 8px;         /* Space for scrollbar */
-      margin-top: 4px;            /* Small top margin */
-      scroll-behavior: smooth;    /* Smooth scrolling */
+      overflow: auto;
+      max-height: min(70vh, 640px);
+      padding-right: 8px;
+      margin-top: 4px;
+      scroll-behavior: smooth;
     }
 
-    /* CUSTOM SCROLLBAR: Webkit browsers only (Chrome, Safari, Edge) */
     #chapters-list::-webkit-scrollbar { 
-      width: 10px;                /* Scrollbar width */
+      width: 10px;
     }
 
-    /* SCROLLBAR THUMB: Draggable part of scrollbar */
     #chapters-list::-webkit-scrollbar-thumb { 
-      background: rgba(255,255,255,0.35); /* Semi-transparent white */
-      border-radius: 8px;         /* Rounded corners */
+      background: rgba(255,255,255,0.35);
+      border-radius: 8px;
     }
 
-    /* SCROLLBAR TRACK: Background of the scrollbar */
     #chapters-list::-webkit-scrollbar-track { 
-      background: rgba(255,255,255,0.08); /* Very transparent track */
-      border-radius: 8px;         /* Rounded corners */
+      background: rgba(255,255,255,0.08);
+      border-radius: 8px;
     }
 
-    /* PROGRESS PILL: Container for the progress indicator */
-    /* Responsive adjustments for large screens */
     @media(min-width:1024px){
       #progress-pill {
-        position: static;         /* Reset positioning */
-        left: auto;               /* Reset left positioning */
-        width: 100%;              /* Full width */
-        max-width: 1200px;        /* Match container width */
-        margin: 0 auto 8px;       /* Center with bottom margin */
+        position: static;
+        left: auto;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto 8px;
       }
     }
 
-    /* PROGRESS PILL STYLING: Enhanced visual appearance */
+    /* Progress indicator with gradient background */
     #progress-pill {
-      /* Light pinkish gradient for visual appeal */
       background: linear-gradient(135deg, rgba(255, 192, 203, 0.20), rgba(255, 255, 255, 0.10));
-      border: 1px solid rgba(255,255,255,0.22); /* Brighter border */
-      border-radius: 16px;        /* Rounded corners */
-      padding: 18px 22px;         /* Internal spacing */
-      width: 100%;                /* Full width */
-      max-width: 1200px;          /* Match container width */
-      margin: 0 auto 8px;         /* Center with bottom margin */
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 16px;
+      padding: 18px 22px;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto 8px;
     }
 
-    /* BADGE ENHANCEMENTS: Improved appearance for progress steps */
     .badge {
-      font-size: 14px;            /* Slightly larger font */
-      padding: 8px 14px;          /* Internal spacing */
+      font-size: 14px;
+      padding: 8px 14px;
     }
 
-    /* DESKTOP ALIGNMENT: Ensure proper centering on large screens */
     @media(min-width:1024px){
       .stage {
-        max-width: 1200px;        /* Match container width */
-        margin-left: auto;        /* Center horizontally */
-        margin-right: auto;       /* Center horizontally */
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
       }
     }
 
-    /* CONSISTENT WIDTH: Progress pill and stage share same width */
     #progress-pill {
-      width: 100%;                /* Full width */
-      max-width: 1200px;          /* Match stage width exactly */
-      margin: 0 auto 8px;         /* Center with bottom margin */
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto 8px;
     }
 
-    /* LARGE SCREEN ALIGNMENT: Precise positioning for desktop */
     @media(min-width:1024px){
-      /* Progress pill and stage share exact same maximum width */
       #progress-pill,
       .stage {
-        max-width: 1200px;        /* Shared medium width */
-        margin-left: auto;        /* Center horizontally */
-        margin-right: auto;       /* Center horizontally */
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
       }
 
-      /* Ensure no positioning offsets */
       #progress-pill {
-        position: static;         /* Reset positioning */
-        left: auto;               /* Reset left positioning */
-        transform: none;          /* Reset transformations */
-        width: 100%;              /* Full width */
-        margin-bottom: 8px;       /* Bottom margin only */
+        position: static;
+        left: auto;
+        transform: none;
+        width: 100%;
+        margin-bottom: 8px;
       }
     }
   </style>
 </head>
 
-<!-- BODY SECTION: All visible content goes here -->
 <body>
-  <!-- DARK OVERLAY: Semi-transparent layer over background gradient -->
   <div class="overlay"></div>
 
-  <!-- HEADER: Top navigation area with logo and user info -->
+  <!-- Header with logo and user information -->
   <header class="container">
     <div class="row">
-      <!-- LOGO AREA: Clickable logo that returns to welcome page -->
       <div class="logo" style="cursor:pointer;" onclick="location.href='./welcome.html'">
-        <!-- LOGO IMAGE: Company logo -->
         <img src="./logo.png" alt="BytLearn" />
         <div>
-          <!-- COMPANY NAME: Bold and prominent -->
           <div style="font-weight:800;font-size:22px;">BytLearn</div>
-          <!-- SUBTITLE: Descriptive text -->
           <div style="font-size:12px;opacity:.8">AI-Powered Learning Platform</div>
         </div>
       </div>
 
-      <!-- USER INFO AND ACTIONS: Right side of header -->
       <div class="row" style="gap:10px;">
-        <!-- USER INFORMATION: Name and email -->
         <div style="text-align:right;">
-          <!-- WELCOME MESSAGE: Dynamic user name -->
           <div style="font-weight:600;">Welcome, <span id="uName">Student</span></div>
-          <!-- USER EMAIL: Dynamic email address -->
           <div style="opacity:.8;font-size:12px;" id="uEmail">student@bytlearn.app</div>
         </div>
-        <!-- PROFILE LINK: Navigate to profile page -->
         <a class="btn" href="./profile.html">Profile</a>
-        <!-- SIGN OUT BUTTON: Clears authentication and returns to welcome page -->
         <a class="btn" href="./welcome.html" 
            onclick="event.preventDefault(); localStorage.removeItem('authed'); location.href='./welcome.html';">
            Sign Out
@@ -424,147 +374,123 @@
     </div>
   </header>
 
-  <!-- MAIN CONTENT: Primary content area between header and footer -->
   <main class="container">
-    <!-- PROGRESS PILL: Breadcrumb-style progress indicator -->
+    <!-- Progress breadcrumb showing the three-step selection process -->
     <div class="card" id="progress-pill" style="margin-bottom:8px;">
       <div class="progress">
-        <!-- SELECT CLASS STEP: First step in the process -->
         <span class="badge">Select Class</span>
-        <!-- SEPARATOR: Visual indicator between steps -->
         <span style="opacity:.7;">›</span>
-        <!-- SELECT SUBJECT STEP: Second step -->
         <span class="badge">Select Subject</span>
-        <!-- SEPARATOR: Visual indicator between steps -->
         <span style="opacity:.7;">›</span>
-        <!-- SELECT CHAPTER STEP: Third and final step -->
         <span class="badge">Select Chapter</span>
       </div>
     </div>
 
-    <!-- STAGE CONTAINER: Holds the three selection panels (class, subject, chapter) -->
+    <!-- Three panels for class, subject, and chapter selection -->
     <div class="grid stage">
-      <!-- CLASS PANEL: First step - class selection (initially visible and centered) -->
       <div class="card panel center" id="panel-class">
         <h2>Choose Your Class</h2>
-        <!-- DYNAMIC CONTENT: Class options will be loaded here by JavaScript -->
       </div>
 
-      <!-- SUBJECT PANEL: Second step - subject selection (initially hidden) -->
       <div class="card panel right hidden" id="panel-subject">
         <h2>Choose Your Subject</h2>
-        <!-- DYNAMIC CONTENT: Subject options will be loaded here by JavaScript -->
       </div>
 
-      <!-- CHAPTER PANEL: Third step - chapter selection (initially hidden) -->
       <div class="card panel right hidden" id="panel-chapter">
         <h2>Choose Your Chapter</h2>
-        <!-- SCROLLABLE LIST: Chapters will be loaded here by JavaScript -->
         <div id="chapters-list"></div>
       </div>
     </div>
   </main>
 
-  <!-- JAVASCRIPT: All interactive functionality and dynamic behavior -->
   <script>
-    // AUTHENTICATION CHECK
-    // Verify user is logged in, redirect to login page if not authenticated
+    // Security: Redirect to login if user is not authenticated
     if (localStorage.getItem('authed') !== '1') {
       location.replace('./login.html');
     }
 
-    // PANEL INITIALIZATION
-    // Ensure subject and chapter panels start hidden and positioned correctly
+    // Initialize panels: ensure subject and chapter panels start hidden
     (function primePanels() {
-      // Get subject panel element if it exists
       const subjectPanel = document.getElementById('panel-subject');
-      // Add hidden and right positioning classes if element exists
       if (subjectPanel) {
         subjectPanel.classList.add('hidden', 'right');
       }
       
-      // Get chapter panel element if it exists
       const chapterPanel = document.getElementById('panel-chapter');
-      // Add hidden and right positioning classes if element exists
       if (chapterPanel) {
         chapterPanel.classList.add('hidden', 'right');
       }
-    })(); // Immediately invoked function expression (runs when script loads)
+    })();
 
-    // USER INFO DISPLAY
-    // Load and display user information in the header
+    // Display user information in the header
     (function(){
-      // Get user name from localStorage or use default
       const userName = localStorage.getItem('currentUserName') || 'Student';
-      // Get user email from localStorage or use default
       const userEmail = localStorage.getItem('currentUserEmail') || 'student@bytelearn.app';
       
-      // Get reference to name display element
       const nameElement = document.getElementById('uName');
-      // Update name display if element exists
       if (nameElement) {
         nameElement.textContent = userName;
       }
       
-      // Get reference to email display element
       const emailElement = document.getElementById('uEmail');
-      // Update email display if element exists
       if (emailElement) {
         emailElement.textContent = userEmail;
       }
-    })(); // Immediately invoked function expression
+    })();
 
-    // PANEL FLOW MANAGEMENT
-    // Controls which panel is visible and how they're positioned
+    /**
+     * Controls the visual flow of the three panels based on user's current step
+     * @param {string} step - Current step: 'class', 'subject', or 'chapter'
+     * 
+     * Flow logic:
+     * - 'class': Only class panel visible and centered
+     * - 'subject': Class moves left, subject becomes center
+     * - 'chapter': All three panels visible in cascade (far-left, left, center)
+     */
     function setFlow(step) {
-      // Get references to all three panels
       const classPanel = document.getElementById('panel-class');
       const subjectPanel = document.getElementById('panel-subject');
       const chapterPanel = document.getElementById('panel-chapter');
 
-      // Reset transition classes from all panels
+      // Clear all positioning classes from panels
       [classPanel, subjectPanel, chapterPanel].forEach(panel => {
-        // Remove all positioning and highlight classes
         if (panel) {
           panel.classList.remove('center', 'left', 'far-left', 'right', 'highlight');
         }
       });
 
-      // Handle different flow states based on current step
+      // Apply positioning based on current step
       if (step === 'class') {
-        // CLASS STEP: Only class panel is visible and centered
         if (classPanel) {
-          classPanel.classList.add('center', 'highlight'); // Center with highlight animation
+          classPanel.classList.add('center', 'highlight');
         }
         if (subjectPanel) {
-          subjectPanel.classList.add('right', 'hidden');   // Hide subject panel
+          subjectPanel.classList.add('right', 'hidden');
         }
         if (chapterPanel) {
-          chapterPanel.classList.add('right', 'hidden');   // Hide chapter panel
+          chapterPanel.classList.add('right', 'hidden');
         }
       } else if (step === 'subject') {
-        // SUBJECT STEP: Class panel moves left, subject panel becomes centered
         if (classPanel) {
-          classPanel.classList.add('left');                // Move class panel left
+          classPanel.classList.add('left');
         }
         if (subjectPanel) {
-          subjectPanel.classList.remove('hidden');         // Show subject panel
-          subjectPanel.classList.add('center', 'highlight'); // Center with highlight
+          subjectPanel.classList.remove('hidden');
+          subjectPanel.classList.add('center', 'highlight');
         }
         if (chapterPanel) {
-          chapterPanel.classList.add('right', 'hidden');   // Hide chapter panel
+          chapterPanel.classList.add('right', 'hidden');
         }
       } else if (step === 'chapter') {
-        // CHAPTER STEP: All three panels visible in cascading layout
         if (classPanel) {
-          classPanel.classList.add('far-left');            // Move class panel further left
+          classPanel.classList.add('far-left');
         }
         if (subjectPanel) {
-          subjectPanel.classList.add('left');              // Move subject panel left
+          subjectPanel.classList.add('left');
         }
         if (chapterPanel) {
-          chapterPanel.classList.remove('hidden');         // Show chapter panel
-          chapterPanel.classList.add('center', 'highlight'); // Center with highlight
+          chapterPanel.classList.remove('hidden');
+          chapterPanel.classList.add('center', 'highlight');
         }
       }
 
@@ -572,156 +498,142 @@
       setTimeout(() => {
         [classPanel, subjectPanel, chapterPanel].forEach(panel => {
           if (panel) {
-            panel.classList.remove('highlight');           // Remove highlight class
+            panel.classList.remove('highlight');
           }
         });
-      }, 900); // 900ms matches the animation duration
+      }, 900);
 
-      // Smooth scroll to ensure stage is visible in viewport
+      // Scroll the stage into view smoothly
       const stageElement = document.querySelector('.stage');
       if (stageElement) {
         stageElement.scrollIntoView({ 
-          behavior: 'smooth',  // Animated scrolling
-          block: 'start'       // Align to top of viewport
+          behavior: 'smooth',
+          block: 'start'
         });
       }
     }
 
-    // INITIAL FLOW STATE
     // Start with class selection panel active
     setFlow('class');
 
-    // CLASS LOADING FUNCTION
-    // Fetches and displays available classes from the server
+    /**
+     * Fetches all available classes from the API and displays them
+     * When a class is clicked:
+     * 1. Saves class information to localStorage
+     * 2. Transitions to subject selection panel
+     * 3. Loads subjects for that class
+     */
     async function loadClasses() {
-      // Fetch classes data from API endpoint
       const response = await fetch('http://127.0.0.1:8000/classes');
-      // Parse JSON response
       const classes = await response.json();
-      // Get reference to class panel
       const classPanel = document.getElementById('panel-class');
       
-      // Reset panel content with heading
       classPanel.innerHTML = '<h2>Choose Your Class</h2>';
       
-      // Create and append class options
       classes.forEach(classItem => {
-        // Create container for each class
         const classDiv = document.createElement('div');
         classDiv.className = 'item';
-        
-        // Create clickable link for the class
         classDiv.innerHTML = `<a href="#">${classItem.class_name}</a>`;
         
-        // Add click event listener to class link
         classDiv.querySelector('a').addEventListener('click', (event) => {
-          event.preventDefault(); // Prevent default link behavior
+          event.preventDefault();
           
-          // Store selected class info in localStorage
+          // Store selected class information for later use
           localStorage.setItem('selectedClassId', classItem.class_id);
           localStorage.setItem('selectedClassName', classItem.class_name);
           
-          // Transition to subject selection
+          // Move to subject selection
           setFlow('subject');
-          // Load subjects for the selected class
           loadSubjects(classItem.class_id);
         });
         
-        // Add class option to panel
         classPanel.appendChild(classDiv);
       });
     }
 
-    // SUBJECT LOADING FUNCTION
-    // Fetches and displays subjects for the selected class
+    /**
+     * Fetches subjects for a specific class and displays them
+     * @param {number} classId - The ID of the selected class
+     * 
+     * When a subject is clicked:
+     * 1. Saves subject information to localStorage
+     * 2. Transitions to chapter selection panel
+     * 3. Loads chapters for that subject
+     */
     async function loadSubjects(classId) {
-      // Fetch all subjects from API
       const response = await fetch('http://127.0.0.1:8000/subjects');
-      // Parse JSON response
       const subjects = await response.json();
-      // Filter subjects for the selected class only
+      
+      // Filter to show only subjects belonging to the selected class
       const filteredSubjects = subjects.filter(subject => 
         Number(subject.class_id) === Number(classId)
       );
-      // Get reference to subject panel
-      const subjectPanel = document.getElementById('panel-subject');
       
-      // Reset panel content with heading
+      const subjectPanel = document.getElementById('panel-subject');
       subjectPanel.innerHTML = '<h2>Choose Your Subject</h2>';
       
-      // Create and append subject options
       filteredSubjects.forEach(subject => {
-        // Create container for each subject
         const subjectDiv = document.createElement('div');
         subjectDiv.className = 'item';
-        
-        // Create clickable link for the subject
         subjectDiv.innerHTML = `<a href="#">${subject.subject_name}</a>`;
         
-        // Add click event listener to subject link
         subjectDiv.querySelector('a').addEventListener('click', (event) => {
-          event.preventDefault(); // Prevent default link behavior
+          event.preventDefault();
           
-          // Store selected subject info in localStorage
+          // Store selected subject information
           localStorage.setItem('selectedSubjectId', subject.subject_id);
           localStorage.setItem('selectedSubjectName', subject.subject_name);
           
-          // Transition to chapter selection
+          // Move to chapter selection
           setFlow('chapter');
-          // Load chapters for the selected subject
           loadChapters(subject.subject_id);
         });
         
-        // Add subject option to panel
         subjectPanel.appendChild(subjectDiv);
       });
     }
 
-    // CHAPTER LOADING FUNCTION
-    // Fetches and displays chapters for the selected subject
+    /**
+     * Fetches chapters for a specific subject and displays them
+     * @param {number} subjectId - The ID of the selected subject
+     * 
+     * When a chapter is clicked:
+     * 1. Saves chapter information to localStorage
+     * 2. Navigates to the learning page
+     */
     async function loadChapters(subjectId) {
-      // Fetch all chapters from API
       const response = await fetch('http://127.0.0.1:8000/chapters');
-      // Parse JSON response
       const chapters = await response.json();
-      // Filter chapters for the selected subject only
+      
+      // Filter to show only chapters belonging to the selected subject
       const filteredChapters = chapters.filter(chapter =>
         Number(chapter.subject_id) === Number(subjectId)
       );
-      // Get reference to chapters list container
-      const chaptersList = document.getElementById('chapters-list');
       
-      // Clear previous chapters
+      const chaptersList = document.getElementById('chapters-list');
       chaptersList.innerHTML = '';
       
-      // Create and append chapter options
       filteredChapters.forEach(chapter => {
-        // Create container for each chapter
         const chapterDiv = document.createElement('div');
         chapterDiv.className = 'item';
-        
-        // Create clickable link for the chapter
         chapterDiv.innerHTML = `<a href="#">${chapter.chapter_name}</a>`;
         
-        // Add click event listener to chapter link
         chapterDiv.querySelector('a').addEventListener('click', (event) => {
-          event.preventDefault(); // Prevent default link behavior
+          event.preventDefault();
           
-          // Store selected chapter info in localStorage
+          // Store selected chapter information
           localStorage.setItem('selectedChapterId', chapter.chapter_id);
           localStorage.setItem('selectedChapterName', chapter.chapter_name);
           
-          // Navigate to learning page
+          // Navigate to learning interface
           location.href = './learn.html';
         });
         
-        // Add chapter option to list
         chaptersList.appendChild(chapterDiv);
       });
     }
 
-    // PAGE LOAD INITIALIZATION
-    // Load classes when page finishes loading
+    // Load classes when the page finishes loading
     window.onload = function() {
       loadClasses();
     };

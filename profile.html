@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -5,41 +6,32 @@
   <title>BytLearn Profile</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   
-  <!-- Load Inter font for consistent typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
   
   <style>
-    /* CSS Variables - Define reusable color values for consistent theming */
     :root {
-      /* Background gradient colors */
       --bg1: #0b1e3d;
       --bg2: #08203a;
       --bg3: #101a4b;
-      
-      /* Text colors */
       --text: #ffffff;
       --muted: #ffffff;
-      
-      /* Glassmorphism effect colors with varying opacity levels */
       --glass: rgba(255, 255, 255, 0.12);
       --glass-2: rgba(255, 255, 255, 0.26);
       --border: rgba(255, 255, 255, 0.20);
-      
-      /* Chart and accent colors */
       --accent1: #67e8f9;
       --accent2: #60a5fa;
       --bar: #7dd3fc;
       --line: #93c5fd;
     }
     
-    /* Ensure consistent box-sizing across all elements */
+    *,
+    *::before,
     *::after {
       box-sizing: border-box;
     }
 
-    /* Base styles for full-height layout */
     html, 
     body {
       height: 100%;
@@ -49,7 +41,6 @@
       text-align: center;
     }
     
-    /* Apply gradient background that stays fixed during scroll */
     body {
       margin: 0;
       background: linear-gradient(135deg, #0b1e3d 0%, #08203a 40%, #101a4b 100%);
@@ -58,14 +49,12 @@
       overflow-x: hidden;
     }
 
-    /* Animated background blobs - Fixed container covering entire viewport */
     .scene {
       position: fixed;
       inset: 0;
       z-index: 0;
     }
     
-    /* Individual blob styling with blur effect for soft appearance */
     .blob {
       position: absolute;
       border-radius: 9999px;
@@ -75,7 +64,6 @@
       animation: float 22s ease-in-out infinite;
     }
     
-    /* Blob A - Top left position with blue gradient */
     .blob.a {
       width: 380px;
       height: 380px;
@@ -84,7 +72,6 @@
       background: linear-gradient(90deg, #38bdf8, #2563eb);
     }
     
-    /* Blob B - Bottom right position with faster animation */
     .blob.b {
       width: 320px;
       height: 320px;
@@ -94,7 +81,6 @@
       animation-duration: 16s;
     }
     
-    /* Blob C - Center position with slowest animation and lower opacity */
     .blob.c {
       width: 260px;
       height: 260px;
@@ -106,7 +92,6 @@
       animation-duration: 25s;
     }
     
-    /* Floating animation - Creates gentle movement effect */
     @keyframes float {
       0%   { 
         transform: translate(0, 0) scale(1);
@@ -119,7 +104,6 @@
       }
     }
 
-    /* Main container - Centers content and adds padding */
     .container {
       position: relative;
       z-index: 1;
@@ -129,12 +113,10 @@
       text-align: center;
     }
     
-    /* Main content area with minimum height */
     main.container {
       min-height: calc(100vh - 110px);
     }
 
-    /* Card component - Glassmorphism design with backdrop blur */
     .card {
       background: var(--glass);
       border: 1px solid var(--border);
@@ -145,7 +127,6 @@
       box-shadow: 0 6px 36px rgba(40, 57, 101, 0.22);
     }
 
-    /* Button component - Standard interactive element */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -161,17 +142,14 @@
       cursor: pointer;
     }
     
-    /* Primary button variant - More prominent appearance */
     .btn.primary {
       background: var(--glass-2);
     }
     
-    /* Button hover state - Brightens on interaction */
     .btn:hover {
       background: rgba(255, 255, 255, 0.20);
     }
 
-    /* Flexbox row layout - Distributes items with space between */
     .row {
       display: flex;
       align-items: center;
@@ -180,21 +158,18 @@
       text-align: center;
     }
     
-    /* Logo component - Icon and text layout */
     .logo {
       display: flex;
       align-items: center;
       gap: 12px;
     }
     
-    /* Logo image sizing */
     .logo img {
       width: 70px;
       height: 70px;
       object-fit: contain;
     }
     
-    /* Badge component - Pill-shaped label element */
     .badge {
       display: inline-flex;
       align-items: center;
@@ -207,7 +182,6 @@
       color: var(--text);
     }
 
-    /* Tab navigation pills - Grid layout for equal-width buttons */
     .pills {
       display: grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -215,7 +189,6 @@
       margin-bottom: 8px;
     }
     
-    /* Individual pill button styling */
     .pill {
       padding: 10px 16px;
       border-radius: 14px;
@@ -227,23 +200,19 @@
       transition: 120ms;
     }
     
-    /* Active pill state - Indicates currently selected tab */
     .pill.active {
       background: rgba(255, 255, 255, 0.18);
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
     }
     
-    /* Hidden utility class - Toggles element visibility */
     .hidden {
       display: none;
     }
 
-    /* Typography - Force center alignment for text elements */
     h1, h2, h3, p, .badge, .subtitle, .title, .lead, .actions, .stats, .pill, .item a, .list, .li {
       text-align: center !important;
     }
 
-    /* Heading styles with consistent spacing */
     h1 {
       font-size: 32px;
       font-weight: 800;
@@ -262,25 +231,21 @@
       margin: 0 0 10px 0;
     }
     
-    /* Paragraph with muted color for secondary text */
     p {
       color: var(--muted);
     }
 
-    /* Four-column grid layout for stat cards */
     .grid4 {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 12px;
     }
 
-    /* Chart container - Fixed height for consistent appearance */
     .chart {
       height: 260px;
       position: relative;
     }
     
-    /* Bar chart container - Absolute positioning within chart */
     .bars {
       position: absolute;
       inset: 12px 12px 32px 40px;
@@ -289,14 +254,12 @@
       align-items: flex-end;
     }
     
-    /* Individual bar styling - Height set inline via style attribute */
     .bar {
       width: 40px;
       background: var(--bar);
       border-radius: 8px 8px 0 0;
     }
     
-    /* X-axis labels positioned below chart */
     .xlabels {
       position: absolute;
       bottom: 6px;
@@ -309,13 +272,11 @@
       opacity: 1;
     }
     
-    /* Line chart SVG container */
     .linechart {
       position: absolute;
       inset: 12px 12px 32px 40px;
     }
     
-    /* Legend indicator dot */
     .dot {
       width: 10px;
       height: 10px;
@@ -324,7 +285,6 @@
       display: inline-block;
     }
     
-    /* Chart legend layout */
     .legend {
       display: flex;
       gap: 10px;
@@ -334,7 +294,6 @@
       margin-top: 8px;
     }
     
-    /* Charts grid - Single column on mobile, switches to two-column on desktop */
     .charts-grid {
       display: grid;
       gap: 12px;
@@ -342,26 +301,21 @@
       min-height: 55vh;
     }
     
-    /* Desktop layout adjustments for screens 1024px and wider */
     @media (min-width: 1024px) {
-      /* Two-column layout for charts */
       .charts-grid {
         grid-template-columns: 1fr 1fr;
       }
       
-      /* Maintain four-column grid for stats */
       .grid4 {
         grid-template-columns: repeat(4, minmax(0, 1fr));
       }
     }
 
-    /* List container for activity and suggestion items */
     .list {
       display: grid;
       gap: 10px;
     }
     
-    /* List item styling with subtle background */
     .li {
       padding: 12px;
       border-radius: 12px;
@@ -369,21 +323,297 @@
       border: 1px solid var(--border);
       color: var(--text);
     }
+
+    /* Profile Picture Styles */
+    .profile-picture {
+      width: 48px;
+      height: 48px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 2px solid var(--border);
+    }
+
+    .profile-picture img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Edit Profile Button */
+    .edit-profile-btn {
+      background: linear-gradient(135deg, rgba(103, 232, 249, 0.2), rgba(96, 165, 250, 0.2));
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 200ms ease;
+    }
+
+    .edit-profile-btn:hover {
+      background: linear-gradient(135deg, rgba(103, 232, 249, 0.3), rgba(96, 165, 250, 0.3));
+      transform: translateY(-1px);
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      width: min(500px, 90vw);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      animation: modalSlideIn 0.3s ease;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 28px;
+      cursor: pointer;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      transition: background 200ms;
+    }
+
+    .modal-close:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .input-group {
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      margin: 0 0 8px;
+      color: var(--text);
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+
+    input[type="text"],
+    input[type="tel"] {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      outline: none;
+      box-sizing: border-box;
+      font-size: 15px;
+      font-family: inherit;
+      transition: all 200ms ease;
+    }
+
+    input:focus {
+      border-color: rgba(103, 232, 249, 0.5);
+      background: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 0 0 3px rgba(103, 232, 249, 0.1);
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .message {
+      padding: 14px 16px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+      animation: slideIn 0.3s ease;
+      font-weight: 500;
+    }
+
+    .message.error {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+    }
+
+    .message.success {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #86efac;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Profile Picture Upload Section */
+    .profile-upload {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .profile-preview {
+      width: 120px;
+      height: 120px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 3px solid var(--border);
+      position: relative;
+    }
+
+    .profile-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-preview-text {
+      font-size: 48px;
+    }
+
+    .upload-btn-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+    }
+
+    .upload-btn-wrapper input[type=file] {
+      font-size: 100px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .upload-btn {
+      background: linear-gradient(135deg, rgba(103, 232, 249, 0.2), rgba(96, 165, 250, 0.2));
+      color: var(--text);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 200ms ease;
+    }
+
+    .upload-btn:hover {
+      background: linear-gradient(135deg, rgba(103, 232, 249, 0.3), rgba(96, 165, 250, 0.3));
+    }
+
+    .remove-picture-btn {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 200ms ease;
+      margin-top: 8px;
+    }
+
+    .remove-picture-btn:hover {
+      background: rgba(239, 68, 68, 0.25);
+    }
+
+    .save-btn {
+      width: 100%;
+      background: linear-gradient(135deg, rgba(103, 232, 249, 0.2), rgba(96, 165, 250, 0.2));
+      color: var(--text);
+      padding: 12px 24px;
+      border-radius: 10px;
+      border: none;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 200ms ease;
+      margin-top: 8px;
+    }
+
+    .save-btn:hover {
+      background: linear-gradient(135deg, rgba(103, 232, 249, 0.3), rgba(96, 165, 250, 0.3));
+      transform: translateY(-1px);
+    }
   </style>
 </head>
 
 <body>
-  <!-- Animated background layer with floating gradient blobs -->
   <div class="scene">
     <div class="blob a"></div>
     <div class="blob b"></div>
     <div class="blob c"></div>
   </div>
 
-  <!-- Header section with logo and navigation -->
   <header class="container">
     <div class="row">
-      <!-- Logo - Clickable, navigates to welcome page -->
       <div class="logo" style="cursor:pointer" onclick="location.href='welcome.html'">
         <img src="logo.png" alt="BytLearn" />
         <div>
@@ -392,39 +622,35 @@
         </div>
       </div>
       
-      <!-- Navigation buttons -->
       <div class="row" style="gap: 10px;">
         <a class="btn" href="dashboard.html">Dashboard</a>
-        <!-- Sign out button - Clears authentication and redirects -->
         <a class="btn" href="welcome.html" onclick="event.preventDefault(); localStorage.removeItem('authed'); location.href='welcome.html';">Sign Out</a>
       </div>
     </div>
   </header>
 
-  <!-- Main content area -->
   <main class="container">
     
-    <!-- User profile card with avatar, name, and email -->
     <div class="card" style="margin-bottom: 12px;">
       <div class="row" style="gap: 12px; align-items: center;">
         <div class="row" style="gap: 12px;">
-          <!-- User avatar icon -->
-          <div style="width: 48px; height: 48px; border-radius: 9999px; background: rgba(255, 255, 255, 0.18); display: flex; align-items: center; justify-content: center;">
+          <div class="profile-picture" id="headerProfilePic">
             👤
           </div>
-          <!-- User information - Populated via JavaScript -->
           <div>
             <div style="font-weight: 700;" id="pName">Student</div>
             <div style="opacity: 1; font-size: 13px;" id="pEmail">student@bytlearn.app</div>
+            <div style="opacity: 1; font-size: 13px;" id="pPhone"></div>
           </div>
         </div>
         
-        <!-- Dashboard type badge -->
-        <span class="badge">Biology AI — Student Dashboard</span>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <span class="badge">Biology AI – Student Dashboard</span>
+          <button class="btn edit-profile-btn" id="editProfileBtn">✏️ </button>
+        </div>
       </div>
     </div>
 
-    <!-- Stats overview - Four metric cards -->
     <div class="grid4" style="margin-bottom: 12px;">
       <div class="card">
         <div style="opacity: 1; font-size: 13px;">Study Streak</div>
@@ -447,10 +673,8 @@
       </div>
     </div>
 
-    <!-- Tab navigation - Switches between different content sections -->
     <div class="card" style="margin-bottom: 12px;">
       <div class="pills">
-        <!-- Each pill has data-tab attribute matching corresponding section ID -->
         <button class="pill active" data-tab="charts">Charts</button>
         <button class="pill" data-tab="analysis">Analysis</button>
         <button class="pill" data-tab="performance">Performance</button>
@@ -459,11 +683,9 @@
       </div>
     </div>
 
-    <!-- Tab 1: Charts - Performance visualizations (visible by default) -->
     <section id="charts" class="tab">
       <div class="charts-grid">
         
-        <!-- Bar chart showing performance across different topics -->
         <div class="card">
           <div class="row" style="justify-content: space-between;">
             <h2>Performance by Topic</h2>
@@ -471,7 +693,6 @@
           </div>
           
           <div class="chart">
-            <!-- Bar heights represent performance percentages -->
             <div class="bars">
               <div class="bar" style="height: 78%;"></div>
               <div class="bar" style="height: 82%;"></div>
@@ -480,7 +701,6 @@
               <div class="bar" style="height: 91%;"></div>
             </div>
             
-            <!-- Topic labels below each bar -->
             <div class="xlabels">
               <span>Cell</span>
               <span>Biomol.</span>
@@ -493,7 +713,6 @@
           </div>
         </div>
 
-        <!-- Line chart showing performance trend over time -->
         <div class="card">
           <div class="row" style="justify-content: space-between;">
             <h2>Recent Performance Trend</h2>
@@ -501,12 +720,9 @@
           </div>
           
           <div class="chart">
-            <!-- SVG line chart with data points for each day -->
             <svg class="linechart" viewBox="0 0 400 220" preserveAspectRatio="none">
-              <!-- Polyline connects all data points -->
               <polyline fill="none" stroke="#93c5fd" stroke-width="3" points="10,170 70,160 130,145 190,135 250,125 310,115 370,110" />
               
-              <!-- Circle markers at each data point -->
               <g fill="#93c5fd">
                 <circle cx="10" cy="170" r="3"></circle>
                 <circle cx="70" cy="160" r="3"></circle>
@@ -518,7 +734,6 @@
               </g>
             </svg>
             
-            <!-- Day labels below chart -->
             <div class="xlabels" style="left: 36px; right: 12px;">
               <span>Mon</span>
               <span>Tue</span>
@@ -535,11 +750,9 @@
       </div>
     </section>
 
-    <!-- Tab 2: Analysis - Strong and weak areas (hidden by default) -->
     <section id="analysis" class="tab hidden">
       <div style="display: grid; gap: 12px; grid-template-columns: 1fr 1fr;">
         
-        <!-- Strong areas - Topics where student excels -->
         <div class="card">
           <h2>Strong Areas</h2>
           <div class="list">
@@ -555,7 +768,6 @@
           </div>
         </div>
         
-        <!-- Weak areas - Topics needing improvement -->
         <div class="card">
           <h2>Weak Areas</h2>
           <div class="list">
@@ -573,12 +785,10 @@
       </div>
     </section>
 
-    <!-- Tab 3: Performance - Overall statistics (hidden by default) -->
     <section id="performance" class="tab hidden">
       <div class="card">
         <h2>Overall Performance</h2>
         
-        <!-- Grid of performance metrics -->
         <div style="display: grid; gap: 12px; grid-template-columns: 1fr 1fr 1fr;">
           
           <div class="li">
@@ -609,7 +819,6 @@
       </div>
     </section>
 
-    <!-- Tab 4: Suggestions - Personalized study recommendations (hidden by default) -->
     <section id="suggestions" class="tab hidden">
       <div class="card">
         <h2>Personalized Suggestions</h2>
@@ -639,34 +848,10 @@
       </div>
     </section>
 
-    <!-- Tab 5: Activity - Recent learning activity log (hidden by default) -->
     <section id="activity" class="tab hidden">
       <div class="card">
         <h2>Recent Activity</h2>
         <div class="list">
-          
-          <!-- Activity entries with quiz name, date, score, and time -->
-          <div class="li row" style="justify-content: space-between;">
-            <div>
-              <div style="font-weight: 600;">Quiz Plant Physiology</div>
-              <div style="opacity: 1; font-size: 12px;">Today</div>
-            </div>
-            <div style="text-align: right;">
-              <div>Score: 88</div>
-              <div style="opacity: 1; font-size: 12px;">Time: 158s</div>
-            </div>
-          </div>
-          
-          <div class="li row" style="justify-content: space-between;">
-            <div>
-              <div style="font-weight: 600;">Quiz Genetics Basics</div>
-              <div style="opacity: 1; font-size: 12px;">Yesterday</div>
-            </div>
-            <div style="text-align: right;">
-              <div>Score: 74</div>
-              <div style="opacity: 1; font-size: 12px;">Time: 171s</div>
-            </div>
-          </div>
           
           <div class="li row" style="justify-content: space-between;">
             <div>
@@ -694,40 +879,71 @@
     </section>
   </main>
 
+  <!-- Edit Profile Modal -->
+  <div class="modal-overlay" id="editProfileModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Edit Profile</h2>
+        <button class="modal-close" id="closeEditModal">&times;</button>
+      </div>
+
+      <form id="editProfileForm">
+        <div id="editMessage" class="message"></div>
+
+        <!-- Profile Picture Upload Section -->
+        <div class="profile-upload">
+          <div class="profile-preview" id="profilePreview">
+            <span class="profile-preview-text">👤</span>
+          </div>
+          
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
+            <div class="upload-btn-wrapper">
+              <button type="button" class="upload-btn">Choose Picture</button>
+              <input type="file" id="profilePictureInput" accept="image/*" />
+            </div>
+            <button type="button" class="remove-picture-btn" id="removePictureBtn" style="display: none;">Remove Picture</button>
+          </div>
+        </div>
+
+        <!-- Name Input -->
+        <div class="input-group">
+          <label for="editName">Full Name</label>
+          <input type="text" id="editName" placeholder="Enter your full name" required />
+        </div>
+
+       
+
+        <!-- Email Display (Read-only) -->
+        <div class="input-group">
+          <label for="editEmail">Email (Cannot be changed)</label>
+          <input type="text" id="editEmail" disabled style="opacity: 0.6; cursor: not-allowed;" />
+        </div>
+
+        <button type="submit" class="save-btn">Save Changes</button>
+      </form>
+    </div>
+  </div>
+
   <script>
-    /* Tab Switching Logic
-     * Manages tab navigation by toggling visibility of content sections
-     * when corresponding pill buttons are clicked
-     */
-    
-    // Select all pill buttons and tab content sections
+    // Tab Switching Logic
     const pills = document.querySelectorAll('.pill[data-tab]');
     const tabs = document.querySelectorAll('.tab');
     
-    // Attach click handler to each pill button
     pills.forEach(function(p) {
       p.addEventListener('click', function() {
-        
-        // Deactivate all pills
         pills.forEach(function(pp) {
           pp.classList.remove('active');
         });
         
-        // Activate clicked pill
         p.classList.add('active');
-        
-        // Get target tab ID from data-tab attribute
         const id = p.getAttribute('data-tab');
         
-        // Hide all tab sections
         tabs.forEach(function(t) {
           t.classList.add('hidden');
         });
         
-        // Show target tab section
         document.getElementById(id)?.classList.remove('hidden');
         
-        // Scroll to top for better UX
         window.scrollTo({ 
           top: 0,
           behavior: 'smooth'
@@ -735,26 +951,202 @@
       });
     });
 
-    /* User Profile Display
-     * Retrieves and displays user information from localStorage
-     * Falls back to default values if not found
-     */
-    function fillUserProfile() {
-      // Retrieve stored user data with fallback defaults
-      const n = localStorage.getItem('currentUserName') || 'Student';
-      const e = localStorage.getItem('currentUserEmail') || 'student@bytlearn.app';
-      
-      // Get DOM elements for name and email
-      const nEl = document.getElementById('pName');
-      const eEl = document.getElementById('pEmail');
-      
-      // Update text content if elements exist
-      if (nEl) nEl.textContent = n;
-      if (eEl) eEl.textContent = e;
+    // Profile Management Functions
+    function getProfilePicture() {
+      return localStorage.getItem('profilePicture') || null;
     }
-    
-    // Initialize user profile on page load
-    fillUserProfile();
+
+    function setProfilePicture(dataUrl) {
+      if (dataUrl) {
+        localStorage.setItem('profilePicture', dataUrl);
+      } else {
+        localStorage.removeItem('profilePicture');
+      }
+    }
+
+    function updateProfileDisplay() {
+      const name = localStorage.getItem('currentUserName') || 'Student';
+      const email = localStorage.getItem('currentUserEmail') || 'student@bytlearn.app';
+      const phone = localStorage.getItem('currentUserPhone') || '';
+      const profilePic = getProfilePicture();
+
+      // Update name
+      const nameElements = document.querySelectorAll('#pName');
+      nameElements.forEach(el => {
+        if (el) el.textContent = name;
+      });
+
+      // Update email
+      const emailElements = document.querySelectorAll('#pEmail');
+      emailElements.forEach(el => {
+        if (el) el.textContent = email;
+      });
+
+      // Update phone
+      const phoneElements = document.querySelectorAll('#pPhone');
+      phoneElements.forEach(el => {
+        if (el) {
+          if (phone) {
+            el.textContent = phone;
+            el.style.display = 'block';
+          } else {
+            el.style.display = 'none';
+          }
+        }
+      });
+
+      // Update profile picture
+      const headerPic = document.getElementById('headerProfilePic');
+      if (headerPic) {
+        if (profilePic) {
+          headerPic.innerHTML = `<img src="${profilePic}" alt="Profile Picture" />`;
+        } else {
+          headerPic.innerHTML = '👤';
+        }
+      }
+    }
+
+    // Initialize profile display
+    updateProfileDisplay();
+
+    // Edit Profile Modal Functions
+    const editProfileBtn = document.getElementById('editProfileBtn');
+    const editProfileModal = document.getElementById('editProfileModal');
+    const closeEditModal = document.getElementById('closeEditModal');
+    const editProfileForm = document.getElementById('editProfileForm');
+    const editMessage = document.getElementById('editMessage');
+    const profilePictureInput = document.getElementById('profilePictureInput');
+    const profilePreview = document.getElementById('profilePreview');
+    const removePictureBtn = document.getElementById('removePictureBtn');
+
+    let currentProfilePicture = null;
+
+    function showMessage(element, text, type) {
+      element.textContent = text;
+      element.className = 'message ' + type;
+      element.style.display = 'block';
+      
+      setTimeout(function() {
+        element.style.display = 'none';
+      }, 5000);
+    }
+
+    function openEditModal() {
+      editProfileModal.classList.add('active');
+      
+      // Load current values
+      const name = localStorage.getItem('currentUserName') || 'Student';
+      const email = localStorage.getItem('currentUserEmail') || 'student@bytlearn.app';
+      const phone = localStorage.getItem('currentUserPhone') || '';
+      const profilePic = getProfilePicture();
+
+      document.getElementById('editName').value = name;
+      document.getElementById('editEmail').value = email;
+      document.getElementById('editPhone').value = phone;
+
+      currentProfilePicture = profilePic;
+      updatePreview(profilePic);
+    }
+
+    function closeEditModalFunc() {
+      editProfileModal.classList.remove('active');
+      editMessage.style.display = 'none';
+      currentProfilePicture = null;
+    }
+
+    function updatePreview(dataUrl) {
+      if (dataUrl) {
+        profilePreview.innerHTML = `<img src="${dataUrl}" alt="Profile Preview" />`;
+        removePictureBtn.style.display = 'block';
+      } else {
+        profilePreview.innerHTML = '<span class="profile-preview-text">👤</span>';
+        removePictureBtn.style.display = 'none';
+      }
+    }
+
+    editProfileBtn.addEventListener('click', openEditModal);
+    closeEditModal.addEventListener('click', closeEditModalFunc);
+
+    editProfileModal.addEventListener('click', function(e) {
+      if (e.target === editProfileModal) {
+        closeEditModalFunc();
+      }
+    });
+
+    // Handle profile picture upload
+    profilePictureInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        // Check file size (max 2MB)
+        if (file.size > 2 * 1024 * 1024) {
+          showMessage(editMessage, 'Image size should be less than 2MB', 'error');
+          return;
+        }
+
+        // Check file type
+        if (!file.type.startsWith('image/')) {
+          showMessage(editMessage, 'Please select a valid image file', 'error');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          currentProfilePicture = event.target.result;
+          updatePreview(currentProfilePicture);
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Handle remove picture
+    removePictureBtn.addEventListener('click', function() {
+      currentProfilePicture = null;
+      updatePreview(null);
+      profilePictureInput.value = '';
+    });
+
+    // Handle form submission
+    editProfileForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const newName = document.getElementById('editName').value.trim();
+      const newPhone = document.getElementById('editPhone').value.trim();
+
+      if (!newName) {
+        showMessage(editMessage, 'Name cannot be empty', 'error');
+        return;
+      }
+
+      // Validate phone number if provided
+      if (newPhone) {
+        const phoneRegex = /^[0-9]{10,15}$/;
+        if (!phoneRegex.test(newPhone.replace(/[\s\-\(\)]/g, ''))) {
+          showMessage(editMessage, 'Please enter a valid phone number', 'error');
+          return;
+        }
+      }
+
+      // Save changes to localStorage
+      localStorage.setItem('currentUserName', newName);
+      if (newPhone) {
+        localStorage.setItem('currentUserPhone', newPhone);
+      } else {
+        localStorage.removeItem('currentUserPhone');
+      }
+
+      if (currentProfilePicture !== null) {
+        setProfilePicture(currentProfilePicture);
+      }
+
+      // Update display
+      updateProfileDisplay();
+
+      showMessage(editMessage, 'Profile updated successfully!', 'success');
+
+      setTimeout(function() {
+        closeEditModalFunc();
+      }, 1500);
+    });
   </script>
 </body>
 </html>

@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>BytLearn — Login</title>
+  <title>BytLearn – Login</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <style>
-    /* CSS Custom Properties - Define reusable color values for consistent theming */
     :root { 
       --border: rgba(255, 255, 255, 0.2);
       --glass: rgba(255, 255, 255, 0.1);
@@ -14,7 +13,6 @@
       --muted: rgba(255, 255, 255, 0.85);
     }
 
-    /* Reset browser defaults and establish full-height layout */
     html, body {
       height: 100%; 
       margin: 0; 
@@ -24,7 +22,6 @@
       -moz-osx-font-smoothing: grayscale;
     }
 
-    /* Background gradient and center content using CSS Grid */
     body {
       background: linear-gradient(135deg, #0b1e3d, #08203a 40%, #101a4b);
       display: grid; 
@@ -35,14 +32,12 @@
       line-height: 1.6;
     }
 
-    /* Container for animated background elements */
     .scene { 
       position: fixed; 
       inset: 0; 
       z-index: 0; 
     }
 
-    /* Animated gradient blobs that create visual depth */
     .blob { 
       position: absolute; 
       border-radius: 9999px;
@@ -51,7 +46,6 @@
       animation: float 20s ease-in-out infinite;
     }
 
-    /* Top-left blob with cyan-to-blue gradient */
     .blob.a { 
       width: 360px; 
       height: 360px; 
@@ -60,7 +54,6 @@
       background: linear-gradient(90deg, #38bdf8, #2563eb); 
     }
 
-    /* Bottom-right blob with purple-to-cyan gradient, faster animation */
     .blob.b { 
       width: 280px; 
       height: 280px; 
@@ -70,7 +63,6 @@
       animation-duration: 16s; 
     }
 
-    /* Subtle floating animation for background blobs */
     @keyframes float { 
       0% { 
         transform: translate(0, 0);
@@ -83,7 +75,6 @@
       } 
     }
 
-    /* Glassmorphic card with backdrop blur effect */
     .card {
       position: relative; 
       z-index: 1;
@@ -96,7 +87,6 @@
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     }
 
-    /* Logo section with centered vertical layout */
     .logo { 
       display: flex; 
       flex-direction: column;
@@ -106,14 +96,12 @@
       text-align: center;
     }
 
-    /* Logo image with subtle glow effect */
     .logo img { 
       width: 64px; 
       height: 64px;
       filter: drop-shadow(0 4px 12px rgba(103, 232, 249, 0.3));
     }
 
-    /* Gradient text effect for brand name */
     .brand {
       background: linear-gradient(135deg, #67e8f9, #60a5fa, #8b5cf6);
       -webkit-background-clip: text; 
@@ -137,7 +125,6 @@
       font-weight: 400;
     }
 
-    /* Tab switcher with subtle background container */
     .tabs {
       display: flex;
       gap: 8px;
@@ -148,7 +135,6 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
-    /* Individual tab button with smooth transitions */
     .tab {
       flex: 1;
       padding: 12px 24px;
@@ -163,14 +149,12 @@
       font-family: inherit;
     }
 
-    /* Active tab state with elevated appearance */
     .tab.active {
       background: rgba(255, 255, 255, 0.15);
       color: var(--text);
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
-    /* Hover effect for inactive tabs */
     .tab:hover:not(.active) {
       background: rgba(255, 255, 255, 0.08);
     }
@@ -188,7 +172,6 @@
       margin-bottom: 12px;
     }
 
-    /* Input fields with glassmorphic styling */
     input {
       width: 100%; 
       padding: 12px 16px;
@@ -203,7 +186,6 @@
       transition: all 200ms ease;
     }
 
-    /* Focus state with cyan accent and glow */
     input:focus {
       border-color: rgba(103, 232, 249, 0.5);
       background: rgba(255, 255, 255, 0.12);
@@ -214,7 +196,6 @@
       color: rgba(255, 255, 255, 0.4);
     }
 
-    /* Password validation hint text */
     .password-hint {
       font-size: 12px;
       color: rgba(255, 255, 255, 0.6);
@@ -226,7 +207,6 @@
       color: #e70606;
     }
 
-    /* Primary button with gradient background */
     .btn {
       width: 100%;
       display: inline-flex; 
@@ -247,7 +227,6 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
     
-    /* Interactive hover state with lift effect */
     .btn:hover:not(:disabled) { 
       background: linear-gradient(135deg, rgba(103, 232, 249, 0.3), rgba(96, 165, 250, 0.3));
       transform: translateY(-1px);
@@ -258,7 +237,6 @@
       transform: translateY(0);
     }
 
-    /* Disabled button state */
     .btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
@@ -287,7 +265,6 @@
       text-decoration: none;
     }
 
-    /* Notification message container with slide-in animation */
     .message {
       padding: 14px 16px;
       border-radius: 10px;
@@ -298,21 +275,18 @@
       font-weight: 500;
     }
 
-    /* Error message styling */
     .message.error {
       background: rgba(239, 68, 68, 0.15);
       border: 1px solid rgba(239, 68, 68, 0.3);
       color: #fca5a5;
     }
 
-    /* Success message styling */
     .message.success {
       background: rgba(34, 197, 94, 0.15);
       border: 1px solid rgba(34, 197, 94, 0.3);
       color: #86efac;
     }
 
-    /* Slide-in animation for messages */
     @keyframes slideIn {
       from {
         opacity: 0;
@@ -324,7 +298,6 @@
       }
     }
 
-    /* Terms and conditions checkbox layout */
     .terms-container {
       display: flex;
       align-items: flex-start;
@@ -362,7 +335,115 @@
       margin-top: 0;
     }
 
-    /* Mobile responsiveness adjustments */
+    /* Forgot Password Link */
+    .forgot-password-link {
+      display: block;
+      text-align: right;
+      font-size: 13px;
+      color: rgba(103, 232, 249, 0.9);
+      text-decoration: none;
+      margin-top: 8px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 200ms ease;
+    }
+
+    .forgot-password-link:hover {
+      color: #67e8f9;
+      text-decoration: underline;
+    }
+
+    /* Modal Overlay */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    /* Modal Content */
+    .modal-content {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      width: min(500px, 90vw);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      animation: modalSlideIn 0.3s ease;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text);
+      font-size: 28px;
+      cursor: pointer;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      transition: background 200ms;
+    }
+
+    .modal-close:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .step-indicator {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+
+    .step {
+      width: 40px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      transition: background 300ms;
+    }
+
+    .step.active {
+      background: #67e8f9;
+    }
+
     @media (max-width: 640px) {
       .card {
         padding: 32px 24px;
@@ -376,16 +457,12 @@
 </head>
 
 <body>
-  <!-- Animated background with floating gradient blobs -->
   <div class="scene">
     <div class="blob a"></div>
     <div class="blob b"></div>
   </div>
 
-  <!-- Main login/register card -->
   <div class="card">
-
-    <!-- Clickable logo header that returns to welcome page -->
     <div class="logo" style="cursor:pointer;" onclick="location.href='./welcome.html'">
       <img src="./logo.png" alt="BytLearn" />
       <div>
@@ -394,13 +471,11 @@
       </div>
     </div>
 
-    <!-- Tab navigation for switching between login and register forms -->
     <div class="tabs">
       <button id="tab-login" class="tab active" type="button">Login</button>
       <button id="tab-register" class="tab" type="button">Register</button>
     </div>
 
-    <!-- Login form (visible by default) -->
     <form id="loginForm">
       <div id="loginMessage" class="message"></div>
       
@@ -414,11 +489,12 @@
         <input id="loginPassword" type="password" placeholder="Enter your password" required />
       </div>
 
+      <a class="forgot-password-link" id="forgotPasswordLink">Forgot Password?</a>
+
       <button type="submit" id="loginBtn" class="btn">Sign In</button>
       <a class="link" href="./welcome.html">← Back to Welcome</a>
     </form>
 
-    <!-- Register form (hidden by default) -->
     <form id="registerForm" style="display:none;">
       <div id="registerMessage" class="message"></div>
       
@@ -440,7 +516,6 @@
         </div>
       </div>
 
-      <!-- Terms acceptance requirement for registration -->
       <div class="terms-container">
         <input type="checkbox" id="registerTerms" />
         <label for="registerTerms" class="terms-text" style="margin: 0; cursor: pointer;">
@@ -453,16 +528,73 @@
     </form>
   </div>
 
+  <!-- Forgot Password Modal -->
+  <div class="modal-overlay" id="forgotPasswordModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Reset Password</h2>
+        <button class="modal-close" id="closeModal">&times;</button>
+      </div>
+
+      <div class="step-indicator">
+        <div class="step active" id="step1"></div>
+        <div class="step" id="step2"></div>
+        <div class="step" id="step3"></div>
+      </div>
+
+      <!-- Step 1: Enter Email -->
+      <form id="forgotPasswordForm" style="display:block;">
+        <div id="forgotMessage" class="message"></div>
+        
+        <div class="input-group">
+          <label for="resetEmail">Email Address</label>
+          <input id="resetEmail" type="email" placeholder="Enter your registered email" required />
+        </div>
+
+        <button type="submit" class="btn">Send Reset Code</button>
+      </form>
+
+      <!-- Step 2: Verify OTP -->
+      <form id="verifyOtpForm" style="display:none;">
+        <div id="otpMessage" class="message"></div>
+        
+        <div class="input-group">
+          <label for="resetOtp">Enter OTP</label>
+          <input id="resetOtp" type="text" maxlength="6" placeholder="Enter 6-digit code" required />
+        </div>
+
+        <button type="submit" class="btn">Verify Code</button>
+        <a class="link" id="resendOtpLink" style="cursor: pointer;">Resend Code</a>
+      </form>
+
+      <!-- Step 3: New Password -->
+      <form id="newPasswordForm" style="display:none;">
+        <div id="newPasswordMessage" class="message"></div>
+        
+        <div class="input-group">
+          <label for="newPassword">New Password</label>
+          <input id="newPassword" type="password" placeholder="Enter new password" required />
+          <div id="newPasswordHint" class="password-hint">
+            Password must be at least 8 characters with uppercase, lowercase, number, and special character
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input id="confirmPassword" type="password" placeholder="Confirm new password" required />
+        </div>
+
+        <button type="submit" class="btn">Reset Password</button>
+      </form>
+    </div>
+  </div>
+
   <script>
-    // If user is already logged in, send them directly to the dashboard
-    // This prevents logged-in users from seeing the login page again
     var isAuthenticated = localStorage.getItem('authed');
     if (isAuthenticated === '1') {
       location.replace('./dashboard.html');
     }
 
-    // Get all the HTML elements we'll need to work with
-    // Storing these in variables makes the code faster and easier to read
     var tabLogin = document.getElementById('tab-login');
     var tabRegister = document.getElementById('tab-register');
     var loginForm = document.getElementById('loginForm');
@@ -474,77 +606,95 @@
     var regPassword = document.getElementById('regPassword');
     var passwordHint = document.getElementById('passwordHint');
 
-    // Check if a password is strong enough
-    // Returns true only if ALL requirements are met
+    // Forgot Password Elements
+    var forgotPasswordLink = document.getElementById('forgotPasswordLink');
+    var forgotPasswordModal = document.getElementById('forgotPasswordModal');
+    var closeModal = document.getElementById('closeModal');
+    var forgotPasswordForm = document.getElementById('forgotPasswordForm');
+    var verifyOtpForm = document.getElementById('verifyOtpForm');
+    var newPasswordForm = document.getElementById('newPasswordForm');
+    var resetEmail = document.getElementById('resetEmail');
+    var resetOtp = document.getElementById('resetOtp');
+    var newPassword = document.getElementById('newPassword');
+    var confirmPassword = document.getElementById('confirmPassword');
+    var newPasswordHint = document.getElementById('newPasswordHint');
+    var resendOtpLink = document.getElementById('resendOtpLink');
+    
+    var currentResetEmail = '';
+
     function validatePassword(password) {
       var minLength = password.length >= 8;
-      var hasUpperCase = /[A-Z]/.test(password);  // Regex checks for uppercase letters
-      var hasLowerCase = /[a-z]/.test(password);  // Regex checks for lowercase letters
-      var hasNumber = /[0-9]/.test(password);     // Regex checks for numbers
+      var hasUpperCase = /[A-Z]/.test(password);
+      var hasLowerCase = /[a-z]/.test(password);
+      var hasNumber = /[0-9]/.test(password);
       var hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
       
       return minLength && hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
     }
 
-    // Give instant feedback while the user types their password
-    // Shows a green checkmark if password is strong, or red warning if weak
     regPassword.addEventListener('input', function() {
       var isValid = validatePassword(this.value);
       
       if (this.value.length > 0) {
         if (isValid) {
-          // Password is strong - show success
           passwordHint.textContent = '✓ Password is strong';
           passwordHint.style.color = '#86efac';
           passwordHint.classList.remove('error');
         } else {
-          // Password is weak - show what's needed
           passwordHint.textContent = 'Password must be at least 8 characters with uppercase, lowercase, number, and special character';
           passwordHint.classList.add('error');
         }
       } else {
-        // Field is empty - show default hint
         passwordHint.textContent = 'Password must be at least 8 characters with uppercase, lowercase, number, and special character';
         passwordHint.style.color = 'rgba(255,255,255,0.6)';
         passwordHint.classList.remove('error');
       }
     });
 
-    // Only let users click "Create Account" if they've agreed to the terms
-    // When checkbox is checked, button becomes enabled. Unchecked = disabled
+    newPassword.addEventListener('input', function() {
+      var isValid = validatePassword(this.value);
+      
+      if (this.value.length > 0) {
+        if (isValid) {
+          newPasswordHint.textContent = '✓ Password is strong';
+          newPasswordHint.style.color = '#86efac';
+          newPasswordHint.classList.remove('error');
+        } else {
+          newPasswordHint.textContent = 'Password must be at least 8 characters with uppercase, lowercase, number, and special character';
+          newPasswordHint.classList.add('error');
+        }
+      } else {
+        newPasswordHint.textContent = 'Password must be at least 8 characters with uppercase, lowercase, number, and special character';
+        newPasswordHint.style.color = 'rgba(255,255,255,0.6)';
+        newPasswordHint.classList.remove('error');
+      }
+    });
+
     registerTerms.addEventListener('change', function() {
       registerBtn.disabled = !this.checked;
     });
 
-    // Show a message to the user (either error or success)
-    // The message appears for 8 seconds then automatically disappears
     function showMessage(element, text, type) {
       element.textContent = text;
-      element.className = 'message ' + type;  // 'error' makes it red, 'success' makes it green
+      element.className = 'message ' + type;
       element.style.display = 'block';
       
-      // Hide the message after 8 seconds
       setTimeout(function() {
         element.style.display = 'none';
       }, 8000);
     }
 
-    // Switch between the Login and Register forms
-    // Hides one form and shows the other, updates the active tab styling
     function activate(tab) {
-      // First, hide any error messages
       loginMessage.style.display = 'none';
       registerMessage.style.display = 'none';
       
       if (tab === 'login') {
-        // Show login form, hide register form
         tabLogin.classList.add('active');
         tabRegister.classList.remove('active');
         loginForm.style.display = '';
         registerForm.style.display = 'none';
         document.querySelector('.subtitle').textContent = 'Welcome back! Please enter your details.';
       } else {
-        // Show register form, hide login form
         tabLogin.classList.remove('active');
         tabRegister.classList.add('active');
         loginForm.style.display = 'none';
@@ -553,40 +703,244 @@
       }
     }
 
-    // When someone clicks the Login tab, show the login form
     tabLogin.addEventListener('click', function() {
       activate('login');
     });
     
-    // When someone clicks the Register tab, show the register form
     tabRegister.addEventListener('click', function() {
       activate('register');
     });
 
-    // Handle new user registration
-    // This runs when someone fills out the register form and clicks "Create Account"
-    registerForm.addEventListener('submit', async function(e) {
-      e.preventDefault();  // Stop the page from reloading
+    // Forgot Password Modal Functions
+    function openForgotPasswordModal() {
+      forgotPasswordModal.classList.add('active');
+      resetToStep1();
+    }
+
+    function closeForgotPasswordModal() {
+      forgotPasswordModal.classList.remove('active');
+      resetToStep1();
+    }
+
+    function resetToStep1() {
+      forgotPasswordForm.style.display = 'block';
+      verifyOtpForm.style.display = 'none';
+      newPasswordForm.style.display = 'none';
       
-      // Get what the user typed and clean it up
+      document.getElementById('step1').classList.add('active');
+      document.getElementById('step2').classList.remove('active');
+      document.getElementById('step3').classList.remove('active');
+      
+      document.getElementById('forgotMessage').style.display = 'none';
+      document.getElementById('otpMessage').style.display = 'none';
+      document.getElementById('newPasswordMessage').style.display = 'none';
+      
+      resetEmail.value = '';
+      resetOtp.value = '';
+      newPassword.value = '';
+      confirmPassword.value = '';
+      currentResetEmail = '';
+    }
+
+    function goToStep2() {
+      forgotPasswordForm.style.display = 'none';
+      verifyOtpForm.style.display = 'block';
+      newPasswordForm.style.display = 'none';
+      
+      document.getElementById('step1').classList.add('active');
+      document.getElementById('step2').classList.add('active');
+      document.getElementById('step3').classList.remove('active');
+    }
+
+    function goToStep3() {
+      forgotPasswordForm.style.display = 'none';
+      verifyOtpForm.style.display = 'none';
+      newPasswordForm.style.display = 'block';
+      
+      document.getElementById('step1').classList.add('active');
+      document.getElementById('step2').classList.add('active');
+      document.getElementById('step3').classList.add('active');
+    }
+
+    forgotPasswordLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      openForgotPasswordModal();
+    });
+
+    closeModal.addEventListener('click', function() {
+      closeForgotPasswordModal();
+    });
+
+    forgotPasswordModal.addEventListener('click', function(e) {
+      if (e.target === forgotPasswordModal) {
+        closeForgotPasswordModal();
+      }
+    });
+
+    // Step 1: Send Reset Email
+    forgotPasswordForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      var email = resetEmail.value.trim().toLowerCase();
+      
+      if (!email) {
+        showMessage(document.getElementById('forgotMessage'), 'Please enter your email', 'error');
+        return;
+      }
+
+      try {
+        var res = await fetch('http://127.0.0.1:8000/forgot_password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email })
+        });
+        
+        if (!res.ok) {
+          var data = await res.json();
+          showMessage(document.getElementById('forgotMessage'), data.detail || 'Failed to send reset code', 'error');
+          return;
+        }
+        
+        currentResetEmail = email;
+        showMessage(document.getElementById('forgotMessage'), 'Reset code sent to your email!', 'success');
+        
+        setTimeout(function() {
+          goToStep2();
+        }, 1500);
+        
+      } catch (err) {
+        showMessage(document.getElementById('forgotMessage'), 'Error: ' + err.message, 'error');
+      }
+    });
+
+    // Step 2: Verify OTP
+    verifyOtpForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      var otp = resetOtp.value.trim();
+      
+      if (!otp || otp.length !== 6) {
+        showMessage(document.getElementById('otpMessage'), 'Please enter a valid 6-digit code', 'error');
+        return;
+      }
+
+      try {
+        var res = await fetch('http://127.0.0.1:8000/verify_reset_otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            email: currentResetEmail,
+            otp: otp 
+          })
+        });
+        
+        if (!res.ok) {
+          var data = await res.json();
+          showMessage(document.getElementById('otpMessage'), data.detail || 'Invalid code', 'error');
+          return;
+        }
+        
+        showMessage(document.getElementById('otpMessage'), 'Code verified!', 'success');
+        
+        setTimeout(function() {
+          goToStep3();
+        }, 1000);
+        
+      } catch (err) {
+        showMessage(document.getElementById('otpMessage'), 'Error: ' + err.message, 'error');
+      }
+    });
+
+    // Resend OTP
+    resendOtpLink.addEventListener('click', async function(e) {
+      e.preventDefault();
+      
+      try {
+        var res = await fetch('http://127.0.0.1:8000/forgot_password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: currentResetEmail })
+        });
+        
+        if (res.ok) {
+          showMessage(document.getElementById('otpMessage'), 'New code sent!', 'success');
+        } else {
+          showMessage(document.getElementById('otpMessage'), 'Failed to resend code', 'error');
+        }
+      } catch (err) {
+        showMessage(document.getElementById('otpMessage'), 'Error: ' + err.message, 'error');
+      }
+    });
+
+    // Step 3: Reset Password
+    newPasswordForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      var newPass = newPassword.value;
+      var confirmPass = confirmPassword.value;
+      
+      if (!newPass || !confirmPass) {
+        showMessage(document.getElementById('newPasswordMessage'), 'Please fill all fields', 'error');
+        return;
+      }
+
+      if (!validatePassword(newPass)) {
+        showMessage(document.getElementById('newPasswordMessage'), 'Password must be at least 8 characters with uppercase, lowercase, number, and special character', 'error');
+        return;
+      }
+
+      if (newPass !== confirmPass) {
+        showMessage(document.getElementById('newPasswordMessage'), 'Passwords do not match', 'error');
+        return;
+      }
+
+      try {
+        var res = await fetch('http://127.0.0.1:8000/reset_password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ 
+            email: currentResetEmail,
+            new_password: newPass
+          })
+        });
+        
+        if (!res.ok) {
+          var data = await res.json();
+          showMessage(document.getElementById('newPasswordMessage'), data.detail || 'Failed to reset password', 'error');
+          return;
+        }
+        
+        showMessage(document.getElementById('newPasswordMessage'), 'Password reset successful! Redirecting...', 'success');
+        
+        setTimeout(function() {
+          closeForgotPasswordModal();
+          activate('login');
+          showMessage(loginMessage, 'Password reset successful! Please login with your new password.', 'success');
+        }, 2000);
+        
+      } catch (err) {
+        showMessage(document.getElementById('newPasswordMessage'), 'Error: ' + err.message, 'error');
+      }
+    });
+
+    registerForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
       var name = document.getElementById('regName').value.trim();
       var email = document.getElementById('regEmail').value.trim().toLowerCase();
       var password = document.getElementById('regPassword').value;
 
-      // Make sure all fields are filled in
       if (!name || !email || !password) { 
         showMessage(registerMessage, 'Please fill all fields.', 'error');
         return;
       }
 
-      // Check if password is strong enough
       if (!validatePassword(password)) {
         showMessage(registerMessage, 'Password must be at least 8 characters and contain uppercase, lowercase, number, and special character.', 'error');
         return;
       }
 
       try {
-        // Send the registration info to the server
         var res = await fetch('http://127.0.0.1:8000/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -598,14 +952,12 @@
           })
         });
         
-        // If registration failed, show the error
         if (!res.ok) {
           var data = await res.json();
           showMessage(registerMessage, data.detail || 'Registration failed.', 'error');
           return;
         }
         
-        // Registration worked! Now send a verification code to their email
         showMessage(registerMessage, 'Registration successful! Sending OTP...', 'success');
         
         await fetch('http://localhost:8000/send_otp', {
@@ -614,11 +966,8 @@
           body: JSON.stringify({ email: email })
         });
         
-        // Remember this email for the next page (OTP verification)
         localStorage.setItem('pendingOtpEmail', email);
         
-        // Show messages and redirect to OTP page after a short delay
-        // The delays let users read the success messages
         setTimeout(function() {
           showMessage(registerMessage, 'OTP sent to ' + email + '. Redirecting...', 'success');
           setTimeout(function() {
@@ -627,22 +976,17 @@
         }, 1000);
         
       } catch (err) {
-        // Something went wrong (maybe no internet connection?)
         showMessage(registerMessage, 'Registration failed: ' + err.message, 'error');
       }
     });
 
-    // Handle user login
-    // This runs when someone enters their email/password and clicks "Sign In"
     loginForm.addEventListener('submit', async function(e) {
-      e.preventDefault();  // Stop the page from reloading
+      e.preventDefault();
       
-      // Get the email and password they entered
       var email = document.getElementById('loginEmail').value.trim().toLowerCase();
       var password = document.getElementById('loginPassword').value;
 
       try {
-        // Send login credentials to the server to check if they're correct
         var res = await fetch('http://127.0.0.1:8000/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -652,22 +996,19 @@
           })
         });
         
-        // If login failed (wrong password, user doesn't exist, etc.)
         if (!res.ok) {
           var data = await res.json();
           showMessage(loginMessage, data.detail || 'Login failed.', 'error');
           return;
         }
         
-        // Login successful! Save their info and go to the dashboard
         var user = await res.json();
-        localStorage.setItem('authed', '1');  // Mark them as logged in
+        localStorage.setItem('authed', '1');
         localStorage.setItem('currentUserEmail', user.email);
         localStorage.setItem('currentUserName', user.name || 'Student');
         location.href = 'dashboard.html';
         
       } catch (err) {
-        // Something went wrong with the connection
         showMessage(loginMessage, 'Login failed: ' + err.message, 'error');
       }
     });

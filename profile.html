@@ -639,7 +639,6 @@
           <div>
             <div style="font-weight: 700;" id="pName">Student</div>
             <div style="opacity: 1; font-size: 13px;" id="pEmail">student@bytlearn.app</div>
-            <div style="opacity: 1; font-size: 13px;" id="pPhone"></div>
           </div>
         </div>
         
@@ -889,17 +888,18 @@
       <form id="editProfileForm">
         <div id="editMessage" class="message"></div>
 
+       
         <!-- Profile Picture Upload Section -->
         <div class="profile-upload">
           <div class="profile-preview" id="profilePreview">
           </div>
           
           <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
-            <label class="upload-btn-wrapper upload-btn" style="cursor:pointer;">
-              <span class="upload-btn">Upload Photo</span>
-              <input type="file" id="profilePictureInput" accept="image/*" style="display:block;opacity:0;position:absolute;left:0;top:0;width:100%;height:100%;cursor:pointer;" />
+            <label class="upload-btn" style="cursor:pointer;">
+              Upload Photo
+              <input type="file" id="profilePictureInput" accept="image/*" style="display:none;" />
             </label>
-            <button type="button" class="remove-picture-btn" id="removePictureBtn" style="display:none;">Remove</button>
+            <button type="button" class="remove-picture-btn" id="removePictureBtn" style="display:none;">Remove Photo</button>
           </div>
         </div>
 
@@ -965,7 +965,6 @@
     function updateProfileDisplay() {
       const name = localStorage.getItem('currentUserName') || 'Student';
       const email = localStorage.getItem('currentUserEmail') || 'student@bytlearn.app';
-      const phone = localStorage.getItem('currentUserPhone') || '';
       const profilePic = getProfilePicture();
 
       // Update name
@@ -980,18 +979,6 @@
         if (el) el.textContent = email;
       });
 
-      // Update phone
-      const phoneElements = document.querySelectorAll('#pPhone');
-      phoneElements.forEach(el => {
-        if (el) {
-          if (phone) {
-            el.textContent = phone;
-            el.style.display = 'block';
-          } else {
-            el.style.display = 'none';
-          }
-        }
-      });
 
       // Update profile picture
       const headerPic = document.getElementById('headerProfilePic');
@@ -1064,12 +1051,11 @@
       // Load current values
       const name = localStorage.getItem('currentUserName') || 'Student';
       const email = localStorage.getItem('currentUserEmail') || 'student@bytlearn.app';
-      const phone = localStorage.getItem('currentUserPhone') || '';
       const profilePic = getProfilePicture();
 
       document.getElementById('editName').value = name;
       document.getElementById('editEmail').value = email;
-      document.getElementById('editPhone').value = phone;
+
 
       currentProfilePicture = profilePic;
       updatePreview(profilePic);

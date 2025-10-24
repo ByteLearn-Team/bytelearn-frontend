@@ -1111,6 +1111,13 @@
       }
     });
 
+    // Handle remove picture button
+    removePictureBtn.addEventListener('click', function() {
+      currentProfilePicture = null; // Clear the picture state
+      updatePreview(null); // Update the preview to show the placeholder
+      profilePictureInput.value = ''; // Clear the file input
+    });
+
     // Handle form submission
     editProfileForm.addEventListener('submit', async function(e) {
       e.preventDefault();

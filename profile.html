@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -893,15 +892,14 @@
         <!-- Profile Picture Upload Section -->
         <div class="profile-upload">
           <div class="profile-preview" id="profilePreview">
-            <span class="profile-preview-text">👤</span>
           </div>
           
           <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
-            <div class="upload-btn-wrapper">
-              <button type="button" class="upload-btn">Choose Picture</button>
-              <input type="file" id="profilePictureInput" accept="image/*" />
-            </div>
-            <button type="button" class="remove-picture-btn" id="removePictureBtn" style="display: none;">Remove Picture</button>
+            <label class="upload-btn-wrapper upload-btn" style="cursor:pointer;">
+              <span class="upload-btn">Upload Photo</span>
+              <input type="file" id="profilePictureInput" accept="image/*" style="display:block;opacity:0;position:absolute;left:0;top:0;width:100%;height:100%;cursor:pointer;" />
+            </label>
+            <button type="button" class="remove-picture-btn" id="removePictureBtn" style="display:none;">Remove</button>
           </div>
         </div>
 
@@ -1006,6 +1004,35 @@
       }
     }
 
+    // --- NEW: load profile from backend (minimal, uses existing /students endpoint) ---
+    async function loadProfileFromDatabase() {
+      const studentId = localStorage.getItem('currentUserId');
+      if (!studentId) return;
+      try {
+        const res = await fetch('http://127.0.0.1:8000/students');
+        if (!res.ok) return;
+        const students = await res.json();
+        const me = students.find(s => String(s.student_id) === String(studentId));
+        if (!me) return;
+        // populate localStorage so the rest of the UI continues to work unchanged
+        if (me.name) localStorage.setItem('currentUserName', me.name);
+        if (me.email) localStorage.setItem('currentUserEmail', me.email);
+        if (typeof me.profile_picture !== 'undefined' && me.profile_picture !== null) {
+          localStorage.setItem('profilePicture', me.profile_picture);
+        } else {
+          localStorage.removeItem('profilePicture');
+        }
+        updateProfileDisplay();
+      } catch (e) {
+        // silent fail — UI will use localStorage fallback
+        console.warn('loadProfileFromDatabase:', e);
+      }
+    }
+
+    // call it once on script init
+    loadProfileFromDatabase();
+    // --- end new ---
+
     // Initialize profile display
     updateProfileDisplay();
 
@@ -1098,54 +1125,62 @@
       }
     });
 
-    // Handle remove picture
-    removePictureBtn.addEventListener('click', function() {
-      currentProfilePicture = null;
-      updatePreview(null);
-      profilePictureInput.value = '';
-    });
-
     // Handle form submission
-    editProfileForm.addEventListener('submit', function(e) {
+    editProfileForm.addEventListener('submit', async function(e) {
       e.preventDefault();
 
       const newName = document.getElementById('editName').value.trim();
-      const newPhone = document.getElementById('editPhone').value.trim();
 
       if (!newName) {
         showMessage(editMessage, 'Name cannot be empty', 'error');
         return;
       }
 
-      // Validate phone number if provided
-      if (newPhone) {
-        const phoneRegex = /^[0-9]{10,15}$/;
-        if (!phoneRegex.test(newPhone.replace(/[\s\-\(\)]/g, ''))) {
-          showMessage(editMessage, 'Please enter a valid phone number', 'error');
+      // Get student ID from localStorage
+      const studentId = localStorage.getItem('currentUserId');
+      if (!studentId) {
+        showMessage(editMessage, 'User ID not found. Please login again.', 'error');
+        return;
+      }
+
+      try {
+        // Update in database
+        const response = await fetch(`http://127.0.0.1:8000/students/${studentId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: newName,
+            profile_picture: currentProfilePicture  // Send profile picture (can be null to remove)
+          })
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(()=>({detail:'Server error'}));
+          showMessage(editMessage, errorData.detail || 'Failed to update profile', 'error');
           return;
         }
-      }
 
-      // Save changes to localStorage
-      localStorage.setItem('currentUserName', newName);
-      if (newPhone) {
-        localStorage.setItem('currentUserPhone', newPhone);
-      } else {
-        localStorage.removeItem('currentUserPhone');
-      }
+        const result = await response.json();
 
-      if (currentProfilePicture !== null) {
+        // Save changes to localStorage only after successful DB update
+        localStorage.setItem('currentUserName', newName);
+        // ensure localStorage matches backend: set or remove based on currentProfilePicture (null => removed)
         setProfilePicture(currentProfilePicture);
+
+        // Update display
+        updateProfileDisplay();
+        // keep header and other pages consistent
+        loadProfileFromDatabase();
+
+        showMessage(editMessage, 'Changes saved successfully!', 'success');
+
+        setTimeout(function() {
+          closeEditModalFunc();
+        }, 1500);
+
+      } catch (error) {
+        showMessage(editMessage, 'Error updating profile: ' + error.message, 'error');
       }
-
-      // Update display
-      updateProfileDisplay();
-
-      showMessage(editMessage, 'Profile updated successfully!', 'success');
-
-      setTimeout(function() {
-        closeEditModalFunc();
-      }, 1500);
     });
   </script>
 </body>

@@ -960,20 +960,11 @@
         
         showMessage(registerMessage, 'Registration successful! Sending OTP...', 'success');
         
-        await fetch('http://localhost:8000/send_otp', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: email })
-        });
-        
+        // backend /register already sent the OTP, just store email and go to OTP page
         localStorage.setItem('pendingOtpEmail', email);
-        
         setTimeout(function() {
-          showMessage(registerMessage, 'OTP sent to ' + email + '. Redirecting...', 'success');
-          setTimeout(function() {
-            location.href = 'otp.html';
-          }, 1500);
-        }, 1000);
+          location.href = 'otp.html';
+        }, 1500);
         
       } catch (err) {
         showMessage(registerMessage, 'Registration failed: ' + err.message, 'error');
@@ -1006,6 +997,8 @@
         localStorage.setItem('authed', '1');
         localStorage.setItem('currentUserEmail', user.email);
         localStorage.setItem('currentUserName', user.name || 'Student');
+        // persist student id for frontend updates (used by profile page)
+        if (user.student_id) localStorage.setItem('currentUserId', String(user.student_id));
         location.href = 'dashboard.html';
         
       } catch (err) {

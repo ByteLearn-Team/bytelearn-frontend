@@ -1319,68 +1319,82 @@
 
     /* ===========================
        RAG DOUBT ANSWERING INTEGRATION
-       AI-powered Q&A using Flowise API with chapter-specific context
+       Use Langflow /api/v1/run endpoint instead of Flowise
        =========================== */
-    
-    // Update RAG API URL to new endpoint
-    const ragApiUrl = "https://cloud.flowiseai.com/api/v1/prediction/7b2c623c-1f5f-47a7-81e1-51288edc1240"; // changed endpoint
 
-    const ragChatForm = document.getElementById('rag-chat-form');
-    const ragChatInput = document.getElementById('rag-chat-input');
-    const ragChatHistory = document.getElementById('rag-chat-history');
-
-    if (ragChatForm && ragChatInput && ragChatHistory) {
-      ragChatForm.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const question = ragChatInput.value.trim();
-        if (!question) return;
-
-        const selectedChapterId = Number(localStorage.getItem("selectedChapterId"));
-
-        ragChatHistory.innerHTML += `<div style="text-align:left;"><span style="font-weight:700;color:#233876;">You:</span> <span style="color:#fff;">${question}</span></div>`;
-        ragChatInput.value = '';
-        ragChatInput.disabled = true;
-        ragChatHistory.innerHTML += `<div id="rag-loading" style="color:#aaa;text-align:left;">AI is thinking...</div>`;
-        ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
-
-        if (!selectedChapterId) {
-          document.getElementById('rag-loading').remove();
-          ragChatHistory.innerHTML += `<div style="text-align:left;"><span style="font-weight:700;color:#ffe066;">AI:</span> <span style="color:var(--muted);">Please select a chapter from the Dashboard first.</span></div>`;
-          ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
-          ragChatInput.disabled = false;
-          ragChatInput.focus();
-          return;
-        }
-
-        if (selectedChapterId !== 1) {
-          document.getElementById('rag-loading').remove();
-          ragChatHistory.innerHTML += `<div style="text-align:left;"><span style="font-weight:700;color:#ffe066;">AI:</span> <span style="color:var(--muted);">This chapter is not ready yet. Currently, only Class 11, Chapter 1 content is available. Please select Chapter 1 from the Dashboard to ask questions.</span></div>`;
-          ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
-          ragChatInput.disabled = false;
-          ragChatInput.focus();
-          return;
-        }
-
-        try {
-          // Use new query function and endpoint
-          const response = await fetch(ragApiUrl, {
+async function query(data) {
+    const response = await fetch(
+        "https://cloud.flowiseai.com/api/v1/prediction/938cfc75-227e-4ace-bdac-4ff12fec29ee",
+        {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ question })
-          });
-          const data = await response.json();
-          document.getElementById('rag-loading').remove();
-          ragChatHistory.innerHTML += `<div style="text-align:left;"><span style="font-weight:700;color:#ffe066;">AI:</span> <span style="color:var(--muted);">${data.text || "Response not available."}</span></div>`;
-          ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
-        } catch (err) {
-          document.getElementById('rag-loading').remove();
-          ragChatHistory.innerHTML += `<div style="color:#f55;text-align:left;">Error: Could not get answer.</div>`;
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
         }
+    );
+    const result = await response.json();
+    return result;
+}
 
-        ragChatInput.disabled = false;
-        ragChatInput.focus();
-      });
+const ragChatForm = document.getElementById('rag-chat-form');
+const ragChatInput = document.getElementById('rag-chat-input');
+const ragChatHistory = document.getElementById('rag-chat-history');
+
+if (ragChatForm && ragChatInput && ragChatHistory) {
+  ragChatForm.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const question = ragChatInput.value.trim();
+    if (!question) return;
+
+    ragChatHistory.innerHTML += `<div style="text-align:left;"><span style="font-weight:700;color:#233876;">You:</span> <span style="color:#fff;">${question}</span></div>`;
+    ragChatInput.value = '';
+    ragChatInput.disabled = true;
+    ragChatHistory.innerHTML += `<div id="rag-loading" style="color:#aaa;text-align:left;">AI is thinking...</div>`;
+    ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
+
+    try {
+      // call Flowise cloud
+      const resp = await query({ question: question });
+
+      // simple robust extraction of answer from common Flowise shapes
+      let answerText = null;
+      if (resp) {
+        if (typeof resp === 'string') answerText = resp;
+        else if (resp.text) answerText = resp.text;
+        else if (resp.output_text) answerText = resp.output_text;
+        else if (resp.answer) answerText = resp.answer;
+        else if (resp.result && typeof resp.result === 'string') answerText = resp.result;
+        else if (Array.isArray(resp.output) && resp.output.length) {
+          const first = resp.output[0];
+          if (first && first.data) {
+            if (typeof first.data === 'string') answerText = first.data;
+            else if (Array.isArray(first.data) && first.data[0] && first.data[0].text) answerText = first.data[0].text;
+          }
+        } else if (Array.isArray(resp.outputs) && resp.outputs.length) {
+          const out = resp.outputs[0];
+          answerText = out?.data?.text || out?.text || null;
+        }
+      }
+
+      if (!answerText) {
+        // fallback to a compact JSON preview
+        try { answerText = JSON.stringify(resp).slice(0, 4000); } catch { answerText = String(resp); }
+      }
+
+      document.getElementById('rag-loading')?.remove();
+      ragChatHistory.innerHTML += `<div style="text-align:left;"><span style="font-weight:700;color:#ffe066;">AI:</span> <span style="color:var(--muted);">${answerText}</span></div>`;
+      ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
+    } catch (err) {
+      document.getElementById('rag-loading')?.remove();
+      ragChatHistory.innerHTML += `<div style="color:#f55;text-align:left;">Error: Could not get answer (${err.message || err}).</div>`;
+      ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
+    } finally {
+      ragChatInput.disabled = false;
+      ragChatInput.focus();
     }
+  });
+}
 
     /* ===========================
        INITIAL PAGE LOAD

@@ -604,7 +604,7 @@
       background: rgba(255,255,255,0.3);
     }
 
-/* AI Disclaimer styling */
+    /* AI Disclaimer styling */
     .ai-disclaimer {
       padding: 8px 0;
       margin: 0 0 12px 0;
@@ -627,6 +627,94 @@
       font-weight: 400;
       text-align: left;
     }
+
+{ 
+/* ===== ADD: Quiz modal + timer styles (inserted, no other changes) ===== */
+
+    /* Quiz Section - AI Disclaimer */
+    #quizzes .ai-disclaimer {
+      padding: 8px 0;
+      margin: 0 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Quiz Start Modal */
+    .quiz-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+
+    .quiz-modal-overlay.active {
+      display: flex;
+    }
+
+    .quiz-modal-content {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      width: min(500px, 90vw);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      animation: modalSlideIn 0.3s ease;
+      text-align: center;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .quiz-modal-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .quiz-modal-text {
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .quiz-timer-display {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 20px;
+      backdrop-filter: blur(8px);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      z-index: 999;
+      display: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .quiz-timer-display.active {
+      display: block;
+    }
+
+/* ===== END ADD ===== */
   </style>
 </head>
 
@@ -748,101 +836,261 @@
 
   <script>
     /* 
-       QUIZ FUNCTIONALITY
- */
-    
-    const quizArea = document.getElementById('quiz-area');
-    const quizControls = document.getElementById('quiz-controls');
-    const generateQuizBtn = document.getElementById('generate-quiz-btn');
-    let quizData = null; // Stores the current quiz questions and answers
+       QUIZ FUNCTIONALITY (REPLACE ONLY THIS BLOCK)
+    */
+const quizArea = document.getElementById('quiz-area');
+const generateQuizBtn = document.getElementById('generate-quiz-btn');
+let currentQuizData = null;
+let currentSavedQuizId = null; // will be set when backend returns quiz_id for generated quiz
 
-    if (generateQuizBtn) {
-      // When user clicks generate quiz button, fetch questions from backend
-      generateQuizBtn.addEventListener('click', async function() {
-        quizArea.innerHTML = '<div class="loading-text">Generating quiz...</div>';
-        generateQuizBtn.disabled = true; // Prevent multiple simultaneous requests
-        
-        try {
-          // Request quiz generation from backend API
-          const res = await fetch('/generate_quiz', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ topic: 'current' })
-          });
-          const data = await res.json();
-          
-          // Validate response contains questions array
-          if (data && Array.isArray(data.questions) && data.questions.length > 0) {
-            quizData = data.questions;
-            renderQuiz(quizData);
-          } else {
-            quizArea.innerHTML = '<div class="error-message">No quiz questions generated.</div>';
-            generateQuizBtn.disabled = false;
-          }
-        } catch (e) {
-          // Handle network or parsing errors
-          quizArea.innerHTML = '<div class="error-message">Error generating quiz: ' + (e.message || e) + '</div>';
-          generateQuizBtn.disabled = false;
-        }
-      });
+// Quiz Handler: Fetch quiz for selected chapter
+async function generateQuizHandler() {
+  const chapterId = localStorage.getItem('selectedChapterId');
+  if (!chapterId) {
+    quizArea.innerHTML = '<div style="color:#f87171;text-align:center;padding:20px;">No chapter selected. Select a chapter in Dashboard.</div>';
+    return;
+  }
+  quizArea.innerHTML = `<div style="text-align:center;padding:40px;color:#aaa;"><div style="font-size:18px;font-weight:600;">Generating quiz for selected chapter...</div></div>`;
+  if (generateQuizBtn) { generateQuizBtn.disabled = true; generateQuizBtn.textContent = "Generating..."; }
+  try {
+    const payload = { chapter_id: chapterId, num_questions: 2 }; // request up to 80 questions
+    const res = await fetch('http://127.0.0.1:8000/generate_quiz', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || data.error || "generate_quiz failed");
+    const questions = data.quiz || [];
+    if (!Array.isArray(questions) || questions.length === 0) {
+      quizArea.innerHTML = '<div style="text-align:center;padding:30px;color:#f87171;">No quiz questions available.</div>';
+      return;
     }
 
-    /**
-     * Renders quiz questions with multiple choice options
-     * Creates form with radio buttons for each question
-     */
-    function renderQuiz(questions) {
-      if (!questions || !questions.length) {
-        quizArea.innerHTML = '<div class="error-message">No quiz questions available.</div>';
-        return;
-      }
-      
-      let html = '<form id="quiz-form-area">';
-      
-      // Build HTML for each question with its options
-      questions.forEach((q, idx) => {
-        html += `<div class="card" style="margin-bottom:18px;text-align:left;">
-          <div style="font-weight:600;margin-bottom:8px;">Q${idx+1}. ${q.question || ''}</div>
-          <ul style="opacity:.85;line-height:1.8;list-style-type:upper-alpha;">
-            ${q.options.map((opt, oidx) => `
-              <li style="margin-bottom:6px;">
-                <label style="cursor:pointer;">
-                  <input type="radio" name="q${idx}" value="${oidx}" style="margin-right:8px;" />
-                  ${opt}
-                </label>
-              </li>
-            `).join('')}
-          </ul>
-        </div>`;
-      });
-      
-      html += '<button type="submit" class="btn" style="font-size:16px;padding:10px 22px;">Submit Quiz</button>';
-      html += '</form>';
-      
-      quizArea.innerHTML = html;
+    // store locally for UI
+    currentQuizData = questions;
 
-      const quizForm = document.getElementById('quiz-form-area');
-      if (quizForm) {
-        // Handle quiz submission and scoring
-        quizForm.addEventListener('submit', function(e) {
-          e.preventDefault();
-          if (!quizData || !quizData.length) return;
-          
-          let correct = 0;
-          let total = quizData.length;
-          
-          // Compare each selected answer with correct answer
-          quizData.forEach((q, idx) => {
-            const selected = quizForm.querySelector(`input[name='q${idx}']:checked`);
-            if (selected && q.answer !== undefined && Number(selected.value) === q.answer) correct++;
-          });
-          
-          // Display score to user
-          quizArea.innerHTML += `<div style='margin:18px 0;font-size:18px;font-weight:600;'>You got ${correct} out of ${total} correct.</div>`;
+    // persist generated quiz to backend immediately (non-blocking but awaited here to report errors)
+    (async () => {
+      try {
+        const studentId = localStorage.getItem('currentUserId') || null;
+        const saveRes = await fetch('http://127.0.0.1:8000/generate_and_save_quiz', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            quiz: questions,
+            chapter_id: chapterId,
+            student_id: studentId,
+            num_questions: Array.isArray(questions) ? questions.length : 0
+          })
         });
+        const saveData = await saveRes.json().catch(() => null);
+        if (!saveRes.ok) {
+          console.warn('Failed to save generated quiz:', saveData || await saveRes.text());
+        } else {
+          console.log('Generated quiz saved:', saveData);
+          // keep the returned quiz_id so submit can update the score later
+          if (saveData && saveData.quiz_id) {
+            currentSavedQuizId = saveData.quiz_id;
+            // persist locally for this session (optional)
+            try { localStorage.setItem('lastSavedQuizId', String(currentSavedQuizId)); } catch(e){}
+          }
+        }
+      } catch (e) {
+        console.warn('Error saving generated quiz:', e);
       }
-      generateQuizBtn.disabled = false; // Re-enable generate button after rendering
-    }
+    })();
+
+    if (generateQuizBtn) generateQuizBtn.style.display = 'none';
+    renderQuizQuestions(questions);
+  } catch (err) {
+    quizArea.innerHTML = `<div style="text-align:center;padding:30px;color:#f87171;">Error: ${err.message}</div>`;
+  }
+  if (generateQuizBtn) { generateQuizBtn.disabled = false; generateQuizBtn.textContent = 'Generate Quiz'; }
+}
+
+// Generate Quiz button event
+if (generateQuizBtn) {
+  generateQuizBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+    generateQuizHandler();
+  });
+}
+
+// Only render questions, do NOT show correct answers or explanations
+function renderQuizQuestions(questions) {
+  if (!questions || questions.length === 0) {
+    quizArea.innerHTML = '<div style="text-align:center;padding:30px;color:#f87171;">No quiz questions available.</div>';
+    return;
+  }
+
+  let html = '<form id="quiz-form-area" style="text-align:left;">';
+  questions.forEach((q, idx) => {
+    html += `
+      <div class="card" style="margin-bottom:18px;padding:18px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;">
+        <div style="font-weight:700;margin-bottom:12px;color:#fff;line-height:1.4;">Q${idx+1}. ${q.question}</div>
+        <div>
+          ${(q.options || []).map((opt, oidx) => `
+            <div class="quiz-option" style="margin-bottom:8px;">
+              <button type="button" class="btn option-btn" data-q="${idx}" data-opt="${oidx}" style="width:100%;text-align:left;padding:10px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid rgba(255,255,255,0.04);">
+                ${opt}
+              </button>
+            </div>
+          `).join('')}
+        </div>
+        <div id="explanation-${idx}" style="display:none;margin-top:10px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;color:var(--muted);">
+          <strong>Explanation:</strong>
+          <div style="margin-top:8px;">${q.explanation || ''}</div>
+        </div>
+      </div>
+    `;
+  });
+
+  html += `<div style="margin-top:12px;"><button type="submit" id="submit-quiz" class="btn">Submit Quiz</button></div>`;
+  html += '</form>';
+
+  quizArea.innerHTML = html;
+  if (generateQuizBtn) { generateQuizBtn.disabled = false; generateQuizBtn.textContent = 'Generate New Quiz'; }
+  currentQuizData = questions;
+
+  // Option click: ONLY select visually, do NOT show explanations pre-submit
+  document.querySelectorAll('.option-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const parent = this.closest('.card');
+      // Visually mark selection and set reliable attributes/classes
+      parent.querySelectorAll('.option-btn').forEach(ob => {
+        ob.style.opacity = '0.6';
+        ob.removeAttribute('data-selected');
+        ob.removeAttribute('aria-pressed');
+        ob.classList.remove('selected');
+      });
+      this.style.opacity = '1';
+      this.setAttribute('data-selected', '1');
+      this.setAttribute('aria-pressed', 'true');
+      this.classList.add('selected');
+    });
+  });
+
+  // Full quiz submit handler (scoped to the quiz form)
+  const quizForm = document.getElementById('quiz-form-area');
+  if (quizForm) {
+    quizForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (!currentQuizData || currentQuizData.length === 0) return;
+
+      let correct = 0;
+      const total = currentQuizData.length;
+
+      // Use only the quiz cards rendered inside the form (avoid picking other .card elements)
+      const quizCards = Array.from(quizForm.querySelectorAll('.card'));
+
+      currentQuizData.forEach((q, idx) => {
+        const parent = quizCards[idx];
+        if (!parent) return; // defensive
+
+        const buttons = Array.from(parent.querySelectorAll('.option-btn'));
+        const selectedBtn = parent.querySelector('.option-btn[data-selected="1"], .option-btn.selected, .option-btn[aria-pressed="true"]');
+        const selectedIndex = selectedBtn ? buttons.indexOf(selectedBtn) : -1;
+
+        // Resolve correct answer robustly (number, numeric-string, letter, or option-text)
+        let correctIndex = 0;
+        const corr = q.correct_answer ?? q.correctAnswer ?? q.correctanswer ?? q.correct ?? q.correctIndex;
+        if (typeof corr === 'number' && Number.isFinite(corr)) {
+          correctIndex = corr;
+        } else if (typeof corr === 'string' && corr.trim() !== '') {
+          const s = corr.trim();
+          if (!isNaN(Number(s))) {
+            correctIndex = Number(s);
+          } else if (/^[A-Za-z]$/.test(s)) {
+            correctIndex = s.toUpperCase().charCodeAt(0) - 65;
+          } else {
+            // try to match option text
+            const match = buttons.findIndex(b => {
+              const t = (b.textContent || b.innerText || '').trim();
+              return t === s || t.startsWith(s) || t.toLowerCase() === s.toLowerCase() || t.toLowerCase().startsWith(s.toLowerCase());
+            });
+            correctIndex = match >= 0 ? match : 0;
+          }
+        }
+
+        if (selectedIndex === correctIndex) correct++;
+
+        // reveal explanations and highlight correct/wrong
+        buttons.forEach((ob, i) => {
+          ob.style.background = (i === correctIndex)
+            ? 'rgba(34,197,94,0.12)'
+            : (i === selectedIndex ? 'rgba(239,68,68,0.08)' : 'rgba(255,255,255,0.02)');
+          // ensure opacity reset for unselected
+          ob.style.opacity = '1';
+        });
+
+        const ex = parent.querySelector(`#explanation-${idx}`) || document.getElementById(`explanation-${idx}`);
+        if (ex) ex.style.display = 'block';
+      });
+
+  const percentage = Math.round((correct / total) * 100);
+      let grade = 'D', message = 'Keep practicing!';
+      if (percentage >= 90) { grade = 'A+'; message = 'Outstanding!'; }
+      else if (percentage >= 80) { grade = 'A'; message = 'Excellent!'; }
+      else if (percentage >= 70) { grade = 'B'; message = 'Good job!'; }
+      else if (percentage >= 60) { grade = 'C'; message = 'Keep practicing!'; }
+
+      quizArea.innerHTML = `
+        <div style="text-align:center;padding:24px;border-radius:12px;background:rgba(255,255,255,0.02);">
+          <div style="font-size:48px;color:#67e8f9;margin-bottom:8px;">${percentage}%</div>
+          <div style="font-size:20px;font-weight:700;margin-bottom:6px;">Grade: ${grade}</div>
+          <div style="color:var(--muted);margin-bottom:12px;">${message}</div>
+          <div style="color:var(--muted);">You got ${correct} out of ${total} correct</div>
+        </div>
+      `;
+      if (generateQuizBtn) { generateQuizBtn.style.display = ''; generateQuizBtn.disabled = false; generateQuizBtn.textContent = 'Generate New Quiz'; }
+
+      // Persist score to backend: prefer updating existing quiz row if we have quiz_id
+      (async () => {
+        try {
+          const studentId = localStorage.getItem('currentUserId') || null;
+          const chapterId = localStorage.getItem('selectedChapterId') || null;
+          if (currentSavedQuizId) {
+            // minimal update endpoint
+            const res = await fetch('http://127.0.0.1:8000/update_quiz_score', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ quiz_id: currentSavedQuizId, score: percentage })
+            });
+            if (!res.ok) console.warn('Failed to update quiz score', await res.text());
+            else console.log('Quiz score updated for', currentSavedQuizId);
+          } else {
+            // create a new quiz result if we didn't have one saved earlier
+            const res = await fetch('http://127.0.0.1:8000/save_quiz_result', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                student_id: studentId,
+                chapter_id: chapterId,
+                score: percentage,
+                correct: correct,
+                total: total,
+                quiz: currentQuizData
+              })
+            });
+            const data = await res.json().catch(() => null);
+            if (!res.ok) console.warn('Failed to save quiz result', data || await res.text());
+            else {
+              console.log('Saved new quiz result', data);
+              if (data && data.quiz_id) currentSavedQuizId = data.quiz_id;
+            }
+          }
+        } catch (err) {
+          console.warn('Error saving/updating quiz score:', err);
+        }
+      })();
+    }, { once: true });
+  }
+}
+
+/* ==============================================
+   END QUIZ FUNCTIONALITY BLOCK
+   ============================================== */
 
     /* 
        Doubt Sestion
@@ -1353,46 +1601,70 @@ if (ragChatForm && ragChatInput && ragChatHistory) {
     ragChatHistory.innerHTML += `<div id="rag-loading" style="color:#aaa;text-align:left;">AI is thinking...</div>`;
     ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
 
-    try {
-      // call Flowise cloud
-      const resp = await query({ question: question });
+      try {
+        // Prefer backend /generate (so server can persist Doubt and Response).
+        const studentId = localStorage.getItem('currentUserId') || null;
+        const chapterId = localStorage.getItem('selectedChapterId') || null;
 
-      // simple robust extraction of answer from common Flowise shapes
-      let answerText = null;
-      if (resp) {
-        if (typeof resp === 'string') answerText = resp;
-        else if (resp.text) answerText = resp.text;
-        else if (resp.output_text) answerText = resp.output_text;
-        else if (resp.answer) answerText = resp.answer;
-        else if (resp.result && typeof resp.result === 'string') answerText = resp.result;
-        else if (Array.isArray(resp.output) && resp.output.length) {
-          const first = resp.output[0];
-          if (first && first.data) {
-            if (typeof first.data === 'string') answerText = first.data;
-            else if (Array.isArray(first.data) && first.data[0] && first.data[0].text) answerText = first.data[0].text;
+        let usedAnswer = null;
+
+        try {
+          const backendRes = await fetch('http://127.0.0.1:8000/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt: question, student_id: studentId, chapter_id: chapterId })
+          });
+          const backendData = await backendRes.json().catch(() => null);
+          if (backendRes.ok && (backendData?.answer || backendData?.response || backendData?.doubt_response || backendData?.output)) {
+            usedAnswer = backendData.answer || backendData.response || backendData.doubt_response || backendData.output || (typeof backendData === 'string' ? backendData : null);
+          } else if (backendRes.ok && typeof backendData === 'string' && backendData.length) {
+            usedAnswer = backendData;
+          } else if (!backendRes.ok) {
+            console.warn('Backend /generate returned non-OK, falling back to Flowise:', backendData || await backendRes.text());
           }
-        } else if (Array.isArray(resp.outputs) && resp.outputs.length) {
-          const out = resp.outputs[0];
-          answerText = out?.data?.text || out?.text || null;
+        } catch (backendErr) {
+          console.warn('Backend /generate failed, falling back to Flowise:', backendErr);
         }
-      }
 
-      if (!answerText) {
-        // fallback to a compact JSON preview
-        try { answerText = JSON.stringify(resp).slice(0, 4000); } catch { answerText = String(resp); }
-      }
+        // If backend didn't provide an answer, fall back to the Flowise cloud query
+        if (!usedAnswer) {
+          const resp = await query({ question: question });
 
-      document.getElementById('rag-loading')?.remove();
-      ragChatHistory.innerHTML += `<div style="text-align:left;"><span style="font-weight:700;color:#ffe066;">AI:</span> <span style="color:var(--muted);">${answerText}</span></div>`;
-      ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
-    } catch (err) {
-      document.getElementById('rag-loading')?.remove();
-      ragChatHistory.innerHTML += `<div style="color:#f55;text-align:left;">Error: Could not get answer (${err.message || err}).</div>`;
-      ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
-    } finally {
-      ragChatInput.disabled = false;
-      ragChatInput.focus();
-    }
+          // simple robust extraction of answer from common Flowise shapes
+          if (resp) {
+            if (typeof resp === 'string') usedAnswer = resp;
+            else if (resp.text) usedAnswer = resp.text;
+            else if (resp.output_text) usedAnswer = resp.output_text;
+            else if (resp.answer) usedAnswer = resp.answer;
+            else if (resp.result && typeof resp.result === 'string') usedAnswer = resp.result;
+            else if (Array.isArray(resp.output) && resp.output.length) {
+              const first = resp.output[0];
+              if (first && first.data) {
+                if (typeof first.data === 'string') usedAnswer = first.data;
+                else if (Array.isArray(first.data) && first.data[0] && first.data[0].text) usedAnswer = first.data[0].text;
+              }
+            } else if (Array.isArray(resp.outputs) && resp.outputs.length) {
+              const out = resp.outputs[0];
+              usedAnswer = out?.data?.text || out?.text || null;
+            }
+          }
+
+          if (!usedAnswer) {
+            try { usedAnswer = JSON.stringify(resp).slice(0, 4000); } catch { usedAnswer = String(resp); }
+          }
+        }
+
+        document.getElementById('rag-loading')?.remove();
+        ragChatHistory.innerHTML += `<div style="text-align:left;"><span style="font-weight:700;color:#ffe066;">AI:</span> <span style="color:var(--muted);">${usedAnswer}</span></div>`;
+        ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
+      } catch (err) {
+        document.getElementById('rag-loading')?.remove();
+        ragChatHistory.innerHTML += `<div style="color:#f55;text-align:left;">Error: Could not get answer (${err.message || err}).</div>`;
+        ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
+      } finally {
+        ragChatInput.disabled = false;
+        ragChatInput.focus();
+      }
   });
 }
 

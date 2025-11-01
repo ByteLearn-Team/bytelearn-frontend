@@ -247,10 +247,11 @@
     
     .bars {
       position: absolute;
-      inset: 12px 12px 32px 40px;
+      inset: 30px 12px 42px 40px;
       display: flex;
       gap: 16px;
       align-items: flex-end;
+      justify-content: space-around;
     }
     
     .bar {
@@ -261,16 +262,24 @@
     
     .xlabels {
       position: absolute;
-      bottom: 6px;
+      bottom: 0px;
       left: 40px;
       right: 12px;
       display: flex;
       gap: 16px;
-      justify-content: space-between;
+      justify-content: space-around;
       font-size: 12px;
       opacity: 1;
     }
     
+    .xlabels span {
+      display: inline-block;
+      width: 65px;
+      word-wrap: break-word;
+      font-size: 11px;
+      line-height: 1.2;
+    }
+
     .linechart {
       position: absolute;
       inset: 12px 12px 32px 40px;
@@ -284,6 +293,15 @@
       display: inline-block;
     }
     
+    .chart .legend {
+      position: absolute;
+      top: 0;
+      left: 40px;
+      right: 12px;
+      justify-content: center;
+      margin-top: 0;
+    }
+
     .legend {
       display: flex;
       gap: 10px;
@@ -601,6 +619,21 @@
       background: linear-gradient(135deg, rgba(103, 232, 249, 0.3), rgba(96, 165, 250, 0.3));
       transform: translateY(-1px);
     }
+    
+    .loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 300ms;
+    }
+    .loading-spinner {
+      font-size: 24px;
+      color: #67e8f9;
+    }
   </style>
 </head>
 
@@ -623,7 +656,7 @@
       
       <div class="row" style="gap: 10px;">
         <a class="btn" href="dashboard.html">Dashboard</a>
-        <a class="btn" href="welcome.html" onclick="event.preventDefault(); localStorage.removeItem('authed'); location.href='welcome.html';">Sign Out</a>
+        <a class="btn" href="welcome.html" onclick="event.preventDefault(); localStorage.clear(); location.href='welcome.html';">Sign Out</a>
       </div>
     </div>
   </header>
@@ -633,9 +666,7 @@
     <div class="card" style="margin-bottom: 12px;">
       <div class="row" style="gap: 12px; align-items: center;">
         <div class="row" style="gap: 12px;">
-          <div class="profile-picture" id="headerProfilePic">
-            👤
-          </div>
+          <div class="profile-picture" id="headerProfilePic">👤</div>
           <div>
             <div style="font-weight: 700;" id="pName">Student</div>
             <div style="opacity: 1; font-size: 13px;" id="pEmail">student@bytlearn.app</div>
@@ -644,7 +675,7 @@
         
         <div style="display: flex; gap: 8px; align-items: center;">
           <span class="badge">Biology AI – Student Dashboard</span>
-          <button class="btn edit-profile-btn" id="editProfileBtn">✏️ </button>
+          <button class="btn edit-profile-btn" id="editProfileBtn">✏️</button>
         </div>
       </div>
     </div>
@@ -652,22 +683,22 @@
     <div class="grid4" style="margin-bottom: 12px;">
       <div class="card">
         <div style="opacity: 1; font-size: 13px;">Study Streak</div>
-        <div style="font-weight: 700; font-size: 22px;">15 days</div>
+        <div style="font-weight: 700; font-size: 22px;" id="studyStreak">N/A</div>
       </div>
       
       <div class="card">
         <div style="opacity: 1; font-size: 13px;">Average Score</div>
-        <div style="font-weight: 700; font-size: 22px;">82.3%</div>
+        <div style="font-weight: 700; font-size: 22px;" id="avgScore">N/A</div>
       </div>
       
       <div class="card">
         <div style="opacity: 1; font-size: 13px;">Avg Quiz Time</div>
-        <div style="font-weight: 700; font-size: 22px;">165s</div>
+        <div style="font-weight: 700; font-size: 22px;" id="avgTime">N/A</div>
       </div>
       
       <div class="card">
         <div style="opacity: 1; font-size: 13px;">Doubt Resolution</div>
-        <div style="font-weight: 700; font-size: 22px;">89%</div>
+        <div style="font-weight: 700; font-size: 22px;" id="doubtRes">N/A</div>
       </div>
     </div>
 
@@ -691,22 +722,8 @@
           </div>
           
           <div class="chart">
-            <div class="bars">
-              <div class="bar" style="height: 78%;"></div>
-              <div class="bar" style="height: 82%;"></div>
-              <div class="bar" style="height: 76%;"></div>
-              <div class="bar" style="height: 88%;"></div>
-              <div class="bar" style="height: 91%;"></div>
-            </div>
-            
-            <div class="xlabels">
-              <span>Cell</span>
-              <span>Biomol.</span>
-              <span>Genetics</span>
-              <span>Physiol.</span>
-              <span>Ecology</span>
-            </div>
-            
+            <div class="bars" id="topicBars"></div>
+            <div class="xlabels" id="topicLabels"></div>
             <div class="legend"><span class="dot"></span> Score</div>
           </div>
         </div>
@@ -718,30 +735,8 @@
           </div>
           
           <div class="chart">
-            <svg class="linechart" viewBox="0 0 400 220" preserveAspectRatio="none">
-              <polyline fill="none" stroke="#93c5fd" stroke-width="3" points="10,170 70,160 130,145 190,135 250,125 310,115 370,110" />
-              
-              <g fill="#93c5fd">
-                <circle cx="10" cy="170" r="3"></circle>
-                <circle cx="70" cy="160" r="3"></circle>
-                <circle cx="130" cy="145" r="3"></circle>
-                <circle cx="190" cy="135" r="3"></circle>
-                <circle cx="250" cy="125" r="3"></circle>
-                <circle cx="310" cy="115" r="3"></circle>
-                <circle cx="370" cy="110" r="3"></circle>
-              </g>
-            </svg>
-            
-            <div class="xlabels" style="left: 36px; right: 12px;">
-              <span>Mon</span>
-              <span>Tue</span>
-              <span>Wed</span>
-              <span>Thu</span>
-              <span>Fri</span>
-              <span>Sat</span>
-              <span>Sun</span>
-            </div>
-            
+            <svg class="linechart" viewBox="0 0 400 220" preserveAspectRatio="none" id="trendChart"></svg>
+            <div class="xlabels" style="left: 36px; right: 12px;" id="trendLabels"></div>
             <div class="legend"><span class="dot"></span> Score</div>
           </div>
         </div>
@@ -753,32 +748,12 @@
         
         <div class="card">
           <h2>Strong Areas</h2>
-          <div class="list">
-            <div class="li">
-              <div style="font-weight: 600;">Ecology</div>
-              <div style="color: var(--muted); font-size: 13px;">High quiz accuracy (92%)</div>
-            </div>
-            
-            <div class="li">
-              <div style="font-weight: 600;">Physiology</div>
-              <div style="color: var(--muted); font-size: 13px;">Consistent improvement over 4 weeks</div>
-            </div>
-          </div>
+          <div class="list" id="strongAreasList"></div>
         </div>
         
         <div class="card">
           <h2>Weak Areas</h2>
-          <div class="list">
-            <div class="li">
-              <div style="font-weight: 600;">Genetics</div>
-              <div style="color: var(--muted); font-size: 13px;">Lower recall on terminology</div>
-            </div>
-            
-            <div class="li">
-              <div style="font-weight: 600;">Biomolecules</div>
-              <div style="color: var(--muted); font-size: 13px;">Time-outs in 2 quizzes</div>
-            </div>
-          </div>
+          <div class="list" id="weakAreasList"></div>
         </div>
       </div>
     </section>
@@ -791,27 +766,27 @@
           
           <div class="li">
             <div style="opacity: 1; font-size: 13px;">Quizzes Completed</div>
-            <div style="font-weight: 700; font-size: 22px;">18</div>
+            <div style="font-weight: 700; font-size: 22px;" id="quizCount">N/A</div>
           </div>
           
           <div class="li">
             <div style="opacity: 1; font-size: 13px;">Average Score</div>
-            <div style="font-weight: 700; font-size: 22px;">82.3%</div>
+            <div style="font-weight: 700; font-size: 22px;" id="perfAvgScore">N/A</div>
           </div>
           
           <div class="li">
             <div style="opacity: 1; font-size: 13px;">Best Score</div>
-            <div style="font-weight: 700; font-size: 22px;">96%</div>
+            <div style="font-weight: 700; font-size: 22px;" id="bestScore">N/A</div>
           </div>
           
           <div class="li">
             <div style="opacity: 1; font-size: 13px;">Average Time/Quiz</div>
-            <div style="font-weight: 700; font-size: 22px;">165s</div>
+            <div style="font-weight: 700; font-size: 22px;" id="perfAvgTime">N/A</div>
           </div>
           
           <div class="li">
             <div style="opacity: 1; font-size: 13px;">Fastest Completion</div>
-            <div style="font-weight: 700; font-size: 22px;">122s</div>
+            <div style="font-weight: 700; font-size: 22px;" id="fastestTime">N/A</div>
           </div>
         </div>
       </div>
@@ -820,59 +795,14 @@
     <section id="suggestions" class="tab hidden">
       <div class="card">
         <h2>Personalized Suggestions</h2>
-        <div class="list">
-          
-          <div class="li">
-            <div style="font-weight: 600;">Revise Mendelian genetics</div>
-            <div style="color: var(--muted); font-size: 13px;">
-              Practice 10 MCQs on dihybrid crosses, focus on terminology.
-            </div>
-          </div>
-          
-          <div class="li">
-            <div style="font-weight: 600;">Biomolecules quick sheet</div>
-            <div style="color: var(--muted); font-size: 13px;">
-              Memorize enzymes and functions; do flashcards 15 min/day.
-            </div>
-          </div>
-          
-          <div class="li">
-            <div style="font-weight: 600;">Timed drills</div>
-            <div style="color: var(--muted); font-size: 13px;">
-              2 timed quizzes (10 Q) to improve pacing to &lt;150s.
-            </div>
-          </div>
-        </div>
+        <div class="list" id="suggestionsList"></div>
       </div>
     </section>
 
     <section id="activity" class="tab hidden">
       <div class="card">
         <h2>Recent Activity</h2>
-        <div class="list">
-          
-          <div class="li row" style="justify-content: space-between;">
-            <div>
-              <div style="font-weight: 600;">Flashcards Biomolecules</div>
-              <div style="opacity: 1; font-size: 12px;">2 days ago</div>
-            </div>
-            <div style="text-align: right;">
-              <div>Score:</div>
-              <div style="opacity: 1; font-size: 12px;">Time: 12m</div>
-            </div>
-          </div>
-          
-          <div class="li row" style="justify-content: space-between;">
-            <div>
-              <div style="font-weight: 600;">Quiz Ecology Mix</div>
-              <div style="opacity: 1; font-size: 12px;">3 days ago</div>
-            </div>
-            <div style="text-align: right;">
-              <div>Score: 91</div>
-              <div style="opacity: 1; font-size: 12px;">Time: 149s</div>
-            </div>
-          </div>
-        </div>
+        <div class="list" id="activityList"></div>
       </div>
     </section>
   </main>
@@ -887,13 +817,9 @@
 
       <form id="editProfileForm">
         <div id="editMessage" class="message"></div>
-
        
-        <!-- Profile Picture Upload Section -->
         <div class="profile-upload">
-          <div class="profile-preview" id="profilePreview">
-          </div>
-          
+          <div class="profile-preview" id="profilePreview"></div>
           <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
             <label class="upload-btn" style="cursor:pointer;">
               Upload Photo
@@ -903,15 +829,11 @@
           </div>
         </div>
 
-        <!-- Name Input -->
         <div class="input-group">
           <label for="editName">Full Name</label>
           <input type="text" id="editName" placeholder="Enter your full name" required />
         </div>
 
-       
-
-        <!-- Email Display (Read-only) -->
         <div class="input-group">
           <label for="editEmail">Email (Cannot be changed)</label>
           <input type="text" id="editEmail" disabled style="opacity: 0.6; cursor: not-allowed;" />
@@ -923,107 +845,195 @@
   </div>
 
   <script>
-    // Tab Switching Logic
-    const pills = document.querySelectorAll('.pill[data-tab]');
-    const tabs = document.querySelectorAll('.tab');
-    
-    pills.forEach(function(p) {
-      p.addEventListener('click', function() {
-        pills.forEach(function(pp) {
-          pp.classList.remove('active');
-        });
-        
-        p.classList.add('active');
-        const id = p.getAttribute('data-tab');
-        
-        tabs.forEach(function(t) {
-          t.classList.add('hidden');
-        });
-        
-        document.getElementById(id)?.classList.remove('hidden');
-        
-        window.scrollTo({ 
-          top: 0,
-          behavior: 'smooth'
-        });
-      });
-    });
-
-    // Profile Management Functions
-    function getProfilePicture() {
-      return localStorage.getItem('profilePicture') || null;
+    if (localStorage.getItem('authed') !== '1') {
+      location.replace('./login.html');
     }
 
-    function setProfilePicture(dataUrl) {
-      if (dataUrl) {
-        localStorage.setItem('profilePicture', dataUrl);
-      } else {
-        localStorage.removeItem('profilePicture');
+    let currentProfilePicture = null;
+    let profileData = {};
+
+    (async function init() {
+      await loadAllData();
+    })();
+
+    async function loadAllData() {
+      try {
+        const studentId = localStorage.getItem('currentUserId');
+        if (!studentId) {
+          location.href = './login.html';
+          return;
+        }
+
+        const studentsRes = await fetch('http://127.0.0.1:8000/students');
+        const students = await studentsRes.json();
+        const student = students.find(s => String(s.student_id) === String(studentId));
+        
+        if (student) {
+          profileData = student;
+          updateProfileDisplay();
+        }
+        
+        await fetchAndRenderStatistics(studentId);
+        
+      } catch (error) {
+        console.error('Error loading data:', error);
+        usePlaceholderData();
+      }
+    }
+
+    function usePlaceholderData() {
+      const na = 'N/A';
+      document.getElementById('studyStreak').textContent = na;
+      document.getElementById('avgScore').textContent = na;
+      document.getElementById('avgTime').textContent = na;
+      document.getElementById('doubtRes').textContent = na;
+      document.getElementById('quizCount').textContent = '0';
+      document.getElementById('perfAvgScore').textContent = na;
+      document.getElementById('bestScore').textContent = na;
+      document.getElementById('perfAvgTime').textContent = na;
+      document.getElementById('fastestTime').textContent = na;
+
+      renderTopicPerformance([]);
+      renderWeeklyTrend([]);
+      renderAnalysis([], []);
+      renderSuggestions([]);
+      renderActivity([]);
+    }
+
+    async function fetchAndRenderStatistics(studentId) {
+      try {
+        const response = await fetch(`http://127.0.0.1:8000/students/${studentId}/statistics`);
+        
+        if (!response.ok) {
+          console.error('Failed to fetch statistics');
+          usePlaceholderData();
+          return;
+        }
+        
+        const data = await response.json();
+        const hasQuizData = data.performance.quizzes_completed > 0;
+
+        document.getElementById('studyStreak').textContent = data.summary.study_streak > 0 ? `${data.summary.study_streak} days` : 'N/A';
+        document.getElementById('avgScore').textContent = hasQuizData ? `${data.summary.average_score}%` : 'N/A';
+        document.getElementById('avgTime').textContent = hasQuizData ? `${data.summary.avg_quiz_time}s` : 'N/A';
+        document.getElementById('doubtRes').textContent = data.summary.doubt_resolution_rate > 0 ? `${data.summary.doubt_resolution_rate}%` : 'N/A';
+
+        document.getElementById('quizCount').textContent = data.performance.quizzes_completed;
+        document.getElementById('perfAvgScore').textContent = hasQuizData ? `${data.performance.average_score}%` : 'N/A';
+        document.getElementById('bestScore').textContent = hasQuizData ? `${data.performance.best_score}%` : 'N/A';
+        document.getElementById('perfAvgTime').textContent = hasQuizData ? `${data.performance.avg_time_per_quiz}s` : 'N/A';
+        document.getElementById('fastestTime').textContent = hasQuizData ? `${data.performance.fastest_completion}s` : 'N/A';
+
+        renderTopicPerformance(data.topic_performance);
+        renderWeeklyTrend(data.weekly_trend);
+        renderAnalysis(data.strong_areas, data.weak_areas);
+        renderSuggestions(data.suggestions);
+        renderActivity(data.recent_activity);
+        
+      } catch (error) {
+        console.error('Error fetching statistics:', error);
+        usePlaceholderData();
       }
     }
 
     function updateProfileDisplay() {
-      const name = localStorage.getItem('currentUserName') || 'Student';
-      const email = localStorage.getItem('currentUserEmail') || 'student@bytlearn.app';
-      const profilePic = getProfilePicture();
-
-      // Update name
-      const nameElements = document.querySelectorAll('#pName');
-      nameElements.forEach(el => {
-        if (el) el.textContent = name;
-      });
-
-      // Update email
-      const emailElements = document.querySelectorAll('#pEmail');
-      emailElements.forEach(el => {
-        if (el) el.textContent = email;
-      });
-
-
-      // Update profile picture
+      document.getElementById('pName').textContent = profileData.name || 'Student';
+      document.getElementById('pEmail').textContent = profileData.email || 'student@bytlearn.app';
+      
       const headerPic = document.getElementById('headerProfilePic');
-      if (headerPic) {
-        if (profilePic) {
-          headerPic.innerHTML = `<img src="${profilePic}" alt="Profile Picture" />`;
-        } else {
-          headerPic.innerHTML = '👤';
-        }
+      if (profileData.profile_picture) {
+        headerPic.innerHTML = `<img src="${profileData.profile_picture}" alt="Profile" />`;
+      } else {
+        headerPic.innerHTML = '👤';
       }
     }
 
-    // --- NEW: load profile from backend (minimal, uses existing /students endpoint) ---
-    async function loadProfileFromDatabase() {
-      const studentId = localStorage.getItem('currentUserId');
-      if (!studentId) return;
-      try {
-        const res = await fetch('http://127.0.0.1:8000/students');
-        if (!res.ok) return;
-        const students = await res.json();
-        const me = students.find(s => String(s.student_id) === String(studentId));
-        if (!me) return;
-        // populate localStorage so the rest of the UI continues to work unchanged
-        if (me.name) localStorage.setItem('currentUserName', me.name);
-        if (me.email) localStorage.setItem('currentUserEmail', me.email);
-        if (typeof me.profile_picture !== 'undefined' && me.profile_picture !== null) {
-          localStorage.setItem('profilePicture', me.profile_picture);
-        } else {
-          localStorage.removeItem('profilePicture');
-        }
-        updateProfileDisplay();
-      } catch (e) {
-        // silent fail — UI will use localStorage fallback
-        console.warn('loadProfileFromDatabase:', e);
+    function renderTopicPerformance(topics) {
+      const barsContainer = document.getElementById('topicBars');
+      const labelsContainer = document.getElementById('topicLabels');
+      
+      const hasData = topics && topics.some(t => t.score > 0);
+
+      if (!topics || topics.length === 0) {
+        barsContainer.innerHTML = '<p style="width:100%; opacity:0.7;">No topic data available.</p>';
+        labelsContainer.innerHTML = '';
+        return;
+      }
+
+      // Render bars only for topics with a score > 0, otherwise render an empty placeholder
+      // This ensures labels and bars remain aligned.
+      barsContainer.innerHTML = topics.map(t => 
+        t.score > 0
+          ? `<div class="bar" style="height: ${t.score}%;" title="${t.full_name}: ${t.score}%"></div>`
+          : '<div class="bar" style="height: 0%;" title="N/A - No data yet"></div>'
+      ).join('');
+      
+      // Render all labels regardless of score
+      labelsContainer.innerHTML = topics.map(t => 
+        `<span>${t.name}</span>`
+      ).join('');
+
+      // If the backend provides topics but all scores are 0, show a specific message.
+      if (!hasData) {
+          barsContainer.innerHTML = '<p style="width:100%; opacity:0.7;">Start taking quizzes to see your topic performance.</p>';
       }
     }
 
-    // call it once on script init
-    loadProfileFromDatabase();
-    // --- end new ---
+    function renderWeeklyTrend(weekData) {
+      const chart = document.getElementById('trendChart');
+      const labels = document.getElementById('trendLabels');
 
-    // Initialize profile display
-    updateProfileDisplay();
+      if (!weekData || weekData.length < 2) {
+        chart.innerHTML = '<text x="50%" y="50%" text-anchor="middle" fill="rgba(255,255,255,0.7)">Not enough data for trend.</text>';
+        labels.innerHTML = '';
+        return;
+      }
 
-    // Edit Profile Modal Functions
+      const points = weekData.map((d, i) => `${10 + i * (380 / (weekData.length - 1))},${220 - d.score * 2}`).join(' ');
+      const circles = weekData.map((d, i) => 
+        `<circle cx="${10 + i * (380 / (weekData.length - 1))}" cy="${220 - d.score * 2}" r="3" fill="#93c5fd"></circle>`
+      ).join('');
+
+      chart.innerHTML = `<polyline fill="none" stroke="#93c5fd" stroke-width="3" points="${points}"></polyline>${circles}`;
+      labels.innerHTML = weekData.map(d => `<span>${d.day}</span>`).join('');
+    }
+
+    function renderAnalysis(strongAreas, weakAreas) {
+      const strongList = document.getElementById('strongAreasList');
+      const weakList = document.getElementById('weakAreasList');
+
+      strongList.innerHTML = (!strongAreas || strongAreas.length === 0)
+        ? '<div class="li"><div style="opacity:0.7;">No strong areas identified yet.</div></div>'
+        : strongAreas.map(area => `<div class="li"><div style="font-weight: 600;">${area.topic}</div><div style="color: var(--muted); font-size: 13px;">${area.detail}</div></div>`).join('');
+
+      weakList.innerHTML = (!weakAreas || weakAreas.length === 0)
+        ? '<div class="li"><div style="opacity:0.7;">No weak areas identified yet. Keep it up!</div></div>'
+        : weakAreas.map(area => `<div class="li"><div style="font-weight: 600;">${area.topic}</div><div style="color: var(--muted); font-size: 13px;">${area.detail}</div></div>`).join('');
+    }
+
+    function renderSuggestions(suggestions) {
+      const list = document.getElementById('suggestionsList');
+      list.innerHTML = (!suggestions || suggestions.length === 0)
+        ? '<div class="li"><div style="opacity:0.7;">No suggestions yet. Start taking quizzes to get personalized feedback.</div></div>'
+        : suggestions.map(s => `<div class="li"><div style="font-weight: 600;">${s.title}</div><div style="color: var(--muted); font-size: 13px;">${s.detail}</div></div>`).join('');
+    }
+
+    function renderActivity(activities) {
+      const list = document.getElementById('activityList');
+      list.innerHTML = (!activities || activities.length === 0)
+        ? '<div class="li"><div style="opacity:0.7;">No recent activity.</div></div>'
+        : activities.map(a => `<div class="li row" style="justify-content: space-between;"><div><div style="font-weight: 600;">${a.activity}</div><div style="opacity: 1; font-size: 12px;">${a.date}</div></div><div style="text-align: right;">${a.score !== null ? `<div>Score: ${a.score}</div>` : '<div></div>'}<div style="opacity: 1; font-size: 12px;">${a.time ? `Time: ${a.time}` : ''}</div></div></div>`).join('');
+    }
+
+    const pills = document.querySelectorAll('.pill[data-tab]');
+    const tabs = document.querySelectorAll('.tab');
+    pills.forEach(p => p.addEventListener('click', () => {
+      pills.forEach(pp => pp.classList.remove('active'));
+      p.classList.add('active');
+      tabs.forEach(t => t.classList.add('hidden'));
+      document.getElementById(p.getAttribute('data-tab'))?.classList.remove('hidden');
+    }));
+
     const editProfileBtn = document.getElementById('editProfileBtn');
     const editProfileModal = document.getElementById('editProfileModal');
     const closeEditModal = document.getElementById('closeEditModal');
@@ -1033,32 +1043,19 @@
     const profilePreview = document.getElementById('profilePreview');
     const removePictureBtn = document.getElementById('removePictureBtn');
 
-    let currentProfilePicture = null;
-
     function showMessage(element, text, type) {
       element.textContent = text;
       element.className = 'message ' + type;
       element.style.display = 'block';
-      
-      setTimeout(function() {
-        element.style.display = 'none';
-      }, 5000);
+      setTimeout(() => element.style.display = 'none', 5000);
     }
 
     function openEditModal() {
       editProfileModal.classList.add('active');
-      
-      // Load current values
-      const name = localStorage.getItem('currentUserName') || 'Student';
-      const email = localStorage.getItem('currentUserEmail') || 'student@bytlearn.app';
-      const profilePic = getProfilePicture();
-
-      document.getElementById('editName').value = name;
-      document.getElementById('editEmail').value = email;
-
-
-      currentProfilePicture = profilePic;
-      updatePreview(profilePic);
+      document.getElementById('editName').value = profileData.name || '';
+      document.getElementById('editEmail').value = profileData.email || '';
+      currentProfilePicture = profileData.profile_picture || null;
+      updatePreview(currentProfilePicture);
     }
 
     function closeEditModalFunc() {
@@ -1079,97 +1076,49 @@
 
     editProfileBtn.addEventListener('click', openEditModal);
     closeEditModal.addEventListener('click', closeEditModalFunc);
+    editProfileModal.addEventListener('click', (e) => { if (e.target === editProfileModal) closeEditModalFunc(); });
 
-    editProfileModal.addEventListener('click', function(e) {
-      if (e.target === editProfileModal) {
-        closeEditModalFunc();
-      }
-    });
-
-    // Handle profile picture upload
-    profilePictureInput.addEventListener('change', function(e) {
+    profilePictureInput.addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (file) {
-        // Check file size (max 2MB)
-        if (file.size > 2 * 1024 * 1024) {
-          showMessage(editMessage, 'Image size should be less than 2MB', 'error');
-          return;
-        }
-
-        // Check file type
-        if (!file.type.startsWith('image/')) {
-          showMessage(editMessage, 'Please select a valid image file', 'error');
-          return;
-        }
-
+        if (file.size > 2 * 1024 * 1024) { showMessage(editMessage, 'Image size should be less than 2MB', 'error'); return; }
+        if (!file.type.startsWith('image/')) { showMessage(editMessage, 'Please select a valid image file', 'error'); return; }
         const reader = new FileReader();
-        reader.onload = function(event) {
-          currentProfilePicture = event.target.result;
-          updatePreview(currentProfilePicture);
-        };
+        reader.onload = (event) => { currentProfilePicture = event.target.result; updatePreview(currentProfilePicture); };
         reader.readAsDataURL(file);
       }
     });
 
-    // Handle remove picture button
-    removePictureBtn.addEventListener('click', function() {
-      currentProfilePicture = null; // Clear the picture state
-      updatePreview(null); // Update the preview to show the placeholder
-      profilePictureInput.value = ''; // Clear the file input
+    removePictureBtn.addEventListener('click', () => {
+      currentProfilePicture = null;
+      updatePreview(null);
+      profilePictureInput.value = '';
     });
 
-    // Handle form submission
-    editProfileForm.addEventListener('submit', async function(e) {
+    editProfileForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-
       const newName = document.getElementById('editName').value.trim();
-
-      if (!newName) {
-        showMessage(editMessage, 'Name cannot be empty', 'error');
-        return;
-      }
-
-      // Get student ID from localStorage
-      const studentId = localStorage.getItem('currentUserId');
-      if (!studentId) {
-        showMessage(editMessage, 'User ID not found. Please login again.', 'error');
-        return;
-      }
+      if (!newName) { showMessage(editMessage, 'Name cannot be empty', 'error'); return; }
 
       try {
-        // Update in database
-        const response = await fetch(`http://127.0.0.1:8000/students/${studentId}`, {
+        const response = await fetch(`http://127.0.0.1:8000/students/${profileData.student_id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: newName,
-            profile_picture: currentProfilePicture  // Send profile picture (can be null to remove)
-          })
+          body: JSON.stringify({ name: newName, profile_picture: currentProfilePicture })
         });
 
         if (!response.ok) {
-          const errorData = await response.json().catch(()=>({detail:'Server error'}));
+          const errorData = await response.json();
           showMessage(editMessage, errorData.detail || 'Failed to update profile', 'error');
           return;
         }
 
-        const result = await response.json();
-
-        // Save changes to localStorage only after successful DB update
-        localStorage.setItem('currentUserName', newName);
-        // ensure localStorage matches backend: set or remove based on currentProfilePicture (null => removed)
-        setProfilePicture(currentProfilePicture);
-
-        // Update display
+        profileData.name = newName;
+        profileData.profile_picture = currentProfilePicture;
         updateProfileDisplay();
-        // keep header and other pages consistent
-        loadProfileFromDatabase();
 
-        showMessage(editMessage, 'Changes saved successfully!', 'success');
-
-        setTimeout(function() {
-          closeEditModalFunc();
-        }, 1500);
+        showMessage(editMessage, 'Profile updated successfully!', 'success');
+        setTimeout(() => closeEditModalFunc(), 1500);
 
       } catch (error) {
         showMessage(editMessage, 'Error updating profile: ' + error.message, 'error');

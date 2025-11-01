@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <title>BytLearn – Learn</title>
@@ -8,9 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
-  
   <style>
-    /* Define CSS custom properties for consistent theming across the application */
     :root {
       --border: rgba(255,255,255,0.2);
       --glass: rgba(255,255,255,0.1);
@@ -19,13 +16,7 @@
       --accent: #e5a054;
       --accent-glow: rgba(229, 160, 84, 0.3);
     }
-
-    /* Reset box-sizing for all elements to include padding and border in element's total width/height */
-    * { 
-      box-sizing: border-box; 
-    }
-
-    /* Set full viewport height and base font styling for html and body */
+    * { box-sizing: border-box; }
     html, body {
       height: 100%;
       margin: 0;
@@ -33,18 +24,13 @@
       color: var(--text);
       text-align: center;
     }
-
-    /* Create gradient background and set up base body styles */
     body {
       background: linear-gradient(135deg, #7e22ce 0%, #f472b6 45%, #6366f1 100%);
       background-attachment: fixed;
       position: relative;
       overflow-x: hidden;
       font-size: 18px;
-      text-align: center;
     }
-
-    /* Add dark overlay to body for better text readability over gradient */
     body::before {
       content: "";
       position: fixed;
@@ -53,15 +39,11 @@
       pointer-events: none;
       z-index: 0;
     }
-
-    /* Additional overlay layer for visual depth */
     .overlay { 
       position: fixed;
       inset: 0;
       background: rgba(0,0,0,0.35);
     }
-
-    /* Container for content sections with max-width and centered alignment */
     .container {
       position: relative;
       z-index: 1;
@@ -70,35 +52,24 @@
       padding: 32px;
       text-align: center;
     }
-
-    /* Ensure main content area has minimum height accounting for header space */
     main.container { 
       min-height: calc(100vh - 110px); 
     }
-
-    /* Flexbox row layout for header and navigation elements */
     .row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      text-align: center;
     }
-
-    /* Logo container with icon and text layout */
     .logo { 
       display: flex;
       align-items: center;
       gap: 12px;
     }
-
-    /* Set logo image dimensions */
     .logo img { 
       width: 70px;
       height: 70px;
     }
-
-    /* Button styling with glassmorphism effect and smooth transitions */
     .btn {
       display: inline-flex;
       align-items: center;
@@ -111,14 +82,13 @@
       text-decoration: none;
       transition: 150ms;
       backdrop-filter: blur(6px);
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 500;
     }
-
-    /* Increase button background opacity on hover for visual feedback */
     .btn:hover { 
       background: rgba(255,255,255,0.24);
     }
-
-    /* Card component with glassmorphism effect for content containers */
     .card {
       background: var(--glass);
       border: 1px solid var(--border);
@@ -127,8 +97,6 @@
       backdrop-filter: blur(8px);
       text-align: center;
     }
-
-    /* Ensure summary card takes full width of its container */
     #summary.card {
       max-width: 100%;
       width: 100%;
@@ -136,8 +104,6 @@
       margin-right: auto;
       box-sizing: border-box;
     }
-
-    /* Single column grid layout for summary content */
     #summary .grid {
       max-width: 100%;
       width: 100%;
@@ -145,8 +111,6 @@
       margin-right: auto;
       grid-template-columns: 1fr;
     }
-
-    /* Nested cards within summary section inherit full width */
     #summary .card {
       width: 100%;
       max-width: 100%;
@@ -154,15 +118,11 @@
       margin-right: auto;
       box-sizing: border-box;
     }
-
-    /* Four-column grid layout for navigation pills */
     .pills {
       display: grid;
       grid-template-columns: repeat(4, minmax(0,1fr)); 
       gap: 12px;
     }
-
-    /* Individual pill button styling with subtle glassmorphism */
     .pill {
       padding: 10px 16px;
       border-radius: 14px;
@@ -170,47 +130,34 @@
       background: rgba(255,255,255,0.08);
       color: var(--text);
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06);
+      cursor: pointer;
     }
-
-    /* Active state for selected pill with increased opacity */
     .pill.active {
       background: rgba(255,255,255,0.2);
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
     }
-
-    /* Utility class to hide elements */
     .hidden { 
       display: none !important; 
     }
-
-    /* Heading styling with tight letter spacing */
     h2 { 
       margin: 0 0 12px;
       font-weight: 800;
       font-size: 28px;
       letter-spacing: -0.5px;
     }
-
-    /* Paragraph text with slightly muted color */
     p { 
       color: var(--muted);
     }
-
-    /* Single column grid by default for responsive layouts */
     .grid { 
       display: grid;
       grid-template-columns: 1fr;
       gap: 12px;
     }
-
-    /* Two-column grid layout for larger screens */
     @media(min-width:768px) { 
       .grid { 
         grid-template-columns: 1fr 1fr;
       } 
     }
-
-    /* Flashcard container uses flexbox for centered vertical layout */
     #flashcards .grid { 
       display: flex;
       flex-direction: column;
@@ -220,8 +167,6 @@
       position: relative;
       overflow: visible;
     }
-    
-    /* Container for flashcard carousel with fixed dimensions */
     .flashcard-container {
       position: relative;
       width: 100%;
@@ -231,8 +176,6 @@
       align-items: center;
       justify-content: center;
     }
-
-    /* Navigation arrow buttons positioned on sides of carousel */
     .nav-arrow {
       position: absolute;
       top: 50%;
@@ -253,37 +196,21 @@
       color: var(--text);
       user-select: none;
     }
-
-    /* Hover effect for navigation arrows */
     .nav-arrow:hover {
       background: rgba(255,255,255,0.24);
     }
-
-    /* Position left arrow on the left side */
-    .nav-arrow.left {
-      left: 10px;
-    }
-
-    /* Position right arrow on the right side */
-    .nav-arrow.right {
-      right: 10px;
-    }
-
-    /* Disabled state maintains visibility for navigation arrows */
+    .nav-arrow.left { left: 10px; }
+    .nav-arrow.right { right: 10px; }
     .nav-arrow.disabled {
       opacity: 1;
       cursor: pointer;
     }
-    
-    /* Wrapper for custom scrollbar below flashcards */
     .flashcard-scrollbar-wrapper {
       width: 100%;
       max-width: 1000px;
       margin-top: 20px;
       padding: 0 10px;
     }
-    
-    /* Custom scrollbar track for flashcard navigation */
     .flashcard-scrollbar {
       width: 100%;
       height: 8px;
@@ -294,8 +221,6 @@
       backdrop-filter: blur(6px);
       border: 1px solid var(--border);
     }
-    
-    /* Scrollbar thumb represents current position in flashcard stack */
     .flashcard-scrollbar-thumb {
       height: 100%;
       background: rgba(255,255,255,0.4);
@@ -305,33 +230,22 @@
       transition: background 0.2s;
       cursor: grab;
     }
-    
-    /* Hover state for scrollbar thumb */
     .flashcard-scrollbar-thumb:hover {
       background: rgba(255,255,255,0.5);
     }
-    
-    /* Active dragging state for scrollbar thumb */
     .flashcard-scrollbar-thumb:active {
       cursor: grabbing;
       background: rgba(255,255,255,0.6);
     }
-    
-    /* Force center alignment for all text elements throughout the application */
     h2, h3, h1, p, .badge, .subtitle, .title, .lead, .actions, .stats, .pill, .item a, .list, .li {
       text-align: center !important;
     }
-
-    /* Add focus indicator for flashcards when interacted with */
     .flashcard {
       transition: box-shadow 0.2s;
     }
-
     .flashcard:active, .flashcard:focus {
       box-shadow: 0 0 0 4px #a21caf;
     }
-
-    /* Summary text container with styled background and left-aligned text */
     .summary-text {
       white-space: pre-wrap;
       text-align: left;
@@ -346,8 +260,6 @@
       border-left: 4px solid var(--accent);
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
     }
-
-    /* Heading style within summary text with accent color and decorative border */
     .summary-text .heading {
       display: block !important;
       font-weight: 800 !important;
@@ -363,8 +275,6 @@
       text-shadow: 0 2px 8px var(--accent-glow);
       position: relative;
     }
-
-    /* Decorative gradient underline for headings */
     .summary-text .heading::before {
       content: '';
       position: absolute;
@@ -375,27 +285,19 @@
       background: linear-gradient(90deg, #fff 0%, var(--accent) 100%);
       box-shadow: 0 0 10px var(--accent-glow);
     }
-
-    /* Remove top margin from first heading in summary */
     .summary-text .heading:first-child {
       margin-top: 0 !important;
     }
-
-    /* Paragraph styling within summary text */
     .summary-text p {
       margin: 12px 0;
       text-align: left;
       color: rgba(255,255,255,0.95);
       font-weight: 500;
     }
-
-    /* Bold text styling within summaries */
     .summary-text strong {
       color: #fff;
       font-weight: 700;
     }
-    
-    /* Flashcard content text with serif font and justified alignment */
     .flashcard-text {
       white-space: pre-wrap;
       font-family: "Times New Roman", Times, serif;
@@ -404,8 +306,6 @@
       margin: 16px 30px;
       padding: 0 0 0 2px;
     }
-
-    /* Individual flashcard styling with absolute positioning for carousel effect */
     .card-item {
       position: absolute;
       width: 480px;
@@ -424,42 +324,30 @@
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       user-select: none;
     }
-    
-    /* Visited cards appear stacked on the left with reduced scale and opacity */
     .card-item.visited {
       left: -120px;
       transform: scale(0.75);
       opacity: 0.5;
       z-index: 5;
     }
-    
-    /* First visited card positioning */
     .card-item.visited:nth-child(1) {
       left: -120px;
       z-index: 5;
     }
-    
-    /* Second visited card slightly more visible */
     .card-item.visited:nth-child(2) {
       left: -100px;
       z-index: 6;
     }
-    
-    /* Third visited card most visible in stack */
     .card-item.visited:nth-child(3) {
       left: -80px;
       z-index: 7;
     }
-    
-    /* Current card centered and at full scale/opacity */
     .card-item.current {
       left: 50%;
       transform: translateX(-50%) scale(1);
       opacity: 1;
       z-index: 10;
     }
-    
-    /* Unvisited cards stacked on the right with reduced scale and opacity */
     .card-item.unvisited {
       left: auto;
       right: -120px;
@@ -467,36 +355,49 @@
       opacity: 0.5;
       z-index: 5;
     }
-    
-    /* Last unvisited card positioning */
     .card-item.unvisited:nth-last-child(1) {
       right: -120px;
       z-index: 5;
     }
-    
-    /* Second-to-last unvisited card */
     .card-item.unvisited:nth-last-child(2) {
       right: -100px;
       z-index: 6;
     }
-    
-    /* Third-to-last unvisited card */
     .card-item.unvisited:nth-last-child(3) {
       right: -80px;
       z-index: 7;
     }
-
-    /* Front side of flashcard with purple gradient background */
     .card-front {
       background: linear-gradient(135deg, rgba(162, 28, 175, 0.4) 0%, rgba(109, 40, 217, 0.4) 100%);
     }
-
-    /* Back side of flashcard with gold gradient background */
     .card-back {
       background: linear-gradient(135deg, rgba(251, 191, 36, 0.25) 0%, rgba(245, 158, 11, 0.25) 100%);
     }
+   
+    .ai-disclaimer {
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      background: rgba(251, 191, 36, 0.15);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      border-radius: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
 
-    /* Title text on flashcard */
+    .ai-disclaimer-icon {
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .ai-disclaimer-text {
+      font-size: 13px;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.9);
+      text-align: left;
+    }
+
+
     .flashcard-title {
       font-size: 20px;
       font-weight: 800;
@@ -507,8 +408,6 @@
       text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
       letter-spacing: 0.3px;
     }
-
-    /* Main content area on flashcard back with scrollable overflow */
     .flashcard-content {
       font-size: 17px;
       line-height: 1.8;
@@ -525,220 +424,541 @@
       padding: 0 8px;
       hyphens: auto;
     }
-
-    /* Prompt text shown on flashcard front */
     .flashcard-prompt {
       font-size: 22px;
       font-weight: 800;
       color: #ffffff;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       text-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-      letter-spacing: 0.5px;
     }
 
-    /* Hide weight indicator on flashcards */
-    .flashcard > div[style*="font-weight:600"] {
+    /* Quiz Modal Styles */
+    .quiz-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 5, 30, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 1000;
       display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
     }
 
-    /* Tab section header styling with gradient background */
-    .tab > .row {
-      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
-      padding: 16px 20px;
-      border-radius: 12px;
-      margin-bottom: 16px;
-      border: 1px solid rgba(255,255,255,0.15);
+    .quiz-modal.active {
+      display: flex;
     }
 
-    /* Loading indicator with pulsing animation */
-    .loading-text {
-      color: var(--muted);
-      margin: 24px 0;
+    .quiz-modal-content {
+      background: linear-gradient(145deg, #1e1b4b, #312e81);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 24px;
+      padding: 24px;
+      max-width: 1100px;
+      width: 100%;
+      max-height: 95vh;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      position: relative;
+      display: flex;
+      gap: 24px;
+    }
+
+    .quiz-nav {
+      flex: 0 0 200px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 16px;
+      padding: 15px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+      gap: 12px;
+      align-content: start;
+      overflow-y: auto;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .quiz-nav-item {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: transparent;
+      color: rgba(255,255,255,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .quiz-nav-item:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.4);
+      color: #fff;
+    }
+
+    .quiz-nav-item.answered {
+      background: rgba(99, 102, 241, 0.3);
+      border-color: rgba(99, 102, 241, 0.7);
+      color: #fff;
+    }
+
+    .quiz-nav-item.current {
+      background: #6366f1;
+      color: white;
+      border-color: #818cf8;
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.5);
+    }
+
+    .quiz-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+
+    .quiz-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .quiz-timer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .quiz-progress {
+      font-size: 16px;
+      font-weight: 600;
+      background: rgba(0,0,0,0.2);
+      padding: 8px 16px;
+      border-radius: 8px;
+    }
+
+    .quiz-question-card {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 24px;
+    }
+
+    .quiz-question-text {
+      font-size: 22px;
       font-weight: 500;
-      animation: pulse 2s ease-in-out infinite;
+      margin-bottom: 24px;
+      line-height: 1.5;
+      text-align: left;
     }
 
-    /* Keyframe animation for loading pulse effect */
+    .quiz-options {
+      display: grid;
+      gap: 15px;
+    }
+
+    .quiz-option {
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 10px;
+      padding: 15px 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      text-align: left;
+    }
+
+    .quiz-option:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: #a5b4fc;
+    }
+
+    .quiz-option.selected {
+      background: rgba(99, 102, 241, 0.3);
+      border-color: #6366f1;
+    }
+
+    .quiz-option.correct {
+      background: rgba(34, 197, 94, 0.2);
+      border-color: #22c55e;
+      pointer-events: none;
+    }
+
+    .quiz-option.incorrect {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: #ef4444;
+      pointer-events: none;
+    }
+
+    .quiz-option.disabled {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .option-letter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .option-text {
+      flex: 1;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .quiz-explanation {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 20px;
+      display: none;
+      text-align: left;
+    }
+
+    .quiz-explanation.show {
+      display: block;
+    }
+
+    .quiz-explanation-title {
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #facc15;
+    }
+
+    .quiz-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-top: auto;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .quiz-btn {
+      padding: 12px 28px;
+      border-radius: 10px;
+      border: none;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .quiz-btn-primary {
+      background: #6366f1;
+      color: white;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
+    }
+
+    .quiz-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+    }
+
+    .quiz-btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .quiz-btn-secondary {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .quiz-btn-secondary:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .quiz-result-card {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 40px;
+      text-align: center;
+    }
+
+    .quiz-result-score {
+      font-size: 72px;
+      font-weight: 800;
+      margin: 20px 0;
+      background: linear-gradient(135deg, #facc15, #fb923c);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .quiz-result-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .quiz-result-detail {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    .quiz-result-detail-value {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .quiz-result-detail-label {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    /* Alert/Confirm Modal Styles */
+    .alert-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 5, 30, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 2000; /* Higher than quiz modal */
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .alert-modal-overlay.active {
+      display: flex;
+    }
+
+    .alert-modal-content {
+      background: linear-gradient(145deg, #1e1b4b, #312e81);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      padding: 24px 32px;
+      max-width: 450px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      animation: modalFadeIn 0.2s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .alert-modal-content h3 {
+      font-size: 22px;
+      font-weight: 700;
+      margin: 0 0 12px;
+      color: #fff;
+      text-align: center;
+    }
+
+    .alert-modal-content p {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin: 0 0 24px;
+      text-align: center;
+    }
+
+    .alert-modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .alert-btn {
+      padding: 10px 24px;
+      border-radius: 8px;
+      border: none;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-width: 100px;
+    }
+
+    .alert-btn-primary {
+      background: #6366f1;
+      color: white;
+    }
+    .alert-btn-primary:hover {
+      background: #4f46e5;
+    }
+
+    .alert-btn-secondary {
+      background: rgba(255,255,255,0.1);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+    .alert-btn-secondary:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    /* Doubt Section Styles */
+    #doubts {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+      backdrop-filter: blur(12px);
+      text-align: left;
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 280px);
+    }
+    #doubts .row {
+      margin-bottom: 18px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    #doubts h2 {
+      font-size: 32px;
+      font-weight: 800;
+      margin: 0;
+      text-align: left;
+    }
+    #doubts .pill {
+      cursor: default;
+      font-size: 20px;
+      padding: 10px 18px;
+    }
+    #rag-chat-history {
+      flex: 1;
+      overflow-y: auto;
+      background: rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 18px;
+      text-align: left;
+      font-size: 18px;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-height: 0;
+    }
+    #rag-chat-history div {
+      text-align: left;
+    }
+    #rag-chat-history .ai-disclaimer {
+      margin: 0 0 12px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+    #rag-chat-history .ai-disclaimer-icon {
+      flex-shrink: 0;
+      font-size: 13px;
+      opacity: 0.5;
+    }
+    #rag-chat-history .ai-disclaimer-text {
+      line-height: 1.4;
+      margin: 0;
+      font-weight: 400;
+      text-align: left;
+    }
+    #rag-chat-form {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    #rag-chat-input {
+      flex: 1;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.13);
+      color: var(--text);
+      font-size: 18px;
+      outline: none;
+      text-align: left;
+    }
+    #rag-chat-input:disabled {
+      background: rgba(255,255,255,0.06);
+    }
+    #rag-chat-input::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+    #rag-chat-form button {
+      padding: 14px 28px;
+      font-size: 18px;
+    }
+    /* Animations */
     @keyframes pulse {
       0%, 100% { 
         opacity: 0.6;
       }
       50% { 
-        opacity: 1;
       }
     }
-
-    /* Error message styling with warning icon */
-    .error-message {
-      color: #fca5a5;
-      font-weight: 500;
-      margin: 24px 0;
-      font-size: 16px;
-      letter-spacing: 0.01em;
-      opacity: 0.95;
-    }
-
-    /* Add warning icon before error messages */
-    .error-message::before {
-      content: "⚠ ";
-      margin-right: 6px;
-      opacity: 0.9;
-    }
-
-    /* Custom scrollbar styling for summary text */
+    /* Scrollbar Styles */
     .summary-text::-webkit-scrollbar {
       width: 8px;
     }
-
     .summary-text::-webkit-scrollbar-track {
       background: rgba(255,255,255,0.05);
       border-radius: 4px;
     }
-
     .summary-text::-webkit-scrollbar-thumb {
       background: rgba(255,255,255,0.2);
       border-radius: 4px;
     }
-
     .summary-text::-webkit-scrollbar-thumb:hover {
       background: rgba(255,255,255,0.3);
     }
-
-    /* AI Disclaimer styling */
-    .ai-disclaimer {
-      padding: 8px 0;
-      margin: 0 0 12px 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .ai-disclaimer-icon {
-      flex-shrink: 0;
-      font-size: 13px;
-      opacity: 0.5;
-    }
-
-    .ai-disclaimer-text {
-      font-size: 12px;
-      line-height: 1.4;
-      color: rgba(255, 255, 255, 0.5);
-      margin: 0;
-      font-weight: 400;
-      text-align: left;
-    }
-
-{ 
-/* ===== ADD: Quiz modal + timer styles (inserted, no other changes) ===== */
-
-    /* Quiz Section - AI Disclaimer */
-    #quizzes .ai-disclaimer {
-      padding: 8px 0;
-      margin: 0 0 12px 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    /* Quiz Start Modal */
-    .quiz-modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.7);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      backdrop-filter: blur(4px);
-    }
-
-    .quiz-modal-overlay.active {
-      display: flex;
-    }
-
-    .quiz-modal-content {
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 32px;
-      width: min(500px, 90vw);
-      backdrop-filter: blur(20px);
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-      animation: modalSlideIn 0.3s ease;
-      text-align: center;
-    }
-
-    @keyframes modalSlideIn {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .quiz-modal-title {
-      font-size: 24px;
-      font-weight: 700;
-      margin-bottom: 16px;
-      color: var(--text);
-    }
-
-    .quiz-modal-text {
-      font-size: 16px;
-      color: var(--muted);
-      margin-bottom: 24px;
-      line-height: 1.6;
-    }
-
-    .quiz-timer-display {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: var(--glass);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 20px;
-      backdrop-filter: blur(8px);
-      font-size: 18px;
-      font-weight: 600;
-      color: var(--text);
-      z-index: 999;
-      display: none;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    .quiz-timer-display.active {
-      display: block;
-    }
-
-/* ===== END ADD ===== */
   </style>
 </head>
 
 <body>
   <div class="overlay"></div>
   
-  <!-- Header section with logo and navigation -->
   <header class="container">
     <div class="row">
-      <!-- Logo and brand name with click handler to return to welcome page -->
       <div class="logo" style="cursor:pointer;" onclick="location.href='./welcome.html'">
         <img src="./logo.png" alt="BytLearn" />
         <div>
           <div style="font-weight:800;font-size:22px;">BytLearn</div>
-          <!-- Display current user's name from localStorage -->
           <div style="font-size:12px;opacity:.8">Learning Workspace – <span id="lName">[Name]</span></div>
         </div>
       </div>
-      
-      <!-- Navigation buttons for main application sections -->
       <div class="row" style="gap:10px;">
         <a class="btn" href="./dashboard.html">Dashboard</a>
         <a class="btn" href="./profile.html" title="Profile">Profile</a>
-        <!-- Sign out button that clears authentication and redirects -->
         <a class="btn" href="./welcome.html"
            onclick="event.preventDefault(); localStorage.removeItem('authed'); location.href='./welcome.html';">
           Sign Out
@@ -748,7 +968,6 @@
   </header>
   
   <main class="container">
-    <!-- Tab navigation pills for switching between different learning modes -->
     <div class="card" style="margin-bottom:12px;">
       <div class="pills">
         <button class="pill active" data-tab="summary">Summaries</button>
@@ -758,29 +977,24 @@
       </div>
     </div>
     
-    <!-- Summary section - displays chapter summaries -->
     <section id="summary" class="card tab">
       <div class="row" style="justify-content:space-between;">
         <h2>Chapter Summary</h2>
         <span class="pill" style="cursor:default;">Summary</span>
       </div>
       <p></p>
-      <!-- Grid container for summary content, populated dynamically -->
       <div class="grid" style="margin-top:10px">
       </div>
     </section>
     
-    <!-- Flashcards section - interactive card-based learning -->
     <section id="flashcards" class="card tab hidden">
       <div class="row" style="justify-content:space-between;">
         <h2>Flashcards</h2>
         <span class="pill" style="cursor:default;">Recall</span>
       </div>
-      <!-- Grid container for flashcard carousel, populated dynamically -->
       <div class="grid" style="margin-top:10px"></div>
     </section>
     
-    <!-- Doubts section - AI-powered Q&A interface -->
     <section id="doubts" class="tab hidden"
   style="background:var(--glass);border:1px solid var(--border);border-radius:22px;padding:24px;box-shadow:0 8px 32px rgba(0,0,0,0.18);backdrop-filter:blur(12px);text-align:left;width:100%;max-width:100%;margin:0;display:flex;flex-direction:column;height:calc(100vh - 280px);">
       <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:18px;flex-shrink:0;">
@@ -788,490 +1002,183 @@
         <span class="pill" style="cursor:default;font-size:20px;padding:10px 18px;">?</span>
       </div>
       
-      <!-- AI Disclaimer for Doubts -->
-      <div class="ai-disclaimer" style="flex-shrink:0;">
+      <div class="ai-disclaimer">
         <div class="ai-disclaimer-icon">ℹ️</div>
-        <div class="ai-disclaimer-content">
-          <div class="ai-disclaimer-title">AI-Generated Content</div>
-          <p class="ai-disclaimer-text">Responses are generated by AI and may not be 100% accurate. Please verify important information with your teacher or textbook.</p>
-        </div>
+        <p class="ai-disclaimer-text">
+          <strong>AI-Generated Content:</strong> Responses are powered by AI and may not be 100% accurate. Always verify important information with your teacher or textbook.
+        </p>
       </div>
       
-      <!-- Chat history container - scrollable area showing conversation -->
       <div id="rag-chat-history" style="flex:1;overflow-y:auto;background:rgba(255,255,255,0.08);border-radius:18px;padding:18px;margin-bottom:18px;text-align:left;font-size:18px;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:8px;min-height:0;">
         <div style="color:var(--muted);text-align:left;">Clear your Doubts...</div>
       </div>
-      <!-- Input form for submitting questions -->
       <form id="rag-chat-form" style="display:flex;gap:12px;align-items:center;flex-shrink:0;" autocomplete="off" onsubmit="return false;">
         <input id="rag-chat-input" type="text" placeholder="Type your doubt..." style="flex:1;padding:14px 18px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,0.13);color:var(--text);font-size:18px;outline:none;text-align:left;" />
         <button type="submit" class="btn" style="padding:14px 28px;font-size:18px;">Send</button>
       </form>
     </section>
     
-    <!-- Quizzes section - multiple choice question interface -->
+    <!-- Quizzes Section -->
     <section id="quizzes" class="card tab hidden">
       <div class="row" style="justify-content:space-between;">
         <h2>Quick Quiz</h2>
         <span class="pill" style="cursor:default;">Practice</span>
       </div>
-      <!-- AI Disclaimer for Quizzes -->
+      
+     <!-- AI Disclaimer for Quizzes -->
       <div class="ai-disclaimer">
         <div class="ai-disclaimer-icon">ℹ️</div>
-        <div class="ai-disclaimer-content">
-          <div class="ai-disclaimer-title" style="text-align: left;">AI-Generated Content</div>
-          <p class="ai-disclaimer-text">Quiz questions are generated by AI and may contain errors. Use these for practice and always refer to your textbook for exam preparation.</p>
-        </div>
+        <p class="ai-disclaimer-text">
+          <strong>AI-Generated Content:</strong> Quiz questions are AI-generated and may contain errors. Use for practice and always refer to your textbook for exam preparation.
+        </p>
       </div>
-      <p>Test yourself with quick objective questions and instant feedback.</p>
+      <p>Test yourself with chapter-based MCQ questions and instant feedback.</p>
       
+      <div id="quiz-controls" style="margin:18px 0;">
+        <button id="generate-quiz-btn" class="btn" style="font-size:16px;padding:12px 28px;">🎯 Generate Quiz</button>
+      </div>
       
-        <!-- Button container for quiz generation -->
-        <div id="quiz-controls" style="margin:18px 0;">
-          <button id="generate-quiz-btn" class="btn" style="font-size:16px;padding:10px 22px;">Generate Quiz</button>
-        </div>
-        <!-- Container where quiz questions will be rendered -->
-        <div id="quiz-area"></div>
+      <div id="quiz-placeholder"></div>
     </section>
   </main>
 
-  <script>
-    /* 
-       QUIZ FUNCTIONALITY (REPLACE ONLY THIS BLOCK)
-    */
-const quizArea = document.getElementById('quiz-area');
-const generateQuizBtn = document.getElementById('generate-quiz-btn');
-let currentQuizData = null;
-let currentSavedQuizId = null; // will be set when backend returns quiz_id for generated quiz
-
-// Quiz Handler: Fetch quiz for selected chapter
-async function generateQuizHandler() {
-  const chapterId = localStorage.getItem('selectedChapterId');
-  if (!chapterId) {
-    quizArea.innerHTML = '<div style="color:#f87171;text-align:center;padding:20px;">No chapter selected. Select a chapter in Dashboard.</div>';
-    return;
-  }
-  quizArea.innerHTML = `<div style="text-align:center;padding:40px;color:#aaa;"><div style="font-size:18px;font-weight:600;">Generating quiz for selected chapter...</div></div>`;
-  if (generateQuizBtn) { generateQuizBtn.disabled = true; generateQuizBtn.textContent = "Generating..."; }
-  try {
-    const payload = { chapter_id: chapterId, num_questions: 2 }; // request up to 80 questions
-    const res = await fetch('http://127.0.0.1:8000/generate_quiz', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.detail || data.error || "generate_quiz failed");
-    const questions = data.quiz || [];
-    if (!Array.isArray(questions) || questions.length === 0) {
-      quizArea.innerHTML = '<div style="text-align:center;padding:30px;color:#f87171;">No quiz questions available.</div>';
-      return;
-    }
-
-    // store locally for UI
-    currentQuizData = questions;
-
-    // persist generated quiz to backend immediately (non-blocking but awaited here to report errors)
-    (async () => {
-      try {
-        const studentId = localStorage.getItem('currentUserId') || null;
-        const saveRes = await fetch('http://127.0.0.1:8000/generate_and_save_quiz', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            quiz: questions,
-            chapter_id: chapterId,
-            student_id: studentId,
-            num_questions: Array.isArray(questions) ? questions.length : 0
-          })
-        });
-        const saveData = await saveRes.json().catch(() => null);
-        if (!saveRes.ok) {
-          console.warn('Failed to save generated quiz:', saveData || await saveRes.text());
-        } else {
-          console.log('Generated quiz saved:', saveData);
-          // keep the returned quiz_id so submit can update the score later
-          if (saveData && saveData.quiz_id) {
-            currentSavedQuizId = saveData.quiz_id;
-            // persist locally for this session (optional)
-            try { localStorage.setItem('lastSavedQuizId', String(currentSavedQuizId)); } catch(e){}
-          }
-        }
-      } catch (e) {
-        console.warn('Error saving generated quiz:', e);
-      }
-    })();
-
-    if (generateQuizBtn) generateQuizBtn.style.display = 'none';
-    renderQuizQuestions(questions);
-  } catch (err) {
-    quizArea.innerHTML = `<div style="text-align:center;padding:30px;color:#f87171;">Error: ${err.message}</div>`;
-  }
-  if (generateQuizBtn) { generateQuizBtn.disabled = false; generateQuizBtn.textContent = 'Generate Quiz'; }
-}
-
-// Generate Quiz button event
-if (generateQuizBtn) {
-  generateQuizBtn.addEventListener('click', function(e) {
-    e.preventDefault();
-    generateQuizHandler();
-  });
-}
-
-// Only render questions, do NOT show correct answers or explanations
-function renderQuizQuestions(questions) {
-  if (!questions || questions.length === 0) {
-    quizArea.innerHTML = '<div style="text-align:center;padding:30px;color:#f87171;">No quiz questions available.</div>';
-    return;
-  }
-
-  let html = '<form id="quiz-form-area" style="text-align:left;">';
-  questions.forEach((q, idx) => {
-    html += `
-      <div class="card" style="margin-bottom:18px;padding:18px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;">
-        <div style="font-weight:700;margin-bottom:12px;color:#fff;line-height:1.4;">Q${idx+1}. ${q.question}</div>
-        <div>
-          ${(q.options || []).map((opt, oidx) => `
-            <div class="quiz-option" style="margin-bottom:8px;">
-              <button type="button" class="btn option-btn" data-q="${idx}" data-opt="${oidx}" style="width:100%;text-align:left;padding:10px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid rgba(255,255,255,0.04);">
-                ${opt}
-              </button>
-            </div>
-          `).join('')}
+  <!-- Quiz Modal -->
+  <div class="quiz-modal" id="quizModal">
+    <div class="quiz-modal-content">
+      <div class="quiz-nav" id="quizNav"></div>
+      <div class="quiz-main">
+        <div class="quiz-header">
+          <div class="quiz-timer" id="quizTimer">
+            <span>⏱️</span>
+            <span id="timerDisplay">00:00</span>
+          </div>
+          <div class="quiz-progress" id="quizProgress">Question 1 of 10</div>
+          <button class="btn" id="closeQuizBtn" style="padding:8px 16px;">✕ Close</button>
         </div>
-        <div id="explanation-${idx}" style="display:none;margin-top:10px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;color:var(--muted);">
-          <strong>Explanation:</strong>
-          <div style="margin-top:8px;">${q.explanation || ''}</div>
+        
+        <div id="quizContent"></div>
+        
+        <div class="quiz-controls" id="quizControls">
+          <button class="quiz-btn quiz-btn-secondary" id="prevQuestionBtn">← Previous</button>
+          <button class="quiz-btn quiz-btn-primary" id="nextQuestionBtn">Next →</button>
+          <button class="quiz-btn quiz-btn-primary" id="submitQuizBtn">Finish Quiz</button>
         </div>
       </div>
-    `;
-  });
+    </div>
+  </div>
 
-  html += `<div style="margin-top:12px;"><button type="submit" id="submit-quiz" class="btn">Submit Quiz</button></div>`;
-  html += '</form>';
+  <!-- Generic Alert/Confirm Modal -->
+  <div class="alert-modal-overlay" id="alertModal">
+    <div class="alert-modal-content">
+      <h3 id="alertModalTitle">Alert</h3>
+      <p id="alertModalMessage">This is a message.</p>
+      <div class="alert-modal-actions">
+        <button class="alert-btn alert-btn-secondary" id="alertCancelBtn">Cancel</button>
+        <button class="alert-btn alert-btn-primary" id="alertOkBtn">OK</button>
+      </div>
+    </div>
+  </div>
 
-  quizArea.innerHTML = html;
-  if (generateQuizBtn) { generateQuizBtn.disabled = false; generateQuizBtn.textContent = 'Generate New Quiz'; }
-  currentQuizData = questions;
-
-  // Option click: ONLY select visually, do NOT show explanations pre-submit
-  document.querySelectorAll('.option-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      const parent = this.closest('.card');
-      // Visually mark selection and set reliable attributes/classes
-      parent.querySelectorAll('.option-btn').forEach(ob => {
-        ob.style.opacity = '0.6';
-        ob.removeAttribute('data-selected');
-        ob.removeAttribute('aria-pressed');
-        ob.classList.remove('selected');
-      });
-      this.style.opacity = '1';
-      this.setAttribute('data-selected', '1');
-      this.setAttribute('aria-pressed', 'true');
-      this.classList.add('selected');
-    });
-  });
-
-  // Full quiz submit handler (scoped to the quiz form)
-  const quizForm = document.getElementById('quiz-form-area');
-  if (quizForm) {
-    quizForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      if (!currentQuizData || currentQuizData.length === 0) return;
-
-      let correct = 0;
-      const total = currentQuizData.length;
-
-      // Use only the quiz cards rendered inside the form (avoid picking other .card elements)
-      const quizCards = Array.from(quizForm.querySelectorAll('.card'));
-
-      currentQuizData.forEach((q, idx) => {
-        const parent = quizCards[idx];
-        if (!parent) return; // defensive
-
-        const buttons = Array.from(parent.querySelectorAll('.option-btn'));
-        const selectedBtn = parent.querySelector('.option-btn[data-selected="1"], .option-btn.selected, .option-btn[aria-pressed="true"]');
-        const selectedIndex = selectedBtn ? buttons.indexOf(selectedBtn) : -1;
-
-        // Resolve correct answer robustly (number, numeric-string, letter, or option-text)
-        let correctIndex = 0;
-        const corr = q.correct_answer ?? q.correctAnswer ?? q.correctanswer ?? q.correct ?? q.correctIndex;
-        if (typeof corr === 'number' && Number.isFinite(corr)) {
-          correctIndex = corr;
-        } else if (typeof corr === 'string' && corr.trim() !== '') {
-          const s = corr.trim();
-          if (!isNaN(Number(s))) {
-            correctIndex = Number(s);
-          } else if (/^[A-Za-z]$/.test(s)) {
-            correctIndex = s.toUpperCase().charCodeAt(0) - 65;
-          } else {
-            // try to match option text
-            const match = buttons.findIndex(b => {
-              const t = (b.textContent || b.innerText || '').trim();
-              return t === s || t.startsWith(s) || t.toLowerCase() === s.toLowerCase() || t.toLowerCase().startsWith(s.toLowerCase());
-            });
-            correctIndex = match >= 0 ? match : 0;
-          }
-        }
-
-        if (selectedIndex === correctIndex) correct++;
-
-        // reveal explanations and highlight correct/wrong
-        buttons.forEach((ob, i) => {
-          ob.style.background = (i === correctIndex)
-            ? 'rgba(34,197,94,0.12)'
-            : (i === selectedIndex ? 'rgba(239,68,68,0.08)' : 'rgba(255,255,255,0.02)');
-          // ensure opacity reset for unselected
-          ob.style.opacity = '1';
-        });
-
-        const ex = parent.querySelector(`#explanation-${idx}`) || document.getElementById(`explanation-${idx}`);
-        if (ex) ex.style.display = 'block';
-      });
-
-  const percentage = Math.round((correct / total) * 100);
-      let grade = 'D', message = 'Keep practicing!';
-      if (percentage >= 90) { grade = 'A+'; message = 'Outstanding!'; }
-      else if (percentage >= 80) { grade = 'A'; message = 'Excellent!'; }
-      else if (percentage >= 70) { grade = 'B'; message = 'Good job!'; }
-      else if (percentage >= 60) { grade = 'C'; message = 'Keep practicing!'; }
-
-      quizArea.innerHTML = `
-        <div style="text-align:center;padding:24px;border-radius:12px;background:rgba(255,255,255,0.02);">
-          <div style="font-size:48px;color:#67e8f9;margin-bottom:8px;">${percentage}%</div>
-          <div style="font-size:20px;font-weight:700;margin-bottom:6px;">Grade: ${grade}</div>
-          <div style="color:var(--muted);margin-bottom:12px;">${message}</div>
-          <div style="color:var(--muted);">You got ${correct} out of ${total} correct</div>
-        </div>
-      `;
-      if (generateQuizBtn) { generateQuizBtn.style.display = ''; generateQuizBtn.disabled = false; generateQuizBtn.textContent = 'Generate New Quiz'; }
-
-      // Persist score to backend: prefer updating existing quiz row if we have quiz_id
-      (async () => {
-        try {
-          const studentId = localStorage.getItem('currentUserId') || null;
-          const chapterId = localStorage.getItem('selectedChapterId') || null;
-          if (currentSavedQuizId) {
-            // minimal update endpoint
-            const res = await fetch('http://127.0.0.1:8000/update_quiz_score', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ quiz_id: currentSavedQuizId, score: percentage })
-            });
-            if (!res.ok) console.warn('Failed to update quiz score', await res.text());
-            else console.log('Quiz score updated for', currentSavedQuizId);
-          } else {
-            // create a new quiz result if we didn't have one saved earlier
-            const res = await fetch('http://127.0.0.1:8000/save_quiz_result', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                student_id: studentId,
-                chapter_id: chapterId,
-                score: percentage,
-                correct: correct,
-                total: total,
-                quiz: currentQuizData
-              })
-            });
-            const data = await res.json().catch(() => null);
-            if (!res.ok) console.warn('Failed to save quiz result', data || await res.text());
-            else {
-              console.log('Saved new quiz result', data);
-              if (data && data.quiz_id) currentSavedQuizId = data.quiz_id;
-            }
-          }
-        } catch (err) {
-          console.warn('Error saving/updating quiz score:', err);
-        }
-      })();
-    }, { once: true });
-  }
-}
-
-/* ==============================================
-   END QUIZ FUNCTIONALITY BLOCK
-   ============================================== */
-
-    /* 
-       Doubt Sestion
- */
-    
-    const chatForm = document.getElementById('chat-form');
-    const chatInput = document.getElementById('chat-input');
-    const chatHistory = document.getElementById('chat-history');
-
-    if (chatForm && chatInput && chatHistory) {
-      // Handle chat message submission
-      chatForm.addEventListener('submit', async function() {
-        const userMsg = chatInput.value.trim();
-        if (!userMsg) return; // Ignore empty messages
-        
-        addMsg('You', userMsg, 'right');
-        chatInput.value = '';
-        chatInput.disabled = true; // Disable input while processing
-        
-        // Show loading indicator while waiting for response
-        const loadingId = addMsg('Bot', '<span style="opacity:.7;">Thinking...</span>', 'left', true);
-        
-        try {
-          // Send message to backend API
-          const res = await fetch('http://127.0.0.1:8000/generate', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ prompt: userMsg })
-          });
-          const data = await res.json();
-          
-          removeMsg(loadingId); // Remove loading indicator
-          
-          // Display bot response or error message
-          if (data.answer) {
-            addMsg('Bot', data.answer, 'left');
-          } else if (data.error) {
-            addMsg('Bot', `<span style='color:#fca5a5;font-weight:500;'>⚠ ${data.error}</span>`, 'left');
-          } else {
-            addMsg('Bot', '<span style="color:#fca5a5;font-weight:500;">⚠ No answer received.</span>', 'left');
-          }
-        } catch (e) {
-          // Handle network errors
-          removeMsg(loadingId);
-          addMsg('Bot', `<span style='color:#fca5a5;font-weight:500;'>⚠ Error: ${e.message}</span>`, 'left');
-        }
-        
-        chatInput.disabled = false; // Re-enable input
-        chatInput.focus();
-      });
-      
-      /**
-       * Adds a message to the chat history
-       * @param {string} sender - Name of message sender
-       * @param {string} text - Message content (can include HTML)
-       * @param {string} align - 'left' or 'right' alignment
-       * @param {boolean} isLoading - Whether this is a loading indicator
-       * @returns {string|null} - ID of message if loading, null otherwise
-       */
-      function addMsg(sender, text, align, isLoading) {
-        const msg = document.createElement('div');
-        msg.className = 'chat-msg';
-        msg.style = `margin:8px 0;display:flex;justify-content:${align==='right'?'flex-end':'flex-start'};`;
-        msg.innerHTML = `<div style="max-width:80%;background:${align==='right'?'#a21caf':'rgba(255,255,255,0.13)'};color:${align==='right'?'#fff':'var(--text)'};padding:10px 14px;border-radius:12px;font-size:16px;box-shadow:0 1px 4px 0 rgba(0,0,0,0.07);">${text}</div>`;
-        chatHistory.appendChild(msg);
-        chatHistory.scrollTop = chatHistory.scrollHeight; // Auto-scroll to bottom
-        
-        // Generate unique ID for loading messages so they can be removed
-        if (isLoading) {
-          const id = 'loading-' + Math.random().toString(36).slice(2);
-          msg.id = id;
-          return id;
-        }
-        return null;
-      }
-      
-      /**
-       * Removes a message from chat history by ID
-       * Used to remove loading indicators
-       */
-      function removeMsg(id) {
-        const el = document.getElementById(id);
-        if (el) el.remove();
-      }
-    }
-
-    /* ===========================
-       AUTHENTICATION CHECK
-       Redirects unauthenticated users to login page
-       =========================== */
-    
+  <script>
+    // Auth check
     if (localStorage.getItem('authed') !== '1') {
       location.replace('./login.html');
     }
 
-    /* ===========================
-       TAB SWITCHING FUNCTIONALITY
-       Handles navigation between different learning sections
-       =========================== */
-    
+    // --- Custom Alert/Confirm Modal Logic ---
+    const alertModal = document.getElementById('alertModal');
+    const alertModalTitle = document.getElementById('alertModalTitle');
+    const alertModalMessage = document.getElementById('alertModalMessage');
+    const alertOkBtn = document.getElementById('alertOkBtn');
+    const alertCancelBtn = document.getElementById('alertCancelBtn');
+
+    let currentModalResolver;
+
+    function showAlert(message, title = 'Notification') {
+      alertModalTitle.textContent = title;
+      alertModalMessage.textContent = message;
+      alertCancelBtn.style.display = 'none';
+      alertOkBtn.textContent = 'OK';
+      alertModal.classList.add('active');
+
+      return new Promise(resolve => {
+        currentModalResolver = { resolve, type: 'alert' };
+      });
+    }
+
+    function showConfirm(message, title = 'Confirmation') {
+      alertModalTitle.textContent = title;
+      alertModalMessage.textContent = message;
+      alertCancelBtn.style.display = 'inline-flex';
+      alertOkBtn.textContent = 'Confirm';
+      alertModal.classList.add('active');
+
+      return new Promise(resolve => {
+        currentModalResolver = { resolve, type: 'confirm' };
+      });
+    }
+
+    alertOkBtn.addEventListener('click', () => {
+      if (!currentModalResolver) return;
+      alertModal.classList.remove('active');
+      if (currentModalResolver.type === 'alert') {
+        currentModalResolver.resolve();
+      } else {
+        currentModalResolver.resolve(true);
+      }
+      currentModalResolver = null;
+    });
+
+    alertCancelBtn.addEventListener('click', () => {
+      if (!currentModalResolver || currentModalResolver.type !== 'confirm') return;
+      alertModal.classList.remove('active');
+      currentModalResolver.resolve(false);
+      currentModalResolver = null;
+    });
+    // --- End Custom Modal Logic ---
+
     const pills = document.querySelectorAll(".pill[data-tab]");
     const tabs = document.querySelectorAll(".tab");
 
     pills.forEach(p => p.addEventListener("click", () => {
-      // Remove active state from all pills
       pills.forEach(pp => pp.classList.remove("active"));
-      p.classList.add("active"); // Set clicked pill as active
-      
+      p.classList.add("active");
       const id = p.getAttribute("data-tab");
-      
-      // Hide all tab sections
       tabs.forEach(t => t.classList.add("hidden"));
-      // Show selected tab section
       document.getElementById(id)?.classList.remove("hidden");
-      
-      // Scroll to top of page for better UX
       window.scrollTo({ top: 0, behavior: "smooth" });
     }));
 
-    /* ===========================
-       USER NAME DISPLAY
-       Loads and displays current user's name from localStorage
-       =========================== */
-    
     (function(){
       const n = localStorage.getItem("currentUserName") || "Student";
       const el = document.getElementById("lName");
       if (el) el.textContent = n;
     })();
 
-    /* ===========================
-       SUMMARY LOADING FUNCTION
-       Fetches and displays chapter summaries from backend
-       =========================== */
-    
     async function loadSummaries() {
       const grid = document.querySelector("#summary .grid");
       if (!grid) return;
-      
       grid.innerHTML = '<div class="loading-text">Loading summaries...</div>';
-
-      // Get selected chapter ID from localStorage
       const chapterId = Number(localStorage.getItem("selectedChapterId"));
       if (!chapterId) {
         grid.innerHTML = '<div class="error-message">No chapter selected. Go to Dashboard and pick a chapter.</div>';
         return;
       }
-
       try {
-        // Fetch all summaries from backend API
         const res = await fetch("http://127.0.0.1:8000/summaries");
         const summaries = await res.json();
-        // Filter summaries for the selected chapter
         const filtered = summaries.filter((s) => s.chapter_id === chapterId);
-
         if (filtered.length > 0) {
           grid.innerHTML = "";
           filtered.forEach((summary) => {
             let text = summary.summary_data;
-            
-            // Parse summary text and add heading styling to section markers
             const lines = text.split('\n');
-            
             for (let i = 0; i < lines.length; i++) {
               const line = lines[i].trim();
-              
-              // Identify section headings by various patterns
-              if (line.startsWith('Section:') || line.startsWith('Section ')) {
-                lines[i] = '<span class="heading">' + lines[i] + '</span>';
-              }
-              // Numbered sections like "1.1 Introduction"
-              else if (/^\d+\.\d+\s/.test(line)) {
-                lines[i] = '<span class="heading">' + lines[i] + '</span>';
-              }
-              // Standard section titles
-              else if (line === 'Key Terms' || line === 'Chapter Summary' || line === 'High-Yield Exam Facts') {
+              if (line.startsWith('Section:') || line.startsWith('Section ') || /^\d+\.\d+\s/.test(line) || line === 'Key Terms' || line === 'Chapter Summary' || line === 'High-Yield Exam Facts') {
                 lines[i] = '<span class="heading">' + lines[i] + '</span>';
               }
             }
-            
-            // Reconstruct text with heading markup
             text = lines.join('\n');
             grid.innerHTML += `<div class="summary-text">${text}</div>`;
           });
@@ -1283,33 +1190,20 @@ function renderQuizQuestions(questions) {
       }
     }
 
-    /* ===========================
-       FLASHCARDS LOADING FUNCTION
-       Creates interactive flashcard carousel with navigation
-       =========================== */
-    
     async function loadFlashcards() {
       const grid = document.querySelector("#flashcards .grid");
       if (!grid) return;
-      
       grid.innerHTML = '<div class="loading-text">Loading flashcards...</div>';
-
-      // Get selected chapter ID from localStorage
       const chapterId = Number(localStorage.getItem("selectedChapterId"));
       if (!chapterId) {
         grid.innerHTML = '<div class="error-message">No chapter selected. Go to Dashboard and pick a chapter.</div>';
         return;
       }
-
       try {
-        // Fetch all flashcards from backend API
         const res = await fetch("http://127.0.0.1:8000/flashcards");
         const flashcards = await res.json();
-        // Filter flashcards for the selected chapter
         const filtered = flashcards.filter((f) => f.chapter_id === chapterId);
-
         if (filtered.length > 0) {
-          // Build carousel HTML structure with navigation controls
           grid.innerHTML = `
             <div class="nav-arrow left" id="prev-card">←</div>
             <div class="flashcard-container" id="card-container"></div>
@@ -1320,67 +1214,41 @@ function renderQuizQuestions(questions) {
               </div>
             </div>
           `;
-          
-          // Get references to navigation elements
           const container = document.getElementById('card-container');
           const prevBtn = document.getElementById('prev-card');
           const nextBtn = document.getElementById('next-card');
           const scrollbar = document.getElementById('flashcard-scrollbar');
           const scrollbarThumb = document.getElementById('flashcard-scrollbar-thumb');
-          
-          let currentCardIndex = 0; // Track which card is currently displayed
-          let isFlipped = false; // Track if current card is showing answer
-          
-          // Parse flashcard data into topic and keypoint pairs
-          const allCards = filtered.map((flashcard, idx) => {
+          let currentCardIndex = 0;
+          let isFlipped = false;
+          const allCards = filtered.map((flashcard) => {
             const raw = (flashcard.flashcard_data || '').replace(/\r/g, '');
             let topic = '', keypoint = '';
-            
-            // Parse flashcard format: "Topic | Key Point: explanation"
             if (/Key Point:/i.test(raw)) {
               const parts = raw.split(/Key Point:/i);
               topic = parts[0].trim();
               keypoint = parts.slice(1).join('Key Point:').trim();
-            } 
-            // Alternative format with pipe delimiter
-            else if (raw.includes('|')) {
+            } else if (raw.includes('|')) {
               const parts = raw.split('|');
               topic = parts[0].trim().replace(/\|+$/, "");
               keypoint = parts.slice(1).join(' ').trim();
-            } 
-            // Fallback: first line is topic, rest is keypoint
-            else {
+            } else {
               const lines = raw.split('\n').map(s=>s.trim()).filter(Boolean);
               topic = lines.shift() || '';
               keypoint = lines.join(' ') || '';
             }
-
-            // Clean up formatting artifacts
             topic = topic.replace(/\|/g, '').replace(/\[\d+\]/g, '').trim();
             keypoint = keypoint.replace(/\|/g, '').replace(/\[\d+\]/g, '').trim();
-            
             return { topic, keypoint };
           });
-          
-          /**
-           * Creates a flashcard DOM element
-           * @param {number} index - Position in card array
-           * @param {object} cardData - Object with topic and keypoint
-           * @returns {HTMLElement} - Flashcard element
-           */
           function createCard(index, cardData) {
             const cardEl = document.createElement('div');
             cardEl.className = 'card-item card-front';
             cardEl.dataset.index = index;
             cardEl.innerHTML = `<div class="flashcard-prompt">Tap to reveal (${index + 1}/${allCards.length})</div>`;
-            
-            // Click handler to flip card between question and answer
             cardEl.addEventListener('click', function() {
-              // Only allow flipping the current card
               if (parseInt(cardEl.dataset.index) !== currentCardIndex) return;
-              
               if (!isFlipped) {
-                // Show answer side
                 cardEl.classList.remove('card-front');
                 cardEl.classList.add('card-back');
                 cardEl.innerHTML = `
@@ -1389,108 +1257,69 @@ function renderQuizQuestions(questions) {
                 `;
                 isFlipped = true;
               } else {
-                // Show question side
                 cardEl.classList.remove('card-back');
                 cardEl.classList.add('card-front');
                 cardEl.innerHTML = `<div class="flashcard-prompt">Tap to reveal (${index + 1}/${allCards.length})</div>`;
                 isFlipped = false;
               }
             });
-            
             return cardEl;
           }
-          
-          /**
-           * Updates scrollbar thumb position and width based on current card
-           */
           function updateScrollbar() {
             const thumbWidth = (1 / allCards.length) * 100;
             const thumbPosition = (currentCardIndex / allCards.length) * 100;
             scrollbarThumb.style.width = thumbWidth + '%';
             scrollbarThumb.style.left = thumbPosition + '%';
           }
-          
-          /**
-           * Updates CSS classes for all cards based on their position relative to current card
-           * Creates stacking effect for visited/unvisited cards
-           */
           function updateCardPositions() {
             const cards = Array.from(container.children);
-            
             cards.forEach((card, idx) => {
               card.classList.remove('visited', 'current', 'unvisited');
-              
               if (idx < currentCardIndex) {
-                card.classList.add('visited'); // Cards before current
+                card.classList.add('visited');
               } else if (idx === currentCardIndex) {
-                card.classList.add('current'); // Current card
+                card.classList.add('current');
               } else {
-                card.classList.add('unvisited'); // Cards after current
+                card.classList.add('unvisited');
               }
             });
-            
-            // Update navigation button states
             prevBtn.classList.toggle('disabled', currentCardIndex === 0);
             nextBtn.classList.toggle('disabled', currentCardIndex === allCards.length - 1);
             updateScrollbar();
           }
-          
-          /**
-           * Navigate to next card (decreases index as we're moving through stack)
-           */
           function goToNext() {
             if (currentCardIndex > 0) {
               currentCardIndex--;
-              isFlipped = false; // Reset flip state
+              isFlipped = false;
               updateCardPositions();
             }
           }
-          
-          /**
-           * Navigate to previous card (increases index)
-           */
           function goToPrev() {
             if (currentCardIndex < allCards.length - 1) {
               currentCardIndex++;
-              isFlipped = false; // Reset flip state
+              isFlipped = false;
               updateCardPositions();
             }
           }
-          
-          // Bind navigation buttons
           prevBtn.addEventListener('click', goToPrev);
           nextBtn.addEventListener('click', goToPrev);
-          
-          /**
-           * Handle clicks on scrollbar track to jump to specific card
-           */
           scrollbar.addEventListener('click', function(e) {
-            if (e.target === scrollbarThumb) return; // Ignore clicks on thumb itself
+            if (e.target === scrollbarThumb) return;
             const rect = scrollbar.getBoundingClientRect();
             const clickPosition = (e.clientX - rect.left) / rect.width;
             currentCardIndex = Math.round(clickPosition * (allCards.length - 1));
             isFlipped = false;
             updateCardPositions();
           });
-          
-          // Scrollbar thumb dragging functionality
           let isDragging = false;
           let startX = 0;
           let startIndex = 0;
-          
-          /**
-           * Initialize drag operation on thumb
-           */
           scrollbarThumb.addEventListener('mousedown', function(e) {
             isDragging = true;
             startX = e.clientX;
             startIndex = currentCardIndex;
             e.preventDefault();
           });
-          
-          /**
-           * Update card position during drag
-           */
           document.addEventListener('mousemove', function(e) {
             if (!isDragging) return;
             const rect = scrollbar.getBoundingClientRect();
@@ -1503,30 +1332,16 @@ function renderQuizQuestions(questions) {
               updateCardPositions();
             }
           });
-          
-          /**
-           * End drag operation
-           */
           document.addEventListener('mouseup', function() {
             isDragging = false;
           });
-          
-          // Create and add all flashcard elements to container
           allCards.forEach((cardData, idx) => {
             const card = createCard(idx, cardData);
             container.appendChild(card);
           });
-          
-          updateCardPositions(); // Initialize card positions
-          
-          /**
-           * Handle mouse wheel scrolling for card navigation
-           * Supports both horizontal and vertical scroll gestures
-           */
+          updateCardPositions();
           container.addEventListener('wheel', function(e) {
-            const threshold = 30; // Minimum scroll distance to trigger navigation
-            
-            // Check if scroll is primarily horizontal
+            const threshold = 30;
             if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
               if (Math.abs(e.deltaX) > threshold) {
                 if (e.deltaX > 0 && currentCardIndex < allCards.length - 1) {
@@ -1541,9 +1356,7 @@ function renderQuizQuestions(questions) {
                   e.preventDefault();
                 }
               }
-            } 
-            // Handle vertical scroll
-            else if (Math.abs(e.deltaY) > threshold) {
+            } else if (Math.abs(e.deltaY) > threshold) {
               if (e.deltaY > 0 && currentCardIndex < allCards.length - 1) {
                 currentCardIndex++;
                 isFlipped = false;
@@ -1556,7 +1369,7 @@ function renderQuizQuestions(questions) {
                 e.preventDefault();
               }
             }
-          }, { passive: false }); // Allow preventDefault
+          }, { passive: false });
         } else {
           grid.innerHTML = '<div class="error-message">No flashcards found for this chapter.</div>';
         }
@@ -1565,114 +1378,431 @@ function renderQuizQuestions(questions) {
       }
     }
 
-    /* ===========================
-       RAG DOUBT ANSWERING INTEGRATION
-       Use Langflow /api/v1/run endpoint instead of Flowise
-       =========================== */
+    const ragChatForm = document.getElementById('rag-chat-form');
+    const ragChatInput = document.getElementById('rag-chat-input');
+    const ragChatHistory = document.getElementById('rag-chat-history');
+    let isFirstDoubt = true;
 
-async function query(data) {
-    const response = await fetch(
-        "https://cloud.flowiseai.com/api/v1/prediction/938cfc75-227e-4ace-bdac-4ff12fec29ee",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
+    if (ragChatForm && ragChatInput && ragChatHistory) {
+      ragChatForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const question = ragChatInput.value.trim();
+        if (!question) return;
+
+        if (isFirstDoubt) {
+          ragChatHistory.innerHTML = '';
+          isFirstDoubt = false;
         }
-    );
-    const result = await response.json();
-    return result;
-}
 
-const ragChatForm = document.getElementById('rag-chat-form');
-const ragChatInput = document.getElementById('rag-chat-input');
-const ragChatHistory = document.getElementById('rag-chat-history');
-
-if (ragChatForm && ragChatInput && ragChatHistory) {
-  ragChatForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    const question = ragChatInput.value.trim();
-    if (!question) return;
-
-    ragChatHistory.innerHTML += `<div style="text-align:left;"><span style="font-weight:700;color:#233876;">You:</span> <span style="color:#fff;">${question}</span></div>`;
-    ragChatInput.value = '';
-    ragChatInput.disabled = true;
-    ragChatHistory.innerHTML += `<div id="rag-loading" style="color:#aaa;text-align:left;">AI is thinking...</div>`;
-    ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
-
-      try {
-        // Prefer backend /generate (so server can persist Doubt and Response).
-        const studentId = localStorage.getItem('currentUserId') || null;
-        const chapterId = localStorage.getItem('selectedChapterId') || null;
-
-        let usedAnswer = null;
+        ragChatHistory.innerHTML += `<div style="text-align:left;"><span style="font-weight:700;color:#233876;">You:</span> <span style="color:#fff;">${question}</span></div>`;
+        ragChatInput.value = '';
+        ragChatInput.disabled = true;
+        const loadingId = 'rag-loading-' + Date.now();
+        ragChatHistory.innerHTML += `<div id="${loadingId}" style="color:#aaa;text-align:left;">AI is thinking...</div>`;
+        ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
 
         try {
+          const studentId = localStorage.getItem('currentUserId') || null;
+          const chapterId = localStorage.getItem('selectedChapterId') || null;
+
           const backendRes = await fetch('http://127.0.0.1:8000/generate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ prompt: question, student_id: studentId, chapter_id: chapterId })
           });
-          const backendData = await backendRes.json().catch(() => null);
-          if (backendRes.ok && (backendData?.answer || backendData?.response || backendData?.doubt_response || backendData?.output)) {
-            usedAnswer = backendData.answer || backendData.response || backendData.doubt_response || backendData.output || (typeof backendData === 'string' ? backendData : null);
-          } else if (backendRes.ok && typeof backendData === 'string' && backendData.length) {
-            usedAnswer = backendData;
-          } else if (!backendRes.ok) {
-            console.warn('Backend /generate returned non-OK, falling back to Flowise:', backendData || await backendRes.text());
-          }
-        } catch (backendErr) {
-          console.warn('Backend /generate failed, falling back to Flowise:', backendErr);
-        }
+          
+          const backendData = await backendRes.json();
+          
+          if (backendRes.ok && backendData && backendData.doubt_id) {
+            const doubtId = backendData.doubt_id;
+            document.getElementById(loadingId).innerHTML = 'Processing your question...';
+            
+            let attempts = 0;
+            const maxAttempts = 30;
 
-        // If backend didn't provide an answer, fall back to the Flowise cloud query
-        if (!usedAnswer) {
-          const resp = await query({ question: question });
-
-          // simple robust extraction of answer from common Flowise shapes
-          if (resp) {
-            if (typeof resp === 'string') usedAnswer = resp;
-            else if (resp.text) usedAnswer = resp.text;
-            else if (resp.output_text) usedAnswer = resp.output_text;
-            else if (resp.answer) usedAnswer = resp.answer;
-            else if (resp.result && typeof resp.result === 'string') usedAnswer = resp.result;
-            else if (Array.isArray(resp.output) && resp.output.length) {
-              const first = resp.output[0];
-              if (first && first.data) {
-                if (typeof first.data === 'string') usedAnswer = first.data;
-                else if (Array.isArray(first.data) && first.data[0] && first.data[0].text) usedAnswer = first.data[0].text;
+            // This function will poll for the response safely.
+            async function pollForDoubtResponse(doubtId) {
+              attempts++;
+              if (attempts > maxAttempts) {
+                document.getElementById(loadingId)?.remove();
+                ragChatHistory.innerHTML += `<div style="color:#f55;text-align:left;">Sorry, the request took too long. Please try again.</div>`;
+                ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
+                ragChatInput.disabled = false;
+                ragChatInput.focus();
+                return;
               }
-            } else if (Array.isArray(resp.outputs) && resp.outputs.length) {
-              const out = resp.outputs[0];
-              usedAnswer = out?.data?.text || out?.text || null;
-            }
-          }
 
-          if (!usedAnswer) {
-            try { usedAnswer = JSON.stringify(resp).slice(0, 4000); } catch { usedAnswer = String(resp); }
+              try {
+                const pollRes = await fetch(`http://127.0.0.1:8000/doubt/${doubtId}`);
+                const pollData = await pollRes.json();
+                
+                // Check if the response is no longer null (meaning it's ready)
+                if (pollData.response !== null && pollData.response !== undefined) {
+                  // Success! Stop polling and display the answer.
+                  document.getElementById(loadingId)?.remove();
+                  ragChatHistory.innerHTML += `<div style="text-align:left;"><span style="font-weight:700;color:#ffe066;">AI:</span> <span style="color:var(--muted);">${pollData.response}</span></div>`;
+                  ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
+                  ragChatInput.disabled = false;
+                  ragChatInput.focus();
+                } else {
+                  // No response yet, schedule the next poll.
+                  setTimeout(() => pollForDoubtResponse(doubtId), 1500);
+                }
+              } catch (err) {
+                console.warn('Polling error:', err);
+                // On error, wait a bit and try again.
+                setTimeout(() => pollForDoubtResponse(doubtId), 1500);
+              }
+            }
+
+            // Start the first poll.
+            setTimeout(() => pollForDoubtResponse(doubtId), 1000);
+
+          } else {
+            throw new Error('Failed to create doubt');
+          }
+        } catch (err) {
+          document.getElementById(loadingId)?.remove();
+          ragChatHistory.innerHTML += `<div style="color:#f55;text-align:left;">Error: Could not get answer. ${err.message}</div>`;
+          ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
+          ragChatInput.disabled = false;
+          ragChatInput.focus();
+        }
+      });
+    }
+
+    // Quiz Module
+    const quizModal = document.getElementById('quizModal');
+    const generateQuizBtn = document.getElementById('generate-quiz-btn');
+    const closeQuizBtn = document.getElementById('closeQuizBtn');
+    const quizContent = document.getElementById('quizContent');
+    const quizProgress = document.getElementById('quizProgress');
+    const timerDisplay = document.getElementById('timerDisplay');
+    const prevQuestionBtn = document.getElementById('prevQuestionBtn');
+    const nextQuestionBtn = document.getElementById('nextQuestionBtn');
+    const submitQuizBtn = document.getElementById('submitQuizBtn');
+    const quizNav = document.getElementById('quizNav');
+
+    let quizData = [];
+    let currentQuestion = 0;
+    let userAnswers = [];
+    let quizStartTime = null;
+    let timerInterval = null;
+    let quizSubmitted = false;
+
+    function startTimer() {
+      quizStartTime = Date.now();
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
+        const minutes = Math.floor(elapsed / 60);
+        const seconds = elapsed % 60;
+        timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins}m ${secs}s`;
+    }
+
+    if (generateQuizBtn) {
+      generateQuizBtn.addEventListener('click', async function() {
+        const chapterId = Number(localStorage.getItem("selectedChapterId"));
+        
+        if (!chapterId) {
+          await showAlert('Please select a chapter from the Dashboard first.', 'Chapter Not Selected');
+          return;
+        }
+
+        generateQuizBtn.disabled = true;
+        generateQuizBtn.textContent = '⏳ Generating...';
+
+        try {
+          const response = await fetch('http://127.0.0.1:8000/generate_quiz', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chapter_id: chapterId })
+          });
+
+          const data = await response.json();
+
+          if (data.quiz && data.quiz.length > 0) {
+            // Adapt data from backend to match the format required by this quiz UI
+            quizData = data.quiz.map(q => ({
+              ...q,
+              correct_answer: q.correct_answer.charCodeAt(0) - 65, // Convert "A" -> 0, "B" -> 1, etc.
+              options: q.options.map(opt => opt.substring(opt.indexOf(')') + 1).trim()) // Strip "A) " from options
+            }));
+
+            userAnswers = new Array(quizData.length).fill(null);
+            currentQuestion = 0;
+            quizSubmitted = false;
+            
+            quizModal.classList.add('active');
+            startTimer();
+            renderQuestion();
+          } else {
+            await showAlert('No quiz questions could be generated for this chapter.', 'Quiz Generation Failed');
+          }
+        } catch (error) {
+          await showAlert('Error generating quiz: ' + error.message, 'Error');
+        } finally {
+          generateQuizBtn.disabled = false;
+          generateQuizBtn.textContent = '🎯 Generate Quiz';
+        }
+      });
+    }
+
+    if (closeQuizBtn) {
+      closeQuizBtn.addEventListener('click', async () => {
+        if (quizSubmitted || await showConfirm('Are you sure you want to close? Your progress will be lost.', 'Confirm Close')) {
+          quizModal.classList.remove('active');
+          stopTimer();
+          quizData = [];
+          userAnswers = [];
+          currentQuestion = 0;
+          quizSubmitted = false;
+          quizNav.style.display = 'grid';
+        }
+      });
+    }
+
+    function renderQuizNav() {
+      if (!quizNav) return;
+      quizNav.innerHTML = '';
+      quizData.forEach((_, idx) => {
+        const navItem = document.createElement('div');
+        navItem.className = 'quiz-nav-item';
+        navItem.textContent = idx + 1;
+        if (idx === currentQuestion) {
+          navItem.classList.add('current');
+        }
+        if (userAnswers[idx] !== null) {
+          navItem.classList.add('answered');
+        }
+        navItem.addEventListener('click', () => {
+          if (!quizSubmitted) {
+            currentQuestion = idx;
+            renderQuestion();
+          }
+        });
+        quizNav.appendChild(navItem);
+      });
+    }
+
+    function renderQuestion() {
+      if (!quizData.length) return;
+
+      renderQuizNav();
+
+      const q = quizData[currentQuestion];
+      quizProgress.textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+      
+      let optionsHtml = q.options.map((option, index) => {
+        const letter = String.fromCharCode(65 + index);
+        let optionClass = 'quiz-option';
+
+        if (quizSubmitted) {
+          optionClass += ' disabled';
+          if (index === q.correct_answer) {
+            optionClass += ' correct';
+          } else if (index === userAnswers[currentQuestion]) {
+            optionClass += ' incorrect';
+          }
+        } else if (userAnswers[currentQuestion] === index) {
+          optionClass += ' selected';
+        }
+
+        return `<div class="${optionClass}" data-index="${index}">
+                  <div class="option-letter">${letter}</div>
+                  <div class="option-text">${option}</div>
+                </div>`;
+      }).join('');
+
+      let explanationHtml = '';
+      if (quizSubmitted && q.explanation) {
+        explanationHtml = `<div class="quiz-explanation show">
+                             <div class="quiz-explanation-title">💡 Explanation</div>
+                             <div>${q.explanation}</div>
+                           </div>`;
+      }
+
+      quizContent.innerHTML = `
+        <div class="quiz-question-card">
+          <div class="quiz-question-text"><strong>Q${currentQuestion + 1}.</strong> ${q.question}</div>
+          <div class="quiz-options">${optionsHtml}</div>
+          ${explanationHtml}
+        </div>
+      `;
+
+      if (!quizSubmitted) {
+        document.querySelectorAll('.quiz-option').forEach(option => {
+          option.addEventListener('click', (e) => {
+            const selectedIndex = parseInt(e.currentTarget.dataset.index);
+            userAnswers[currentQuestion] = selectedIndex;
+            renderQuestion(); // Re-render to show selection and update nav
+          });
+        });
+      }
+
+      // Update button visibility
+      prevQuestionBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
+      nextQuestionBtn.style.display = currentQuestion < quizData.length - 1 ? 'block' : 'none';
+      submitQuizBtn.style.display = quizSubmitted ? 'none' : 'block';
+    }
+
+    if (prevQuestionBtn) {
+      prevQuestionBtn.addEventListener('click', () => {
+        if (currentQuestion > 0) {
+          currentQuestion--;
+          renderQuestion();
+        }
+      });
+    }
+
+    if (nextQuestionBtn) {
+      nextQuestionBtn.addEventListener('click', () => {
+        if (currentQuestion < quizData.length - 1) {
+          currentQuestion++;
+          renderQuestion();
+        }
+      });
+    }
+
+    if (submitQuizBtn) {
+      submitQuizBtn.addEventListener('click', async () => {
+        const unansweredCount = userAnswers.filter(a => a === null).length;
+        if (unansweredCount > 0) {
+          if (!await showConfirm(`You have ${unansweredCount} unanswered question(s). Are you sure you want to finish?`, 'Unanswered Questions')) {
+            return;
           }
         }
 
-        document.getElementById('rag-loading')?.remove();
-        ragChatHistory.innerHTML += `<div style="text-align:left;"><span style="font-weight:700;color:#ffe066;">AI:</span> <span style="color:var(--muted);">${usedAnswer}</span></div>`;
-        ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
-      } catch (err) {
-        document.getElementById('rag-loading')?.remove();
-        ragChatHistory.innerHTML += `<div style="color:#f55;text-align:left;">Error: Could not get answer (${err.message || err}).</div>`;
-        ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
-      } finally {
-        ragChatInput.disabled = false;
-        ragChatInput.focus();
-      }
-  });
-}
+        stopTimer();
+        quizSubmitted = true;
 
-    /* ===========================
-       INITIAL PAGE LOAD
-       Load content for active tabs when page first opens
-       =========================== */
-    
+        const totalTime = Math.floor((Date.now() - quizStartTime) / 1000);
+        let correctCount = 0;
+
+        quizData.forEach((q, idx) => {
+          if (userAnswers[idx] === q.correct_answer) {
+            correctCount++;
+          }
+        });
+
+        const percentage = Math.round((correctCount / quizData.length) * 100);
+
+        // --- START: New code to save quiz results to the database ---
+        async function saveQuizResult() {
+          const studentId = localStorage.getItem('currentUserId');
+          const chapterId = localStorage.getItem('selectedChapterId');
+
+          if (!studentId || !chapterId) {
+            console.error("Cannot save quiz result: studentId or chapterId is missing from localStorage.");
+            return;
+          }
+
+          // Re-format quiz data to match the backend's expected structure
+          const quizPayloadForBackend = quizData.map(q => {
+            return {
+              question: q.question,
+              options: q.options, // These are already clean strings without "A)"
+              correct_answer: String.fromCharCode(65 + q.correct_answer), // Convert index (e.g., 0) back to letter ("A")
+              explanation: q.explanation
+            };
+          });
+
+          const payload = {
+            student_id: parseInt(studentId),
+            chapter_id: parseInt(chapterId),
+            // The score is now calculated on the backend. These keys are removed.
+            // score: percentage,
+            // correct: correctCount,
+            // total: quizData.length,
+            quiz: quizPayloadForBackend,
+            user_answers: userAnswers, // Send the array of user's answer indices
+            total_time_seconds: totalTime
+          };
+
+          try {
+            const response = await fetch('http://127.0.0.1:8000/save_quiz_result', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+              const result = await response.json();
+              console.log('Quiz result saved successfully:', result);
+            } else {
+              const errorData = await response.json();
+              console.error('Failed to save quiz result:', errorData.detail);
+            }
+          } catch (error) {
+            console.error('Error while trying to save quiz result:', error);
+          }
+        }
+
+        saveQuizResult(); // Call the function to save the results in the background
+        // --- END: New code ---
+
+        quizNav.style.display = 'none'; // Hide nav on results screen
+
+        quizContent.innerHTML = `
+          <div class="quiz-result-card">
+            <h2 style="margin-top:0;">🎉 Quiz Complete!</h2>
+            <div class="quiz-result-score">${percentage}%</div>
+            <div class="quiz-result-details">
+              <div class="quiz-result-detail">
+                <div class="quiz-result-detail-value" style="color:#22c55e;">${correctCount}</div>
+                <div class="quiz-result-detail-label">Correct</div>
+              </div>
+              <div class="quiz-result-detail">
+                <div class="quiz-result-detail-value" style="color:#ef4444;">${quizData.length - correctCount}</div>
+                <div class="quiz-result-detail-label">Incorrect</div>
+              </div>
+              <div class="quiz-result-detail">
+                <div class="quiz-result-detail-value" style="color:#fbbf24;">${formatTime(totalTime)}</div>
+                <div class="quiz-result-detail-label">Time Taken</div>
+              </div>
+            </div>
+            <div style="margin-top:30px;">
+              <button class="quiz-btn quiz-btn-primary" id="reviewAnswersBtn">📝 Review Answers</button>
+              <button class="quiz-btn quiz-btn-secondary" id="closeResultsBtn">Close</button>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('reviewAnswersBtn').addEventListener('click', () => {
+          currentQuestion = 0;
+          quizNav.style.display = 'grid'; // Show nav for review
+          renderQuestion();
+        });
+
+        document.getElementById('closeResultsBtn').addEventListener('click', () => {
+          quizModal.classList.remove('active');
+          quizData = [];
+          userAnswers = [];
+          currentQuestion = 0;
+          quizSubmitted = false;
+          quizNav.style.display = 'grid'; // Reset nav for next quiz
+        });
+
+        prevQuestionBtn.style.display = 'none';
+        nextQuestionBtn.style.display = 'none';
+        submitQuizBtn.style.display = 'none';
+      });
+    }
+
+    // Initial load
     loadSummaries();
     loadFlashcards();
   </script>

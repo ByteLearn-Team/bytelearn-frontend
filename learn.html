@@ -950,6 +950,175 @@
     .summary-text::-webkit-scrollbar-thumb:hover {
       background: rgba(255,255,255,0.3);
     }
+    /* Custom Scrollbar Styles - Glassmorphism Theme */
+
+/* Doubt Chat History Scrollbar */
+#rag-chat-history::-webkit-scrollbar {
+  width: 12px;
+}
+
+#rag-chat-history::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+}
+
+#rag-chat-history::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.1);
+}
+
+#rag-chat-history::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.3));
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.15);
+}
+
+#rag-chat-history::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.4));
+}
+
+/* Quiz Navigation Scrollbar */
+.quiz-nav::-webkit-scrollbar {
+  width: 10px;
+}
+
+.quiz-nav::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.quiz-nav::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+}
+
+.quiz-nav::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.3));
+}
+
+/* Quiz Main Content Scrollbar */
+.quiz-main::-webkit-scrollbar {
+  width: 10px;
+}
+
+.quiz-main::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.quiz-main::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(99, 102, 241, 0.4), rgba(99, 102, 241, 0.3));
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
+}
+
+.quiz-main::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(99, 102, 241, 0.5), rgba(99, 102, 241, 0.4));
+  box-shadow: 0 2px 12px rgba(99, 102, 241, 0.3);
+}
+
+/* Summary Text Scrollbar (already exists but enhanced) */
+.summary-text::-webkit-scrollbar {
+  width: 10px;
+}
+
+.summary-text::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.summary-text::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(229, 160, 84, 0.4), rgba(229, 160, 84, 0.3));
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(6px);
+}
+
+.summary-text::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(229, 160, 84, 0.5), rgba(229, 160, 84, 0.4));
+}
+
+/* Chapters List Scrollbar (from dashboard) */
+#chapters-list::-webkit-scrollbar {
+  width: 12px;
+}
+
+#chapters-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+#chapters-list::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.25));
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  box-shadow: 
+    inset 0 1px 2px rgba(255, 255, 255, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#chapters-list::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.35));
+  box-shadow: 
+    inset 0 1px 2px rgba(255, 255, 255, 0.3),
+    0 2px 12px rgba(0, 0, 0, 0.15);
+}
+
+#chapters-list::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.45));
+}
+
+/* Firefox Scrollbar Support */
+#rag-chat-history,
+.quiz-nav,
+.quiz-main,
+.summary-text,
+#chapters-list {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) rgba(255, 255, 255, 0.05);
+}
+
+/* Enhanced scrollbar buttons (arrows) */
+#rag-chat-history::-webkit-scrollbar-button,
+.quiz-nav::-webkit-scrollbar-button,
+.quiz-main::-webkit-scrollbar-button,
+#chapters-list::-webkit-scrollbar-button {
+  display: block;
+  height: 14px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  backdrop-filter: blur(4px);
+}
+
+#rag-chat-history::-webkit-scrollbar-button:hover,
+.quiz-nav::-webkit-scrollbar-button:hover,
+.quiz-main::-webkit-scrollbar-button:hover,
+#chapters-list::-webkit-scrollbar-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Scrollbar corner styling */
+#rag-chat-history::-webkit-scrollbar-corner,
+.quiz-nav::-webkit-scrollbar-corner,
+.quiz-main::-webkit-scrollbar-corner {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
   </style>
 </head>
 

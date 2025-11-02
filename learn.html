@@ -1120,6 +1120,7 @@
 }
 
   </style>
+  <script src="./api-config.js"></script>
 </head>
 
 <body>
@@ -1343,7 +1344,7 @@
         return;
       }
       try {
-        const res = await fetch("https://bytelearn-backend.onrender.com/summaries");
+  const res = await byFetch('/summaries');
         const summaries = await res.json();
         const filtered = summaries.filter((s) => s.chapter_id === chapterId);
         if (filtered.length > 0) {
@@ -1378,7 +1379,7 @@
         return;
       }
       try {
-        const res = await fetch("https://bytelearn-backend.onrender.com/flashcards");
+  const res = await byFetch('/flashcards');
         const flashcards = await res.json();
         const filtered = flashcards.filter((f) => f.chapter_id === chapterId);
         if (filtered.length > 0) {
@@ -1583,7 +1584,7 @@
           const studentId = localStorage.getItem('currentUserId') || null;
           const chapterId = localStorage.getItem('selectedChapterId') || null;
 
-          const backendRes = await fetch('https://bytelearn-backend.onrender.com/generate', {
+          const backendRes = await byFetch('/generate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ prompt: question, student_id: studentId, chapter_id: chapterId })
@@ -1611,7 +1612,7 @@
               }
 
               try {
-                const pollRes = await fetch(`https://bytelearn-backend.onrender.com/doubt/${doubtId}`);
+                const pollRes = await byFetch(`/doubt/${doubtId}`);
                 const pollData = await pollRes.json();
                 
                 // Check if the response is no longer null (meaning it's ready)
@@ -1705,7 +1706,7 @@ if (generateQuizBtn) {
     generateQuizBtn.textContent = '⏳ Generating with AI...';
 
     try {
-      const response = await fetch('https://bytelearn-backend.onrender.com/generate_quiz', {
+  const response = await byFetch('/generate_quiz', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -1916,7 +1917,7 @@ if (submitQuizBtn) {
       };
 
       try {
-        const response = await fetch('https://bytelearn-backend.onrender.com/save_quiz_result', {
+  const response = await byFetch('/save_quiz_result', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)

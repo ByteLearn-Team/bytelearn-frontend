@@ -635,6 +635,7 @@
       color: #67e8f9;
     }
   </style>
+  <script src="./api-config.js"></script>
 </head>
 
 <body>
@@ -864,8 +865,8 @@
           return;
         }
 
-        const studentsRes = await fetch('https://bytelearn-backend.onrender.com/students');
-        const students = await studentsRes.json();
+  const studentsRes = await byFetch('/students');
+  const students = await studentsRes.json();
         const student = students.find(s => String(s.student_id) === String(studentId));
         
         if (student) {
@@ -902,7 +903,7 @@
 
     async function fetchAndRenderStatistics(studentId) {
       try {
-        const response = await fetch(`https://bytelearn-backend.onrender.com/students/${studentId}/statistics`);
+  const response = await byFetch(`/students/${studentId}/statistics`);
         
         if (!response.ok) {
           console.error('Failed to fetch statistics');
@@ -1101,7 +1102,7 @@
       if (!newName) { showMessage(editMessage, 'Name cannot be empty', 'error'); return; }
 
       try {
-        const response = await fetch(`https://bytelearn-backend.onrender.com/students/${profileData.student_id}`, {
+        const response = await byFetch(`/students/${profileData.student_id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: newName, profile_picture: currentProfilePicture })

@@ -789,7 +789,7 @@
       }
 
       try {
-        var res = await fetch('http://127.0.0.1:8000/forgot_password', {
+        var res = await fetch('https://bytelearn-backend.onrender.com/forgot_password', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email: email })
@@ -825,7 +825,7 @@
       }
 
       try {
-        var res = await fetch('http://127.0.0.1:8000/verify_reset_otp', {
+        var res = await fetch('https://bytelearn-backend.onrender.com/verify_reset_otp', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
@@ -856,7 +856,7 @@
       e.preventDefault();
       
       try {
-        var res = await fetch('http://127.0.0.1:8000/forgot_password', {
+        var res = await fetch('https://bytelearn-backend.onrender.com/forgot_password', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email: currentResetEmail })
@@ -895,7 +895,7 @@
       }
 
       try {
-        var res = await fetch('http://127.0.0.1:8000/reset_password', {
+        var res = await fetch('https://bytelearn-backend.onrender.com/reset_password', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
@@ -941,7 +941,7 @@
       }
 
       try {
-        var res = await fetch('http://127.0.0.1:8000/register', {
+        var res = await fetch('https://bytelearn-backend.onrender.com/register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -978,7 +978,7 @@
       var password = document.getElementById('loginPassword').value;
 
       try {
-        var res = await fetch('http://127.0.0.1:8000/login', {
+        var res = await fetch('https://bytelearn-backend.onrender.com/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 

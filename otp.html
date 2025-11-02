@@ -376,7 +376,7 @@
       
       try {
         // Send verification request to backend API
-        const response = await fetch('http://localhost:8000/verify_otp', {
+        const response = await fetch('https://bytelearn-backend.onrender.com/verify_otp', {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json'
@@ -408,7 +408,7 @@
     // Handle OTP resend request
     document.getElementById('resendBtn').onclick = async function() {
       try {
-        const response = await fetch('http://localhost:8000/send_otp', {
+        const response = await fetch('https://bytelearn-backend.onrender.com/send_otp', {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json'

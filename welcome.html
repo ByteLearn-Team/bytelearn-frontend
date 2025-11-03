@@ -492,10 +492,87 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* MOBILE DISCLAIMER
+       Notification for mobile users about desktop optimization */
+    .mobile-disclaimer {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(239, 68, 68, 0.95);
+      padding: 12px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    
+    .mobile-disclaimer-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: white;
+      font-size: 14px;
+      line-height: 1.4;
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 0 8px;
+    }
+    
+    .mobile-disclaimer-icon {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      color: white;
+    }
+    
+    .mobile-disclaimer-close {
+      flex-shrink: 0;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      padding: 0 4px;
+      cursor: pointer;
+      opacity: 0.8;
+    }
+    
+    .mobile-disclaimer-close:hover {
+      opacity: 1;
+    }
+
+    /* Show disclaimer only on mobile devices */
+    @media (max-width: 768px) {
+      .mobile-disclaimer {
+        display: block;
+      }
+      
+      /* Adjust main content to account for disclaimer height */
+      body {
+        padding-top: 60px;
+      }
+    }
   </style>
 </head>
 
 <body>
+
+  <!-- MOBILE DISCLAIMER
+       Notification for mobile users about desktop optimization -->
+  <div id="mobileDisclaimer" class="mobile-disclaimer">
+    <div class="mobile-disclaimer-content">
+      <svg class="mobile-disclaimer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+      </svg>
+      <span>
+        This site is optimized for desktop viewing. For the best experience, please visit using a computer.
+      </span>
+      <button class="mobile-disclaimer-close" onclick="this.parentElement.parentElement.style.display='none'">
+        ×
+      </button>
+    </div>
+  </div>
 
   <!-- ANIMATED BACKGROUND
        Three floating gradient orbs create dynamic visual interest -->

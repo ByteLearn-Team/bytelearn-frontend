@@ -1021,9 +1021,45 @@
 
     function renderActivity(activities) {
       const list = document.getElementById('activityList');
+      
+      // Helper function to format date nicely
+      function formatDate(dateStr) {
+        if (!dateStr) return 'N/A';
+        
+        try {
+          const date = new Date(dateStr);
+          const today = new Date();
+          const yesterday = new Date(today);
+          yesterday.setDate(yesterday.getDate() - 1);
+          
+          // Reset time for accurate date comparison
+          const dateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+          const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+          const yesterdayOnly = new Date(yesterday.getFullYear(), yesterday.getMonth(), yesterday.getDate());
+          
+          // Check if today
+          if (dateOnly.getTime() === todayOnly.getTime()) {
+            return 'Today';
+          }
+          
+          // Check if yesterday
+          if (dateOnly.getTime() === yesterdayOnly.getTime()) {
+            return 'Yesterday';
+          }
+          
+          // Format as "Nov 2, 2025" or "2 Nov 2025"
+          const options = { month: 'short', day: 'numeric', year: 'numeric' };
+          return date.toLocaleDateString('en-US', options);
+          
+        } catch (e) {
+          // If date parsing fails, return the original string
+          return dateStr;
+        }
+      }
+      
       list.innerHTML = (!activities || activities.length === 0)
         ? '<div class="li"><div style="opacity:0.7;">No recent activity.</div></div>'
-        : activities.map(a => `<div class="li row" style="justify-content: space-between;"><div><div style="font-weight: 600;">${a.activity}</div><div style="opacity: 1; font-size: 12px;">${a.date}</div></div><div style="text-align: right;">${a.score !== null ? `<div>Score: ${a.score}</div>` : '<div></div>'}<div style="opacity: 1; font-size: 12px;">${a.time ? `Time: ${a.time}` : ''}</div></div></div>`).join('');
+        : activities.map(a => `<div class="li row" style="justify-content: space-between;"><div><div style="font-weight: 600;">${a.activity}</div><div style="opacity: 1; font-size: 12px;">${formatDate(a.date)}</div></div><div style="text-align: right;">${a.score !== null ? `<div>Score: ${a.score}</div>` : '<div></div>'}<div style="opacity: 1; font-size: 12px;">${a.time ? `Time: ${a.time}` : ''}</div></div></div>`).join('');
     }
 
     const pills = document.querySelectorAll('.pill[data-tab]');

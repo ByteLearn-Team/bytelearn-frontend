@@ -1060,7 +1060,7 @@
       
       list.innerHTML = (!activities || activities.length === 0)
         ? '<div class="li"><div style="opacity:0.7;">No recent activity.</div></div>'
-        : activities.map(a => `<div class="li row" style="justify-content: space-between;"><div><div style="font-weight: 600;">${a.activity}</div><div style="opacity: 1; font-size: 12px;">${formatDate(a.date)}</div></div><div style="text-align: right;">${a.score !== null ? `<div>Score: ${a.score}</div>` : '<div></div>'}<div style="opacity: 1; font-size: 12px;">${a.time ? `Time: ${a.time}` : ''}</div></div></div>`).join('');
+        : activities.map(a => `<div class="li row" style="justify-content: space-between;"><div><div style="font-weight: 600;">${a.activity}</div><div style="opacity: 1; text-align: left; font-size: 12px;">${formatDate(a.date)}</div></div><div style="text-align: right;">${a.score !== null ? `<div>Score: ${a.score}</div>` : '<div></div>'}<div style="opacity: 1; font-size: 12px;">${a.time ? `Time: ${a.time}` : ''}</div></div></div>`).join('');
     }
 
     const pills = document.querySelectorAll('.pill[data-tab]');

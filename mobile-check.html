@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BytLearn - Desktop Only</title>
+  <style>
+    :root {
+      --bg1: #0b1e3d;
+      --bg2: #08203a;
+      --bg3: #101a4b;
+      --text: #ffffff;
+      --muted: rgba(255,255,255,0.85);
+      --glass: rgba(255,255,255,0.1);
+      --border: rgba(255,255,255,0.2);
+      --accent1: #67e8f9;
+      --accent2: #60a5fa;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2) 40%, var(--bg3));
+      min-height: 100vh;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated background blobs */
+    .blob {
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(80px);
+      opacity: 0.2;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    .blob.a {
+      width: 300px;
+      height: 300px;
+      left: -100px;
+      top: -50px;
+      background: linear-gradient(90deg, #38bdf8, #2563eb);
+    }
+
+    .blob.b {
+      width: 250px;
+      height: 250px;
+      right: -80px;
+      bottom: -60px;
+      background: linear-gradient(90deg, #6366f1, #22d3ee);
+      animation-duration: 16s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(30px, -20px); }
+    }
+
+    /* Main container */
+    .mobile-warning {
+      position: relative;
+      z-index: 10;
+      max-width: 500px;
+      width: 100%;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 40px 32px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      animation: slideIn 0.6s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Logo section */
+    .logo-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .logo-img {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, rgba(103, 232, 249, 0.2), rgba(96, 165, 250, 0.2));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .brand-name {
+      font-size: 32px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #67e8f9, #60a5fa, #8b5cf6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.02em;
+    }
+
+    /* Icon */
+    .device-icon {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(245, 158, 11, 0.2));
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 60px;
+      border: 2px solid rgba(239, 68, 68, 0.3);
+    }
+
+    /* Text content */
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .message {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--muted);
+      margin-bottom: 32px;
+    }
+
+    /* Features list */
+    .features {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 32px;
+      text-align: left;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .feature-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, rgba(103, 232, 249, 0.2), rgba(96, 165, 250, 0.2));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .feature-text {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Footer note */
+    .footer-note {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .email-link {
+      color: var(--accent1);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .email-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Hide on desktop */
+    @media (min-width: 1024px) {
+      .mobile-warning {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="blob a"></div>
+  <div class="blob b"></div>
+
+  <div class="mobile-warning" id="mobileWarning">
+    <div class="logo-section">
+      <div class="logo-img"><img src="logo.png" alt="BytLearn" /></div>
+      <div class="brand-name">BytLearn</div>
+    </div>
+
+    <div class="device-icon"><img src="lap.png" alt="BytLearn" /</div>
+
+    <h1>Desktop Experience Required</h1>
+    
+    <p class="message">
+      BytLearn is optimized for desktop and laptop computers to provide you with the best learning experience.
+    </p>
+
+    <div class="features">
+      <div class="feature-item">
+        <div class="feature-icon">✨</div>
+        <div class="feature-text">Interactive AI-powered learning tools</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">📊</div>
+        <div class="feature-text">Advanced analytics and progress tracking</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🎯</div>
+        <div class="feature-text">Full-featured quiz and study interface</div>
+      </div>
+    </div>
+
+    <p class="footer-note">
+      Please access BytLearn from a desktop or laptop computer.<br>
+      Questions? Contact us at <a href="mailto:labnotfound404@gmail.com" class="email-link">labnotfound404@gmail.com</a>
+    </p>
+  </div>
+
+  <script>
+    // Detect mobile devices
+    function isMobileDevice() {
+      // Check viewport width
+      if (window.innerWidth < 1024) {
+        return true;
+      }
+
+      // Check user agent
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      
+      // Mobile device patterns
+      const mobileRegex = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile/i;
+      
+      return mobileRegex.test(userAgent.toLowerCase());
+    }
+
+    // Show warning on mobile, hide on desktop
+    function checkDevice() {
+      const warning = document.getElementById('mobileWarning');
+      
+      if (isMobileDevice()) {
+        warning.style.display = 'block';
+        // Prevent scrolling on mobile
+        document.body.style.overflow = 'hidden';
+      } else {
+        warning.style.display = 'none';
+        document.body.style.overflow = 'auto';
+        // Redirect to actual app page
+        window.location.href = './welcome.html';
+      }
+    }
+
+    // Check on load
+    checkDevice();
+
+    // Recheck on resize (if user rotates device or changes window size)
+    window.addEventListener('resize', checkDevice);
+  </script>
+</body>
+</html>

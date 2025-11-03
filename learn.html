@@ -1467,21 +1467,21 @@
             updateScrollbar();
           }
           function goToNext() {
-            if (currentCardIndex > 0) {
-              currentCardIndex--;
-              isFlipped = false;
-              updateCardPositions();
-            }
-          }
-          function goToPrev() {
             if (currentCardIndex < allCards.length - 1) {
               currentCardIndex++;
               isFlipped = false;
               updateCardPositions();
             }
           }
+          function goToPrev() {
+            if (currentCardIndex > 0) {
+              currentCardIndex--;
+              isFlipped = false;
+              updateCardPositions();
+            }
+          }
           prevBtn.addEventListener('click', goToPrev);
-          nextBtn.addEventListener('click', goToPrev);
+          nextBtn.addEventListener('click', goToNext);
           scrollbar.addEventListener('click', function(e) {
             if (e.target === scrollbarThumb) return;
             const rect = scrollbar.getBoundingClientRect();

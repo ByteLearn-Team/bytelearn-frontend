@@ -7,14 +7,16 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
+  <script src="./api-config.js"></script>
   <style>
     :root {
       --border: rgba(255,255,255,0.2);
       --glass: rgba(255,255,255,0.1);
       --text: #fff;
       --muted: rgba(255,255,255,0.85);
-      --accent: #e5a054;
-      --accent-glow: rgba(229, 160, 84, 0.3);
+      --accent: #c084fc;
+      --accent-glow: rgba(192, 132, 252, 0.4);
+      --accent-light: #e9d5ff;
     }
     * { box-sizing: border-box; }
     html, body {
@@ -39,10 +41,13 @@
       pointer-events: none;
       z-index: 0;
     }
+    /* decorative overlay must not block page interaction */
     .overlay { 
       position: fixed;
       inset: 0;
       background: rgba(0,0,0,0.35);
+      pointer-events: none;
+      z-index: 0;
     }
     .container {
       position: relative;
@@ -247,56 +252,90 @@
       box-shadow: 0 0 0 4px #a21caf;
     }
     .summary-text {
-      white-space: pre-wrap;
       text-align: left;
-      font-size: 16px;
-      margin: 24px 40px;
-      padding: 20px 32px;
-      line-height: 1.8;
+      font-size: 17px;
+      margin: 20px 0;
+      padding: 40px 48px;
+      line-height: 2;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-      letter-spacing: 0.01em;
-      background: rgba(255,255,255,0.05);
-      border-radius: 12px;
-      border-left: 4px solid var(--accent);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.1);
+      letter-spacing: 0.02em;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(168, 85, 247, 0.1));
+      border-radius: 20px;
+      border: 1px solid rgba(192, 132, 252, 0.3);
+      box-shadow: 
+        0 8px 32px rgba(139, 92, 246, 0.15),
+        inset 0 1px 0 rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    .summary-text::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(180deg, #c084fc 0%, #a855f7 50%, #7c3aed 100%);
+      box-shadow: 0 0 20px rgba(192, 132, 252, 0.5);
     }
     .summary-text .heading {
       display: block !important;
       font-weight: 800 !important;
-      color: var(--accent) !important;
-      font-size: 22px !important;
-      margin: 32px 0 16px 0 !important;
-      padding-bottom: 12px !important;
-      border-bottom: 3px solid var(--accent) !important;
+      background: linear-gradient(135deg, #c084fc 0%, #e9d5ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent !important;
+      font-size: 32px !important;
+      margin: 48px 0 24px 0 !important;
+      padding: 20px 24px 20px 0 !important;
+      border-bottom: none !important;
       text-align: left !important;
       font-family: 'Playfair Display', 'Inter', serif !important;
-      letter-spacing: -0.02em !important;
+      letter-spacing: -0.03em !important;
       width: 100%;
-      text-shadow: 0 2px 8px var(--accent-glow);
+      text-shadow: 0 2px 12px var(--accent-glow);
       position: relative;
+      background-color: rgba(139, 92, 246, 0.08);
+      border-radius: 12px;
+      border-left: 4px solid #c084fc;
     }
     .summary-text .heading::before {
-      content: '';
+      content: '📚';
       position: absolute;
-      bottom: -3px;
-      left: 0;
-      width: 60px;
-      height: 3px;
-      background: linear-gradient(90deg, #fff 0%, var(--accent) 100%);
-      box-shadow: 0 0 10px var(--accent-glow);
+      left: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 28px;
+      opacity: 0.8;
+      filter: drop-shadow(0 0 10px rgba(192, 132, 252, 0.5));
     }
     .summary-text .heading:first-child {
       margin-top: 0 !important;
     }
     .summary-text p {
-      margin: 12px 0;
+      margin: 20px 0;
       text-align: left;
       color: rgba(255,255,255,0.95);
       font-weight: 500;
+      line-height: 2;
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 8px;
+      border-left: 3px solid rgba(192, 132, 252, 0.4);
+      transition: all 0.3s ease;
+    }
+    .summary-text p:hover {
+      background: rgba(192, 132, 252, 0.1);
+      border-left-color: #c084fc;
+      transform: translateX(4px);
     }
     .summary-text strong {
-      color: #fff;
+      color: #e9d5ff;
       font-weight: 700;
+      text-shadow: 0 0 10px rgba(192, 132, 252, 0.3);
     }
     .flashcard-text {
       white-space: pre-wrap;
@@ -753,7 +792,7 @@
       inset: 0;
       background: rgba(10, 5, 30, 0.85);
       backdrop-filter: blur(10px);
-      z-index: 2000; /* Higher than quiz modal */
+      z-index: 2000;
       display: none;
       align-items: center;
       justify-content: center;
@@ -1028,26 +1067,28 @@
   box-shadow: 0 2px 12px rgba(99, 102, 241, 0.3);
 }
 
-/* Summary Text Scrollbar (already exists but enhanced) */
+/* Summary Text Scrollbar */
 .summary-text::-webkit-scrollbar {
   width: 10px;
 }
 
 .summary-text::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(139, 92, 246, 0.1);
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(192, 132, 252, 0.2);
 }
 
 .summary-text::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(229, 160, 84, 0.4), rgba(229, 160, 84, 0.3));
+  background: linear-gradient(180deg, rgba(192, 132, 252, 0.5), rgba(168, 85, 247, 0.4));
   border-radius: 8px;
   border: 2px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(6px);
+  box-shadow: 0 2px 8px rgba(192, 132, 252, 0.3);
 }
 
 .summary-text::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, rgba(229, 160, 84, 0.5), rgba(229, 160, 84, 0.4));
+  background: linear-gradient(180deg, rgba(192, 132, 252, 0.6), rgba(168, 85, 247, 0.5));
+  box-shadow: 0 2px 12px rgba(192, 132, 252, 0.4);
 }
 
 /* Chapters List Scrollbar (from dashboard) */
@@ -1120,11 +1161,9 @@
 }
 
   </style>
-  <script src="./api-config.js"></script>
 </head>
 
 <body>
-
   <div class="overlay"></div>
   
   <header class="container">
@@ -1158,7 +1197,7 @@
     </div>
     
     <section id="summary" class="card tab">
-      <div class="row" style="justify-content:space-between; ; ">
+      <div class="row" style="justify-content:space-between;">
         <h2>Chapter Summary</h2>
         <span class="pill" style="cursor:default;">Summary</span>
       </div>
@@ -1175,8 +1214,7 @@
       <div class="grid" style="margin-top:10px"></div>
     </section>
     
-    <section id="doubts" class="tab hidden"
-  style="background:var(--glass);border:1px solid var(--border);border-radius:22px;padding:24px;box-shadow:0 8px 32px rgba(0,0,0,0.18);backdrop-filter:blur(12px);text-align:left;width:100%;max-width:100%;margin:0;display:flex;flex-direction:column;height:calc(100vh - 280px);">
+    <section id="doubts" class="tab hidden">
       <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:18px;flex-shrink:0;">
         <h2 style="font-size:32px;font-weight:800;margin:0;text-align:left;">Ask a Doubt</h2>
         <span class="pill" style="cursor:default;font-size:20px;padding:10px 18px;">?</span>
@@ -1189,12 +1227,12 @@
         </p>
       </div>
       
-      <div id="rag-chat-history" style="flex:1;overflow-y:auto;background:rgba(255,255,255,0.08);border-radius:18px;padding:18px;margin-bottom:18px;text-align:left;font-size:18px;box-shadow:inset 0 0 0 1px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:8px;min-height:0;">
+      <div id="rag-chat-history">
         <div style="color:var(--muted);text-align:left;">Clear your Doubts...</div>
       </div>
-      <form id="rag-chat-form" style="display:flex;gap:12px;align-items:center;flex-shrink:0;" autocomplete="off" onsubmit="return false;">
-        <input id="rag-chat-input" type="text" placeholder="Type your doubt..." style="flex:1;padding:14px 18px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,0.13);color:var(--text);font-size:18px;outline:none;text-align:left;" />
-        <button type="submit" class="btn" style="padding:14px 28px;font-size:18px;">Send</button>
+      <form id="rag-chat-form" autocomplete="off" onsubmit="return false;">
+        <input id="rag-chat-input" type="text" placeholder="Type your doubt..." />
+        <button type="submit" class="btn">Send</button>
       </form>
     </section>
     
@@ -1275,11 +1313,11 @@
     let currentModalResolver;
 
     function showAlert(message, title = 'Notification') {
-      alertModalTitle.textContent = title;
-      alertModalMessage.textContent = message;
-      alertCancelBtn.style.display = 'none';
-      alertOkBtn.textContent = 'OK';
-      alertModal.classList.add('active');
+      if (alertModalTitle) alertModalTitle.textContent = title;
+      if (alertModalMessage) alertModalMessage.textContent = message;
+      if (alertCancelBtn) alertCancelBtn.style.display = 'none';
+      if (alertOkBtn) alertOkBtn.textContent = 'OK';
+      alertModal?.classList.add('active');
 
       return new Promise(resolve => {
         currentModalResolver = { resolve, type: 'alert' };
@@ -1287,18 +1325,18 @@
     }
 
     function showConfirm(message, title = 'Confirmation') {
-      alertModalTitle.textContent = title;
-      alertModalMessage.textContent = message;
-      alertCancelBtn.style.display = 'inline-flex';
-      alertOkBtn.textContent = 'Confirm';
-      alertModal.classList.add('active');
+      if (alertModalTitle) alertModalTitle.textContent = title;
+      if (alertModalMessage) alertModalMessage.textContent = message;
+      if (alertCancelBtn) alertCancelBtn.style.display = 'inline-flex';
+      if (alertOkBtn) alertOkBtn.textContent = 'Confirm';
+      alertModal?.classList.add('active');
 
       return new Promise(resolve => {
         currentModalResolver = { resolve, type: 'confirm' };
       });
     }
 
-    alertOkBtn.addEventListener('click', () => {
+    alertOkBtn?.addEventListener('click', () => {
       if (!currentModalResolver) return;
       alertModal.classList.remove('active');
       if (currentModalResolver.type === 'alert') {
@@ -1309,13 +1347,20 @@
       currentModalResolver = null;
     });
 
-    alertCancelBtn.addEventListener('click', () => {
+    alertCancelBtn?.addEventListener('click', () => {
       if (!currentModalResolver || currentModalResolver.type !== 'confirm') return;
       alertModal.classList.remove('active');
       currentModalResolver.resolve(false);
       currentModalResolver = null;
     });
     // --- End Custom Modal Logic ---
+
+    // convenience: prefer window.byFetch (provided by api-config.js) and fallback to fetch with API_URL
+    const apiFetch = window.byFetch ? window.byFetch : (p, opts) => {
+      const base = window.API_URL || '';
+      if (/^https?:\/\//i.test(p)) return fetch(p, opts);
+      return fetch((base || '') + p, opts);
+    };
 
     const pills = document.querySelectorAll(".pill[data-tab]");
     const tabs = document.querySelectorAll(".tab");
@@ -1345,28 +1390,90 @@
         return;
       }
       try {
-  const res = await byFetch('/summaries');
+        const res = await apiFetch("/summaries");
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const summaries = await res.json();
-        const filtered = summaries.filter((s) => s.chapter_id === chapterId);
+        const filtered = summaries.filter((s) => Number(s.chapter_id) === chapterId);
         if (filtered.length > 0) {
           grid.innerHTML = "";
           filtered.forEach((summary) => {
-            let text = summary.summary_data;
+            let text = summary.summary_data || '';
             const lines = text.split('\n');
+            let formattedHtml = '';
+            let isInKeyTermsSection = false;
+            let currentParagraph = '';
+            let keyTermBuffer = '';
+
             for (let i = 0; i < lines.length; i++) {
               const line = lines[i].trim();
-              if (line.startsWith('Section:') || line.startsWith('Section ') || /^\d+\.\d+\s/.test(line) || line === 'Key Terms' || line === 'Chapter Summary' || line === 'High-Yield Exam Facts') {
-                lines[i] = '<span class="heading">' + lines[i] + '</span>';
+
+              if (line === 'Key Terms') {
+                if (currentParagraph) {
+                  formattedHtml += `<p>${currentParagraph}</p>`;
+                  currentParagraph = '';
+                }
+                isInKeyTermsSection = true;
+                formattedHtml += `<div class="heading">${line}</div>`;
+                continue;
+              } else if (line.startsWith('Section:') || line.startsWith('Section ') ||
+                         /^\d+\.\d+\s/.test(line) || line === 'Chapter Summary' ||
+                         line === 'High-Yield Exam Facts') {
+                if (keyTermBuffer) {
+                  formattedHtml += `<p>${keyTermBuffer}</p>`;
+                  keyTermBuffer = '';
+                }
+                if (currentParagraph) {
+                  formattedHtml += `<p>${currentParagraph}</p>`;
+                  currentParagraph = '';
+                }
+                isInKeyTermsSection = false;
+                formattedHtml += `<div class="heading">${line}</div>`;
+                continue;
+              }
+
+              if (isInKeyTermsSection && line) {
+                if (line.match(/\[pg\.\d+\]/i)) {
+                  keyTermBuffer += (keyTermBuffer ? ' ' : '') + line;
+                  let formattedTerm = keyTermBuffer;
+                  const words = keyTermBuffer.split(' ');
+                  if (words.length >= 3) {
+                    let termNameLength = 1;
+                    if (words.length > 1 && words[1].length <= 15 && !words[1].match(/\[pg\./i)) {
+                      termNameLength = 2;
+                    }
+                    const termName = words.slice(0, termNameLength).join(' ');
+                    const rest = words.slice(termNameLength).join(' ');
+                    formattedTerm = `<strong>${termName}:</strong> ${rest}`;
+                  }
+                  formattedHtml += `<p>${formattedTerm}</p>`;
+                  keyTermBuffer = '';
+                } else {
+                  keyTermBuffer += (keyTermBuffer ? ' ' : '') + line;
+                }
+              } else if (!isInKeyTermsSection && line) {
+                if (currentParagraph) currentParagraph += ' ';
+                currentParagraph += line;
+              } else if (!isInKeyTermsSection && currentParagraph) {
+                formattedHtml += `<p>${currentParagraph}</p>`;
+                currentParagraph = '';
               }
             }
-            text = lines.join('\n');
-            grid.innerHTML += `<div class="summary-text">${text}</div>`;
+
+            if (keyTermBuffer) {
+              formattedHtml += `<p>${keyTermBuffer}</p>`;
+            }
+            if (currentParagraph) {
+              formattedHtml += `<p>${currentParagraph}</p>`;
+            }
+
+            grid.innerHTML += `<div class="summary-text">${formattedHtml}</div>`;
           });
         } else {
           grid.innerHTML = '<div class="error-message">No summaries found for this chapter.</div>';
         }
       } catch (e) {
         grid.innerHTML = `<div class="error-message">Error loading summaries: ${e.message}</div>`;
+        console.error('loadSummaries error', e);
       }
     }
 
@@ -1380,9 +1487,10 @@
         return;
       }
       try {
-  const res = await byFetch('/flashcards');
+        const res = await apiFetch("/flashcards");
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const flashcards = await res.json();
-        const filtered = flashcards.filter((f) => f.chapter_id === chapterId);
+        const filtered = flashcards.filter((f) => Number(f.chapter_id) === chapterId);
         if (filtered.length > 0) {
           grid.innerHTML = `
             <div class="nav-arrow left" id="prev-card">←</div>
@@ -1467,16 +1575,16 @@
             nextBtn.classList.toggle('disabled', currentCardIndex === allCards.length - 1);
             updateScrollbar();
           }
-          function goToNext() {
-            if (currentCardIndex < allCards.length - 1) {
-              currentCardIndex++;
+          function goToPrev() {
+            if (currentCardIndex > 0) {
+              currentCardIndex--;
               isFlipped = false;
               updateCardPositions();
             }
           }
-          function goToPrev() {
-            if (currentCardIndex > 0) {
-              currentCardIndex--;
+          function goToNext() {
+            if (currentCardIndex < allCards.length - 1) {
+              currentCardIndex++;
               isFlipped = false;
               updateCardPositions();
             }
@@ -1555,6 +1663,7 @@
         }
       } catch (e) {
         grid.innerHTML = `<div class="error-message">Error loading flashcards: ${e.message}</div>`;
+        console.error('loadFlashcards error', e);
       }
     }
 
@@ -1585,22 +1694,21 @@
           const studentId = localStorage.getItem('currentUserId') || null;
           const chapterId = localStorage.getItem('selectedChapterId') || null;
 
-          const backendRes = await byFetch('/generate', {
+          const backendRes = await apiFetch('/generate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ prompt: question, student_id: studentId, chapter_id: chapterId })
           });
-          
+
           const backendData = await backendRes.json();
-          
+
           if (backendRes.ok && backendData && backendData.doubt_id) {
             const doubtId = backendData.doubt_id;
             document.getElementById(loadingId).innerHTML = 'Processing your question...';
-            
+
             let attempts = 0;
             const maxAttempts = 30;
 
-            // This function will poll for the response safely.
             async function pollForDoubtResponse(doubtId) {
               attempts++;
               if (attempts > maxAttempts) {
@@ -1613,29 +1721,25 @@
               }
 
               try {
-                const pollRes = await byFetch(`/doubt/${doubtId}`);
+                const pollRes = await apiFetch(`/doubt/${doubtId}`);
+                if (!pollRes.ok) throw new Error(`HTTP ${pollRes.status}`);
                 const pollData = await pollRes.json();
-                
-                // Check if the response is no longer null (meaning it's ready)
+
                 if (pollData.response !== null && pollData.response !== undefined) {
-                  // Success! Stop polling and display the answer.
                   document.getElementById(loadingId)?.remove();
                   ragChatHistory.innerHTML += `<div style="text-align:left;"><span style="font-weight:700;color:#ffe066;">AI:</span> <span style="color:var(--muted);">${pollData.response}</span></div>`;
                   ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
                   ragChatInput.disabled = false;
                   ragChatInput.focus();
                 } else {
-                  // No response yet, schedule the next poll.
                   setTimeout(() => pollForDoubtResponse(doubtId), 1500);
                 }
               } catch (err) {
                 console.warn('Polling error:', err);
-                // On error, wait a bit and try again.
                 setTimeout(() => pollForDoubtResponse(doubtId), 1500);
               }
             }
 
-            // Start the first poll.
             setTimeout(() => pollForDoubtResponse(doubtId), 1000);
 
           } else {
@@ -1647,342 +1751,340 @@
           ragChatHistory.scrollTop = ragChatHistory.scrollHeight;
           ragChatInput.disabled = false;
           ragChatInput.focus();
+          console.error('doubt submit error', err);
         }
       });
     }
 
     // Quiz Module
-    // Quiz Module - Updated to use Groq AI
-const quizModal = document.getElementById('quizModal');
-const generateQuizBtn = document.getElementById('generate-quiz-btn');
-const closeQuizBtn = document.getElementById('closeQuizBtn');
-const quizContent = document.getElementById('quizContent');
-const quizProgress = document.getElementById('quizProgress');
-const timerDisplay = document.getElementById('timerDisplay');
-const prevQuestionBtn = document.getElementById('prevQuestionBtn');
-const nextQuestionBtn = document.getElementById('nextQuestionBtn');
-const submitQuizBtn = document.getElementById('submitQuizBtn');
-const quizNav = document.getElementById('quizNav');
+    const quizModal = document.getElementById('quizModal');
+    const generateQuizBtn = document.getElementById('generate-quiz-btn');
+    const closeQuizBtn = document.getElementById('closeQuizBtn');
+    const quizContent = document.getElementById('quizContent');
+    const quizProgress = document.getElementById('quizProgress');
+    const timerDisplay = document.getElementById('timerDisplay');
+    const prevQuestionBtn = document.getElementById('prevQuestionBtn');
+    const nextQuestionBtn = document.getElementById('nextQuestionBtn');
+    const submitQuizBtn = document.getElementById('submitQuizBtn');
+    const quizNav = document.getElementById('quizNav');
 
-let quizData = [];
-let currentQuestion = 0;
-let userAnswers = [];
-let quizStartTime = null;
-let timerInterval = null;
-let quizSubmitted = false;
+    let quizData = [];
+    let currentQuestion = 0;
+    let userAnswers = [];
+    let quizStartTime = null;
+    let timerInterval = null;
+    let quizSubmitted = false;
 
-function startTimer() {
-  quizStartTime = Date.now();
-  timerInterval = setInterval(() => {
-    const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
-    const minutes = Math.floor(elapsed / 60);
-    const seconds = elapsed % 60;
-    timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-  }, 1000);
-}
-
-function stopTimer() {
-  if (timerInterval) {
-    clearInterval(timerInterval);
-    timerInterval = null;
-  }
-}
-
-function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return `${mins}m ${secs}s`;
-}
-
-if (generateQuizBtn) {
-  generateQuizBtn.addEventListener('click', async function() {
-    const chapterId = Number(localStorage.getItem("selectedChapterId"));
-    
-    if (!chapterId) {
-      await showAlert('Please select a chapter from the Dashboard first.', 'Chapter Not Selected');
-      return;
+    function startTimer() {
+      quizStartTime = Date.now();
+      timerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - quizStartTime) / 1000);
+        const minutes = Math.floor(elapsed / 60);
+        const seconds = elapsed % 60;
+        timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      }, 1000);
     }
 
-    generateQuizBtn.disabled = true;
-    generateQuizBtn.textContent = '⏳ Generating with AI...';
+    function stopTimer() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
 
-    try {
-  const response = await byFetch('/generate_quiz', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-          chapter_id: chapterId,
-          num_questions: 10  // Generate 10 questions
-        })
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins}m ${secs}s`;
+    }
+
+    if (generateQuizBtn) {
+      generateQuizBtn.addEventListener('click', async function() {
+        const chapterId = Number(localStorage.getItem("selectedChapterId"));
+
+        if (!chapterId) {
+          await showAlert('Please select a chapter from the Dashboard first.', 'Chapter Not Selected');
+          return;
+        }
+
+        generateQuizBtn.disabled = true;
+        generateQuizBtn.textContent = '⏳ Generating with AI...';
+
+        try {
+          const response = await apiFetch('/generate_quiz', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              chapter_id: chapterId,
+              num_questions: 10
+            })
+          });
+
+          const data = await response.json();
+
+          if (data.error) {
+            await showAlert(data.error, 'Quiz Generation Failed');
+            return;
+          }
+
+          if (data.quiz && data.quiz.length > 0) {
+            quizData = data.quiz.map(q => ({
+              question: q.question,
+              options: q.options,
+              correct_answer: q.correct_answer.charCodeAt(0) - 65,
+              explanation: q.explanation
+            }));
+
+            userAnswers = new Array(quizData.length).fill(null);
+            currentQuestion = 0;
+            quizSubmitted = false;
+
+            quizModal.classList.add('active');
+            startTimer();
+            renderQuestion();
+          } else {
+            await showAlert('No quiz questions could be generated. Please try again.', 'Quiz Generation Failed');
+          }
+        } catch (error) {
+          console.error('Quiz generation error:', error);
+          await showAlert('Error generating quiz: ' + (error.message || error), 'Error');
+        } finally {
+          generateQuizBtn.disabled = false;
+          generateQuizBtn.textContent = '🎯 Generate Quiz';
+        }
       });
+    }
 
-      const data = await response.json();
+    if (closeQuizBtn) {
+      closeQuizBtn.addEventListener('click', async () => {
+        if (quizSubmitted || await showConfirm('Are you sure you want to close? Your progress will be lost.', 'Confirm Close')) {
+          quizModal.classList.remove('active');
+          stopTimer();
+          quizData = [];
+          userAnswers = [];
+          currentQuestion = 0;
+          quizSubmitted = false;
+          quizNav.style.display = 'grid';
+        }
+      });
+    }
 
-      if (data.error) {
-        await showAlert(data.error, 'Quiz Generation Failed');
-        return;
+    function renderQuizNav() {
+      if (!quizNav) return;
+      quizNav.innerHTML = '';
+      quizData.forEach((_, idx) => {
+        const navItem = document.createElement('div');
+        navItem.className = 'quiz-nav-item';
+        navItem.textContent = idx + 1;
+        if (idx === currentQuestion) {
+          navItem.classList.add('current');
+        }
+        if (userAnswers[idx] !== null) {
+          navItem.classList.add('answered');
+        }
+        navItem.addEventListener('click', () => {
+          if (!quizSubmitted) {
+            currentQuestion = idx;
+            renderQuestion();
+          }
+        });
+        quizNav.appendChild(navItem);
+      });
+    }
+
+    function renderQuestion() {
+      if (!quizData.length) return;
+
+      renderQuizNav();
+
+      const q = quizData[currentQuestion];
+      quizProgress.textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
+      
+      let optionsHtml = q.options.map((option, index) => {
+        const letter = String.fromCharCode(65 + index);
+        let optionClass = 'quiz-option';
+
+        if (quizSubmitted) {
+          optionClass += ' disabled';
+          if (index === q.correct_answer) {
+            optionClass += ' correct';
+          } else if (index === userAnswers[currentQuestion]) {
+            optionClass += ' incorrect';
+          }
+        } else if (userAnswers[currentQuestion] === index) {
+          optionClass += ' selected';
+        }
+
+        return `<div class="${optionClass}" data-index="${index}">
+                  <div class="option-letter">${letter}</div>
+                  <div class="option-text">${option}</div>
+                </div>`;
+      }).join('');
+
+      let explanationHtml = '';
+      if (quizSubmitted && q.explanation) {
+        explanationHtml = `<div class="quiz-explanation show" >
+                             <div class="quiz-explanation-title">💡 Explanation</div>
+                             <div>${q.explanation}</div>
+                           </div>`;
       }
 
-      if (data.quiz && data.quiz.length > 0) {
-        // Format quiz data for frontend
-        quizData = data.quiz.map(q => ({
-          question: q.question,
-          options: q.options,
-          correct_answer: q.correct_answer.charCodeAt(0) - 65, // Convert "A" to 0, "B" to 1, etc.
-          explanation: q.explanation
-        }));
+      quizContent.innerHTML = `
+        <div class="quiz-question-card">
+          <div class="quiz-question-text"><strong>Q${currentQuestion + 1}.</strong> ${q.question}</div>
+          <div class="quiz-options">${optionsHtml}</div>
+          ${explanationHtml}
+        </div>
+      `;
 
-        userAnswers = new Array(quizData.length).fill(null);
-        currentQuestion = 0;
-        quizSubmitted = false;
-        
-        quizModal.classList.add('active');
-        startTimer();
-        renderQuestion();
-      } else {
-        await showAlert('No quiz questions could be generated. Please try again.', 'Quiz Generation Failed');
-      }
-    } catch (error) {
-      console.error('Quiz generation error:', error);
-      await showAlert('Error generating quiz: ' + error.message, 'Error');
-    } finally {
-      generateQuizBtn.disabled = false;
-      generateQuizBtn.textContent = '🎯 Generate Quiz';
-    }
-  });
-}
-
-if (closeQuizBtn) {
-  closeQuizBtn.addEventListener('click', async () => {
-    if (quizSubmitted || await showConfirm('Are you sure you want to close? Your progress will be lost.', 'Confirm Close')) {
-      quizModal.classList.remove('active');
-      stopTimer();
-      quizData = [];
-      userAnswers = [];
-      currentQuestion = 0;
-      quizSubmitted = false;
-      quizNav.style.display = 'grid';
-    }
-  });
-}
-
-function renderQuizNav() {
-  if (!quizNav) return;
-  quizNav.innerHTML = '';
-  quizData.forEach((_, idx) => {
-    const navItem = document.createElement('div');
-    navItem.className = 'quiz-nav-item';
-    navItem.textContent = idx + 1;
-    if (idx === currentQuestion) {
-      navItem.classList.add('current');
-    }
-    if (userAnswers[idx] !== null) {
-      navItem.classList.add('answered');
-    }
-    navItem.addEventListener('click', () => {
       if (!quizSubmitted) {
-        currentQuestion = idx;
-        renderQuestion();
+        document.querySelectorAll('.quiz-option').forEach(option => {
+          option.addEventListener('click', (e) => {
+            const selectedIndex = parseInt(e.currentTarget.dataset.index);
+            userAnswers[currentQuestion] = selectedIndex;
+            renderQuestion();
+          });
+        });
       }
-    });
-    quizNav.appendChild(navItem);
-  });
-}
 
-function renderQuestion() {
-  if (!quizData.length) return;
-
-  renderQuizNav();
-
-  const q = quizData[currentQuestion];
-  quizProgress.textContent = `Question ${currentQuestion + 1} of ${quizData.length}`;
-  
-  let optionsHtml = q.options.map((option, index) => {
-    const letter = String.fromCharCode(65 + index);
-    let optionClass = 'quiz-option';
-
-    if (quizSubmitted) {
-      optionClass += ' disabled';
-      if (index === q.correct_answer) {
-        optionClass += ' correct';
-      } else if (index === userAnswers[currentQuestion]) {
-        optionClass += ' incorrect';
-      }
-    } else if (userAnswers[currentQuestion] === index) {
-      optionClass += ' selected';
+      prevQuestionBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
+      nextQuestionBtn.style.display = currentQuestion < quizData.length - 1 ? 'block' : 'none';
+      submitQuizBtn.style.display = quizSubmitted ? 'none' : 'block';
     }
 
-    return `<div class="${optionClass}" data-index="${index}">
-              <div class="option-letter">${letter}</div>
-              <div class="option-text">${option}</div>
-            </div>`;
-  }).join('');
-
-  let explanationHtml = '';
-  if (quizSubmitted && q.explanation) {
-    explanationHtml = `<div class="quiz-explanation show">
-                         <div class="quiz-explanation-title">💡 Explanation</div>
-                         <div>${q.explanation}</div>
-                       </div>`;
-  }
-
-  quizContent.innerHTML = `
-    <div class="quiz-question-card">
-      <div class="quiz-question-text"><strong>Q${currentQuestion + 1}.</strong> ${q.question}</div>
-      <div class="quiz-options">${optionsHtml}</div>
-      ${explanationHtml}
-    </div>
-  `;
-
-  if (!quizSubmitted) {
-    document.querySelectorAll('.quiz-option').forEach(option => {
-      option.addEventListener('click', (e) => {
-        const selectedIndex = parseInt(e.currentTarget.dataset.index);
-        userAnswers[currentQuestion] = selectedIndex;
-        renderQuestion();
+    if (prevQuestionBtn) {
+      prevQuestionBtn.addEventListener('click', () => {
+        if (currentQuestion > 0) {
+          currentQuestion--;
+          renderQuestion();
+        }
       });
-    });
-  }
-
-  prevQuestionBtn.style.display = currentQuestion > 0 ? 'block' : 'none';
-  nextQuestionBtn.style.display = currentQuestion < quizData.length - 1 ? 'block' : 'none';
-  submitQuizBtn.style.display = quizSubmitted ? 'none' : 'block';
-}
-
-if (prevQuestionBtn) {
-  prevQuestionBtn.addEventListener('click', () => {
-    if (currentQuestion > 0) {
-      currentQuestion--;
-      renderQuestion();
-    }
-  });
-}
-
-if (nextQuestionBtn) {
-  nextQuestionBtn.addEventListener('click', () => {
-    if (currentQuestion < quizData.length - 1) {
-      currentQuestion++;
-      renderQuestion();
-    }
-  });
-}
-
-if (submitQuizBtn) {
-  submitQuizBtn.addEventListener('click', async () => {
-    const unansweredCount = userAnswers.filter(a => a === null).length;
-    if (unansweredCount > 0) {
-      if (!await showConfirm(`You have ${unansweredCount} unanswered question(s). Are you sure you want to finish?`, 'Unanswered Questions')) {
-        return;
-      }
     }
 
-    stopTimer();
-    quizSubmitted = true;
-
-    const totalTime = Math.floor((Date.now() - quizStartTime) / 1000);
-    let correctCount = 0;
-
-    quizData.forEach((q, idx) => {
-      if (userAnswers[idx] === q.correct_answer) {
-        correctCount++;
-      }
-    });
-
-    const percentage = Math.round((correctCount / quizData.length) * 100);
-
-    // Save quiz results to database
-    async function saveQuizResult() {
-      const studentId = localStorage.getItem('currentUserId');
-      const chapterId = localStorage.getItem('selectedChapterId');
-
-      if (!studentId || !chapterId) {
-        console.error("Cannot save quiz result: studentId or chapterId is missing");
-        return;
-      }
-
-      const quizPayloadForBackend = quizData.map(q => {
-        return {
-          question: q.question,
-          options: q.options,
-          correct_answer: String.fromCharCode(65 + q.correct_answer),
-          explanation: q.explanation
-        };
+    if (nextQuestionBtn) {
+      nextQuestionBtn.addEventListener('click', () => {
+        if (currentQuestion < quizData.length - 1) {
+          currentQuestion++;
+          renderQuestion();
+        }
       });
+    }
 
-      const payload = {
-        student_id: parseInt(studentId),
-        chapter_id: parseInt(chapterId),
-        quiz: quizPayloadForBackend,
-        user_answers: userAnswers,
-        total_time_seconds: totalTime
-      };
+    if (submitQuizBtn) {
+      submitQuizBtn.addEventListener('click', async () => {
+        const unansweredCount = userAnswers.filter(a => a === null).length;
+        if (unansweredCount > 0) {
+          if (!await showConfirm(`You have ${unansweredCount} unanswered question(s). Are you sure you want to finish?`, 'Unanswered Questions')) {
+            return;
+          }
+        }
 
-      try {
-  const response = await byFetch('/save_quiz_result', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+        stopTimer();
+        quizSubmitted = true;
+
+        const totalTime = Math.floor((Date.now() - quizStartTime) / 1000);
+        let correctCount = 0;
+
+        quizData.forEach((q, idx) => {
+          if (userAnswers[idx] === q.correct_answer) {
+            correctCount++;
+          }
         });
 
-        if (response.ok) {
-          console.log('Quiz result saved successfully');
-        } else {
-          console.error('Failed to save quiz result');
+        const percentage = Math.round((correctCount / quizData.length) * 100);
+
+        async function saveQuizResult() {
+          const studentId = localStorage.getItem('currentUserId');
+          const chapterId = localStorage.getItem('selectedChapterId');
+
+          if (!studentId || !chapterId) {
+            console.error("Cannot save quiz result: studentId or chapterId is missing");
+            return;
+          }
+
+          const quizPayloadForBackend = quizData.map(q => {
+            return {
+              question: q.question,
+              options: q.options,
+              correct_answer: String.fromCharCode(65 + q.correct_answer),
+              explanation: q.explanation
+            };
+          });
+
+          const payload = {
+            student_id: parseInt(studentId),
+            chapter_id: parseInt(chapterId),
+            quiz: quizPayloadForBackend,
+            user_answers: userAnswers,
+            total_time_seconds: totalTime
+          };
+
+          try {
+            const response = await apiFetch('/save_quiz_result', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+              console.log('Quiz result saved successfully');
+            } else {
+              console.error('Failed to save quiz result');
+            }
+          } catch (error) {
+            console.error('Error saving quiz result:', error);
+          }
         }
-      } catch (error) {
-        console.error('Error saving quiz result:', error);
-      }
+
+        saveQuizResult();
+
+        quizNav.style.display = 'none';
+
+        quizContent.innerHTML = `
+          <div class="quiz-result-card">
+            <h2 style="margin-top:0;">🎉 Quiz Complete!</h2>
+            <div class="quiz-result-score">${percentage}%</div>
+            <div class="quiz-result-details">
+              <div class="quiz-result-detail">
+                <div class="quiz-result-detail-value" style="color:#22c55e;">${correctCount}</div>
+                <div class="quiz-result-detail-label">Correct</div>
+              </div>
+              <div class="quiz-result-detail">
+                <div class="quiz-result-detail-value" style="color:#ef4444;">${quizData.length - correctCount}</div>
+                <div class="quiz-result-detail-label">Incorrect</div>
+              </div>
+              <div class="quiz-result-detail">
+                <div class="quiz-result-detail-value" style="color:#fbbf24;">${formatTime(totalTime)}</div>
+                <div class="quiz-result-detail-label">Time Taken</div>
+              </div>
+            </div>
+            <div style="margin-top:30px;">
+              <button class="quiz-btn quiz-btn-primary" id="reviewAnswersBtn">🔍 Review Answers</button>
+              <button class="quiz-btn quiz-btn-secondary" id="closeResultsBtn">Close</button>
+            </div>
+          </div>
+        `;
+
+        document.getElementById('reviewAnswersBtn').addEventListener('click', () => {
+          currentQuestion = 0;
+          quizNav.style.display = 'grid';
+          renderQuestion();
+        });
+
+        document.getElementById('closeResultsBtn').addEventListener('click', () => {
+          quizModal.classList.remove('active');
+          quizData = [];
+          userAnswers = [];
+          currentQuestion = 0;
+          quizSubmitted = false;
+          quizNav.style.display = 'grid';
+        });
+
+        prevQuestionBtn.style.display = 'none';
+        nextQuestionBtn.style.display = 'none';
+        submitQuizBtn.style.display = 'none';
+      });
     }
-
-    saveQuizResult();
-
-    quizNav.style.display = 'none';
-
-    quizContent.innerHTML = `
-      <div class="quiz-result-card">
-        <h2 style="margin-top:0;">🎉 Quiz Complete!</h2>
-        <div class="quiz-result-score">${percentage}%</div>
-        <div class="quiz-result-details">
-          <div class="quiz-result-detail">
-            <div class="quiz-result-detail-value" style="color:#22c55e;">${correctCount}</div>
-            <div class="quiz-result-detail-label">Correct</div>
-          </div>
-          <div class="quiz-result-detail">
-            <div class="quiz-result-detail-value" style="color:#ef4444;">${quizData.length - correctCount}</div>
-            <div class="quiz-result-detail-label">Incorrect</div>
-          </div>
-          <div class="quiz-result-detail">
-            <div class="quiz-result-detail-value" style="color:#fbbf24;">${formatTime(totalTime)}</div>
-            <div class="quiz-result-detail-label">Time Taken</div>
-          </div>
-        </div>
-        <div style="margin-top:30px;">
-          <button class="quiz-btn quiz-btn-primary" id="reviewAnswersBtn">🔍 Review Answers</button>
-          <button class="quiz-btn quiz-btn-secondary" id="closeResultsBtn">Close</button>
-        </div>
-      </div>
-    `;
-
-    document.getElementById('reviewAnswersBtn').addEventListener('click', () => {
-      currentQuestion = 0;
-      quizNav.style.display = 'grid';
-      renderQuestion();
-    });
-
-    document.getElementById('closeResultsBtn').addEventListener('click', () => {
-      quizModal.classList.remove('active');
-      quizData = [];
-      userAnswers = [];
-      currentQuestion = 0;
-      quizSubmitted = false;
-      quizNav.style.display = 'grid';
-    });
-
-    prevQuestionBtn.style.display = 'none';
-    nextQuestionBtn.style.display = 'none';
-    submitQuizBtn.style.display = 'none';
-  });
-}
 
     // Initial load
     loadSummaries();

@@ -343,7 +343,41 @@
         margin-bottom: 8px;
       }
     }
+    /* Mock Tests box styling */
+    .mock-box {
+      display: block;
+      width: 100%;
+      height: 30%;
+      text-decoration: none;
+      color: #fff;
+      border: 1px solid var(--border);
+      background: rgba(88, 83, 242, 0.25);
+      border-radius: 12px;
+      padding: 15px 5px;
+      transition: 150ms;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .mock-box:hover {
+      background: rgba(138, 43, 226, 0.35);
+    }
+
+    .mock-box h3 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 8px 0;
+    }
+
+    .mock-box p {
+      font-size: 16px;
+      opacity: 0.9;
+      margin: 0;
+    }
   </style>
+
+  <!-- ADDED: central API config so frontend respects BYTLEARN_API_URL -->
+  <script src="./api-config.js"></script>
 </head>
 
 <body>
@@ -517,6 +551,13 @@
     // Start with class selection panel active
     setFlow('class');
 
+    // Prefer centralized byFetch from api-config.js but fall back to fetch + API_URL
+    const apiFetch = window.byFetch ? window.byFetch : (path, opts) => {
+      const base = (window.BYTLEARN_API_URL || window.API_URL || '');
+      if (/^https?:\/\//i.test(path)) return fetch(path, opts);
+      return fetch(base + path, opts);
+    };
+
     /**
      * Fetches all available classes from the API and displays them
      * When a class is clicked:
@@ -525,7 +566,7 @@
      * 3. Loads subjects for that class
      */
     async function loadClasses() {
-      const response = await fetch('https://bytelearn-backend.onrender.com/classes');
+      const response = await apiFetch('/classes');
       const classes = await response.json();
       const classPanel = document.getElementById('panel-class');
       
@@ -550,6 +591,17 @@
         
         classPanel.appendChild(classDiv);
       });
+
+      // Add Mock Tests box after all classes
+      
+      const mockDiv = document.createElement('div');
+      mockDiv.innerHTML = `
+        <hr style="height: 2px; background-color: grey; border: none;"><a href="./mock.html" class="mock-box">
+          <h3>Mock Tests</h3>
+          <p>Practice Classwise Exams</p>
+        </a>
+      `;
+      classPanel.appendChild(mockDiv);
     }
 
     /**
@@ -562,7 +614,7 @@
      * 3. Loads chapters for that subject
      */
     async function loadSubjects(classId) {
-      const response = await fetch('https://bytelearn-backend.onrender.com/subjects');
+      const response = await apiFetch('/subjects');
       const subjects = await response.json();
       
       // Filter to show only subjects belonging to the selected class
@@ -603,7 +655,7 @@
      * 2. Navigates to the learning page
      */
     async function loadChapters(subjectId) {
-      const response = await fetch('https://bytelearn-backend.onrender.com/chapters');
+      const response = await apiFetch('/chapters');
       const chapters = await response.json();
       
       // Filter to show only chapters belonging to the selected subject

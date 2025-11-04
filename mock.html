@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>BytLearn – Mock Tests</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet" />
+  <script src="./api-config.js"></script>
+  <style>
+    :root{--border:rgba(255,255,255,0.2);--glass:rgba(255,255,255,0.1);--text:#fff;--muted:rgba(255,255,255,0.85);--accent:#e5a054;--accent-glow:rgba(229,160,84,0.3)}*{box-sizing:border-box}html,body{height:100%;margin:0;font-family:'Inter',ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial;color:var(--text);text-align:center}body{background:linear-gradient(135deg,#7e22ce 0%,#f472b6 45%,#6366f1 100%);background-attachment:fixed;position:relative;overflow-x:hidden;font-size:18px}body::before{content:"";position:fixed;inset:0;background:rgba(0,0,0,0.35);pointer-events:none;z-index:0}.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.35)}.container{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:32px;text-align:center}main.container{min-height:calc(100vh - 110px)}.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.logo{display:flex;align-items:center;gap:12px}.logo img{width:70px;height:70px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 16px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,0.18);color:var(--text);text-decoration:none;transition:150ms;backdrop-filter:blur(6px);cursor:pointer;font-size:16px;font-weight:500}.btn:hover{background:rgba(255,255,255,0.24)}.card{background:var(--glass);border:1px solid var(--border);border-radius:18px;padding:14px;backdrop-filter:blur(8px);text-align:center}.pills{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.pill{padding:10px 16px;border-radius:14px;border:1px solid var(--border);background:rgba(255,255,255,0.08);color:var(--text);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.06);cursor:pointer;transition:120ms}.pill.active{background:rgba(255,255,255,0.2);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.12)}.hidden{display:none!important}h2{margin:0 0 12px;font-weight:800;font-size:28px;letter-spacing:-0.5px}p{color:var(--muted)}.quiz-modal{position:fixed;inset:0;background:rgba(10,5,30,0.85);backdrop-filter:blur(10px);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}.quiz-modal.active{display:flex}.quiz-modal-content{background:linear-gradient(145deg,#1e1b4b,#312e81);border:1px solid rgba(255,255,255,0.15);border-radius:24px;padding:24px;max-width:1100px;width:100%;max-height:95vh;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.3);position:relative;display:flex;gap:24px}.quiz-nav{flex:0 0 200px;background:rgba(0,0,0,0.2);border-radius:16px;padding:15px;display:grid;grid-template-columns:repeat(auto-fill,minmax(40px,1fr));gap:12px;align-content:start;overflow-y:auto;border:1px solid rgba(255,255,255,0.1)}.quiz-nav-item{width:42px;height:42px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:transparent;color:rgba(255,255,255,0.7);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s ease;font-size:15px;font-weight:600}.quiz-nav-item:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.4);color:#fff}.quiz-nav-item.answered{background:rgba(99,102,241,0.3);border-color:rgba(99,102,241,0.7);color:#fff}.quiz-nav-item.current{background:#6366f1;color:white;border-color:#818cf8;transform:scale(1.05);box-shadow:0 0 15px rgba(99,102,241,0.5)}.quiz-main{flex:1;display:flex;flex-direction:column;overflow-y:auto;padding-right:10px}.quiz-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,0.2);flex-wrap:wrap;gap:15px}.quiz-timer{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:700}.quiz-progress{font-size:16px;font-weight:600;background:rgba(0,0,0,0.2);padding:8px 16px;border-radius:8px}.quiz-question-card{background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:32px;margin-bottom:24px}.quiz-question-text{font-size:22px;font-weight:500;margin-bottom:24px;line-height:1.5;text-align:left}.quiz-options{display:grid;gap:15px}.quiz-option{background:transparent;border:2px solid rgba(255,255,255,0.2);border-radius:10px;padding:15px 20px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:15px;text-align:left}.quiz-option:hover{background:rgba(255,255,255,0.1);border-color:#a5b4fc}.quiz-option.selected{background:rgba(99,102,241,0.3);border-color:#6366f1}.quiz-option.correct{background:rgba(34,197,94,0.2);border-color:#22c55e;pointer-events:none}.quiz-option.incorrect{background:rgba(239,68,68,0.2);border-color:#ef4444;pointer-events:none}.quiz-option.disabled{pointer-events:none;opacity:.7}.option-letter{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);font-weight:700;flex-shrink:0}.option-text{flex:1;font-size:16px;line-height:1.5}.quiz-explanation{background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;margin-top:20px;display:none;text-align:left}.quiz-explanation.show{display:block}.quiz-explanation-title{font-weight:700;margin-bottom:8px;color:#facc15}.quiz-controls{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-top:auto;padding-top:24px;border-top:1px solid rgba(255,255,255,0.2)}.quiz-btn{padding:12px 28px;border-radius:10px;border:none;font-size:16px;font-weight:600;cursor:pointer;transition:all .2s}.quiz-btn-primary{background:#6366f1;color:white;box-shadow:0 4px 15px rgba(99,102,241,0.2)}.quiz-btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(99,102,241,0.3)}.quiz-btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}.quiz-btn-secondary{background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2)}.quiz-btn-secondary:hover{background:rgba(255,255,255,0.2)}.quiz-result-card{background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:40px;text-align:center}.quiz-result-score{font-size:72px;font-weight:800;margin:20px 0;background:linear-gradient(135deg,#facc15,#fb923c);-webkit-background-clip:text;background-clip:text;color:transparent}.quiz-result-details{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:20px;margin-top:30px}.quiz-result-detail{background:rgba(0,0,0,0.2);border:1px solid rgba(255,255,255,0.1);padding:20px;border-radius:12px}.quiz-result-detail-value{font-size:32px;font-weight:700;margin-bottom:8px}.quiz-result-detail-label{font-size:14px;opacity:.8}.alert-modal-overlay{position:fixed;inset:0;background:rgba(10,5,30,0.85);backdrop-filter:blur(10px);z-index:2000;display:none;align-items:center;justify-content:center;padding:20px}.alert-modal-overlay.active{display:flex}.alert-modal-content{background:linear-gradient(145deg,#1e1b4b,#312e81);border:1px solid rgba(255,255,255,0.15);border-radius:16px;padding:24px 32px;max-width:450px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.3);text-align:center;animation:modalFadeIn .2s ease-out}@keyframes modalFadeIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}.ai-disclaimer{padding:1px 1px;margin-bottom:4px;border-radius:4px;display:flex;align-items:center;gap:5px}.ai-disclaimer-icon{display:flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:6px;background-color:#38bdf8;color:white;font-weight:bold;font-style:italic;font-size:14px;flex-shrink:0;font-family:serif}.ai-disclaimer-text{font-size:13px;line-height:1.5;color:rgba(255,255,255,0.9);text-align:left}.mock-info{background:rgba(255,255,255,0.08);border-radius:14px;padding:20px;margin:16px 0;text-align:left}.mock-info h3{font-size:18px;font-weight:700;margin:0 0 12px;color:var(--text)}.mock-info ul{list-style:none;padding:0;margin:0}.mock-info li{padding:8px 0;color:var(--muted);font-size:15px}.mock-info li strong{color:var(--text)}
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <header class="container">
+    <div class="row">
+      <div class="logo" style="cursor:pointer;" onclick="location.href='./welcome.html'">
+        <img src="./logo.png" alt="BytLearn" />
+        <div>
+          <div style="font-weight:800;font-size:22px;">BytLearn</div>
+          <div style="font-size:12px;opacity:.8">NEET Mock Tests</div>
+        </div>
+      </div>
+      <div class="row" style="gap:10px;">
+        <a class="btn" href="./dashboard.html">Dashboard</a>
+        <a class="btn" href="./profile.html" title="Profile">Profile</a>
+        <a class="btn" href="./welcome.html"
+           onclick="event.preventDefault(); localStorage.removeItem('authed'); location.href='./welcome.html';">
+          Sign Out
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="card" style="margin-bottom:12px;">
+      <div class="pills">
+        <button class="pill active" data-tab="class11">Class 11</button>
+        <button class="pill" data-tab="class12">Class 12</button>
+      </div>
+    </div>
+
+    <section id="class11" class="card tab">
+      <div class="row" style="justify-content:space-between;">
+        <h2>Class 11 NEET Mock Test</h2>
+        <span class="pill" style="cursor:default;">Full Test</span>
+      </div>
+
+      <div class="ai-disclaimer">
+        <div class="ai-disclaimer-icon">i</div>
+        <p class="ai-disclaimer-text">
+          <strong>AI-Generated Content:</strong> Mock test questions are AI-generated based on NCERT content. Use for practice and always refer to your textbook for final exam preparation.
+        </p>
+      </div>
+
+      <p>Comprehensive mock test covering all Class 11 Biology chapters</p>
+
+      <div class="mock-info">
+        <h3>Test Details:</h3>
+        <ul>
+          <li>✓ <strong>20 Questions</strong> – Covering all chapters</li>
+          <li>✓ <strong>All Class 11 Chapters</strong> – From Diversity to Body Fluids</li>
+          <li>✓ <strong>AI-Powered</strong> – NEET pattern questions</li>
+          <li>✓ <strong>Chapter-wise Distribution</strong> – Balanced coverage</li>
+        </ul>
+      </div>
+
+      <div id="class11-controls" style="margin:18px 0;">
+        <button id="generate-class11-btn" class="btn" style="font-size:16px;padding:12px 28px;">Start Class 11 Mock Test</button>
+      </div>
+    </section>
+
+    <section id="class12" class="card tab hidden">
+      <div class="row" style="justify-content:space-between;">
+        <h2>Class 12 NEET Mock Test</h2>
+        <span class="pill" style="cursor:default;">Full Test</span>
+      </div>
+
+      <div class="ai-disclaimer">
+        <div class="ai-disclaimer-icon">i</div>
+        <p class="ai-disclaimer-text">
+          <strong>AI-Generated Content:</strong> Mock test questions are AI-generated based on NCERT content. Use for practice and always refer to your textbook for final exam preparation.
+        </p>
+      </div>
+
+      <p>Comprehensive mock test covering all Class 12 Biology chapters</p>
+
+      <div class="mock-info">
+        <h3>Test Details:</h3>
+        <ul>
+          <li>✓ <strong>20 Questions</strong> – Full mock experience</li>
+          <li>✓ <strong>All Class 12 Chapters</strong> – From Reproduction to Biotechnology</li>
+          <li>✓ <strong>NEET Standard</strong> – Exam-level difficulty</li>
+          <li>✓ <strong>Comprehensive Coverage</strong> – All topics included</li>
+        </ul>
+      </div>
+
+      <div id="class12-controls" style="margin:18px 0;">
+        <button id="generate-class12-btn" class="btn" style="font-size:16px;padding:12px 28px;">Start Class 12 Mock Test</button>
+      </div>
+    </section>
+  </main>
+
+  <div class="quiz-modal" id="quizModal">
+    <div class="quiz-modal-content">
+      <div class="quiz-nav" id="quizNav"></div>
+      <div class="quiz-main">
+        <div class="quiz-header">
+          <div class="quiz-timer" id="quizTimer">
+            <span>⏱️</span>
+            <span id="timerDisplay">00:00</span>
+          </div>
+          <div class="quiz-progress" id="quizProgress">Question 1 of 20</div>
+          <button class="btn" id="closeQuizBtn" style="padding:8px 16px;">✕ Close</button>
+        </div>
+
+        <div id="quizContent"></div>
+
+        <div class="quiz-controls" id="quizControls">
+          <button class="quiz-btn quiz-btn-secondary" id="prevQuestionBtn">← Previous</button>
+          <button class="quiz-btn quiz-btn-primary" id="nextQuestionBtn">Next →</button>
+          <button class="quiz-btn quiz-btn-primary" id="submitQuizBtn">Finish Test</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert-modal-overlay" id="alertModal">
+    <div class="alert-modal-content">
+      <h3 id="alertModalTitle">Alert</h3>
+      <p id="alertModalMessage">This is a message.</p>
+      <div class="alert-modal-actions">
+        <button class="alert-btn alert-btn-secondary" id="alertCancelBtn">Cancel</button>
+        <button class="alert-btn alert-btn-primary" id="alertOkBtn">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    if (localStorage.getItem('authed') !== '1') {
+      location.replace('./login.html');
+    }
+
+    // Simple API fetch helper: prefer byFetch from api-config.js
+    const apiFetch = window.byFetch ? window.byFetch : (p, opts) => fetch((window.API_URL || '') + p, opts);
+
+    // Modal helpers
+    const alertModal = document.getElementById('alertModal');
+    const alertModalTitle = document.getElementById('alertModalTitle');
+    const alertModalMessage = document.getElementById('alertModalMessage');
+    const alertOkBtn = document.getElementById('alertOkBtn');
+    const alertCancelBtn = document.getElementById('alertCancelBtn');
+    let currentModalResolver;
+
+    function showAlert(message, title='Notification'){
+      alertModalTitle.textContent = title;
+      alertModalMessage.textContent = message;
+      alertCancelBtn.style.display = 'none';
+      alertOkBtn.textContent = 'OK';
+      alertModal.classList.add('active');
+      return new Promise(resolve => { currentModalResolver = {resolve, type:'alert'}; });
+    }
+    function showConfirm(message, title='Confirmation'){
+      alertModalTitle.textContent = title;
+      alertModalMessage.textContent = message;
+      alertCancelBtn.style.display = 'inline-flex';
+      alertOkBtn.textContent = 'Confirm';
+      alertModal.classList.add('active');
+      return new Promise(resolve => { currentModalResolver = {resolve, type:'confirm'}; });
+    }
+    alertOkBtn.addEventListener('click', ()=>{ if(!currentModalResolver) return; alertModal.classList.remove('active'); if(currentModalResolver.type==='alert') currentModalResolver.resolve(); else currentModalResolver.resolve(true); currentModalResolver=null; });
+    alertCancelBtn.addEventListener('click', ()=>{ if(!currentModalResolver || currentModalResolver.type!=='confirm') return; alertModal.classList.remove('active'); currentModalResolver.resolve(false); currentModalResolver=null; });
+
+    // Tabs
+    const pills = document.querySelectorAll(".pill[data-tab]");
+    const tabs = document.querySelectorAll(".tab");
+    pills.forEach(p => p.addEventListener("click", ()=>{
+      pills.forEach(pp=>pp.classList.remove("active"));
+      p.classList.add("active");
+      const id = p.getAttribute("data-tab");
+      tabs.forEach(t=>t.classList.add("hidden"));
+      document.getElementById(id)?.classList.remove("hidden");
+      window.scrollTo({top:0,behavior:"smooth"});
+    }));
+
+    // Quiz module variables & helpers (same logic as other pages, using apiFetch)
+    const quizModal = document.getElementById('quizModal');
+    const generateClass11Btn = document.getElementById('generate-class11-btn');
+    const generateClass12Btn = document.getElementById('generate-class12-btn');
+    const closeQuizBtn = document.getElementById('closeQuizBtn');
+    const quizContent = document.getElementById('quizContent');
+    const quizProgress = document.getElementById('quizProgress');
+    const timerDisplay = document.getElementById('timerDisplay');
+    const prevQuestionBtn = document.getElementById('prevQuestionBtn');
+    const nextQuestionBtn = document.getElementById('nextQuestionBtn');
+    const submitQuizBtn = document.getElementById('submitQuizBtn');
+    const quizNav = document.getElementById('quizNav');
+
+    let quizData = [];
+    let currentQuestion = 0;
+    let userAnswers = [];
+    let quizStartTime = null;
+    let timerInterval = null;
+    let quizSubmitted = false;
+
+    function startTimer(){ quizStartTime = Date.now(); timerInterval = setInterval(()=>{ const elapsed = Math.floor((Date.now()-quizStartTime)/1000); const minutes = Math.floor(elapsed/60); const seconds = elapsed%60; timerDisplay.textContent = `${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`; },1000); }
+    function stopTimer(){ if(timerInterval){ clearInterval(timerInterval); timerInterval = null; } }
+    function formatTime(seconds){ const mins = Math.floor(seconds/60); const secs = seconds%60; return `${mins}m ${secs}s`; }
+
+    async function generateMockTest(classType){
+      const btn = classType==='class11' ? generateClass11Btn : generateClass12Btn;
+      btn.disabled = true;
+      btn.textContent = '⏳ Generating Mock Test...';
+      try{
+        // fetch chapters from backend
+        const chaptersRes = await apiFetch('/chapters');
+        if(!chaptersRes.ok) throw new Error('Failed to fetch chapters');
+        const allChapters = await chaptersRes.json();
+
+        const filteredChapters = classType === 'class11'
+          ? allChapters.filter(ch => ch.chapter_id >= 1 && ch.chapter_id <= 16)
+          : allChapters.filter(ch => ch.chapter_id >= 17 && ch.chapter_id <= 32);
+
+        if(filteredChapters.length===0){ await showAlert('No chapters found for this class','Error'); return; }
+        const chapterIds = filteredChapters.map(ch=>ch.chapter_id);
+
+        const resp = await apiFetch('/generate_mock_test', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ chapter_ids: chapterIds, num_questions: 20, class_type: classType })
+        });
+
+        if(!resp.ok){
+          const err = await resp.json().catch(()=>({detail:'generation failed'}));
+          throw new Error(err.detail || 'Failed to generate mock test');
+        }
+        const data = await resp.json();
+
+        if(data.quiz && data.quiz.length>0){
+          quizData = data.quiz.map(q=>({
+            question: q.question,
+            options: q.options,
+            correct_answer: (typeof q.correct_answer === 'string' ? (q.correct_answer || 'A') : 'A'),
+            explanation: q.explanation,
+            chapter_name: q.chapter_name || 'Mixed'
+          }));
+          userAnswers = new Array(quizData.length).fill(null);
+          currentQuestion = 0;
+          quizSubmitted = false;
+          quizModal.classList.add('active');
+          startTimer();
+          renderQuestion();
+        } else {
+          await showAlert('No questions could be generated. Please try again.','Generation Failed');
+        }
+      }catch(err){
+        console.error('Mock test generation error:', err);
+        await showAlert('Error generating mock test: ' + (err.message || err),'Error');
+      }finally{
+        btn.disabled = false;
+        btn.textContent = classType==='class11' ? '🎯 Start Class 11 Mock Test' : '🎯 Start Class 12 Mock Test';
+      }
+    }
+
+    if(generateClass11Btn) generateClass11Btn.addEventListener('click', ()=>generateMockTest('class11'));
+    if(generateClass12Btn) generateClass12Btn.addEventListener('click', ()=>generateMockTest('class12'));
+
+    if(closeQuizBtn){
+      closeQuizBtn.addEventListener('click', async ()=>{
+        if(quizSubmitted || await showConfirm('Are you sure you want to close? Your progress will be lost.','Confirm Close')){
+          quizModal.classList.remove('active');
+          stopTimer();
+          quizData = []; userAnswers = []; currentQuestion = 0; quizSubmitted = false; quizNav.style.display = 'grid';
+        }
+      });
+    }
+
+    function renderQuizNav(){
+      if(!quizNav) return;
+      quizNav.innerHTML = '';
+      quizData.forEach((_, idx)=>{
+        const navItem = document.createElement('div');
+        navItem.className = 'quiz-nav-item';
+        navItem.textContent = idx+1;
+        if(idx===currentQuestion) navItem.classList.add('current');
+        if(userAnswers[idx]!==null) navItem.classList.add('answered');
+        navItem.addEventListener('click', ()=>{ if(!quizSubmitted){ currentQuestion = idx; renderQuestion(); }});
+        quizNav.appendChild(navItem);
+      });
+    }
+
+    function renderQuestion(){
+      if(!quizData.length) return;
+      renderQuizNav();
+      const q = quizData[currentQuestion];
+      quizProgress.textContent = `Question ${currentQuestion+1} of ${quizData.length}`;
+      let optionsHtml = q.options.map((option,index)=>{
+        const letter = String.fromCharCode(65+index);
+        let optionClass = 'quiz-option';
+        if(quizSubmitted){
+          optionClass += ' disabled';
+          if(index === (q.correct_answer ? (q.correct_answer.charCodeAt(0)-65) : 0)) optionClass += ' correct';
+          else if(index === userAnswers[currentQuestion]) optionClass += ' incorrect';
+        } else if(userAnswers[currentQuestion] === index) optionClass += ' selected';
+        return `<div class="${optionClass}" data-index="${index}"><div class="option-letter">${letter}</div><div class="option-text">${option}</div></div>`;
+      }).join('');
+
+      let explanationHtml = '';
+      if(quizSubmitted && q.explanation){
+        explanationHtml = `<div class="quiz-explanation show"><div class="quiz-explanation-title">💡 Explanation</div><div>${q.explanation}</div></div>`;
+      }
+
+      let chapterInfo = '';
+      if(q.chapter_name && q.chapter_name !== 'Mixed'){
+        chapterInfo = `<div style="color:#a5b4fc;font-size:14px;margin-bottom:8px;">📖 ${q.chapter_name}</div>`;
+      }
+
+      quizContent.innerHTML = `<div class="quiz-question-card">${chapterInfo}<div class="quiz-question-text"><strong>Q${currentQuestion+1}.</strong> ${q.question}</div><div class="quiz-options">${optionsHtml}</div>${explanationHtml}</div>`;
+
+      if(!quizSubmitted){
+        document.querySelectorAll('.quiz-option').forEach(option=>{
+          option.addEventListener('click',(e)=>{
+            const selectedIndex = parseInt(e.currentTarget.dataset.index);
+            userAnswers[currentQuestion] = selectedIndex;
+            renderQuestion();
+          });
+        });
+      }
+
+      prevQuestionBtn.style.display = currentQuestion>0 ? 'block' : 'none';
+      nextQuestionBtn.style.display = currentQuestion < quizData.length-1 ? 'block' : 'none';
+      submitQuizBtn.style.display = quizSubmitted ? 'none' : 'block';
+    }
+
+    if(prevQuestionBtn) prevQuestionBtn.addEventListener('click', ()=>{ if(currentQuestion>0){ currentQuestion--; renderQuestion(); }});
+    if(nextQuestionBtn) nextQuestionBtn.addEventListener('click', ()=>{ if(currentQuestion<quizData.length-1){ currentQuestion++; renderQuestion(); }});
+
+    if(submitQuizBtn){
+      submitQuizBtn.addEventListener('click', async ()=>{
+        const unansweredCount = userAnswers.filter(a=>a===null).length;
+        if(unansweredCount>0){
+          if(!await showConfirm(`You have ${unansweredCount} unanswered question(s). Are you sure you want to finish?`,'Unanswered Questions')) return;
+        }
+
+        stopTimer();
+        quizSubmitted = true;
+        const totalTime = Math.floor((Date.now()-quizStartTime)/1000);
+        let correctCount = 0;
+        quizData.forEach((q,idx)=>{ const correctIndex = (typeof q.correct_answer === 'string') ? q.correct_answer.charCodeAt(0)-65 : 0; if(userAnswers[idx] === correctIndex) correctCount++; });
+        const percentage = Math.round((correctCount / quizData.length)*100);
+
+        await saveQuizResult(totalTime, correctCount, percentage);
+
+        quizNav.style.display = 'none';
+
+        quizContent.innerHTML = `<div class="quiz-result-card">
+          <h2 style="margin-top:0;">🎉 Mock Test Complete!</h2>
+          <div class="quiz-result-score">${percentage}%</div>
+          <div class="quiz-result-details">
+            <div class="quiz-result-detail"><div class="quiz-result-detail-value" style="color:#22c55e;">${correctCount}</div><div class="quiz-result-detail-label">Correct</div></div>
+            <div class="quiz-result-detail"><div class="quiz-result-detail-value" style="color:#ef4444;">${quizData.length - correctCount}</div><div class="quiz-result-detail-label">Incorrect</div></div>
+            <div class="quiz-result-detail"><div class="quiz-result-detail-value" style="color:#fbbf24;">${formatTime(totalTime)}</div><div class="quiz-result-detail-label">Time Taken</div></div>
+          </div>
+          <div style="margin-top:30px;">
+            <button class="quiz-btn quiz-btn-primary" id="reviewAnswersBtn">🔍 Review Answers</button>
+            <button class="quiz-btn quiz-btn-secondary" id="closeResultsBtn">Close</button>
+          </div>
+        </div>`;
+
+        document.getElementById('reviewAnswersBtn').addEventListener('click', ()=>{ currentQuestion=0; quizNav.style.display='grid'; renderQuestion(); });
+        document.getElementById('closeResultsBtn').addEventListener('click', ()=>{ quizModal.classList.remove('active'); quizData=[]; userAnswers=[]; currentQuestion=0; quizSubmitted=false; quizNav.style.display='grid'; });
+
+        prevQuestionBtn.style.display='none';
+        nextQuestionBtn.style.display='none';
+        submitQuizBtn.style.display='none';
+      });
+    }
+
+    async function saveQuizResult(totalTime, correctCount, percentage){
+      const studentId = localStorage.getItem('currentUserId');
+      const chapterId = localStorage.getItem('selectedChapterId') || null;
+      if(!studentId) { console.log('No student ID, skipping save'); return; }
+
+      const quizPayloadForBackend = quizData.map(q=>{
+        return { question: q.question, options: q.options, correct_answer: (typeof q.correct_answer==='string' ? q.correct_answer : 'A'), explanation: q.explanation };
+      });
+
+      const payload = { student_id: parseInt(studentId), chapter_id: chapterId ? parseInt(chapterId) : null, quiz: quizPayloadForBackend, user_answers: userAnswers, total_time_seconds: totalTime };
+
+      try{
+        const resp = await apiFetch('/save_quiz_result', {
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify(payload)
+        });
+        if(resp.ok) console.log('Mock test result saved successfully'); else console.log('Failed to save mock test result');
+      }catch(err){ console.error('Error saving mock test result:', err); }
+    }
+
+  </script>
+</body>
+</html>

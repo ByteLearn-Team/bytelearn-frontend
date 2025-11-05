@@ -17,6 +17,13 @@ window.byFetch = async function(path, options = {}) {
       }
     });
 
+    // Add handling for sleeping server (503)
+    if (!response.ok && response.status === 503) {
+      console.log('Server is waking up, retrying in 5 seconds...');
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      return window.byFetch(path, options); // Retry the request
+    }
+
     if (!response.ok) {
       console.error(`❌ API Error: ${response.status} ${response.statusText}`);
       const error = await response.text();
@@ -27,6 +34,11 @@ window.byFetch = async function(path, options = {}) {
     console.log(`✅ API Response:`, data);
     return response;
   } catch (error) {
+    if (error.message.includes('Failed to fetch')) {
+      console.log('Server might be starting up, retrying...');
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      return window.byFetch(path, options);
+    }
     console.error(`❌ API Call Failed:`, error);
     throw error;
   }
